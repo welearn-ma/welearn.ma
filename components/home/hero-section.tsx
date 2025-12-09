@@ -101,10 +101,10 @@ export function HeroSection() {
             </div>
 
             {/* Floating Cards */}
-            <div className="absolute -left-8 top-1/4 bg-white rounded-xl p-4 shadow-lg animate-pulse">
+            <div className="absolute -left-8 top-1/4 bg-white/90 rounded-xl p-4 shadow-lg">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-welearn-navy/10 rounded-lg">
-                  <BookOpen className="h-6 w-6 text-(--color-welearn-navy)" />
+                  <BookOpen className="h-6 w-6 text-welearn-navy" />
                 </div>
                 <div>
                   <div className="font-semibold text-foreground">
