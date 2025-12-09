@@ -1,20 +1,35 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook } from "lucide-react";
 
 const footerLinks = {
   formations: [
-    { name: "Executive Masters", href: "/formations/diplomantes/executive-masters" },
-    { name: "Licences Professionnelles", href: "/formations/diplomantes/licences-pro" },
-    { name: "BIM Foundations", href: "/formations/certifiantes/bim-foundations" },
+    {
+      name: "Executive Masters",
+      href: "/formations/diplomantes/executive-masters",
+    },
+    {
+      name: "Licences Professionnelles",
+      href: "/formations/diplomantes/licences-pro",
+    },
+    {
+      name: "BIM Foundations",
+      href: "/formations/certifiantes/bim-foundations",
+    },
     { name: "Catalogue intra", href: "/formations/certifiantes/catalogue" },
-    { name: "Formations sur mesure", href: "/formations/certifiantes/sur-mesure" },
+    {
+      name: "Formations sur mesure",
+      href: "/formations/certifiantes/sur-mesure",
+    },
   ],
   services: [
     { name: "Ingénierie de formation", href: "/ingenierie" },
     { name: "Accompagnement CSF", href: "/ingenierie/accompagnement" },
     { name: "Plateforme LMS", href: "/digital-learning/lms" },
-    { name: "Contenus e-learning", href: "/digital-learning/contenus-elearning" },
+    {
+      name: "Contenus e-learning",
+      href: "/digital-learning/contenus-elearning",
+    },
     { name: "Conseil & Transformation", href: "/conseil" },
   ],
   company: [
@@ -29,25 +44,24 @@ const footerLinks = {
     { name: "CGU", href: "/cgu" },
     { name: "Politique de confidentialité", href: "/confidentialite" },
   ],
-}
+};
 
 export function Footer() {
   return (
     <footer className="bg-(--color-welearn-navy-dark) text-white">
-      <div className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 pt-16 pb-4 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
           {/* Brand */}
           <div className="lg:col-span-2">
             <Image
               src="/images/welearn-logo-white.png"
               alt="Welearn"
-              width={200}
-              height={60}
-              className="h-14 w-auto mb-6"
+              width={100}
+              height={100}
             />
             <p className="text-white/80 text-sm leading-relaxed mb-6 max-w-sm">
-              EdTech destinée au secteur de la Construction, reconnue comme Jeune Entreprise Innovante® en France et au
-              Maroc.
+              EdTech destinée au secteur de la Construction, reconnue comme
+              Jeune Entreprise Innovante® en France et au Maroc.
             </p>
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-sm text-white/80">
@@ -67,7 +81,9 @@ export function Footer() {
 
           {/* Formations Links */}
           <div>
-            <h3 className="font-sans font-semibold text-base mb-4">Formations</h3>
+            <h3 className="font-sans font-semibold text-base mb-4">
+              Formations
+            </h3>
             <ul className="space-y-2">
               {footerLinks.formations.map((link) => (
                 <li key={link.name}>
@@ -137,18 +153,28 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-white/60">
-            © {new Date().getFullYear()} Welearn. Tous droits réservés. Jeune Entreprise Innovante®
+            © {new Date().getFullYear()} Welearn. Tous droits réservés. Jeune
+            Entreprise Innovante®
           </p>
           <div className="flex items-center gap-4">
-            <Link href="#" className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors">
+            <Link
+              href="#"
+              className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors"
+            >
               <Linkedin className="h-5 w-5" />
               <span className="sr-only">LinkedIn</span>
             </Link>
-            <Link href="#" className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors">
+            <Link
+              href="#"
+              className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors"
+            >
               <Youtube className="h-5 w-5" />
               <span className="sr-only">YouTube</span>
             </Link>
-            <Link href="#" className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors">
+            <Link
+              href="#"
+              className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors"
+            >
               <Facebook className="h-5 w-5" />
               <span className="sr-only">Facebook</span>
             </Link>
@@ -156,5 +182,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { ArrowRight, Award, Users, BookOpen } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Award, Users, BookOpen } from "lucide-react";
 
 export function HeroSection() {
   return (
@@ -21,18 +21,23 @@ export function HeroSection() {
           <div className="text-center lg:text-left">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
               <Award className="h-4 w-4 text-white" />
-              <span className="text-sm font-medium text-white">Jeune Entreprise Innovante®</span>
+              <span className="text-sm font-medium text-white">
+                Jeune Entreprise Innovante®
+              </span>
             </div>
 
             <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance leading-tight">
               Formez-vous aux métiers de la{" "}
-              <span className="text-white/90 underline decoration-white/30 underline-offset-4">Construction</span> de
-              demain
+              <span className="text-white/90 underline decoration-white/30 underline-offset-4">
+                Construction
+              </span>{" "}
+              de demain
             </h1>
 
             <p className="text-lg md:text-xl text-white/80 mb-8 leading-relaxed max-w-xl lg:max-w-none">
-              Welearn est une EdTech destinée au secteur de la Construction, reconnue comme Jeune Entreprise Innovante®
-              en France et au Maroc. Experts en BIM, ingénierie et formation executive.
+              Welearn est une EdTech destinée au secteur de la Construction,
+              reconnue comme Jeune Entreprise Innovante® en France et au Maroc.
+              Experts en BIM, ingénierie et formation executive.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -58,15 +63,23 @@ export function HeroSection() {
 
             <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-white/20">
               <div>
-                <div className="text-3xl md:text-4xl font-bold text-white">1100+</div>
+                <div className="text-3xl md:text-4xl font-bold text-white">
+                  1100+
+                </div>
                 <div className="text-sm text-white/70">Apprenants formés</div>
               </div>
               <div>
-                <div className="text-3xl md:text-4xl font-bold text-white">50+</div>
-                <div className="text-sm text-white/70">Entreprises partenaires</div>
+                <div className="text-3xl md:text-4xl font-bold text-white">
+                  50+
+                </div>
+                <div className="text-sm text-white/70">
+                  Entreprises partenaires
+                </div>
               </div>
               <div>
-                <div className="text-3xl md:text-4xl font-bold text-white">10+</div>
+                <div className="text-3xl md:text-4xl font-bold text-white">
+                  10+
+                </div>
                 <div className="text-sm text-white/70">Années d'expertise</div>
               </div>
             </div>
@@ -90,24 +103,32 @@ export function HeroSection() {
             {/* Floating Cards */}
             <div className="absolute -left-8 top-1/4 bg-white rounded-xl p-4 shadow-lg animate-pulse">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-(--color-welearn-navy)/10 rounded-lg">
+                <div className="p-2 bg-welearn-navy/10 rounded-lg">
                   <BookOpen className="h-6 w-6 text-(--color-welearn-navy)" />
                 </div>
                 <div>
-                  <div className="font-semibold text-foreground">Masters BIM</div>
-                  <div className="text-sm text-muted-foreground">Accréditation CGE</div>
+                  <div className="font-semibold text-foreground">
+                    Masters BIM
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Accréditation CGE
+                  </div>
                 </div>
               </div>
             </div>
 
             <div className="absolute -right-4 bottom-1/4 bg-white rounded-xl p-4 shadow-lg">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-(--color-welearn-navy)/10 rounded-lg">
-                  <Users className="h-6 w-6 text-(--color-welearn-navy)" />
+                <div className="p-2 bg-welearn-navy/10 rounded-lg">
+                  <Users className="h-6 w-6 text-welearn-navy" />
                 </div>
                 <div>
-                  <div className="font-semibold text-foreground">BuildingSmart</div>
-                  <div className="text-sm text-muted-foreground">Certification officielle</div>
+                  <div className="font-semibold text-foreground">
+                    BuildingSmart
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Certification officielle
+                  </div>
                 </div>
               </div>
             </div>
@@ -115,5 +136,5 @@ export function HeroSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

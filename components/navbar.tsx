@@ -1,13 +1,12 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import Image from "next/image"
-import { useState } from "react"
-import { Menu, X, ChevronDown, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const navigation = [
-  { name: "Accueil", href: "/" },
   { name: "À propos", href: "/about" },
   {
     name: "Formations",
@@ -17,17 +16,32 @@ const navigation = [
         name: "Diplômantes",
         href: "/formations/diplomantes",
         children: [
-          { name: "Executive Masters", href: "/formations/diplomantes/executive-masters" },
-          { name: "Licences Professionnelles", href: "/formations/diplomantes/licences-pro" },
+          {
+            name: "Executive Masters",
+            href: "/formations/diplomantes/executive-masters",
+          },
+          {
+            name: "Licences Professionnelles",
+            href: "/formations/diplomantes/licences-pro",
+          },
         ],
       },
       {
         name: "Certifiantes",
         href: "/formations/certifiantes",
         children: [
-          { name: "BIM Foundations Professional", href: "/formations/certifiantes/bim-foundations" },
-          { name: "Catalogue des formations intra", href: "/formations/certifiantes/catalogue" },
-          { name: "Formations sur mesure", href: "/formations/certifiantes/sur-mesure" },
+          {
+            name: "BIM Foundations Professional",
+            href: "/formations/certifiantes/bim-foundations",
+          },
+          {
+            name: "Catalogue des formations intra",
+            href: "/formations/certifiantes/catalogue",
+          },
+          {
+            name: "Formations sur mesure",
+            href: "/formations/certifiantes/sur-mesure",
+          },
         ],
       },
     ],
@@ -46,7 +60,10 @@ const navigation = [
     href: "/digital-learning",
     children: [
       { name: "Plateforme LMS", href: "/digital-learning/lms" },
-      { name: "Développement de contenus e-learning", href: "/digital-learning/contenus-elearning" },
+      {
+        name: "Développement de contenus e-learning",
+        href: "/digital-learning/contenus-elearning",
+      },
       { name: "Bibliothèque de cours", href: "/digital-learning/bibliotheque" },
     ],
   },
@@ -69,12 +86,12 @@ const navigation = [
     ],
   },
   { name: "Événements", href: "/evenements" },
-]
+];
 
 interface NavItem {
-  name: string
-  href: string
-  children?: NavItem[]
+  name: string;
+  href: string;
+  children?: NavItem[];
 }
 
 function MegaMenuItem({ item }: { item: NavItem }) {
@@ -99,7 +116,7 @@ function MegaMenuItem({ item }: { item: NavItem }) {
                       <ChevronRight className="h-4 w-4" />
                     </div>
                     <div className="absolute left-full top-0 pl-2 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200">
-                      <div className="bg-white rounded-xl shadow-xl border border-border p-3 min-w-[240px]">
+                      <div className="bg-white rounded-xl shadow-xl border border-border p-3 min-w-60">
                         {child.children.map((subChild) => (
                           <Link
                             key={subChild.name}
@@ -126,11 +143,17 @@ function MegaMenuItem({ item }: { item: NavItem }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-function MobileMenuItem({ item, onClose }: { item: NavItem; onClose: () => void }) {
-  const [isOpen, setIsOpen] = useState(false)
+function MobileMenuItem({
+  item,
+  onClose,
+}: {
+  item: NavItem;
+  onClose: () => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div>
@@ -148,7 +171,11 @@ function MobileMenuItem({ item, onClose }: { item: NavItem; onClose: () => void 
             onClick={() => setIsOpen(!isOpen)}
             className="p-2 text-muted-foreground hover:text-primary"
           >
-            <ChevronDown className={`h-5 w-5 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+            <ChevronDown
+              className={`h-5 w-5 transition-transform ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
           </button>
         )}
       </div>
@@ -182,21 +209,26 @@ function MobileMenuItem({ item, onClose }: { item: NavItem; onClose: () => void 
         </div>
       )}
     </div>
-  )
+  );
 }
 
 export function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b border-border">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
+    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/80 border-b border-border">
+      <nav className="flex max-w-7xl items-center justify-between gap-4 px-4  lg:px-8 min-w-full">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/images/welearn-logo.png" alt="Welearn" width={180} height={50} className="h-14 w-auto" />
+          <Image
+            src="/images/welearn-logo.png"
+            alt="Welearn"
+            width={80}
+            height={80}
+          />
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden xl:flex xl:items-center xl:gap-1">
+        <div className="hidden xl:flex xl:items-center xl:gap-6">
           {navigation.map((item) => (
             <MegaMenuItem key={item.name} item={item} />
           ))}
@@ -213,7 +245,11 @@ export function Navbar() {
               Accéder au LMS
             </Link>
           </Button>
-          <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white">
+          <Button
+            asChild
+            size="sm"
+            className="bg-primary hover:bg-primary/90 text-white"
+          >
             <Link href="/contact">Nous contacter</Link>
           </Button>
         </div>
@@ -224,7 +260,11 @@ export function Navbar() {
           className="xl:hidden p-2 text-foreground"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {mobileMenuOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
         </button>
       </nav>
 
@@ -233,10 +273,18 @@ export function Navbar() {
         <div className="xl:hidden border-t border-border bg-white max-h-[80vh] overflow-y-auto">
           <div className="px-4 py-4 space-y-1">
             {navigation.map((item) => (
-              <MobileMenuItem key={item.name} item={item} onClose={() => setMobileMenuOpen(false)} />
+              <MobileMenuItem
+                key={item.name}
+                item={item}
+                onClose={() => setMobileMenuOpen(false)}
+              />
             ))}
             <div className="pt-4 space-y-2 border-t border-border mt-4">
-              <Button asChild variant="outline" className="w-full border-primary text-primary bg-transparent">
+              <Button
+                asChild
+                variant="outline"
+                className="w-full border-primary text-primary bg-transparent"
+              >
                 <Link href="https://welearn.ac" target="_blank">
                   Accéder au LMS
                 </Link>
@@ -249,5 +297,5 @@ export function Navbar() {
         </div>
       )}
     </header>
-  )
+  );
 }
