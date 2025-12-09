@@ -1,4 +1,10 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/about/page": "app/about/page.js",
+  "/formations/certifiantes/bim-foundations/page": "app/formations/certifiantes/bim-foundations/page.js",
+  "/formations/certifiantes/page": "app/formations/certifiantes/page.js",
+  "/formations/diplomantes/executive-masters/page": "app/formations/diplomantes/executive-masters/page.js",
+  "/formations/diplomantes/page": "app/formations/diplomantes/page.js",
+  "/formations/page": "app/formations/page.js",
   "/page": "app/page.js"
 }
