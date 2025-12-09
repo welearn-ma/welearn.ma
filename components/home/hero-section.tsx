@@ -55,7 +55,7 @@ export function HeroSection() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-(--color-welearn-gold) hover:text-(--color-welearn-navy) hover:border-(--color-welearn-gold) bg-transparent transition-colors"
+                className="border-white border-2 text-white hover:bg-(--color-welearn-gold) hover:text-(--color-welearn-navy) hover:border-(--color-welearn-gold) bg-transparent transition-colors"
               >
                 <Link href="/contact">Demander un devis</Link>
               </Button>
