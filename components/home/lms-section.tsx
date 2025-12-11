@@ -62,7 +62,7 @@ export function LMSSection() {
           <div className="relative">
             <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
               <Image
-                src="/lms/lms-dashboard.webp"
+                src="/lms/lms-home.webp"
                 alt="Plateforme LMS Welearn"
                 width={700}
                 height={500}
