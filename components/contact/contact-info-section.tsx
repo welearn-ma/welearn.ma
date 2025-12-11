@@ -38,7 +38,7 @@ export function ContactInfoSection() {
               href="tel:+212522000000"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              +212 5 22 00 00 00
+              +212 520 85 08 50
             </a>
           </div>
         </div>
@@ -49,7 +49,9 @@ export function ContactInfoSection() {
           </div>
           <div>
             <h3 className="font-semibold text-foreground mb-1">Adresse</h3>
-            <p className="text-muted-foreground">Casablanca, Maroc</p>
+            <p className="text-muted-foreground">
+              300,Technopark Casablanca, Maroc
+            </p>
           </div>
         </div>
       </div>
