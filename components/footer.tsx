@@ -1,6 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin, Linkedin, Youtube, Facebook } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Linkedin,
+  Youtube,
+  Facebook,
+  Twitter,
+} from "lucide-react";
 
 const footerLinks = {
   formations: [
@@ -158,25 +166,36 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-4">
             <Link
-              href="#"
+              href="https://www.linkedin.com/company/welearnmaroc"
+              target="_blank"
               className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors"
             >
               <Linkedin className="h-5 w-5" />
               <span className="sr-only">LinkedIn</span>
             </Link>
             <Link
-              href="#"
+              href="https://www.youtube.com/channel/UCPbfyV72PP5PP1f6fH6-hbA"
+              target="_blank"
               className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors"
             >
               <Youtube className="h-5 w-5" />
               <span className="sr-only">YouTube</span>
             </Link>
             <Link
-              href="#"
+              href="https://web.facebook.com/WelearnMaroc"
+              target="_blank"
               className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors"
             >
               <Facebook className="h-5 w-5" />
               <span className="sr-only">Facebook</span>
+            </Link>
+            <Link
+              href="https://x.com/welearnmaroc"
+              target="_blank"
+              className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors"
+            >
+              <Twitter className="h-5 w-5" />
+              <span className="sr-only">Twitter</span>
             </Link>
           </div>
         </div>
