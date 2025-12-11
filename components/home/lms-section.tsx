@@ -1,14 +1,21 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { CheckCircle, ArrowRight, Monitor, Users, BookOpen, BarChart3 } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+  CheckCircle,
+  ArrowRight,
+  Monitor,
+  Users,
+  BookOpen,
+  BarChart3,
+} from "lucide-react";
 
 const features = [
   { icon: Monitor, text: "Plateforme 100% en ligne" },
   { icon: Users, text: "Suivi personnalisé" },
   { icon: BookOpen, text: "Contenus interactifs" },
   { icon: BarChart3, text: "Tableau de bord analytique" },
-]
+];
 
 export function LMSSection() {
   return (
@@ -23,9 +30,10 @@ export function LMSSection() {
               Découvrez notre LMS : welearn.ac
             </h2>
             <p className="text-lg text-white/80 mb-8 leading-relaxed">
-              Nous avons développé notre propre plateforme LMS pour offrir une expérience d'apprentissage optimale.
-              Accédez à vos formations, suivez votre progression et interagissez avec vos formateurs en toute
-              simplicité.
+              Nous avons développé notre propre plateforme LMS pour offrir une
+              expérience d'apprentissage optimale. Accédez à vos formations,
+              suivez votre progression et interagissez avec vos formateurs en
+              toute simplicité.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-4 mb-8">
@@ -54,7 +62,7 @@ export function LMSSection() {
           <div className="relative">
             <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
               <Image
-                src="/modern-lms-platform-dashboard-with-courses-and-pro.jpg"
+                src="/lms/lms-dashboard.webp"
                 alt="Plateforme LMS Welearn"
                 width={700}
                 height={500}
@@ -65,8 +73,10 @@ export function LMSSection() {
               <div className="flex items-center gap-3">
                 <CheckCircle className="h-8 w-8 text-primary" />
                 <div>
-                  <div className="font-bold text-foreground">+1100</div>
-                  <div className="text-sm text-muted-foreground">Apprenants actifs</div>
+                  <div className="font-bold text-foreground">+500</div>
+                  <div className="text-sm text-muted-foreground">
+                    Apprenants actifs
+                  </div>
                 </div>
               </div>
             </div>
@@ -74,5 +84,5 @@ export function LMSSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
