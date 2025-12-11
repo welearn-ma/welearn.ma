@@ -1,7 +1,7 @@
-import Link from "next/link"
-import { SectionHeader } from "@/components/section-header"
-import { Button } from "@/components/ui/button"
-import { Calendar, MapPin, ArrowRight } from "lucide-react"
+import Link from "next/link";
+import { SectionHeader } from "@/components/section-header";
+import { Button } from "@/components/ui/button";
+import { Calendar, MapPin, ArrowRight } from "lucide-react";
 
 const events = [
   {
@@ -28,7 +28,7 @@ const events = [
     date: "2019",
     type: "Séminaire",
   },
-]
+];
 
 export function EventsSection() {
   return (
@@ -42,11 +42,16 @@ export function EventsSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {events.map((event, index) => (
-            <div key={index} className="bg-white rounded-xl p-6 hover:shadow-lg transition-shadow duration-300">
+            <div
+              key={index}
+              className="bg-white rounded-xl p-6 hover:shadow-lg transition-shadow duration-300"
+            >
               <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full mb-4">
                 {event.type}
               </span>
-              <h3 className="font-sans text-lg font-semibold text-foreground mb-3 line-clamp-2">{event.title}</h3>
+              <h3 className="font-sans text-lg font-semibold text-foreground mb-3 line-clamp-2">
+                {event.title}
+              </h3>
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4 text-primary" />
@@ -67,7 +72,7 @@ export function EventsSection() {
             variant="outline"
             className="border-primary text-primary hover:bg-primary hover:text-white bg-transparent"
           >
-            <Link href="/events">
+            <Link href="/evenements">
               Voir tous les événements
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
@@ -75,5 +80,5 @@ export function EventsSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
