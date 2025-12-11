@@ -50,7 +50,7 @@ export function ContactInfoSection() {
           <div>
             <h3 className="font-semibold text-foreground mb-1">Adresse</h3>
             <p className="text-muted-foreground">
-              300,Technopark Casablanca, Maroc
+              300, Technopark Casablanca, Maroc
             </p>
           </div>
         </div>
@@ -59,7 +59,7 @@ export function ContactInfoSection() {
       {/* Map */}
       <div className="bg-secondary rounded-xl overflow-hidden h-64">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d212270.5361tried2671!2d-7.6824!3d33.5731!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7cd4778aa113b%3A0xb06c1d84f310fd3!2sCasablanca%2C%20Morocco!5e0!3m2!1sen!2s!4v1234567890"
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15778.335901280869!2d-7.640232!3d33.542951!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda62db9d09e3653%3A0xa4a712af3cd8a7a3!2sWelearn!5e1!3m2!1sfr!2sus!4v1765470968412!5m2!1sfr!2sus"
           width="100%"
           height="100%"
           style={{ border: 0 }}
