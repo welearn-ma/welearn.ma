@@ -1,6 +1,6 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ArrowRight, Phone, Mail } from "lucide-react"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Phone, Mail } from "lucide-react";
 
 export function CTASection() {
   return (
@@ -10,8 +10,8 @@ export function CTASection() {
           Prêt à développer vos compétences ?
         </h2>
         <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-          Contactez-nous pour discuter de vos besoins en formation et découvrir comment Welearn peut accompagner votre
-          entreprise.
+          Contactez-nous pour discuter de vos besoins en formation et découvrir
+          comment Welearn peut accompagner votre entreprise.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -48,10 +48,10 @@ export function CTASection() {
             className="flex items-center gap-2 hover:text-(--color-welearn-gold) transition-colors"
           >
             <Phone className="h-5 w-5" />
-            +212 5 22 00 00 00
+            +212 520 850 850
           </a>
         </div>
       </div>
     </section>
-  )
+  );
 }

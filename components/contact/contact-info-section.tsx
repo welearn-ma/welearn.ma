@@ -38,7 +38,7 @@ export function ContactInfoSection() {
               href="tel:+212522000000"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              +212 520 85 08 50
+              +212 520 850 850
             </a>
           </div>
         </div>
