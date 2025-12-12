@@ -19,12 +19,12 @@ export function HeroSection() {
       <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
+            {/* <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
               <Award className="h-4 w-4 text-white" />
               <span className="text-sm font-medium text-white">
                 Jeune Entreprise Innovante®
               </span>
-            </div>
+            </div> */}
 
             <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance leading-tight">
               Formez-vous aux métiers de la{" "}

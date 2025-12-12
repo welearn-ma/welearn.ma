@@ -18,20 +18,13 @@ export function CTASection() {
           <Button
             asChild
             size="lg"
-            className="bg-white hover:bg-(--color-welearn-gold) text-(--color-welearn-navy) font-semibold transition-colors"
+            variant="outline"
+            className="border-white text-white hover:bg-(--color-welearn-gold) hover:text-(--color-welearn-navy) hover:border-(--color-welearn-gold) bg-transparent transition-colors"
           >
             <Link href="/contact">
               Demander un devis
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-          </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="border-white text-white hover:bg-(--color-welearn-gold) hover:text-(--color-welearn-navy) hover:border-(--color-welearn-gold) bg-transparent transition-colors"
-          >
-            <Link href="/programs">Voir les programmes</Link>
           </Button>
         </div>
 
