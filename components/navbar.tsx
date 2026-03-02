@@ -12,84 +12,84 @@ const navigation = [
     href: "/",
   },
   { name: "À propos", href: "/about" },
-  // {
-  //   name: "Formations",
-  //   href: "/formations",
-  //   children: [
-  //     {
-  //       name: "Diplômantes",
-  //       href: "/formations/diplomantes",
-  //       children: [
-  //         {
-  //           name: "Executive Masters",
-  //           href: "/formations/diplomantes/executive-masters",
-  //         },
-  //         {
-  //           name: "Licences Professionnelles",
-  //           href: "/formations/diplomantes/licences-pro",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       name: "Certifiantes",
-  //       href: "/formations/certifiantes",
-  //       children: [
-  //         {
-  //           name: "BIM Foundations Professional",
-  //           href: "/formations/certifiantes/bim-foundations",
-  //         },
-  //         {
-  //           name: "Catalogue des formations intra",
-  //           href: "/formations/certifiantes/catalogue",
-  //         },
-  //         {
-  //           name: "Formations sur mesure",
-  //           href: "/formations/certifiantes/sur-mesure",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
-  // {
-  //   name: "Ingénierie & Accompagnement",
-  //   href: "/ingenierie",
-  //   children: [
-  //     { name: "Stratégie de formation", href: "/ingenierie/strategie" },
-  //     { name: "Ingénierie de formation", href: "/ingenierie" },
-  //     { name: "Accompagnement CSF", href: "/ingenierie/accompagnement" },
-  //   ],
-  // },
-  // {
-  //   name: "Solutions Digital Learning",
-  //   href: "/digital-learning",
-  //   children: [
-  //     { name: "Plateforme LMS", href: "/digital-learning/lms" },
-  //     {
-  //       name: "Développement de contenus e-learning",
-  //       href: "/digital-learning/contenus-elearning",
-  //     },
-  //     { name: "Bibliothèque de cours", href: "/digital-learning/bibliotheque" },
-  //   ],
-  // },
-  // {
-  //   name: "Conseil & Transformation",
-  //   href: "/conseil",
-  //   children: [
-  //     { name: "Stratégie", href: "/conseil/strategie" },
-  //     { name: "Transformation digitale", href: "/conseil/transformation" },
-  //     { name: "Études, audits & diagnostics", href: "/conseil/audits" },
-  //   ],
-  // },
-  // {
-  //   name: "Ressources",
-  //   href: "/ressources",
-  //   children: [
-  //     { name: "Articles & Blog", href: "/ressources/blog" },
-  //     { name: "Vidéos pédagogiques", href: "/ressources/videos" },
-  //     { name: "FAQ", href: "/ressources/faq" },
-  //   ],
-  // },
-  // { name: "Événements", href: "/evenements" },
+  {
+    name: "Formations",
+    href: "/formations",
+    children: [
+      {
+        name: "Diplômantes",
+        href: "/formations/diplomantes",
+        children: [
+          {
+            name: "Executive Masters",
+            href: "/formations/diplomantes/executive-masters",
+          },
+          {
+            name: "Licences Professionnelles",
+            href: "/formations/diplomantes/licences-pro",
+          },
+        ],
+      },
+      {
+        name: "Certifiantes",
+        href: "/formations/certifiantes",
+        children: [
+          {
+            name: "BIM Foundations Professional",
+            href: "/formations/certifiantes/bim-foundations",
+          },
+          {
+            name: "Catalogue des formations intra",
+            href: "/formations/certifiantes/catalogue",
+          },
+          {
+            name: "Formations sur mesure",
+            href: "/formations/certifiantes/sur-mesure",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Ingénierie & Accompagnement",
+    href: "/ingenierie",
+    children: [
+      { name: "Stratégie de formation", href: "/ingenierie/strategie" },
+      { name: "Ingénierie de formation", href: "/ingenierie" },
+      { name: "Accompagnement CSF", href: "/ingenierie/accompagnement" },
+    ],
+  },
+  {
+    name: "Solutions Digital Learning",
+    href: "/digital-learning",
+    children: [
+      { name: "Plateforme LMS", href: "/digital-learning/lms" },
+      {
+        name: "Développement de contenus e-learning",
+        href: "/digital-learning/contenus-elearning",
+      },
+      { name: "Bibliothèque de cours", href: "/digital-learning/bibliotheque" },
+    ],
+  },
+  {
+    name: "Conseil & Transformation",
+    href: "/conseil",
+    children: [
+      { name: "Stratégie", href: "/conseil/strategie" },
+      { name: "Transformation digitale", href: "/conseil/transformation" },
+      { name: "Études, audits & diagnostics", href: "/conseil/audits" },
+    ],
+  },
+  {
+    name: "Ressources",
+    href: "/ressources",
+    children: [
+      { name: "Articles & Blog", href: "/ressources/blog" },
+      { name: "Vidéos pédagogiques", href: "/ressources/videos" },
+      { name: "FAQ", href: "/ressources/faq" },
+    ],
+  },
+  { name: "Événements", href: "/evenements" },
 ];
 
 interface NavItem {
