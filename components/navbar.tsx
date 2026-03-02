@@ -16,7 +16,6 @@ const navigation = [
     name: "Ingénierie & Accompagnement",
     href: "/ingenierie",
     children: [
-      { name: "Stratégie de formation", href: "/ingenierie/strategie" },
       { name: "Ingénierie de formation", href: "/ingenierie" },
       { name: "Accompagnement CSF", href: "/ingenierie/accompagnement" },
     ],
