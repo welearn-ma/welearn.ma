@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Breadcrumb } from "@/components/breadcrumb";
+
 import { Calendar, MapPin, Users, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -79,7 +79,6 @@ const pastEvents = [
 export default function EvenementsPage() {
   return (
     <>
-      <Breadcrumb />
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
         <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
