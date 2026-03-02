@@ -13,6 +13,15 @@ const navigation = [
   },
   { name: "À propos", href: "/about" },
   {
+    name: "Ingénierie & Accompagnement",
+    href: "/ingenierie",
+    children: [
+      { name: "Stratégie de formation", href: "/ingenierie/strategie" },
+      { name: "Ingénierie de formation", href: "/ingenierie" },
+      { name: "Accompagnement CSF", href: "/ingenierie/accompagnement" },
+    ],
+  },
+  {
     name: "Formations",
     href: "/formations",
     children: [
@@ -51,15 +60,6 @@ const navigation = [
     ],
   },
   {
-    name: "Ingénierie & Accompagnement",
-    href: "/ingenierie",
-    children: [
-      { name: "Stratégie de formation", href: "/ingenierie/strategie" },
-      { name: "Ingénierie de formation", href: "/ingenierie" },
-      { name: "Accompagnement CSF", href: "/ingenierie/accompagnement" },
-    ],
-  },
-  {
     name: "Solutions Digital Learning",
     href: "/digital-learning",
     children: [
@@ -74,11 +74,6 @@ const navigation = [
   {
     name: "Conseil & Transformation",
     href: "/conseil",
-    children: [
-      { name: "Stratégie", href: "/conseil/strategie" },
-      { name: "Transformation digitale", href: "/conseil/transformation" },
-      { name: "Études, audits & diagnostics", href: "/conseil/audits" },
-    ],
   },
   {
     name: "Ressources",
