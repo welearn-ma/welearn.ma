@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { StatsSection } from "@/components/formations/stats-section";
 import { CategoriesSection } from "@/components/formations/categories-section";
 import { FormationsCta } from "@/components/formations/formations-cta";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 export default function FormationsPage() {
   return (
     <>
+      <Breadcrumb />
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
         <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">

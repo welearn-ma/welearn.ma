@@ -1,5 +1,6 @@
 "use client";
 
+import { Breadcrumb } from "@/components/breadcrumb";
 import { ContactInfoSection } from "@/components/contact/contact-info-section";
 import { ContactFormSection } from "@/components/contact/contact-form-section";
 import { CorporateContactCta } from "@/components/contact/corporate-contact-cta";
@@ -7,6 +8,7 @@ import { CorporateContactCta } from "@/components/contact/corporate-contact-cta"
 export default function ContactPage() {
   return (
     <>
+      <Breadcrumb />
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
         <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">

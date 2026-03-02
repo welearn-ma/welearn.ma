@@ -1,11 +1,13 @@
-import type { Metadata } from "next"
-import { Calendar, MapPin, Users, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import type { Metadata } from "next";
+import { Breadcrumb } from "@/components/breadcrumb";
+import { Calendar, MapPin, Users, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Événements | Welearn",
-  description: "Conférences, séminaires et événements organisés par Welearn pour les professionnels du BTP.",
-}
+  description:
+    "Conférences, séminaires et événements organisés par Welearn pour les professionnels du BTP.",
+};
 
 const upcomingEvents = [
   {
@@ -14,7 +16,8 @@ const upcomingEvents = [
     location: "Fès",
     date: "2025-03-15",
     type: "Conférence",
-    description: "Événement majeur réunissant les architectes du Maroc autour des enjeux contemporains.",
+    description:
+      "Événement majeur réunissant les architectes du Maroc autour des enjeux contemporains.",
     audience: "Architectes, urbanistes, maîtres d'ouvrage",
     upcoming: true,
   },
@@ -28,7 +31,7 @@ const upcomingEvents = [
     audience: "BIM Managers, architectes, ingénieurs",
     upcoming: true,
   },
-]
+];
 
 const pastEvents = [
   {
@@ -37,7 +40,8 @@ const pastEvents = [
     location: "Erfoud",
     year: "2023",
     type: "Conférence",
-    description: "Édition 2023 dans le décor unique d'Erfoud, explorant l'architecture durable au Sahara.",
+    description:
+      "Édition 2023 dans le décor unique d'Erfoud, explorant l'architecture durable au Sahara.",
     audience: "Architectes, urbanistes, maîtres d'ouvrage",
   },
   {
@@ -46,7 +50,8 @@ const pastEvents = [
     location: "Dakhla",
     year: "2021",
     type: "Conférence",
-    description: "Une édition exceptionnelle à Dakhla sur le thème de l'architecture littorale.",
+    description:
+      "Une édition exceptionnelle à Dakhla sur le thème de l'architecture littorale.",
     audience: "Architectes, urbanistes, maîtres d'ouvrage",
   },
   {
@@ -55,7 +60,8 @@ const pastEvents = [
     location: "Casablanca",
     year: "2019",
     type: "Séminaire",
-    description: "Séminaire technique organisé avec la FEDEC sur les innovations du secteur construction.",
+    description:
+      "Séminaire technique organisé avec la FEDEC sur les innovations du secteur construction.",
     audience: "Bureaux de contrôle, ingénieurs, entreprises BTP",
   },
   {
@@ -64,14 +70,16 @@ const pastEvents = [
     location: "Casablanca",
     year: "2018",
     type: "Conférence",
-    description: "Première édition de notre événement phare sur les enjeux de l'immobilier au Maroc.",
+    description:
+      "Première édition de notre événement phare sur les enjeux de l'immobilier au Maroc.",
     audience: "Promoteurs, investisseurs, professionnels de l'immobilier",
   },
-]
+];
 
 export default function EvenementsPage() {
   return (
     <>
+      <Breadcrumb />
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
         <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
@@ -82,7 +90,8 @@ export default function EvenementsPage() {
             Événements
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Conférences, séminaires et forums pour les professionnels du BTP, de l'architecture et de l'immobilier.
+            Conférences, séminaires et forums pour les professionnels du BTP, de
+            l'architecture et de l'immobilier.
           </p>
         </div>
       </section>
@@ -90,7 +99,9 @@ export default function EvenementsPage() {
       {/* Upcoming Events */}
       <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <h2 className="font-sans text-3xl font-bold text-foreground mb-8">Événements à venir</h2>
+          <h2 className="font-sans text-3xl font-bold text-foreground mb-8">
+            Événements à venir
+          </h2>
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             {upcomingEvents.map((event) => (
               <div
@@ -101,10 +112,14 @@ export default function EvenementsPage() {
                   <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-medium rounded-full mb-3">
                     {event.type}
                   </span>
-                  <h3 className="font-sans text-xl font-bold text-white">{event.title}</h3>
+                  <h3 className="font-sans text-xl font-bold text-white">
+                    {event.title}
+                  </h3>
                 </div>
                 <div className="p-6">
-                  <p className="text-muted-foreground mb-4">{event.description}</p>
+                  <p className="text-muted-foreground mb-4">
+                    {event.description}
+                  </p>
                   <div className="space-y-2 mb-6">
                     <div className="flex items-center gap-2 text-sm text-foreground">
                       <MapPin className="h-4 w-4 text-primary" />
@@ -133,18 +148,27 @@ export default function EvenementsPage() {
           </div>
 
           {/* Past Events */}
-          <h2 className="font-sans text-3xl font-bold text-foreground mb-8">Événements passés</h2>
+          <h2 className="font-sans text-3xl font-bold text-foreground mb-8">
+            Événements passés
+          </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pastEvents.map((event) => (
-              <div key={event.id} className="bg-secondary rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+              <div
+                key={event.id}
+                className="bg-secondary rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
+              >
                 <div className="bg-primary/80 p-4">
                   <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-medium rounded-full mb-2">
                     {event.type}
                   </span>
-                  <h3 className="font-sans text-lg font-bold text-white">{event.title}</h3>
+                  <h3 className="font-sans text-lg font-bold text-white">
+                    {event.title}
+                  </h3>
                 </div>
                 <div className="p-6">
-                  <p className="text-muted-foreground mb-4 text-sm line-clamp-2">{event.description}</p>
+                  <p className="text-muted-foreground mb-4 text-sm line-clamp-2">
+                    {event.description}
+                  </p>
                   <div className="space-y-2 mb-4">
                     <div className="flex items-center gap-2 text-sm text-foreground">
                       <MapPin className="h-4 w-4 text-primary" />
@@ -156,7 +180,9 @@ export default function EvenementsPage() {
                     </div>
                   </div>
                   <div className="pt-4 border-t border-border">
-                    <span className="text-xs text-muted-foreground">{event.audience}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {event.audience}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -165,5 +191,5 @@ export default function EvenementsPage() {
         </div>
       </section>
     </>
-  )
+  );
 }

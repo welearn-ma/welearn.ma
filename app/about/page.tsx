@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { PageHero } from "@/components/page-hero";
 import { OverviewSection } from "@/components/about/overview-section";
 import { HistorySection } from "@/components/about/history-section";
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
+      <Breadcrumb />
       <PageHero
         title="À propos de Welearn"
         description="EdTech destinée au secteur de la Construction, reconnue comme Jeune Entreprise Innovante® en France et au Maroc."

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { ConseilServicesSection } from "@/components/conseil/services-section";
 import { ConseilCta } from "@/components/conseil/conseil-cta";
 
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export default function ConseilPage() {
   return (
     <>
+      <Breadcrumb />
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
         <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">

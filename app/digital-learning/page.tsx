@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { DigitalLearningSolutionsSection } from "@/components/digital-learning/solutions-section";
 import { DigitalLearningCta } from "@/components/digital-learning/digital-learning-cta";
 
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export default function DigitalLearningPage() {
   return (
     <>
+      <Breadcrumb />
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
         <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">

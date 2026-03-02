@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Navbar } from "@/components/navbar";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { Footer } from "@/components/footer";
+import { CookieConsent } from "@/components/cookie-consent";
 import "./globals.css";
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -45,6 +46,7 @@ export default function RootLayout({
         <Breadcrumb />
         <main>{children}</main>
         <Footer />
+        <CookieConsent />
         <Analytics />
       </body>
     </html>
