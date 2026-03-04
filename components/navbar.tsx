@@ -60,7 +60,7 @@ const navigation = [
     ],
   },
   {
-    name: "Solutions Digital Learning",
+    name: "Digital Learning",
     href: "/digital-learning",
     children: [
       { name: "Plateforme LMS", href: "/digital-learning/lms" },

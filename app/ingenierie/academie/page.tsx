@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { PageHero } from "@/components/page-hero";
 import { SectionHeader } from "@/components/section-header";
 import { Button } from "@/components/ui/button";
 import {
@@ -134,46 +135,12 @@ const contacts = [
 export default function AcademiePage() {
   return (
     <>
-      <section className="relative py-16 lg:py-24 bg-(--color-welearn-navy) overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" />
-        </div>
-        <div className="relative mx-auto max-w-4xl px-4 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
-            <Award className="h-4 w-4 text-white" />
-            <span className="text-sm font-medium text-white">
-              Ingénierie de formation
-            </span>
-          </div>
-          <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">
-            Académie de formation
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8">
-            Nous vous accompagnons de la stratégie au déploiement pour créer une
-            Académie utile, pilotable et à fort impact sur votre écosystème.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              asChild
-              size="lg"
-              className="bg-white text-primary hover:bg-white/90"
-            >
-              <Link href="/contact">
-                Parler à un expert
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-white hover:bg-white/10"
-            >
-              <Link href="#offre">Découvrir notre approche</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        title="Académie de formation"
+        description="Nous vous accompagnons de la stratégie au déploiement pour créer une Académie utile, pilotable et à fort impact sur votre écosystème."
+        eyebrow="Ingénierie de formation"
+        size="sm"
+      />
 
       <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">

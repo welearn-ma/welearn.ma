@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { PageHero } from "@/components/page-hero";
 import { Calendar, MapPin, Users, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -79,21 +80,12 @@ const pastEvents = [
 export default function EvenementsPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
-          <span className="inline-block text-sm font-semibold uppercase tracking-wider text-white/80 mb-4">
-            Rencontres professionnelles
-          </span>
-          <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">
-            Événements
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Conférences, séminaires et forums pour les professionnels du BTP, de
-            l'architecture et de l'immobilier.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Événements"
+        description="Conférences, séminaires et forums pour les professionnels du BTP, de l'architecture et de l'immobilier."
+        eyebrow="Rencontres professionnelles"
+        size="lg"
+      />
 
       {/* Upcoming Events */}
       <section className="py-20 lg:py-28 bg-white">

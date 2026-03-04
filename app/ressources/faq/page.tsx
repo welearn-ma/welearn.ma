@@ -1,8 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ChevronDown } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useState } from "react";
+import { PageHero } from "@/components/page-hero";
+import { ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const faqCategories = [
   {
@@ -69,10 +70,10 @@ const faqCategories = [
       },
     ],
   },
-]
+];
 
 function FAQItem({ question, answer }: { question: string; answer: string }) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="border-b border-border">
@@ -81,30 +82,34 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         className="w-full py-5 flex items-center justify-between text-left hover:text-primary transition-colors"
       >
         <span className="font-medium text-foreground pr-4">{question}</span>
-        <ChevronDown className={cn("h-5 w-5 text-primary shrink-0 transition-transform", isOpen && "rotate-180")} />
+        <ChevronDown
+          className={cn(
+            "h-5 w-5 text-primary shrink-0 transition-transform",
+            isOpen && "rotate-180",
+          )}
+        />
       </button>
-      <div className={cn("overflow-hidden transition-all duration-300", isOpen ? "max-h-96 pb-5" : "max-h-0")}>
+      <div
+        className={cn(
+          "overflow-hidden transition-all duration-300",
+          isOpen ? "max-h-96 pb-5" : "max-h-0",
+        )}
+      >
         <p className="text-muted-foreground">{answer}</p>
       </div>
     </div>
-  )
+  );
 }
 
 export default function FAQPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
-          <span className="inline-block text-sm font-semibold uppercase tracking-wider text-white/80 mb-4">
-            Questions fréquentes
-          </span>
-          <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">FAQ</h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Retrouvez les réponses aux questions les plus fréquemment posées sur nos formations et services.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="FAQ"
+        description="Retrouvez les réponses aux questions les plus fréquemment posées sur nos formations et services."
+        eyebrow="Questions fréquentes"
+        size="lg"
+      />
 
       {/* FAQ Content */}
       <section className="py-20 lg:py-28 bg-white">
@@ -112,7 +117,9 @@ export default function FAQPage() {
           <div className="space-y-12">
             {faqCategories.map((category) => (
               <div key={category.name}>
-                <h2 className="font-sans text-2xl font-bold text-foreground mb-6">{category.name}</h2>
+                <h2 className="font-sans text-2xl font-bold text-foreground mb-6">
+                  {category.name}
+                </h2>
                 <div className="bg-secondary rounded-xl p-6">
                   {category.questions.map((item, index) => (
                     <FAQItem key={index} question={item.q} answer={item.a} />
@@ -124,5 +131,5 @@ export default function FAQPage() {
         </div>
       </section>
     </>
-  )
+  );
 }

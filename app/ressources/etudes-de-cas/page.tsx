@@ -1,10 +1,12 @@
-import type { Metadata } from "next"
-import { Building2, Users, TrendingUp } from "lucide-react"
+import type { Metadata } from "next";
+import { PageHero } from "@/components/page-hero";
+import { Building2, Users, TrendingUp } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Études de cas | Welearn",
-  description: "Découvrez comment nos clients ont transformé leurs équipes grâce à la formation Welearn.",
-}
+  description:
+    "Découvrez comment nos clients ont transformé leurs équipes grâce à la formation Welearn.",
+};
 
 const caseStudies = [
   {
@@ -12,17 +14,25 @@ const caseStudies = [
     client: "Grand Groupe BTP",
     sector: "Construction",
     title: "Déploiement BIM pour 500 collaborateurs",
-    challenge: "Former l'ensemble des équipes projet aux méthodologies BIM en 12 mois.",
-    solution: "Programme blended learning avec certification interne et accompagnement terrain.",
-    results: ["500 collaborateurs formés", "85% de satisfaction", "Adoption BIM x3"],
+    challenge:
+      "Former l'ensemble des équipes projet aux méthodologies BIM en 12 mois.",
+    solution:
+      "Programme blended learning avec certification interne et accompagnement terrain.",
+    results: [
+      "500 collaborateurs formés",
+      "85% de satisfaction",
+      "Adoption BIM x3",
+    ],
   },
   {
     id: 2,
     client: "Promoteur Immobilier National",
     sector: "Immobilier",
     title: "Académie corporate sur-mesure",
-    challenge: "Créer un dispositif de formation continue pour fidéliser et développer les talents.",
-    solution: "Conception et déploiement d'une académie interne avec parcours métiers.",
+    challenge:
+      "Créer un dispositif de formation continue pour fidéliser et développer les talents.",
+    solution:
+      "Conception et déploiement d'une académie interne avec parcours métiers.",
     results: ["12 parcours créés", "Turnover -25%", "ROI en 18 mois"],
   },
   {
@@ -30,38 +40,37 @@ const caseStudies = [
     client: "Bureau de Contrôle",
     sector: "Contrôle technique",
     title: "Mise à niveau réglementaire",
-    challenge: "Actualiser les compétences de 200 inspecteurs sur les nouvelles réglementations.",
+    challenge:
+      "Actualiser les compétences de 200 inspecteurs sur les nouvelles réglementations.",
     solution: "Modules e-learning + sessions présentielles régionales.",
-    results: ["100% de conformité", "Formation en 6 mois", "0 interruption d'activité"],
+    results: [
+      "100% de conformité",
+      "Formation en 6 mois",
+      "0 interruption d'activité",
+    ],
   },
   {
     id: 4,
     client: "Cabinet d'Architecture",
     sector: "Architecture",
     title: "Transition digitale et BIM",
-    challenge: "Accompagner la transition vers le full-BIM pour un cabinet de 80 architectes.",
-    solution: "Audit, formation progressive et coaching individuel des chefs de projet.",
+    challenge:
+      "Accompagner la transition vers le full-BIM pour un cabinet de 80 architectes.",
+    solution:
+      "Audit, formation progressive et coaching individuel des chefs de projet.",
     results: ["Productivité +40%", "Nouveaux marchés", "Label BIM obtenu"],
   },
-]
+];
 
 export default function EtudesDeCasPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
-          <span className="inline-block text-sm font-semibold uppercase tracking-wider text-white/80 mb-4">
-            Témoignages clients
-          </span>
-          <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">
-            Études de cas
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Découvrez comment nos clients ont transformé leurs équipes et atteint leurs objectifs.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Études de cas"
+        description="Découvrez comment nos clients ont transformé leurs équipes et atteint leurs objectifs."
+        eyebrow="Témoignages clients"
+        size="lg"
+      />
 
       {/* Case Studies Grid */}
       <section className="py-20 lg:py-28 bg-white">
@@ -76,9 +85,13 @@ export default function EtudesDeCasPage() {
                   <div className="bg-primary p-8 text-white">
                     <div className="flex items-center gap-2 mb-4">
                       <Building2 className="h-5 w-5" />
-                      <span className="text-sm font-medium text-white/80">{study.sector}</span>
+                      <span className="text-sm font-medium text-white/80">
+                        {study.sector}
+                      </span>
                     </div>
-                    <h2 className="font-sans text-2xl font-bold mb-2">{study.client}</h2>
+                    <h2 className="font-sans text-2xl font-bold mb-2">
+                      {study.client}
+                    </h2>
                     <p className="text-white/80">{study.title}</p>
                   </div>
                   <div className="lg:col-span-2 p-8">
@@ -88,18 +101,24 @@ export default function EtudesDeCasPage() {
                           <Users className="h-4 w-4 text-primary" />
                           Défi
                         </h3>
-                        <p className="text-muted-foreground text-sm">{study.challenge}</p>
+                        <p className="text-muted-foreground text-sm">
+                          {study.challenge}
+                        </p>
                       </div>
                       <div>
                         <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
                           <TrendingUp className="h-4 w-4 text-primary" />
                           Solution
                         </h3>
-                        <p className="text-muted-foreground text-sm">{study.solution}</p>
+                        <p className="text-muted-foreground text-sm">
+                          {study.solution}
+                        </p>
                       </div>
                     </div>
                     <div className="pt-6 border-t border-border">
-                      <h3 className="font-semibold text-foreground mb-3">Résultats</h3>
+                      <h3 className="font-semibold text-foreground mb-3">
+                        Résultats
+                      </h3>
                       <div className="flex flex-wrap gap-3">
                         {study.results.map((result, index) => (
                           <span
@@ -119,5 +138,5 @@ export default function EtudesDeCasPage() {
         </div>
       </section>
     </>
-  )
+  );
 }

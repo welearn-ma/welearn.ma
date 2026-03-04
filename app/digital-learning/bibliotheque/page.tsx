@@ -1,14 +1,16 @@
-import type { Metadata } from "next"
-import Link from "next/link"
-import { SectionHeader } from "@/components/section-header"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { BookOpen, Clock, Users, Play, ArrowRight } from "lucide-react"
+import type { Metadata } from "next";
+import { PageHero } from "@/components/page-hero";
+import Link from "next/link";
+import { SectionHeader } from "@/components/section-header";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { BookOpen, Clock, Users, Play, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Bibliothèque de cours e-learning | Welearn",
-  description: "Catalogue de cours en ligne sur les thématiques clés du BTP : BIM, béton, étanchéité, sécurité.",
-}
+  description:
+    "Catalogue de cours en ligne sur les thématiques clés du BTP : BIM, béton, étanchéité, sécurité.",
+};
 
 const courses = [
   {
@@ -17,7 +19,8 @@ const courses = [
     duration: "4h",
     modules: 24,
     learners: 1100,
-    description: "Formation complète sur la technologie du béton : composition, mise en œuvre, pathologies.",
+    description:
+      "Formation complète sur la technologie du béton : composition, mise en œuvre, pathologies.",
   },
   {
     title: "Étanchéité Bâtiment",
@@ -25,7 +28,8 @@ const courses = [
     duration: "3h",
     modules: 18,
     learners: 500,
-    description: "Maîtrisez les techniques d'étanchéité : toitures, fondations, façades.",
+    description:
+      "Maîtrisez les techniques d'étanchéité : toitures, fondations, façades.",
   },
   {
     title: "Introduction au BIM",
@@ -41,7 +45,8 @@ const courses = [
     duration: "2h30",
     modules: 15,
     learners: 1500,
-    description: "Les règles essentielles de sécurité sur les chantiers de construction.",
+    description:
+      "Les règles essentielles de sécurité sur les chantiers de construction.",
   },
   {
     title: "Réglementation Thermique",
@@ -59,27 +64,27 @@ const courses = [
     learners: 900,
     description: "Apprendre à lire et interpréter les plans de construction.",
   },
-]
+];
 
-const categories = ["Tous", "BIM", "Matériaux", "Techniques", "Sécurité", "Réglementation", "Fondamentaux"]
+const categories = [
+  "Tous",
+  "BIM",
+  "Matériaux",
+  "Techniques",
+  "Sécurité",
+  "Réglementation",
+  "Fondamentaux",
+];
 
 export default function BibliothequePage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
-          <span className="inline-block text-sm font-semibold uppercase tracking-wider text-white/80 mb-4">
-            Catalogue de cours
-          </span>
-          <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">
-            Bibliothèque de cours e-learning
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Accédez à notre catalogue de formations en ligne sur les thématiques clés du secteur Construction.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Bibliothèque de cours e-learning"
+        description="Accédez à notre catalogue de formations en ligne sur les thématiques clés du secteur Construction."
+        eyebrow="Catalogue de cours"
+        size="lg"
+      />
 
       {/* Courses */}
       <section className="py-20 lg:py-28 bg-white">
@@ -106,16 +111,25 @@ export default function BibliothequePage() {
           {/* Courses Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course, idx) => (
-              <div key={idx} className="bg-secondary rounded-2xl overflow-hidden hover:shadow-lg transition-all group">
+              <div
+                key={idx}
+                className="bg-secondary rounded-2xl overflow-hidden hover:shadow-lg transition-all group"
+              >
                 <div className="aspect-video bg-primary/10 relative flex items-center justify-center">
                   <div className="p-4 bg-white/80 backdrop-blur-sm rounded-full group-hover:bg-primary group-hover:scale-110 transition-all">
                     <Play className="h-8 w-8 text-primary group-hover:text-white" />
                   </div>
-                  <Badge className="absolute top-3 right-3 bg-white text-foreground">{course.category}</Badge>
+                  <Badge className="absolute top-3 right-3 bg-white text-foreground">
+                    {course.category}
+                  </Badge>
                 </div>
                 <div className="p-6">
-                  <h3 className="font-sans text-lg font-bold text-foreground mb-2">{course.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">{course.description}</p>
+                  <h3 className="font-sans text-lg font-bold text-foreground mb-2">
+                    {course.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {course.description}
+                  </p>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                     <span className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />
@@ -130,7 +144,10 @@ export default function BibliothequePage() {
                       {course.learners}+
                     </span>
                   </div>
-                  <Button asChild className="w-full bg-primary hover:bg-primary/90 text-white">
+                  <Button
+                    asChild
+                    className="w-full bg-primary hover:bg-primary/90 text-white"
+                  >
                     <Link href="/contact">Accéder au cours</Link>
                   </Button>
                 </div>
@@ -147,10 +164,15 @@ export default function BibliothequePage() {
             Vous souhaitez accéder à la bibliothèque complète ?
           </h2>
           <p className="text-lg text-white/90 mb-8">
-            Créez votre compte sur notre plateforme LMS pour accéder à tous nos cours.
+            Créez votre compte sur notre plateforme LMS pour accéder à tous nos
+            cours.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90">
+            <Button
+              asChild
+              size="lg"
+              className="bg-white text-primary hover:bg-white/90"
+            >
               <Link href="https://welearn.ac" target="_blank">
                 Créer un compte
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -168,5 +190,5 @@ export default function BibliothequePage() {
         </div>
       </section>
     </>
-  )
+  );
 }

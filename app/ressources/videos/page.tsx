@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/page-hero";
 import { Play, Clock, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -124,21 +125,12 @@ const categories = [
 export default function VideosPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
-          <span className="inline-block text-sm font-semibold uppercase tracking-wider text-white/80 mb-4">
-            Apprendre en vidéo
-          </span>
-          <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">
-            Vidéos Pédagogiques
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Tutoriels, guides pratiques et analyses d'experts pour développer
-            vos compétences dans la formation et le BTP.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Vidéos Pédagogiques"
+        description="Tutoriels, guides pratiques et analyses d'experts pour développer vos compétences dans la formation et le BTP."
+        eyebrow="Apprendre en vidéo"
+        size="lg"
+      />
 
       {/* Filter Categories */}
       <section className="py-8 bg-secondary/30 border-b border-border">

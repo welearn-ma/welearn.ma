@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import Link from "next/link";
+import { PageHero } from "@/components/page-hero";
 import {
   FileText,
   BookOpen,
@@ -62,22 +63,12 @@ const resourceCategories = [
 export default function RessourcesPage() {
   return (
     <>
-      <Breadcrumb />
-      {/* Hero */}
-      <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
-          <span className="inline-block text-sm font-semibold uppercase tracking-wider text-white/80 mb-4">
-            Centre de ressources
-          </span>
-          <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">
-            Ressources
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Actualités, articles de fond, webinaires et études de cas pour
-            approfondir vos connaissances.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Ressources"
+        description="Actualités, articles de fond, webinaires et études de cas pour approfondir vos connaissances."
+        eyebrow="Centre de ressources"
+        size="lg"
+      />
 
       {/* Resource Categories */}
       <section className="py-20 lg:py-28 bg-white">

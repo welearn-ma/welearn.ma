@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageHero } from "@/components/page-hero";
 import { SectionHeader } from "@/components/section-header";
 import { Button } from "@/components/ui/button";
 import {
@@ -117,21 +118,12 @@ const auditServices = [
 export default function ConseilPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
-          <span className="inline-block text-sm font-semibold uppercase tracking-wider text-white/80 mb-4">
-            Accompagnement stratégique
-          </span>
-          <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">
-            Conseil & Transformation
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Accompagnement stratégique, transformation digitale et études
-            d'audit pour accélérer la performance de votre organisation.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Conseil & Transformation"
+        description="Accompagnement stratégique, transformation digitale et études d'audit pour accélérer la performance de votre organisation."
+        eyebrow="Accompagnement stratégique"
+        size="lg"
+      />
 
       {/* Strategic Consulting Section */}
       <section className="py-20 lg:py-28 bg-white">

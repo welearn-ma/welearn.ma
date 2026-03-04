@@ -1,17 +1,20 @@
-import type { Metadata } from "next"
-import { Play, Calendar, Clock, Users } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import type { Metadata } from "next";
+import { PageHero } from "@/components/page-hero";
+import { Play, Calendar, Clock, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Webinaires | Welearn",
-  description: "Replays de nos webinaires et conférences en ligne sur la formation professionnelle BTP.",
-}
+  description:
+    "Replays de nos webinaires et conférences en ligne sur la formation professionnelle BTP.",
+};
 
 const webinars = [
   {
     id: 1,
     title: "Introduction au BIM pour les maîtres d'ouvrage",
-    description: "Comprendre les fondamentaux du BIM et son impact sur la gestion de projet.",
+    description:
+      "Comprendre les fondamentaux du BIM et son impact sur la gestion de projet.",
     date: "2024-12-10",
     duration: "45 min",
     speakers: "Expert BIM Welearn",
@@ -21,7 +24,8 @@ const webinars = [
   {
     id: 2,
     title: "Réglementation thermique : ce qui change en 2025",
-    description: "Panorama des évolutions réglementaires et leurs implications pour les professionnels.",
+    description:
+      "Panorama des évolutions réglementaires et leurs implications pour les professionnels.",
     date: "2024-11-20",
     duration: "60 min",
     speakers: "Expert Réglementation",
@@ -31,7 +35,8 @@ const webinars = [
   {
     id: 3,
     title: "Construire un plan de formation efficace",
-    description: "Méthodologie et bonnes pratiques pour élaborer votre stratégie formation.",
+    description:
+      "Méthodologie et bonnes pratiques pour élaborer votre stratégie formation.",
     date: "2024-10-15",
     duration: "50 min",
     speakers: "Équipe Ingénierie Welearn",
@@ -41,32 +46,25 @@ const webinars = [
   {
     id: 4,
     title: "Digital learning : tendances et innovations",
-    description: "Les nouvelles approches pédagogiques qui transforment la formation professionnelle.",
+    description:
+      "Les nouvelles approches pédagogiques qui transforment la formation professionnelle.",
     date: "2024-09-25",
     duration: "55 min",
     speakers: "Direction Pédagogique",
     attendees: 276,
     replay: true,
   },
-]
+];
 
 export default function WebinairesPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
-          <span className="inline-block text-sm font-semibold uppercase tracking-wider text-white/80 mb-4">
-            Formations en ligne
-          </span>
-          <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">
-            Webinaires
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Accédez aux replays de nos webinaires et conférences animés par nos experts.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Webinaires"
+        description="Accédez aux replays de nos webinaires et conférences animés par nos experts."
+        eyebrow="Formations en ligne"
+        size="lg"
+      />
 
       {/* Webinars Grid */}
       <section className="py-20 lg:py-28 bg-white">
@@ -88,8 +86,12 @@ export default function WebinairesPage() {
                   )}
                 </div>
                 <div className="p-6">
-                  <h2 className="font-sans text-xl font-bold text-foreground mb-3">{webinar.title}</h2>
-                  <p className="text-muted-foreground mb-4">{webinar.description}</p>
+                  <h2 className="font-sans text-xl font-bold text-foreground mb-3">
+                    {webinar.title}
+                  </h2>
+                  <p className="text-muted-foreground mb-4">
+                    {webinar.description}
+                  </p>
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Calendar className="h-4 w-4 text-primary" />
@@ -119,5 +121,5 @@ export default function WebinairesPage() {
         </div>
       </section>
     </>
-  )
+  );
 }

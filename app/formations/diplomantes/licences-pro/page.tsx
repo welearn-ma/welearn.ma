@@ -1,13 +1,23 @@
-import type { Metadata } from "next"
-import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Clock, Users, Award, CheckCircle, ArrowRight, GraduationCap, Download } from "lucide-react"
+import type { Metadata } from "next";
+import { PageHero } from "@/components/page-hero";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Clock,
+  Users,
+  Award,
+  CheckCircle,
+  ArrowRight,
+  GraduationCap,
+  Download,
+} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Licences Professionnelles | Formations Diplômantes | Welearn",
-  description: "Licences Professionnelles en BTP, BIM et Management de Projet Construction.",
-}
+  description:
+    "Licences Professionnelles en BTP, BIM et Management de Projet Construction.",
+};
 
 const licences = [
   {
@@ -26,7 +36,10 @@ const licences = [
       "Coordonner les équipes et sous-traitants",
       "Assurer le suivi technique et financier",
     ],
-    prerequisites: ["Bac+2 technique (BTS, DUT)", "Expérience dans le BTP appréciée"],
+    prerequisites: [
+      "Bac+2 technique (BTS, DUT)",
+      "Expérience dans le BTP appréciée",
+    ],
   },
   {
     id: "lp-management",
@@ -46,34 +59,34 @@ const licences = [
     ],
     prerequisites: ["Bac+2 minimum", "Intérêt pour le secteur BTP"],
   },
-]
+];
 
 export default function LicencesProPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative py-16 lg:py-24 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-2 mb-6">
-            <GraduationCap className="h-4 w-4 text-white" />
-            <span className="text-sm font-medium text-white">Formations Diplômantes</span>
-          </div>
-          <h1 className="font-sans text-4xl md:text-5xl font-bold text-white mb-6">Licences Professionnelles</h1>
-          <p className="text-lg text-white/90 max-w-2xl mx-auto">
-            Diplômes universitaires Bac+3 reconnus par l'État, orientés vers l'insertion professionnelle.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="Licences Professionnelles"
+        description="Diplômes universitaires Bac+3 reconnus par l'État, orientés vers l'insertion professionnelle."
+        eyebrow="Formations Diplômantes"
+        size="sm"
+      />
 
       {/* Licences List */}
       <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="space-y-12">
             {licences.map((program) => (
-              <div key={program.id} id={program.id} className="bg-secondary rounded-2xl p-8 lg:p-10 scroll-mt-24">
+              <div
+                key={program.id}
+                id={program.id}
+                className="bg-secondary rounded-2xl p-8 lg:p-10 scroll-mt-24"
+              >
                 <div className="flex flex-wrap gap-2 mb-4">
                   {program.badges.map((badge, idx) => (
-                    <Badge key={idx} className="bg-primary/10 text-primary border-0">
+                    <Badge
+                      key={idx}
+                      className="bg-primary/10 text-primary border-0"
+                    >
                       {badge}
                     </Badge>
                   ))}
@@ -81,27 +94,42 @@ export default function LicencesProPage() {
 
                 <div className="grid lg:grid-cols-3 gap-8">
                   <div className="lg:col-span-2">
-                    <h2 className="font-sans text-2xl lg:text-3xl font-bold text-foreground mb-2">{program.title}</h2>
-                    <p className="text-primary font-medium mb-4">En partenariat avec {program.partner}</p>
-                    <p className="text-muted-foreground leading-relaxed mb-6">{program.description}</p>
+                    <h2 className="font-sans text-2xl lg:text-3xl font-bold text-foreground mb-2">
+                      {program.title}
+                    </h2>
+                    <p className="text-primary font-medium mb-4">
+                      En partenariat avec {program.partner}
+                    </p>
+                    <p className="text-muted-foreground leading-relaxed mb-6">
+                      {program.description}
+                    </p>
 
                     <div className="mb-6">
-                      <h4 className="font-semibold text-foreground mb-3">Objectifs pédagogiques</h4>
+                      <h4 className="font-semibold text-foreground mb-3">
+                        Objectifs pédagogiques
+                      </h4>
                       <div className="grid sm:grid-cols-2 gap-2">
                         {program.objectives.map((obj, idx) => (
                           <div key={idx} className="flex items-start gap-2">
                             <CheckCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
-                            <span className="text-sm text-foreground">{obj}</span>
+                            <span className="text-sm text-foreground">
+                              {obj}
+                            </span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-foreground mb-3">Prérequis</h4>
+                      <h4 className="font-semibold text-foreground mb-3">
+                        Prérequis
+                      </h4>
                       <ul className="space-y-1">
                         {program.prerequisites.map((prereq, idx) => (
-                          <li key={idx} className="text-sm text-muted-foreground flex items-center gap-2">
+                          <li
+                            key={idx}
+                            className="text-sm text-muted-foreground flex items-center gap-2"
+                          >
                             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                             {prereq}
                           </li>
@@ -116,29 +144,42 @@ export default function LicencesProPage() {
                         <span className="text-muted-foreground flex items-center gap-2">
                           <Clock className="h-4 w-4" /> Durée
                         </span>
-                        <span className="font-medium text-foreground">{program.duration}</span>
+                        <span className="font-medium text-foreground">
+                          {program.duration}
+                        </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground flex items-center gap-2">
                           <Users className="h-4 w-4" /> Format
                         </span>
-                        <span className="font-medium text-foreground">{program.format}</span>
+                        <span className="font-medium text-foreground">
+                          {program.format}
+                        </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground flex items-center gap-2">
                           <Award className="h-4 w-4" /> Niveau
                         </span>
-                        <span className="font-medium text-foreground">{program.level}</span>
+                        <span className="font-medium text-foreground">
+                          {program.level}
+                        </span>
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <Button asChild className="w-full bg-primary hover:bg-primary/90 text-white">
+                      <Button
+                        asChild
+                        className="w-full bg-primary hover:bg-primary/90 text-white"
+                      >
                         <Link href="/contact">
                           Candidater
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
-                      <Button asChild variant="outline" className="w-full border-primary text-primary bg-transparent">
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="w-full border-primary text-primary bg-transparent"
+                      >
                         <Link href="#">
                           <Download className="mr-2 h-4 w-4" />
                           Télécharger la brochure
@@ -153,5 +194,5 @@ export default function LicencesProPage() {
         </div>
       </section>
     </>
-  )
+  );
 }
