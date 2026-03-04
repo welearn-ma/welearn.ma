@@ -134,71 +134,48 @@ const contacts = [
 export default function AcademiePage() {
   return (
     <>
-      <section className="relative overflow-hidden py-20 lg:py-32 bg-linear-to-br from-blue-900 via-blue-800 to-blue-700">
-        {/* Background pattern */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl"></div>
+      <section className="relative py-16 lg:py-24 bg-(--color-welearn-navy) overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" />
         </div>
-
-        {/* Content */}
-        <div className="relative mx-auto max-w-6xl px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-semibold text-white/90 mb-6">
-                <Award className="h-4 w-4" />
-                Ingénierie de formation
-              </span>
-              <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance leading-tight">
-                Concevez votre Académie de formation
-              </h1>
-              <p className="text-lg text-white/90 max-w-2xl mb-8 leading-relaxed">
-                Nous vous accompagnons de la stratégie au déploiement pour créer
-                une Académie utile, pilotable et à fort impact sur votre
-                écosystème.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-white text-blue-900 hover:bg-white/90 font-semibold"
-                >
-                  <Link href="/contact">
-                    Parler à un expert
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="border-white/50 text-white hover:bg-white/10 font-semibold"
-                >
-                  <Link href="#offre">Découvrir notre approche</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Image placeholder */}
-            <div className="relative">
-              <div className="absolute inset-0 bg-linear-to-br from-white/20 to-white/5 rounded-2xl border border-white/20 backdrop-blur-sm"></div>
-              <div className="relative h-96 lg:h-112 bg-linear-to-br from-white/10 to-white/5 rounded-2xl border border-white/20 flex items-center justify-center overflow-hidden">
-                <div className="text-center">
-                  <GraduationCap className="h-24 w-24 text-white/30 mx-auto mb-4" />
-                  <p className="text-white/60 font-medium">
-                    Image de présentation
-                  </p>
-                  <p className="text-white/40 text-sm">
-                    Placer votre visuel ici
-                  </p>
-                </div>
-              </div>
-            </div>
+        <div className="relative mx-auto max-w-4xl px-4 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
+            <Award className="h-4 w-4 text-white" />
+            <span className="text-sm font-medium text-white">
+              Ingénierie de formation
+            </span>
+          </div>
+          <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">
+            Académie de formation
+          </h1>
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8">
+            Nous vous accompagnons de la stratégie au déploiement pour créer une
+            Académie utile, pilotable et à fort impact sur votre écosystème.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              asChild
+              size="lg"
+              className="bg-white text-primary hover:bg-white/90"
+            >
+              <Link href="/contact">
+                Parler à un expert
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-white hover:bg-white/10"
+            >
+              <Link href="#offre">Découvrir notre approche</Link>
+            </Button>
           </div>
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 bg-linear-to-b from-white to-slate-50">
+      <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Pourquoi ce dispositif"
@@ -209,12 +186,12 @@ export default function AcademiePage() {
             {valuePoints.map((point, idx) => (
               <div
                 key={point}
-                className="group relative rounded-xl border border-slate-200 bg-white p-6 hover:shadow-lg hover:border-blue-200 transition-all duration-300"
+                className="group relative rounded-xl border border-border bg-secondary p-6 hover:shadow-lg hover:border-primary/20 transition-all duration-300"
               >
-                <div className="absolute top-0 left-0 w-1 h-12 bg-linear-to-b from-blue-500 to-blue-300 rounded-r-full"></div>
+                <div className="absolute top-0 left-0 w-1 h-12 bg-linear-to-b from-primary to-primary/50 rounded-r-full"></div>
                 <div className="flex items-start gap-4 ml-3">
-                  <div className="rounded-lg bg-blue-50 p-3 group-hover:bg-blue-100 transition-colors">
-                    <Lightbulb className="h-5 w-5 text-blue-600" />
+                  <div className="rounded-lg bg-primary/10 p-3 group-hover:bg-primary/15 transition-colors">
+                    <Lightbulb className="h-5 w-5 text-primary" />
                   </div>
                   <p className="text-foreground font-medium leading-relaxed">
                     {point}
@@ -226,10 +203,7 @@ export default function AcademiePage() {
         </div>
       </section>
 
-      <section
-        id="offre"
-        className="py-20 lg:py-28 bg-linear-to-b from-blue-50 to-white"
-      >
+      <section id="offre" className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Notre offre"
@@ -240,17 +214,17 @@ export default function AcademiePage() {
             {offerBlocks.map((block, idx) => (
               <div
                 key={block.title}
-                className="group relative rounded-2xl bg-white border border-slate-200 overflow-hidden hover:shadow-xl hover:border-blue-300 transition-all duration-300"
+                className="group relative rounded-2xl bg-secondary border border-border overflow-hidden hover:shadow-xl hover:border-primary/20 transition-all duration-300"
               >
                 {/* Number badge */}
-                <div className="absolute -top-12 -right-12 w-32 h-32 bg-linear-to-br from-blue-500/10 to-blue-600/5 rounded-full blur-2xl group-hover:from-blue-500/20 transition-all duration-300"></div>
+                <div className="absolute -top-12 -right-12 w-32 h-32 bg-linear-to-br from-primary/5 to-primary/2 rounded-full blur-2xl group-hover:from-primary/10 transition-all duration-300"></div>
 
                 <div className="relative p-6">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="rounded-lg bg-linear-to-br from-blue-50 to-blue-100 p-3 group-hover:shadow-md transition-shadow">
-                      <block.icon className="h-6 w-6 text-blue-600" />
+                    <div className="rounded-lg bg-primary/10 p-3 group-hover:shadow-md transition-shadow">
+                      <block.icon className="h-6 w-6 text-primary" />
                     </div>
-                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm">
                       {idx + 1}
                     </span>
                   </div>
@@ -260,7 +234,7 @@ export default function AcademiePage() {
                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                     {block.description}
                   </p>
-                  <div className="inline-block px-3 py-1 rounded-full bg-blue-50 text-xs font-semibold text-blue-700 group-hover:bg-blue-100 transition-colors">
+                  <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-xs font-semibold text-primary group-hover:bg-primary/20 transition-colors">
                     4 étapes
                   </div>
                 </div>
@@ -281,13 +255,13 @@ export default function AcademiePage() {
             {deliverables.map((item, idx) => (
               <div
                 key={item}
-                className="group relative rounded-xl border border-slate-200 bg-linear-to-br from-white to-slate-50 p-6 hover:shadow-md hover:border-blue-200 transition-all duration-300"
+                className="group relative rounded-xl border border-border bg-secondary p-6 hover:shadow-md hover:border-primary/20 transition-all duration-300"
               >
-                <div className="absolute top-4 right-4 flex items-center justify-center w-9 h-9 rounded-lg bg-blue-100 text-blue-700 font-bold text-sm group-hover:bg-blue-200 transition-colors">
+                <div className="absolute top-4 right-4 flex items-center justify-center w-9 h-9 rounded-lg bg-primary/10 text-primary font-bold text-sm group-hover:bg-primary/20 transition-colors">
                   {idx + 1}
                 </div>
                 <div className="flex items-start gap-4 pr-12">
-                  <ListChecks className="h-5 w-5 text-blue-600 mt-1 shrink-0" />
+                  <ListChecks className="h-5 w-5 text-primary mt-1 shrink-0" />
                   <span className="text-foreground font-medium leading-relaxed">
                     {item}
                   </span>
@@ -298,7 +272,7 @@ export default function AcademiePage() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 bg-linear-to-b from-white via-blue-50 to-white">
+      <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Méthodologie"
@@ -310,17 +284,17 @@ export default function AcademiePage() {
               <div key={block.title} className="group">
                 {/* Connector line */}
                 {idx < offerBlocks.length - 1 && (
-                  <div className="hidden lg:block absolute left-1/2 ml-6 h-12 w-0.5 bg-linear-to-b from-blue-400 to-transparent pointer-events-none"></div>
+                  <div className="hidden lg:block absolute left-1/2 ml-6 h-12 w-0.5 bg-linear-to-b from-primary to-transparent pointer-events-none"></div>
                 )}
 
-                <div className="relative rounded-2xl border border-slate-200 bg-white p-8 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
+                <div className="relative rounded-2xl border border-border bg-secondary p-8 hover:shadow-lg hover:border-primary/20 transition-all duration-300">
                   {/* Left accent bar */}
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-blue-600 to-blue-400 rounded-l-2xl"></div>
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-primary to-primary/60 rounded-l-2xl"></div>
 
                   <div className="flex items-start gap-6">
                     {/* Step number */}
                     <div className="shrink-0">
-                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-blue-600 to-blue-700 text-white font-bold text-lg shadow-md group-hover:shadow-lg transition-shadow">
+                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-primary to-primary/80 text-white font-bold text-lg shadow-md group-hover:shadow-lg transition-shadow">
                         {idx + 1}
                       </div>
                     </div>
@@ -352,11 +326,14 @@ export default function AcademiePage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden py-20 lg:py-28 bg-linear-to-br from-blue-900 via-blue-800 to-blue-700">
-        {/* Decorative background */}
-        <div className="absolute inset-0 opacity-40">
-          <div className="absolute top-20 right-0 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl"></div>
-          <div className="absolute -bottom-20 left-0 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
+      <section className="relative overflow-hidden py-20 lg:py-28 bg-(--color-welearn-navy)">
+        <div className="absolute inset-0 opacity-10">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23ffffff' fillOpacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          />
         </div>
 
         <div className="relative mx-auto max-w-5xl px-4 lg:px-8">
@@ -388,7 +365,7 @@ export default function AcademiePage() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 bg-linear-to-b from-white to-slate-50">
+      <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Pourquoi Welearn"
@@ -417,7 +394,7 @@ export default function AcademiePage() {
               <Button
                 asChild
                 variant="outline"
-                className="mt-8 w-fit bg-transparent border-blue-300 text-foreground hover:bg-blue-50"
+                className="mt-8 w-fit bg-transparent border-border text-foreground hover:bg-secondary"
               >
                 <Link href="/about" className="flex items-center gap-2">
                   Découvrir Welearn
@@ -427,7 +404,7 @@ export default function AcademiePage() {
             </div>
 
             {/* Right column - Expertise domains */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="rounded-2xl border border-border bg-secondary p-8 shadow-sm hover:shadow-md transition-shadow">
               <h3 className="font-sans text-2xl font-bold text-foreground mb-6">
                 Nos domaines d'expertise
               </h3>
@@ -435,10 +412,10 @@ export default function AcademiePage() {
                 {expertiseDomains.map((domain) => (
                   <div
                     key={domain}
-                    className="group flex items-center gap-3 p-3 rounded-lg bg-linear-to-br from-blue-50 to-blue-100/50 hover:from-blue-100 hover:to-blue-150 transition-colors"
+                    className="group flex items-center gap-3 p-3 rounded-lg bg-primary/5 hover:bg-primary/10 transition-colors"
                   >
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-200 group-hover:bg-blue-300 transition-colors">
-                      <Target className="h-4 w-4 text-blue-700" />
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 group-hover:bg-primary/30 transition-colors">
+                      <Target className="h-4 w-4 text-primary" />
                     </div>
                     <span className="text-sm font-medium text-foreground">
                       {domain}
@@ -451,7 +428,7 @@ export default function AcademiePage() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 bg-linear-to-b from-white via-slate-50 to-blue-50">
+      <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Contact"
@@ -462,36 +439,36 @@ export default function AcademiePage() {
             {contacts.map((contact, idx) => (
               <div
                 key={contact.email}
-                className="group relative rounded-2xl border border-slate-200 bg-white overflow-hidden hover:shadow-xl hover:border-blue-300 transition-all duration-300"
+                className="group relative rounded-2xl border border-border bg-secondary overflow-hidden hover:shadow-xl hover:border-primary/20 transition-all duration-300"
               >
                 {/* Top accent bar */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-500 to-blue-600"></div>
+                <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary to-primary/80"></div>
 
                 {/* Background pattern */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-blue-100 transition-colors"></div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-primary/10 transition-colors"></div>
 
                 <div className="relative p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-blue-500 to-blue-600 text-white font-bold text-lg shadow-md">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-primary to-primary/80 text-white font-bold text-lg shadow-md">
                       {idx + 1}
                     </div>
                   </div>
                   <h3 className="font-sans text-lg font-bold text-foreground mb-1">
                     {contact.name}
                   </h3>
-                  <p className="text-sm font-semibold text-blue-600 mb-4">
+                  <p className="text-sm font-semibold text-primary mb-4">
                     {contact.role}
                   </p>
                   <div className="space-y-2 text-sm">
                     <a
                       href={`mailto:${contact.email}`}
-                      className="block text-foreground hover:text-blue-600 transition-colors font-medium"
+                      className="block text-foreground hover:text-primary transition-colors font-medium"
                     >
                       {contact.email}
                     </a>
                     <a
                       href={`tel:${contact.phone}`}
-                      className="block text-foreground hover:text-blue-600 transition-colors"
+                      className="block text-foreground hover:text-primary transition-colors"
                     >
                       {contact.phone}
                     </a>
@@ -502,7 +479,7 @@ export default function AcademiePage() {
           </div>
 
           {/* CTA Section */}
-          <div className="mt-16 rounded-2xl bg-linear-to-br from-blue-600 to-blue-700 p-12 text-center">
+          <div className="mt-16 rounded-2xl bg-(--color-welearn-navy) p-12 text-center">
             <h2 className="font-sans text-3xl font-bold text-white mb-4">
               Prêt à démarrer votre projet ?
             </h2>
@@ -514,7 +491,7 @@ export default function AcademiePage() {
             <Button
               asChild
               size="lg"
-              className="bg-white text-blue-700 hover:bg-white/90 font-semibold"
+              className="bg-white text-primary hover:bg-white/90 font-semibold"
             >
               <Link href="/contact">
                 Demander un accompagnement
