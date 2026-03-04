@@ -126,6 +126,16 @@ export default function ContactPage() {
       {/* FAQ Section */}
       <section className="py-20 lg:py-28 bg-primary">
         <div className="mx-auto max-w-4xl px-4 lg:px-8">
+          <div className="mb-12 text-center">
+            <h2 className="font-sans text-4xl md:text-5xl font-bold text-white mb-4">
+              Questions fréquentes
+            </h2>
+            <p className="text-lg text-white/90">
+              Retrouvez les réponses aux questions les plus posées sur nos
+              formations et services.
+            </p>
+          </div>
+
           <div className="space-y-12">
             {faqCategories.map((category) => (
               <div key={category.name}>

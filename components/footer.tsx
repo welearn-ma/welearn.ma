@@ -44,7 +44,6 @@ const footerLinks = {
     { name: "À propos", href: "/about" },
     { name: "Notre équipe", href: "/about/equipe" },
     { name: "Références", href: "/about/references" },
-    { name: "Blog & Articles", href: "/ressources/blog" },
     { name: "Événements", href: "/events" },
   ],
   legal: [

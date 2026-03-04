@@ -75,16 +75,8 @@ const navigation = [
     name: "Conseil & Transformation",
     href: "/conseil",
   },
-  {
-    name: "Ressources",
-    href: "/ressources",
-    children: [
-      { name: "Articles & Blog", href: "/ressources/blog" },
-      { name: "Vidéos pédagogiques", href: "/ressources/videos" },
-      { name: "FAQ", href: "/ressources/faq" },
-    ],
-  },
   { name: "Événements", href: "/evenements" },
+  { name: "Contact", href: "/contact" },
 ];
 
 interface NavItem {
