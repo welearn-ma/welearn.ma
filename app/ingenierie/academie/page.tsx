@@ -111,34 +111,12 @@ const expertiseDomains = [
   "Formations intra-entreprise",
 ];
 
-const contacts = [
-  {
-    name: "Hassan Jaji",
-    role: "Directeur associé",
-    email: "hassan.jaji@welearn.ma",
-    phone: "+212 661 299 243",
-  },
-  {
-    name: "Abdelkarim Kouider",
-    role: "Directeur associé",
-    email: "abdelghani.kouider@welearn.ma",
-    phone: "+212 661 405 230",
-  },
-  {
-    name: "Oumaima Dakir",
-    role: "Directrice technique, PMP®",
-    email: "oumaima.dakir@welearn.ma",
-    phone: "+212 661 536 669",
-  },
-];
-
 export default function AcademiePage() {
   return (
     <>
       <PageHero
         title="Académie de formation"
         description="Nous vous accompagnons de la stratégie au déploiement pour créer une Académie utile, pilotable et à fort impact sur votre écosystème."
-        eyebrow="Ingénierie de formation"
         size="sm"
       />
 
@@ -295,12 +273,7 @@ export default function AcademiePage() {
 
       <section className="relative overflow-hidden py-20 lg:py-28 bg-(--color-welearn-navy)">
         <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23ffffff' fillOpacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          />
+          <div className="absolute inset-0" />
         </div>
 
         <div className="relative mx-auto max-w-5xl px-4 lg:px-8">
@@ -361,7 +334,7 @@ export default function AcademiePage() {
               <Button
                 asChild
                 variant="outline"
-                className="mt-8 w-fit bg-transparent border-border text-foreground hover:bg-secondary"
+                className="mt-8 w-fit bg-transparent border-border text-foreground hover:bg-secondary hover:text-primary"
               >
                 <Link href="/about" className="flex items-center gap-2">
                   Découvrir Welearn
@@ -391,80 +364,6 @@ export default function AcademiePage() {
                 ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 lg:py-28 bg-white">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <SectionHeader
-            eyebrow="Contact"
-            title="Nos experts à votre service"
-            description="Échangez avec nos spécialistes pour discuter de votre projet d'Académie."
-          />
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {contacts.map((contact, idx) => (
-              <div
-                key={contact.email}
-                className="group relative rounded-2xl border border-border bg-secondary overflow-hidden hover:shadow-xl hover:border-primary/20 transition-all duration-300"
-              >
-                {/* Top accent bar */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary to-primary/80"></div>
-
-                {/* Background pattern */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-primary/10 transition-colors"></div>
-
-                <div className="relative p-6">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-primary to-primary/80 text-white font-bold text-lg shadow-md">
-                      {idx + 1}
-                    </div>
-                  </div>
-                  <h3 className="font-sans text-lg font-bold text-foreground mb-1">
-                    {contact.name}
-                  </h3>
-                  <p className="text-sm font-semibold text-primary mb-4">
-                    {contact.role}
-                  </p>
-                  <div className="space-y-2 text-sm">
-                    <a
-                      href={`mailto:${contact.email}`}
-                      className="block text-foreground hover:text-primary transition-colors font-medium"
-                    >
-                      {contact.email}
-                    </a>
-                    <a
-                      href={`tel:${contact.phone}`}
-                      className="block text-foreground hover:text-primary transition-colors"
-                    >
-                      {contact.phone}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA Section */}
-          <div className="mt-16 rounded-2xl bg-(--color-welearn-navy) p-12 text-center">
-            <h2 className="font-sans text-3xl font-bold text-white mb-4">
-              Prêt à démarrer votre projet ?
-            </h2>
-            <p className="text-white/90 max-w-2xl mx-auto mb-8">
-              Contactez notre équipe pour une première discussion sans
-              engagement. Nous étudierons votre contexte et proposerons une
-              approche adaptée.
-            </p>
-            <Button
-              asChild
-              size="lg"
-              className="bg-white text-primary hover:bg-white/90 font-semibold"
-            >
-              <Link href="/contact">
-                Demander un accompagnement
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
           </div>
         </div>
       </section>
