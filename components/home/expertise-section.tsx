@@ -52,53 +52,57 @@ export function ExpertiseSection() {
                 key={idx}
                 className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-8 min-h-80 flex flex-col transition-all duration-300 hover:shadow-xl hover:border-gray-300"
               >
-              {/* Colored top accent bar */}
-              <div
-                className="absolute top-0 left-0 right-0 h-1.5"
-                style={{ backgroundColor: domain.color }}
-              />
-
-              {/* Colored background accent (subtle) */}
-              <div
-                className="absolute -right-16 -top-16 h-32 w-32 rounded-full opacity-5 transition-all duration-300 group-hover:opacity-10"
-                style={{ backgroundColor: domain.color }}
-              />
-
-              <div className="relative flex h-full flex-col">
-                {/* Title */}
-                <div className="flex h-20 items-center gap-3">
-                  <div
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-100"
-                    style={{ borderLeft: `3px solid ${domain.color}` }}
-                  >
-                    <Icon size={20} style={{ color: domain.color }} aria-hidden="true" />
-                  </div>
-                  <h3 className="font-sans text-xl font-bold text-foreground leading-snug">
-                    {domain.name}
-                  </h3>
-                </div>
-
-                {/* Separator line */}
+                {/* Colored top accent bar */}
                 <div
-                  className="mt-1 h-0.5 w-10"
+                  className="absolute top-0 left-0 right-0 h-1.5"
                   style={{ backgroundColor: domain.color }}
                 />
 
-                {/* Subcategories */}
-                <div className="mt-8 flex flex-1 flex-wrap content-center gap-2.5">
-                  {domain.subcategories.map((sub, subIdx) => (
-                    <span
-                      key={subIdx}
-                      className="inline-block px-3 py-1.5 text-sm font-medium text-gray-600 bg-gray-100 rounded transition-colors duration-200"
-                      style={{
-                        borderLeft: `3px solid ${domain.color}`,
-                      }}
+                {/* Colored background accent (subtle) */}
+                <div
+                  className="absolute -right-16 -top-16 h-32 w-32 rounded-full opacity-5 transition-all duration-300 group-hover:opacity-10"
+                  style={{ backgroundColor: domain.color }}
+                />
+
+                <div className="relative flex h-full flex-col">
+                  {/* Title */}
+                  <div className="flex h-20 items-center gap-3">
+                    <div
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-100"
+                      style={{ borderLeft: `3px solid ${domain.color}` }}
                     >
-                      {sub}
-                    </span>
-                  ))}
+                      <Icon
+                        size={20}
+                        style={{ color: domain.color }}
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <h3 className="font-sans text-xl font-bold text-foreground leading-snug">
+                      {domain.name}
+                    </h3>
+                  </div>
+
+                  {/* Separator line */}
+                  <div
+                    className="mt-1 h-0.5 w-10"
+                    style={{ backgroundColor: domain.color }}
+                  />
+
+                  {/* Subcategories */}
+                  <div className="mt-8 flex flex-1 flex-wrap content-center gap-2.5">
+                    {domain.subcategories.map((sub, subIdx) => (
+                      <span
+                        key={subIdx}
+                        className="inline-block px-3 py-1.5 text-sm font-medium text-gray-600 bg-gray-100 rounded transition-colors duration-200"
+                        style={{
+                          borderLeft: `3px solid ${domain.color}`,
+                        }}
+                      >
+                        {sub}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
               </div>
             );
           })}
