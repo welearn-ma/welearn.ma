@@ -1,19 +1,14 @@
 import { SectionHeader } from "@/components/section-header";
-import { Zap, BarChart3, Briefcase, Building2 } from "lucide-react";
 
-const expertiseAreas = [
+const expertiseDomains = [
   {
-    icon: Zap,
-    title: "Étude de marché",
-    description:
-      "Analyse stratégique des tendances et opportunités du secteur construction.",
+    name: "Étude de marché",
+    color: "#1a3a52",
     subcategories: ["Valeur", "Financement", "Ressources", "Stratégie"],
   },
   {
-    icon: BarChart3,
-    title: "Business Model",
-    description:
-      "Modèles économiques et stratégies de développement pour entreprises BTP.",
+    name: "Business Model",
+    color: "#2d5a7b",
     subcategories: [
       "Innovation",
       "Benchmark",
@@ -22,17 +17,13 @@ const expertiseAreas = [
     ],
   },
   {
-    icon: Building2,
-    title: "Ingénierie de formation",
-    description:
-      "Conception et déploiement de dispositifs de formation adaptés aux besoins.",
+    name: "Ingénierie de formation",
+    color: "#5a7d8c",
     subcategories: ["Programme", "Stratégie", "Ressources", "Expertise"],
   },
   {
-    icon: Briefcase,
-    title: "Digital Learning",
-    description:
-      "Solutions digitales pour transformation pédagogique et e-learning.",
+    name: "Digital Learning",
+    color: "#8fa6b8",
     subcategories: ["Scénarisation", "Contenu", "Audiovisuel", "LMS"],
   },
 ];
@@ -47,32 +38,50 @@ export function ExpertiseSection() {
           description="Une couverture complète des besoins en formation et conseil pour le secteur de la construction."
         />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
-          {expertiseAreas.map((area, index) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {expertiseDomains.map((domain, idx) => (
             <div
-              key={index}
-              className="group p-8 bg-secondary rounded-2xl hover:bg-(--color-welearn-navy) transition-all duration-300 cursor-pointer flex flex-col h-full"
+              key={idx}
+              className="group relative overflow-hidden rounded-lg border border-gray-200 bg-white p-6 transition-all duration-300 hover:shadow-lg hover:border-gray-300"
             >
-              <div>
-                <div className="p-4 bg-primary/10 group-hover:bg-white/10 rounded-xl w-fit mb-6 transition-colors">
-                  <area.icon className="h-8 w-8 text-primary group-hover:text-white transition-colors" />
-                </div>
-                <h3 className="font-sans text-2xl font-bold mb-3 text-foreground group-hover:text-white transition-colors">
-                  {area.title}
+              {/* Colored top accent bar */}
+              <div
+                className="absolute top-0 left-0 right-0 h-1.5"
+                style={{ backgroundColor: domain.color }}
+              />
+
+              {/* Colored background accent (subtle) */}
+              <div
+                className="absolute -right-16 -top-16 h-32 w-32 rounded-full opacity-5 transition-all duration-300 group-hover:opacity-10"
+                style={{ backgroundColor: domain.color }}
+              />
+
+              <div className="relative">
+                {/* Title */}
+                <h3 className="font-sans text-lg font-bold text-foreground mb-4 leading-snug">
+                  {domain.name}
                 </h3>
-                <p className="text-muted-foreground group-hover:text-white/80 transition-colors leading-relaxed">
-                  {area.description}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-auto pt-6">
-                {area.subcategories.map((subcategory, idx) => (
-                  <span
-                    key={idx}
-                    className="text-sm px-3 py-1 bg-white group-hover:bg-white/20 text-primary group-hover:text-white rounded-full font-medium transition-colors"
-                  >
-                    {subcategory}
-                  </span>
-                ))}
+
+                {/* Separator line */}
+                <div
+                  className="mb-4 h-0.5 w-8"
+                  style={{ backgroundColor: domain.color }}
+                />
+
+                {/* Subcategories */}
+                <div className="flex flex-wrap gap-2">
+                  {domain.subcategories.map((sub, subIdx) => (
+                    <span
+                      key={subIdx}
+                      className="inline-block px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded transition-colors duration-200"
+                      style={{
+                        borderLeft: `3px solid ${domain.color}`,
+                      }}
+                    >
+                      {sub}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
