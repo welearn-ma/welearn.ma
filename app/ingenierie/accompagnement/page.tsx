@@ -1,142 +1,109 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import Link from "next/link";
-import { SectionHeader } from "@/components/section-header";
 import { Button } from "@/components/ui/button";
 import {
-  FileText,
-  CheckCircle,
   ArrowRight,
   Calculator,
+  CheckCircle,
   ClipboardCheck,
-  Send,
+  FileText,
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Accompagnement CSF | Ingénierie | Welearn",
+  title: "Accompagnement GIAC & OFPPT | Ingénierie | Welearn",
   description:
-    "Accompagnement au remboursement CSF pour optimiser le financement de vos formations.",
+    "Accompagnement au financement GIAC et OFPPT, de la constitution des dossiers jusqu'au remboursement final.",
 };
 
-const steps = [
+const highlights = [
+  "Étude d'ingénierie remboursée jusqu'à 70 %",
+  "Pilotage administratif, technique et financier",
+];
+
+const mandatoryFiles = [
   {
     icon: FileText,
-    title: "Constitution du dossier",
+    title: "Dossier administratif",
     description:
-      "Préparation de tous les documents nécessaires à votre demande de remboursement.",
+      "Constitution et vérification de l'éligibilité et de la conformité des pièces.",
   },
   {
     icon: ClipboardCheck,
-    title: "Vérification conformité",
+    title: "Dossier technique",
     description:
-      "Contrôle de la conformité de votre dossier avec les exigences CSF.",
-  },
-  {
-    icon: Send,
-    title: "Dépôt de la demande",
-    description:
-      "Soumission de votre dossier auprès des organismes compétents.",
+      "Rédaction, structuration et suivi de la Demande de Financement.",
   },
   {
     icon: Calculator,
-    title: "Suivi du remboursement",
+    title: "Dossier financier",
     description:
-      "Accompagnement jusqu'à l'obtention effective du remboursement.",
+      "Préparation, dépôt et suivi complet de la Demande de Remboursement.",
   },
-];
-
-const eligibility = [
-  "Entreprises cotisant à un OPCO",
-  "Formations certifiantes ou qualifiantes",
-  "Actions de développement des compétences",
-  "Formations éligibles au CPF",
-  "Plans de développement des compétences",
-  "Contrats de professionnalisation",
 ];
 
 export default function AccompagnementPage() {
   return (
     <>
       <PageHero
-        title="Accompagnement CSF"
-        description="Optimisez le financement de vos formations avec notre accompagnement au remboursement CSF."
+        title="Accompagnement"
+        description="Accompagnement au financement GIAC et OFPPT"
         size="sm"
       />
 
-      {/* Process */}
+      {/* Intro */}
       <section className="py-20 lg:py-28 bg-white">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <SectionHeader
-            eyebrow="Notre accompagnement"
-            title="Comment ça marche ?"
-            description="Un processus simple et efficace pour obtenir votre remboursement."
-          />
+        <div className="mx-auto max-w-5xl px-4 lg:px-8">
+          <h2 className="font-sans text-3xl md:text-4xl font-bold text-foreground mb-6">
+            Accompagnement au financement GIAC à OFPPT
+          </h2>
+          <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+            Welearn prend en charge l'ensemble des démarches, depuis la
+            constitution des dossiers jusqu'au remboursement final.
+          </p>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {steps.map((step, idx) => (
-              <div key={idx} className="relative">
-                <div className="bg-secondary rounded-2xl p-6 h-full">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 bg-primary/10 rounded-xl">
-                      <step.icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <span className="text-3xl font-bold text-primary/20">
-                      {idx + 1}
-                    </span>
-                  </div>
-                  <h3 className="font-sans text-lg font-bold text-foreground mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {step.description}
-                  </p>
-                </div>
+          <div className="space-y-4">
+            {highlights.map((item) => (
+              <div key={item} className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                <p className="text-lg font-semibold text-primary">{item}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Eligibility */}
+      {/* Mandatory files */}
       <section className="py-20 lg:py-28 bg-secondary">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="inline-block text-sm font-semibold uppercase tracking-wider text-primary mb-3">
-                Éligibilité
-              </span>
-              <h2 className="font-sans text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Qui peut bénéficier du CSF ?
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-8">
-                Le Contrat Spécial de Formation (CSF) permet aux entreprises
-                marocaines de bénéficier d'un remboursement partiel ou total de
-                leurs dépenses de formation. Découvrez si vous êtes éligible.
-              </p>
-              <Button
-                asChild
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-white"
-              >
-                <Link href="/contact">
-                  Vérifier mon éligibilité
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-            <div className="bg-white rounded-2xl p-8">
-              <h3 className="font-semibold text-foreground mb-6">
-                Critères d'éligibilité
-              </h3>
-              <div className="space-y-4">
-                {eligibility.map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
-                    <span className="text-foreground">{item}</span>
+          <h2 className="font-sans text-3xl md:text-4xl font-bold text-foreground mb-6">
+            Gestion structurée des 3 dossiers obligatoires
+          </h2>
+          <p className="text-lg text-muted-foreground leading-relaxed mb-10 max-w-5xl">
+            Afin de sécuriser votre dossier et d'optimiser vos chances
+            d'acceptation et de remboursement, Welearn gère les trois volets
+            essentiels.
+          </p>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {mandatoryFiles.map((file, idx) => (
+              <div key={file.title} className="bg-white rounded-2xl p-7 h-full">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-3 bg-primary/10 rounded-xl">
+                    <file.icon className="h-6 w-6 text-primary" />
                   </div>
-                ))}
+                  <span className="text-2xl font-bold text-primary/25">
+                    {idx + 1}
+                  </span>
+                </div>
+                <h3 className="font-sans text-2xl font-bold text-primary mb-3">
+                  {file.title}
+                </h3>
+                <p className="text-base text-foreground leading-relaxed">
+                  {file.description}
+                </p>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -145,18 +112,21 @@ export default function AccompagnementPage() {
       <section className="py-20 lg:py-28 bg-(--color-welearn-navy)">
         <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
           <h2 className="font-sans text-3xl md:text-4xl font-bold text-white mb-6">
-            Besoin d'aide avec votre CSF ?
+            Besoin d'un accompagnement pour vos dossiers ?
           </h2>
           <p className="text-lg text-white/90 mb-8">
             Contactez-nous pour un accompagnement personnalisé dans vos
-            démarches de remboursement.
+            démarches de financement et de remboursement.
           </p>
           <Button
             asChild
             size="lg"
             className="bg-white text-primary hover:bg-white/90"
           >
-            <Link href="/contact">Nous contacter</Link>
+            <Link href="/contact">
+              Nous contacter
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
         </div>
       </section>

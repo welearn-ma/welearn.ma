@@ -76,7 +76,6 @@ const navigation = [
     href: "/conseil",
   },
   { name: "Événements", href: "/evenements" },
-  { name: "Contact", href: "/contact" },
 ];
 
 interface NavItem {
