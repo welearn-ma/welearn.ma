@@ -56,7 +56,9 @@ interface Formation {
   featured: boolean;
 }
 
-const formations = formationsData.formations as Formation[];
+const formations = (formationsData.formations as Formation[]).filter(
+  (f) => (f.type as string) !== "Diplomante",
+);
 
 interface ActiveFilters {
   type: FormationType | "all";
