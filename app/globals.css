@@ -123,6 +123,8 @@
   /* Added darker navy for footer */
   --color-welearn-navy-dark: oklch(0.15 0.08 250);
   --color-welearn-gold: oklch(0.75 0.15 85);
+  /* Tertiary accent color - vibrant orange/coral for highlights */
+  --color-welearn-tertiary: oklch(0.65 0.22 48);
 }
 
 @layer base {
