@@ -7,7 +7,6 @@ import { ApproachSection } from "@/components/about/approach-section";
 import { ValuesSection } from "@/components/about/values-section";
 import { TeamSection } from "@/components/about/team-section";
 import { ReferencesSection } from "@/components/about/references-section";
-import { TestimonialsSection } from "@/components/about/testimonials-section";
 import { Award } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -31,7 +30,6 @@ export default function AboutPage() {
       <ValuesSection />
       <TeamSection />
       <ReferencesSection />
-      <TestimonialsSection />
     </>
   );
 }

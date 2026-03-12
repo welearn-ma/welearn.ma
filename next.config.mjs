@@ -6,7 +6,15 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
- 
+
+  async rewrites() {
+    return [
+      {
+        source: "/logos/:slug.png",
+        destination: "/partners/:slug.webp",
+      },
+    ]
+  },
 }
 
 export default nextConfig
