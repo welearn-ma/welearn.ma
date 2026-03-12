@@ -131,7 +131,14 @@ const formations: Formation[] = [
     levelLabel: "Tous niveaux",
     durations: ["Flexible"],
     durationLabel: "Customized",
-    domains: ["Sur mesure", "BIM", "Immobilier", "Management", "Digital", "BTP"],
+    domains: [
+      "Sur mesure",
+      "BIM",
+      "Immobilier",
+      "Management",
+      "Digital",
+      "BTP",
+    ],
     objectivesSummary:
       "Concevoir et deployer des parcours personnalises selon vos enjeux metiers, avec accompagnement CSF et ajustements pedagogiques continus.",
     ctaHref: "/formations/certifiantes/sur-mesure",
@@ -146,8 +153,19 @@ const categoryOptions: Category[] = [
 ];
 
 const formatOptions: Format[] = ["E-learning", "Presentiel", "Hybride"];
-const levelOptions: Level[] = ["Bac+3", "Bac+4", "Bac+5", "Executive", "All levels"];
-const durationOptions: Duration[] = ["< 1 month", "1-3 months", "6-12 months", "Flexible"];
+const levelOptions: Level[] = [
+  "Bac+3",
+  "Bac+4",
+  "Bac+5",
+  "Executive",
+  "All levels",
+];
+const durationOptions: Duration[] = [
+  "< 1 month",
+  "1-3 months",
+  "6-12 months",
+  "Flexible",
+];
 const domainOptions: Domain[] = [
   "BIM",
   "Immobilier",
@@ -242,16 +260,25 @@ export function FormationsCataloguePage() {
         filters.level === "all" || formation.levels.includes(filters.level);
 
       const durationMatch =
-        filters.duration === "all" || formation.durations.includes(filters.duration);
+        filters.duration === "all" ||
+        formation.durations.includes(filters.duration);
 
       const domainMatch =
         filters.domain === "all" || formation.domains.includes(filters.domain);
 
-      return categoryMatch && formatMatch && levelMatch && durationMatch && domainMatch;
+      return (
+        categoryMatch &&
+        formatMatch &&
+        levelMatch &&
+        durationMatch &&
+        domainMatch
+      );
     });
   }, [filters]);
 
-  const hasActiveFilters = Object.values(filters).some((value) => value !== "all");
+  const hasActiveFilters = Object.values(filters).some(
+    (value) => value !== "all",
+  );
 
   return (
     <section className="py-16 lg:py-24 bg-white">
@@ -462,7 +489,10 @@ export function FormationsCataloguePage() {
                   </p>
 
                   <div className="mt-auto pt-5">
-                    <Button asChild className="w-full bg-primary text-white hover:bg-primary/90">
+                    <Button
+                      asChild
+                      className="w-full bg-primary text-white hover:bg-primary/90"
+                    >
                       <Link href={formation.ctaHref}>
                         En savoir plus
                         <ArrowRight className="h-4 w-4" />
