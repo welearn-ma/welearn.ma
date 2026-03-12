@@ -28,34 +28,10 @@ const navigation = [
       {
         name: "Diplômantes",
         href: "/formations/diplomantes",
-        children: [
-          {
-            name: "Executive Masters",
-            href: "/formations/diplomantes/executive-masters",
-          },
-          {
-            name: "Licences Professionnelles",
-            href: "/formations/diplomantes/licences-pro",
-          },
-        ],
       },
       {
         name: "Certifiantes",
         href: "/formations/certifiantes",
-        children: [
-          {
-            name: "BIM Foundations Professional",
-            href: "/formations/certifiantes/bim-foundations",
-          },
-          {
-            name: "Catalogue des formations intra",
-            href: "/formations/certifiantes/catalogue",
-          },
-          {
-            name: "Formations sur mesure",
-            href: "/formations/certifiantes/sur-mesure",
-          },
-        ],
       },
     ],
   },
