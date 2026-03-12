@@ -3,6 +3,7 @@ import { PageHero } from "@/components/page-hero";
 import { Award } from "lucide-react";
 import { CertifiantesSections } from "@/components/formations/certifiantes-sections";
 import { EntrepriseCta } from "@/components/formations/entreprise-cta";
+import { FormationsCataloguePage } from "@/components/formations/formations-catalogue-page";
 
 export const metadata: Metadata = {
   title: "Formations Certifiantes | Welearn",
@@ -20,8 +21,7 @@ export default function CertifiantesPage() {
         size="sm"
       />
 
-      <CertifiantesSections />
-      <EntrepriseCta />
+      <FormationsCataloguePage />
     </>
   );
 }
