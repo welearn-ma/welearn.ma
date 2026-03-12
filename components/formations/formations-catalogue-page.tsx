@@ -25,11 +25,11 @@ type FormationDomain =
   | "Management";
 type FormationFormat = "E-learning" | "Présentiel";
 type FormationLevel =
-  | "Beginner"
-  | "Intermediate"
-  | "Advanced"
-  | "All levels"
-  | "Professional";
+  | "Débutant"
+  | "Intermédiaire"
+  | "Avancé"
+  | "Tous niveaux"
+  | "Professionnel";
 
 interface FormationContact {
   email: string | null;
@@ -86,11 +86,11 @@ const domainStripeClasses: Record<FormationDomain, string> = {
 };
 
 const levelIndicatorClasses: Record<FormationLevel, string> = {
-  Beginner: "bg-emerald-100 text-emerald-700",
-  Intermediate: "bg-amber-100 text-amber-700",
-  Advanced: "bg-rose-100 text-rose-700",
-  "All levels": "bg-slate-100 text-slate-700",
-  Professional: "bg-indigo-100 text-indigo-700",
+  Débutant: "bg-emerald-100 text-emerald-700",
+  Intermédiaire: "bg-amber-100 text-amber-700",
+  Avancé: "bg-rose-100 text-rose-700",
+  "Tous niveaux": "bg-slate-100 text-slate-700",
+  Professionnel: "bg-indigo-100 text-indigo-700",
 };
 
 function getFormatIcon(formats: FormationFormat[]) {
@@ -169,7 +169,7 @@ export function FormationsCataloguePage() {
                 }
                 className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-foreground"
               >
-                <option value="all">All</option>
+                <option value="all">Tous</option>
                 {typeOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
@@ -192,7 +192,7 @@ export function FormationsCataloguePage() {
                 }
                 className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-foreground"
               >
-                <option value="all">All</option>
+                <option value="all">Tous</option>
                 {formatOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
@@ -203,7 +203,7 @@ export function FormationsCataloguePage() {
 
             <div>
               <label className="mb-2 block text-sm font-medium text-foreground">
-                Level
+                Niveau
               </label>
               <select
                 value={filters.level}
@@ -215,7 +215,7 @@ export function FormationsCataloguePage() {
                 }
                 className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-foreground"
               >
-                <option value="all">All</option>
+                <option value="all">Tous</option>
                 {levelOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
@@ -226,7 +226,7 @@ export function FormationsCataloguePage() {
 
             <div>
               <label className="mb-2 block text-sm font-medium text-foreground">
-                Domain
+                Domaine
               </label>
               <select
                 value={filters.domain}
@@ -238,7 +238,7 @@ export function FormationsCataloguePage() {
                 }
                 className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-foreground"
               >
-                <option value="all">All</option>
+                <option value="all">Tous</option>
                 {domainOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
@@ -359,14 +359,14 @@ export function FormationsCataloguePage() {
                       <p className="flex items-center gap-2">
                         <Building2 className="h-4 w-4 text-primary" />
                         <span>
-                          <strong>Provider:</strong> {formation.provider}
+                          <strong>Organisme :</strong> {formation.provider}
                         </span>
                       </p>
                       {formation.issuer && (
                         <p className="flex items-center gap-2">
                           <GraduationCap className="h-4 w-4 text-primary" />
                           <span>
-                            <strong>Issuer:</strong> {formation.issuer}
+                            <strong>Accrédité par :</strong> {formation.issuer}
                           </span>
                         </p>
                       )}
