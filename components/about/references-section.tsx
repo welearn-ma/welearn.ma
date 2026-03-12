@@ -15,12 +15,18 @@ const referencesData = [
   {
     category: "Maîtrise d'œuvre",
     partners: [
-      { name: "CNOA (Conseil National de l'Ordre des Architectes)", logo: "/logos/cnoa.png" },
+      {
+        name: "CNOA (Conseil National de l'Ordre des Architectes)",
+        logo: "/logos/cnoa.png",
+      },
       { name: "ONIGT", logo: "/logos/onigt.png" },
       { name: "FédEC", logo: "/logos/fedec.png" },
       { name: "SOCOTEC", logo: "/logos/socotec.png" },
       { name: "BUTEC", logo: "/logos/butec.png" },
-      { name: "CASAVIGILANCE Sécurité Incendie", logo: "/logos/casavigilance.png" },
+      {
+        name: "CASAVIGILANCE Sécurité Incendie",
+        logo: "/logos/casavigilance.png",
+      },
       { name: "SATA AFRIQUE", logo: "/logos/sata-afrique.png" },
     ],
   },
@@ -29,7 +35,10 @@ const referencesData = [
     partners: [
       { name: "FNPI", logo: "/logos/fnpi.png" },
       { name: "SOGERA (une société de VINCI)", logo: "/logos/sogera.png" },
-      { name: "Menasteel Construction Métallique", logo: "/logos/menasteel.png" },
+      {
+        name: "Menasteel Construction Métallique",
+        logo: "/logos/menasteel.png",
+      },
       { name: "TGCC (Construisons Ensemble)", logo: "/logos/tgcc.png" },
       { name: "Cegelec", logo: "/logos/cegelec.png" },
       { name: "BATE International", logo: "/logos/bate-international.png" },
@@ -41,11 +50,17 @@ const referencesData = [
       { name: "ANEP", logo: "/logos/anep.png" },
       { name: "Chaabi lil Iskane", logo: "/logos/chaabi-lil-iskane.png" },
       { name: "CGI", logo: "/logos/cgi.png" },
-      { name: "السعودية المغربية للاستثمار (ASMA INVEST)", logo: "/logos/asma-invest.png" },
+      {
+        name: "السعودية المغربية للاستثمار (ASMA INVEST)",
+        logo: "/logos/asma-invest.png",
+      },
       { name: "EWANE ASSETS", logo: "/logos/ewane-assets.png" },
       { name: "OFPPT", logo: "/logos/ofppt.png" },
       { name: "MAC (Africa)", logo: "/logos/mac-africa.png" },
-      { name: "buildingSMART Morocco", logo: "/logos/buildingsmart-morocco.png" },
+      {
+        name: "buildingSMART Morocco",
+        logo: "/logos/buildingsmart-morocco.png",
+      },
     ],
   },
   {
@@ -54,16 +69,28 @@ const referencesData = [
       { name: "Société Générale", logo: "/logos/societe-generale.png" },
       { name: "Wafa Immobilier", logo: "/logos/wafa-immobilier.png" },
       { name: "Bank Al-Maghrib", logo: "/logos/bank-al-maghrib.png" },
-      { name: "Bank of Africa (BMCE Group)", logo: "/logos/bank-of-africa-bmce-group.png" },
+      {
+        name: "Bank of Africa (BMCE Group)",
+        logo: "/logos/bank-of-africa-bmce-group.png",
+      },
       { name: "CIH Bank", logo: "/logos/cih-bank.png" },
-      { name: "M.S.IN Société de Bourse", logo: "/logos/msin-societe-de-bourse.png" },
+      {
+        name: "M.S.IN Société de Bourse",
+        logo: "/logos/msin-societe-de-bourse.png",
+      },
     ],
   },
   {
     category: "Assurance",
     partners: [
-      { name: "AtlantaSanad Assurance", logo: "/logos/atlanta-sanad-assurance.png" },
-      { name: "SAHAM Assurance (member of Sanlam group)", logo: "/logos/saham-assurance.png" },
+      {
+        name: "AtlantaSanad Assurance",
+        logo: "/logos/atlanta-sanad-assurance.png",
+      },
+      {
+        name: "SAHAM Assurance (member of Sanlam group)",
+        logo: "/logos/saham-assurance.png",
+      },
     ],
   },
 ];
@@ -81,7 +108,9 @@ export function ReferencesSection() {
             <div
               key={group.category}
               className={`min-h-[90px] py-6 ${
-                groupIndex !== referencesData.length - 1 ? "border-b border-[#e5e5e5]" : ""
+                groupIndex !== referencesData.length - 1
+                  ? "border-b border-[#e5e5e5]"
+                  : ""
               }`}
             >
               <div className="flex flex-col gap-4 md:min-h-[90px] md:flex-row md:items-center md:gap-8">

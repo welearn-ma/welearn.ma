@@ -13,8 +13,8 @@ const nextConfig = {
         source: "/logos/:slug.png",
         destination: "/partners/:slug.webp",
       },
-    ]
+    ];
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
