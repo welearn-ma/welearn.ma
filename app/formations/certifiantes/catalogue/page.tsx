@@ -3,17 +3,17 @@ import { PageHero } from "@/components/page-hero";
 import { FormationsCataloguePage } from "@/components/formations/formations-catalogue-page";
 
 export const metadata: Metadata = {
-  title: "Catalogue des Formations | Welearn",
+  title: "Catalogue Certifications & Formations Courtes | Welearn",
   description:
-    "Catalogue complet de formations certifiantes, diplomantes et sur mesure avec filtres par categorie, niveau, format, duree et domaine.",
+    "Catalogue des formations certifiantes et formations courtes Welearn, avec filtres instantanes par type, domaine, format et niveau.",
 };
 
 export default function CataloguePage() {
   return (
     <>
       <PageHero
-        title="Catalogue des Formations"
-        description="Explorez nos formations certifiantes, diplomantes et sur mesure. Filtrez instantanement par categorie, format, niveau, duree et domaine."
+        title="Certifications & Formations Courtes"
+        description="Explorez uniquement les certifications et formations courtes Welearn. Les programmes diplomants sont disponibles dans la section Masters."
         eyebrow="Catalogue Formations"
         size="sm"
       />
