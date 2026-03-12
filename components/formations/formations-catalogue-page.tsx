@@ -133,7 +133,8 @@ export function FormationsCataloguePage() {
 
   const filteredFormations = useMemo(() => {
     return formations.filter((formation) => {
-      const typeMatch = filters.type === "all" || formation.type === filters.type;
+      const typeMatch =
+        filters.type === "all" || formation.type === filters.type;
       const domainMatch =
         filters.domain === "all" || formation.domain === filters.domain;
       const formatMatch =
@@ -141,12 +142,7 @@ export function FormationsCataloguePage() {
       const levelMatch =
         filters.level === "all" || formation.level === filters.level;
 
-      return (
-        typeMatch &&
-        domainMatch &&
-        formatMatch &&
-        levelMatch
-      );
+      return typeMatch && domainMatch && formatMatch && levelMatch;
     });
   }, [filters]);
 
@@ -338,7 +334,9 @@ export function FormationsCataloguePage() {
                   key={formation.id}
                   className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
                 >
-                  <div className={`h-1.5 w-full ${domainStripeClasses[formation.domain]}`} />
+                  <div
+                    className={`h-1.5 w-full ${domainStripeClasses[formation.domain]}`}
+                  />
 
                   <div className="flex h-full flex-col p-6">
                     <div className="mb-4 flex items-center justify-between gap-3">
@@ -386,7 +384,9 @@ export function FormationsCataloguePage() {
                     </div>
 
                     <div className="mt-4 inline-flex w-fit rounded-full px-2.5 py-1 text-xs font-semibold">
-                      <span className={`rounded-full px-2.5 py-1 ${levelIndicatorClasses[formation.level]}`}>
+                      <span
+                        className={`rounded-full px-2.5 py-1 ${levelIndicatorClasses[formation.level]}`}
+                      >
                         {formation.level}
                       </span>
                     </div>
