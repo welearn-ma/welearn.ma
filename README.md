@@ -1,42 +1,117 @@
-# WeLearn — Construction EdTech Platform
+# WeLearn.ma - Site institutionnel (version actuelle)
 
-WeLearn is an EdTech platform focused on the construction sector, recognized as a Jeune Entreprise Innovante® in France (Passeport Talent-2013) and in Morocco (ADD-2020). We develop competency ecosystems for individuals, organizations, and professional associations through Masters, certificates, and white-label academies delivered in e-learning and in-person formats. Core domains include materials, energy efficiency, BIM, project management, and real estate.
+Plateforme EdTech orientee formation professionnelle continue pour le BTP, le BIM, l'ingenierie de formation et le digital learning au Maroc et en Afrique.
 
-## Tech stack
+Derniere mise a jour de cette documentation: Mars 2026.
 
-- Next.js 16, React 19, TypeScript
-- Tailwind CSS 4 with design primitives in `components/ui`
-- Radix UI for accessible foundations; lucide-react for icons
-- Deployed on Vercel; package scripts use `pnpm` (or `bun` if preferred locally)
+## Etat de la version
 
-## Architecture
+Cette version du projet est basee sur Next.js App Router avec une architecture modulaire par section.
 
-- Component-based pages: each route in `app/` composes small, single-purpose sections.
-- Shared UI lives in `components/` and `components/ui`; utilities in `lib/`.
-- Content and data stay centralized (configs per route when reused).
-- Before adding or refactoring, read `docs/implementation-guide.md` (working agreement for component slicing, performance, and accessibility).
+Fonctionnalites majeures actuellement en place:
 
-## Project structure (high level)
+- Navigation sticky desktop/mobile avec mega-menu et CTA LMS
+- Breadcrumb global injecte depuis le layout
+- Pages marketing et catalogues de formation structurees par domaines
+- Formulaire de contact enrichi (type de demande + upload de fichiers)
+- Bandeau de consentement cookies (RGPD) avec sauvegarde locale
+- Composants reutilisables pour filtres de catalogue et telechargements PDF
+- Tracking Vercel Analytics integre au layout global
 
-- `app/` — route groups and pages for marketing and program tracks
-- `components/` — shared sections (hero, grids, CTA), `components/ui/` primitives
-- `lib/` — helpers like `cn`
-- `public/images` — static assets for programs, partners, and events
-- `styles/` — global styles
-- `docs/` — working guide for contributors
+## Stack technique
 
-## Development
+- Next.js 16 (App Router)
+- React 19
+- TypeScript 5
+- Tailwind CSS 4
+- Radix UI (primitives UI)
+- Lucide React (icons)
+- Vercel Analytics
 
-1. Install dependencies: `pnpm install` (or `bun install`).
-2. Run locally: `pnpm dev` then open `http://localhost:3000`.
-3. Lint before pushing: `pnpm lint`.
-4. Production build: `pnpm build` and preview with `pnpm start`.
+## Arborescence principale
 
-## Deployment
+- app/: routes de pages
+- components/: sections metier et composants partages
+- components/ui/: primitives UI
+- data/: donnees statiques (ex: catalogue formations)
+- lib/: utilitaires
+- public/: assets statiques
+- docs/: guides d'implementation et changelog
 
-- Default target: Vercel (runs `pnpm install`, `pnpm build`, `pnpm start`).
-- For static-friendly pages, prefer static generation; set `revalidate` explicitly when data changes.
+## Routes actuellement disponibles
 
-## Maintainer
+- / (Accueil)
+- /about
+- /formations
+- /formations/certifiantes
+- /formations/certifiantes/bim-foundations
+- /formations/certifiantes/catalogue
+- /formations/certifiantes/sur-mesure
+- /formations/diplomantes
+- /formations/diplomantes/executive-masters
+- /formations/diplomantes/licences-pro
+- /ingenierie
+- /ingenierie/academie
+- /ingenierie/accompagnement
+- /digital-learning
+- /digital-learning/lms
+- /digital-learning/contenus-elearning
+- /digital-learning/bibliotheque
+- /conseil
+- /evenements
+- /contact
 
-- Primary developer: @wa1ead
+## Composants metier notables
+
+- components/navbar.tsx: navigation principale + mega-menu
+- components/breadcrumb.tsx: fil d'Ariane global
+- components/cookie-consent.tsx: gestion du consentement cookies
+- components/contact/contact-form-section.tsx: formulaire contact enrichi
+- components/catalogue-filters.tsx: filtrage de catalogue
+- components/pdf-download.tsx: bloc de telechargement de documents
+
+## Demarrage local
+
+1. Installer les dependances:
+
+```bash
+pnpm install
+```
+
+2. Lancer le serveur de developpement:
+
+```bash
+pnpm dev
+```
+
+3. Ouvrir l'application:
+
+http://localhost:3000
+
+## Scripts utiles
+
+```bash
+pnpm dev
+pnpm lint
+pnpm build
+pnpm start
+```
+
+## Deploiement
+
+Le projet est prepare pour un deploiement Vercel.
+
+Pipeline standard:
+
+1. pnpm install
+2. pnpm build
+3. pnpm start
+
+## Notes importantes
+
+- Le formulaire de contact est pret cote front mais le routage email/API reste a brancher selon l'infrastructure cible.
+- Consulter docs/implementation-guide.md pour les conventions d'architecture et docs/changelog.md pour l'historique des evolutions.
+
+## Mainteneur
+
+- @wa1ead
