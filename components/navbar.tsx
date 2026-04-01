@@ -205,7 +205,7 @@ export function Navbar() {
             asChild
             variant="outline"
             size="sm"
-            className="border-wl-blue text-wl-blue hover:bg-wl-blue-tint bg-transparent transition-all duration-200"
+            className="border-wl-blue text-wl-blue hover:bg-wl-blue bg-transparent transition-all duration-200"
           >
             <Link href="https://welearn.ac" target="_blank">
               Accéder au LMS
