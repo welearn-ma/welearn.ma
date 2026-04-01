@@ -1,85 +1,107 @@
 import Link from "next/link";
 import { SectionHeader } from "@/components/section-header";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Settings, Monitor, ArrowRight } from "lucide-react";
+import { GraduationCap, Settings, Monitor, Building2, ArrowRight } from "lucide-react";
 
-const formats = [
+const solutions = [
   {
     icon: GraduationCap,
-    title: "Formations",
-    subtitle: "(Diplômantes / Certifiantes)",
+    title: "Formations diplômantes",
     description:
-      "Formations délivrées par des tiers de confiance en cobrading ou non avec Welearn. Nous collaborons avec des institutions internationales reconnues sur des thématiques à fort positionnement dans l'écosystème (BIM, Real Estate, Matériaux...).",
+      "Mastère Spécialisé BIM, Executive Master Ingénierie Immobilière, Certification BIM Foundations — co-construits avec l'EHTP.",
     href: "/formations",
-    image: "/formats/formations.webp",
+    cta: "Découvrir nos programmes",
+    accentColor: "oklch(0.25 0.08 250)",
   },
   {
     icon: Settings,
-    title: "Sur mesure",
-    subtitle: "(Intra entreprises)",
+    title: "Formations sur mesure",
     description:
-      "Formations entièrement personnalisées pour répondre aux besoins spécifiques d'une seule entreprise. Nous collaborons étroitement avec vous pour concevoir des programmes sur mesure adaptés à vos objectifs, permettant ainsi un ciblage efficace au profit de votre équipe.",
+      "Programmes intra-entreprise : analyse des besoins, ingénierie pédagogique, déploiement, évaluation. Accompagnement remboursement CSF inclus.",
     href: "/ingenierie",
-    image: "/formats/surmesure.webp",
+    cta: "Demander un programme sur mesure",
+    accentColor: "oklch(0.35 0.08 250)",
   },
   {
     icon: Monitor,
-    title: "Tout Digital",
-    subtitle: "(MOOC / Capsules / VR&AR)",
+    title: "Digital Learning",
     description:
-      "La Formation Digital learning de Welearn permet d'apporter de la valeur ajoutée via l'innovation. De part la flexibilité qu'elle procure, Welearn adapte ce process au besoin de la cible, en accommodant le format et les outils pédagogiques.",
-    href: "/digital-learning",
-    image: "/formats/digital.webp",
+      "Plateforme LMS welearn.ac : MOOCs, e-learning, VR, micro-learning, produits par notre studio intégré.",
+    href: "https://welearn.ac",
+    cta: "Accéder à la plateforme",
+    accentColor: "oklch(0.45 0.08 250)",
+    external: true,
+  },
+  {
+    icon: Building2,
+    title: "Académies d'entreprise",
+    description:
+      "Structurer le développement des compétences à grande échelle : stratégie, parcours, plateforme, déploiement.",
+    href: "/contact",
+    cta: "En savoir plus",
+    accentColor: "oklch(0.55 0.08 250)",
   },
 ];
 
 export function FormatsSection() {
   return (
-    <section className="py-20 lg:py-28 bg-secondary">
+    <section className="py-20 lg:py-28 bg-white">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <SectionHeader
-          eyebrow="Formats de formation"
+          eyebrow="Nos solutions"
           title="Des solutions adaptées à chaque besoin"
-          description="Formations, sur-mesure ou digitales : choisissez le format qui correspond à vos objectifs professionnels."
+          description="Professionnel en quête de certification, entreprise souhaitant monter en compétences ou institution cherchant un partenaire stratégique — Welearn s'adapte à votre contexte."
         />
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {formats.map((format, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col h-full"
-            >
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+          {solutions.map((solution, index) => {
+            const Icon = solution.icon;
+            return (
               <div
-                className="h-48 bg-cover bg-center relative"
-                style={{
-                  backgroundImage: `url('${format.image}')`,
-                }}
-              />
-              <div className="p-6 flex flex-col flex-1">
-                <div className="mb-4">
-                  <h3 className="font-sans text-2xl font-bold text-foreground mb-1">
-                    {format.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground font-medium">
-                    {format.subtitle}
-                  </p>
+                key={index}
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-white p-6 hover:shadow-xl hover:border-transparent transition-all duration-300"
+              >
+                <div
+                  className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl"
+                  style={{ backgroundColor: solution.accentColor }}
+                />
+                <div
+                  className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl"
+                  style={{
+                    backgroundColor: `color-mix(in oklch, ${solution.accentColor} 12%, transparent)`,
+                  }}
+                >
+                  <Icon
+                    className="h-6 w-6"
+                    style={{ color: solution.accentColor }}
+                    aria-hidden="true"
+                  />
                 </div>
-                <p className="text-muted-foreground mb-6 leading-relaxed flex-1">
-                  {format.description}
+                <h3 className="font-sans text-lg font-bold text-foreground mb-3 leading-snug">
+                  {solution.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-6">
+                  {solution.description}
                 </p>
                 <Button
                   asChild
                   variant="outline"
-                  className="w-full group bg-transparent"
+                  size="sm"
+                  className="w-full group-hover:border-(--color-welearn-navy) group-hover:text-(--color-welearn-navy) bg-transparent transition-colors"
                 >
-                  <Link href={format.href}>
-                    En savoir plus
+                  <Link
+                    href={solution.href}
+                    {...(solution.external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                  >
+                    {solution.cta}
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

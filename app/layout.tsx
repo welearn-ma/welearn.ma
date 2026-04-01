@@ -12,9 +12,11 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Welearn - Formation Professionnelle Continue",
+  title: "Welearn — Formation BIM, Construction & Immobilier au Maroc",
   description:
-    "Welearn, votre partenaire de formation professionnelle dans les domaines du BTP, BIM, Engineering et Executive Education au Maroc et en Afrique.",
+    "Welearn est la plateforme EdTech de référence pour les professionnels du BTP et de l'immobilier. Formations certifiantes, digital learning, mastères et académies d'entreprise.",
+  keywords:
+    "formation BIM Maroc, certification buildingSMART, EdTech BTP, formation immobilier maroc, MOOC construction, digital learning BTP, mastère BIM EHTP, formation continue Maroc, accompagnement CSF",
   generator: "@wa1ead",
   icons: {
     icon: [

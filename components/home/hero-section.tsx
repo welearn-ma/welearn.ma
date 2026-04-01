@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Award, Users, BookOpen } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export function HeroSection() {
   return (
@@ -19,25 +19,29 @@ export function HeroSection() {
       <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
-            {/* <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
-              <Award className="h-4 w-4 text-white" />
-              <span className="text-sm font-medium text-white">
-                Jeune Entreprise Innovante®
+            {/* Tagline pill */}
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/20">
+              <span className="text-sm font-medium text-white/90 tracking-wide">
+                Se former · S'informer · Échanger
               </span>
-            </div> */}
+            </div>
 
             <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance leading-tight">
-              Formez-vous aux métiers de la{" "}
-              <span className="text-white/90 underline decoration-white/30 underline-offset-4">
-                Construction
-              </span>{" "}
-              de demain
+              Formez les professionnels qui bâtissent{" "}
+              <span className="relative inline-block">
+                <span className="relative z-10">le monde de demain</span>
+                <span
+                  className="absolute bottom-1 left-0 right-0 h-2 rounded opacity-30 z-0"
+                  style={{ backgroundColor: "var(--color-welearn-gold)" }}
+                />
+              </span>
             </h1>
 
             <p className="text-lg md:text-xl text-white/80 mb-8 leading-relaxed max-w-xl lg:max-w-none">
-              Welearn est une EdTech destinée au secteur de la Construction,
-              reconnue comme Jeune Entreprise Innovante® en France et au Maroc.
-              Experts en BIM, ingénierie et formation executive.
+              Welearn est la plateforme EdTech de référence dédiée à la
+              construction, l'infrastructure et l'immobilier. Nous accélérons la
+              transformation digitale du secteur par des formations innovantes,
+              certifiantes et connectées aux réalités du terrain.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -46,8 +50,8 @@ export function HeroSection() {
                 size="lg"
                 className="bg-white hover:bg-(--color-welearn-gold) text-(--color-welearn-navy) font-semibold transition-colors"
               >
-                <Link href="/programs">
-                  Découvrir nos programmes
+                <Link href="/formations">
+                  Découvrir nos formations
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -57,31 +61,8 @@ export function HeroSection() {
                 variant="outline"
                 className="border-white border-2 text-white hover:bg-(--color-welearn-gold) hover:text-(--color-welearn-navy) hover:border-(--color-welearn-gold) bg-transparent transition-colors"
               >
-                <Link href="/contact">Demander un devis</Link>
+                <Link href="/contact">Demander un programme sur mesure</Link>
               </Button>
-            </div>
-
-            <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-white/20">
-              <div>
-                <div className="text-3xl md:text-4xl font-bold text-white">
-                  2000+
-                </div>
-                <div className="text-sm text-white/70">Apprenants formés</div>
-              </div>
-              <div>
-                <div className="text-3xl md:text-4xl font-bold text-white">
-                  50+
-                </div>
-                <div className="text-sm text-white/70">
-                  Entreprises partenaires
-                </div>
-              </div>
-              <div>
-                <div className="text-3xl md:text-4xl font-bold text-white">
-                  10+
-                </div>
-                <div className="text-sm text-white/70">Années d'expertise</div>
-              </div>
             </div>
           </div>
 
@@ -101,34 +82,54 @@ export function HeroSection() {
             </div>
 
             {/* Floating Cards */}
-            <div className="absolute -left-8 top-1/4 bg-white/90 rounded-xl p-4 shadow-lg">
+            <div className="absolute -left-8 top-1/4 bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-welearn-navy/10 rounded-lg">
-                  <BookOpen className="h-6 w-6 text-welearn-navy" />
+                <div className="p-2 rounded-lg" style={{ backgroundColor: "color-mix(in oklch, var(--color-welearn-navy) 10%, transparent)" }}>
+                  <svg
+                    className="h-6 w-6"
+                    style={{ color: "var(--color-welearn-navy)" }}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+                    />
+                  </svg>
                 </div>
                 <div>
-                  <div className="font-semibold text-foreground">
-                    Masters BIM
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    Accréditation CGE
-                  </div>
+                  <div className="font-semibold text-foreground text-sm">Mastère BIM</div>
+                  <div className="text-xs text-muted-foreground">Co-diplômant EHTP</div>
                 </div>
               </div>
             </div>
 
             <div className="absolute -right-4 bottom-1/4 bg-white rounded-xl p-4 shadow-lg">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-welearn-navy/10 rounded-lg">
-                  <Users className="h-6 w-6 text-welearn-navy" />
+                <div className="p-2 rounded-lg" style={{ backgroundColor: "color-mix(in oklch, var(--color-welearn-navy) 10%, transparent)" }}>
+                  <svg
+                    className="h-6 w-6"
+                    style={{ color: "var(--color-welearn-navy)" }}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"
+                    />
+                  </svg>
                 </div>
                 <div>
-                  <div className="font-semibold text-foreground">
-                    BuildingSmart
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    Certification officielle
-                  </div>
+                  <div className="font-semibold text-foreground text-sm">buildingSMART</div>
+                  <div className="text-xs text-muted-foreground">Service Provider accrédité</div>
                 </div>
               </div>
             </div>

@@ -1,111 +1,194 @@
-import { SectionHeader } from "@/components/section-header";
-import { BarChart3, Briefcase, GraduationCap, MonitorPlay } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
-const expertiseDomains = [
+const blocA = [
   {
-    name: "Étude de marché",
-    color: "#1a3a52",
-    icon: BarChart3,
-    subcategories: ["Valeur", "Financement", "Ressources", "Stratégie"],
+    title: "Ingénierie de formation",
+    description:
+      "Analyse des besoins, cartographie des compétences, conception de programmes sur mesure, évaluation d'impact.",
   },
   {
-    name: "Business Model",
-    color: "#2d5a7b",
-    icon: Briefcase,
-    subcategories: [
-      "Innovation",
-      "Benchmark",
-      "Public cible",
-      "Réglementation",
+    title: "Ingénierie pédagogique & Scénarisation",
+    description:
+      "Transformation de contenus en expériences engageantes : storyboards, gamification, mises en situation, évaluations progressives.",
+  },
+  {
+    title: "Digital Learning & Production",
+    description:
+      "MOOCs, micro-learning, motion design, voix-off multilingues (FR, AR, EN), VR, vidéos 3D. Sur welearn.ac ou en marque blanche.",
+  },
+  {
+    title: "Académies d'entreprise",
+    description:
+      "Création d'académies internes : parcours, plateforme, contenus, partenariats académiques, déploiement à grande échelle.",
+  },
+];
+
+const blocB = [
+  {
+    category: "BIM & Digitalisation du BTP",
+    tags: [
+      "BIM Management",
+      "BIM Foundations (buildingSMART)",
+      "Coordination BIM",
+      "Modélisation",
+      "BIM MOA/MOE",
+    ],
+    note: "Welearn = service provider accrédité buildingSMART International",
+  },
+  {
+    category: "Construction & Matériaux",
+    tags: [
+      "Béton",
+      "Étanchéité & Isolation",
+      "Pathologies du bâtiment",
+      "Sécurité incendie",
+      "Construction durable",
+      "Parasismique",
     ],
   },
   {
-    name: "Ingénierie de formation",
-    color: "#5a7d8c",
-    icon: GraduationCap,
-    subcategories: ["Programme", "Stratégie", "Ressources", "Expertise"],
+    category: "Immobilier",
+    tags: [
+      "Asset Management",
+      "Facility Management",
+      "Investissement",
+      "Droit immobilier",
+      "VEFA",
+      "Expertise et évaluation",
+    ],
   },
   {
-    name: "Digital Learning",
-    color: "#8fa6b8",
-    icon: MonitorPlay,
-    subcategories: ["Scénarisation", "Contenu", "Audiovisuel", "LMS"],
+    category: "Intelligence Artificielle & Innovation",
+    tags: [
+      "IA pour la construction",
+      "IA pour l'immobilier",
+      "Apprentissage augmenté par l'IA",
+    ],
+  },
+  {
+    category: "Management & Compétences transversales",
+    tags: ["Management de projets", "Leadership", "Soft skills", "RH", "Marketing & Commercial"],
   },
 ];
 
 export function ExpertiseSection() {
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="py-20 lg:py-28 bg-secondary">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <SectionHeader
-          eyebrow="Nos domaines d'expertise"
-          title="Nos domaines d'expertise"
-          description="Une couverture complète des besoins en formation et conseil pour le secteur de la construction."
-        />
+        <div className="max-w-3xl mb-16">
+          <p className="text-sm font-semibold uppercase tracking-widest text-(--color-welearn-tertiary) mb-3">
+            Notre double expertise
+          </p>
+          <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance leading-tight">
+            L'expertise métier ET l'expertise pédagogique — c'est notre double
+            force
+          </h2>
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            Beaucoup savent former. Peu connaissent votre métier. Welearn réunit
+            les deux : une maîtrise approfondie de l'ingénierie de formation et
+            du digital learning, combinée à une expertise terrain dans la
+            construction et l'immobilier.
+          </p>
+        </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
-          {expertiseDomains.map((domain, idx) => {
-            const Icon = domain.icon;
+        <div className="grid lg:grid-cols-2 gap-8 mb-10">
+          {/* Bloc A — Savoir-faire */}
+          <div className="bg-white rounded-2xl p-8 border border-border shadow-sm">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-(--color-welearn-navy) text-white font-bold text-lg shrink-0">
+                A
+              </div>
+              <div>
+                <h3 className="font-sans text-xl font-bold text-foreground">
+                  Savoir-faire
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Ingénierie de formation & Digital
+                </p>
+              </div>
+            </div>
 
-            return (
-              <div
-                key={idx}
-                className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-8 min-h-80 flex flex-col transition-all duration-300 hover:shadow-xl hover:border-gray-300"
-              >
-                {/* Colored top accent bar */}
-                <div
-                  className="absolute top-0 left-0 right-0 h-1.5"
-                  style={{ backgroundColor: domain.color }}
-                />
-
-                {/* Colored background accent (subtle) */}
-                <div
-                  className="absolute -right-16 -top-16 h-32 w-32 rounded-full opacity-5 transition-all duration-300 group-hover:opacity-10"
-                  style={{ backgroundColor: domain.color }}
-                />
-
-                <div className="relative flex h-full flex-col">
-                  {/* Title */}
-                  <div className="flex h-20 items-center gap-3">
-                    <div
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-100"
-                      style={{ borderLeft: `3px solid ${domain.color}` }}
-                    >
-                      <Icon
-                        size={20}
-                        style={{ color: domain.color }}
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <h3 className="font-sans text-xl font-bold text-foreground leading-snug">
-                      {domain.name}
-                    </h3>
+            <div className="space-y-6">
+              {blocA.map((item, idx) => (
+                <div key={idx} className="flex gap-4">
+                  <div className="mt-1 h-5 w-5 shrink-0 flex items-center justify-center rounded-full bg-(--color-welearn-navy)/10">
+                    <div className="h-2 w-2 rounded-full bg-(--color-welearn-navy)" />
                   </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-1">
+                      {item.title}
+                    </h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-                  {/* Separator line */}
-                  <div
-                    className="mt-1 h-0.5 w-10"
-                    style={{ backgroundColor: domain.color }}
-                  />
+          {/* Bloc B — Expertise terrain */}
+          <div className="bg-white rounded-2xl p-8 border border-border shadow-sm">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl text-white font-bold text-lg shrink-0 bg-(--color-welearn-tertiary)">
+                B
+              </div>
+              <div>
+                <h3 className="font-sans text-xl font-bold text-foreground">
+                  Expertise terrain
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Construction, BIM & Immobilier
+                </p>
+              </div>
+            </div>
 
-                  {/* Subcategories */}
-                  <div className="mt-8 flex flex-1 flex-wrap content-center gap-2.5">
-                    {domain.subcategories.map((sub, subIdx) => (
+            <div className="space-y-5">
+              {blocB.map((item, idx) => (
+                <div key={idx}>
+                  <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
+                    {item.category}
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {item.tags.map((tag, tagIdx) => (
                       <span
-                        key={subIdx}
-                        className="inline-block px-3 py-1.5 text-sm font-medium text-gray-600 bg-gray-100 rounded transition-colors duration-200"
-                        style={{
-                          borderLeft: `3px solid ${domain.color}`,
-                        }}
+                        key={tagIdx}
+                        className="inline-block px-2.5 py-1 text-xs font-medium text-foreground bg-secondary rounded border border-border"
                       >
-                        {sub}
+                        {tag}
                       </span>
                     ))}
                   </div>
+                  {item.note && (
+                    <p className="mt-2 text-xs text-(--color-welearn-tertiary) font-medium italic">
+                      {item.note}
+                    </p>
+                  )}
                 </div>
-              </div>
-            );
-          })}
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Closing CTA banner */}
+        <div className="bg-(--color-welearn-navy) rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center gap-6 justify-between">
+          <p className="text-white/90 text-lg leading-relaxed max-w-2xl">
+            C'est parce que nous maîtrisons à la fois l'art de former et la
+            réalité de vos métiers que nos programmes produisent un{" "}
+            <strong className="text-white">impact concret sur le terrain.</strong>
+          </p>
+          <Button
+            asChild
+            size="lg"
+            className="bg-white hover:bg-(--color-welearn-gold) text-(--color-welearn-navy) font-semibold whitespace-nowrap transition-colors shrink-0"
+          >
+            <Link href="/formations">
+              Voir tout le catalogue
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
