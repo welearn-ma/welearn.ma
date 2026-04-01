@@ -38,7 +38,7 @@ export function TestimonialsSection() {
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="flex flex-col bg-wl-gray-light rounded-xl p-7 hover:shadow-sm transition-shadow duration-300"
+              className="flex flex-col h-full bg-wl-gray-light rounded-xl p-7 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
             >
               {/* 5-star rating */}
               <div className="flex gap-0.5 mb-4" aria-label="5 étoiles sur 5">

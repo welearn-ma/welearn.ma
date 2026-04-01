@@ -69,7 +69,13 @@ const blocB = [
   },
   {
     category: "Management & Compétences transversales",
-    tags: ["Management de projets", "Leadership", "Soft skills", "RH", "Marketing & Commercial"],
+    tags: [
+      "Management de projets",
+      "Leadership",
+      "Soft skills",
+      "RH",
+      "Marketing & Commercial",
+    ],
   },
 ];
 
@@ -77,12 +83,12 @@ export function ExpertiseSection() {
   return (
     <section className="py-20 lg:py-28 bg-wl-gray-light">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="max-w-3xl mb-16">
+        <div className="max-w-5xl mb-16 mx-auto text-center">
           <p className="text-sm font-semibold uppercase tracking-widest text-wl-orange mb-3">
             Notre double expertise
           </p>
           <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-wl-text mb-6 text-balance leading-tight">
-            L'expertise métier ET l'expertise pédagogique — c'est notre double
+            L'expertise métier & l'expertise pédagogique — c'est notre double
             force
           </h2>
           <p className="text-lg text-wl-text-secondary leading-relaxed">
@@ -95,7 +101,7 @@ export function ExpertiseSection() {
 
         <div className="grid lg:grid-cols-2 gap-8 mb-10">
           {/* Bloc A — Savoir-faire */}
-          <div className="bg-white rounded-2xl p-8 border border-wl-border shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="bg-white rounded-2xl p-8 border border-wl-border shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
             <div className="flex items-center gap-3 mb-8">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-wl-blue text-white font-bold text-lg shrink-0">
                 A
@@ -130,7 +136,7 @@ export function ExpertiseSection() {
           </div>
 
           {/* Bloc B — Expertise terrain */}
-          <div className="bg-white rounded-2xl p-8 border border-wl-border shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="bg-white rounded-2xl p-8 border border-wl-border shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
             <div className="flex items-center gap-3 mb-8">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-wl-orange text-white font-bold text-lg shrink-0">
                 B
@@ -177,12 +183,14 @@ export function ExpertiseSection() {
           <p className="text-white/90 text-lg leading-relaxed max-w-2xl">
             C'est parce que nous maîtrisons à la fois l'art de former et la
             réalité de vos métiers que nos programmes produisent un{" "}
-            <strong className="text-white">impact concret sur le terrain.</strong>
+            <strong className="text-white">
+              impact concret sur le terrain.
+            </strong>
           </p>
           <Button
             asChild
             size="lg"
-            className="bg-white hover:bg-wl-orange hover:text-white text-wl-blue-dark font-semibold whitespace-nowrap transition-colors shrink-0"
+            className="bg-white hover:bg-white/90 text-wl-blue-dark font-semibold whitespace-nowrap transition-all duration-200 shrink-0"
           >
             <Link href="/formations">
               Voir tout le catalogue

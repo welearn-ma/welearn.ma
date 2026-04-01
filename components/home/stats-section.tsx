@@ -10,7 +10,7 @@ export function StatsSection() {
   return (
     <section className="py-20 lg:py-28 bg-white">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="max-w-3xl mb-16">
+        <div className="max-w-3xl mb-16 mx-auto text-center">
           <p className="text-sm font-semibold uppercase tracking-widest text-wl-orange mb-3">
             Notre impact
           </p>
@@ -29,7 +29,7 @@ export function StatsSection() {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="flex flex-col items-center justify-center text-center p-6 rounded-xl bg-wl-gray-light border border-wl-border hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:border-wl-blue/20 transition-all duration-300"
+              className="flex flex-col items-center justify-center text-center p-6 rounded-xl bg-wl-gray-light border border-wl-border hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-200"
             >
               <div className="text-3xl md:text-4xl font-bold text-wl-blue mb-2 font-sans">
                 {stat.value}

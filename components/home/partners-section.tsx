@@ -56,7 +56,7 @@ export function PartnersSection() {
           {partnerGroups.map((group, index) => (
             <div
               key={index}
-              className="rounded-xl border border-wl-border bg-white p-6 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-shadow duration-300"
+              className="rounded-xl border border-wl-border bg-white p-6 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-200"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-2.5 w-2.5 rounded-full shrink-0 bg-wl-blue" />

@@ -39,7 +39,7 @@ export function HeroSection() {
               <Button
                 asChild
                 size="lg"
-                className="bg-white hover:bg-white/90 text-wl-blue-dark font-semibold transition-colors"
+                className="bg-white hover:bg-white/90 text-wl-blue-dark font-semibold transition-all duration-200"
               >
                 <Link href="/formations">
                   Découvrir nos formations
@@ -50,7 +50,7 @@ export function HeroSection() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-white/30 border-2 text-white hover:bg-white/10 bg-transparent transition-colors"
+                className="border-white/30 border-2 text-white hover:bg-white hover:text-wl-blue-dark bg-transparent transition-all duration-200"
               >
                 <Link href="/contact">Demander un programme sur mesure</Link>
               </Button>

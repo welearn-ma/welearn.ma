@@ -65,7 +65,7 @@ function MegaMenuItem({ item }: { item: NavItem }) {
     <div className="relative group">
       <Link
         href={item.href}
-        className="flex items-center gap-1 text-sm font-medium text-wl-text-secondary hover:text-wl-blue transition-colors py-2"
+        className="flex items-center gap-1 text-sm font-medium text-wl-text-secondary hover:text-wl-blue transition-colors duration-200 py-2"
       >
         {item.name}
         {item.children && <ChevronDown className="h-4 w-4" />}
@@ -87,7 +87,7 @@ function MegaMenuItem({ item }: { item: NavItem }) {
                           <Link
                             key={subChild.name}
                             href={subChild.href}
-                            className="block px-4 py-2.5 text-sm text-wl-text-secondary hover:bg-wl-gray-light hover:text-wl-blue rounded-lg transition-colors"
+                            className="block px-4 py-2.5 text-sm text-wl-text-secondary hover:bg-wl-gray-light hover:text-wl-blue rounded-lg transition-colors duration-200"
                           >
                             {subChild.name}
                           </Link>
@@ -98,7 +98,7 @@ function MegaMenuItem({ item }: { item: NavItem }) {
                 ) : (
                   <Link
                     href={child.href}
-                    className="block px-4 py-2.5 text-sm text-wl-text-secondary hover:bg-wl-gray-light hover:text-wl-blue rounded-lg transition-colors"
+                    className="block px-4 py-2.5 text-sm text-wl-text-secondary hover:bg-wl-gray-light hover:text-wl-blue rounded-lg transition-colors duration-200"
                   >
                     {child.name}
                   </Link>
@@ -205,7 +205,7 @@ export function Navbar() {
             asChild
             variant="outline"
             size="sm"
-            className="border-wl-blue text-wl-blue hover:bg-wl-blue-tint bg-transparent"
+            className="border-wl-blue text-wl-blue hover:bg-wl-blue-tint bg-transparent transition-all duration-200"
           >
             <Link href="https://welearn.ac" target="_blank">
               Accéder au LMS
@@ -214,7 +214,7 @@ export function Navbar() {
           <Button
             asChild
             size="sm"
-            className="bg-wl-orange hover:bg-wl-orange-dark text-white border-0 rounded-lg px-6"
+            className="bg-wl-orange hover:bg-wl-orange-dark text-white border-0 rounded-lg px-6 transition-all duration-200"
           >
             <Link href="/contact">Nous contacter</Link>
           </Button>

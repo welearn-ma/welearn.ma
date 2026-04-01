@@ -55,7 +55,7 @@ export function ProcessSection() {
                 <div className="hidden md:block absolute top-10 left-[calc(50%+2.5rem)] right-[calc(-50%+2.5rem)] h-px bg-white/20" />
               )}
 
-              <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/20 bg-white/10 backdrop-blur-sm mb-6 group-hover:border-white/40 group-hover:bg-white/15 transition-all duration-300">
+              <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-full border-2 border-white/20 bg-white/10 backdrop-blur-sm mb-6 group-hover:border-white/40 group-hover:bg-white/15 transition-all duration-200">
                 <span className="font-sans text-2xl font-bold text-white">
                   {step.number}
                 </span>
@@ -74,7 +74,7 @@ export function ProcessSection() {
           <Button
             asChild
             size="lg"
-            className="bg-wl-orange hover:bg-wl-orange-dark text-white font-semibold transition-colors border-0"
+            className="bg-wl-orange hover:bg-wl-orange-dark text-white font-semibold transition-all duration-200 border-0"
           >
             <Link href="/contact">
               Lancer votre projet de formation

@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { SectionHeader } from "@/components/section-header";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Settings, Monitor, Building2, ArrowRight } from "lucide-react";
+import {
+  GraduationCap,
+  Settings,
+  Monitor,
+  Building2,
+  ArrowRight,
+} from "lucide-react";
 
 const solutions = [
   {
@@ -10,7 +16,7 @@ const solutions = [
     description:
       "Mastère Spécialisé BIM, Executive Master Ingénierie Immobilière, Certification BIM Foundations — co-construits avec l'EHTP.",
     href: "/formations",
-    cta: "Découvrir nos programmes",
+    cta: "Découvrir nos formations",
     iconBg: "bg-wl-blue-tint",
     iconColor: "text-wl-blue",
     barColor: "bg-wl-blue",
@@ -22,17 +28,17 @@ const solutions = [
     description:
       "Programmes intra-entreprise : analyse des besoins, ingénierie pédagogique, déploiement, évaluation. Accompagnement remboursement CSF inclus.",
     href: "/ingenierie",
-    cta: "Demander un programme sur mesure",
+    cta: "Demander un programme",
     iconBg: "bg-wl-orange-tint",
     iconColor: "text-wl-orange",
     barColor: "bg-wl-orange",
-    featured: true,
+    featured: false,
   },
   {
     icon: Monitor,
     title: "Digital Learning",
     description:
-      "Plateforme LMS welearn.ac : MOOCs, e-learning, VR, micro-learning, produits par notre studio intégré.",
+      "Plateforme LMS : MOOCs, e-learning, VR, micro-learning, produits par notre studio intégré.",
     href: "https://welearn.ac",
     cta: "Accéder à la plateforme",
     iconBg: "bg-wl-success-tint",
@@ -46,7 +52,7 @@ const solutions = [
     title: "Académies d'entreprise",
     description:
       "Structurer le développement des compétences à grande échelle : stratégie, parcours, plateforme, déploiement.",
-    href: "/contact",
+    href: "/ingenierie/academie",
     cta: "En savoir plus",
     iconBg: "bg-wl-purple-tint",
     iconColor: "text-wl-accent-purple",
@@ -71,7 +77,7 @@ export function FormatsSection() {
             return (
               <div
                 key={index}
-                className={`group relative flex flex-col overflow-hidden rounded-xl bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] ${
+                className={`group relative flex flex-col overflow-hidden rounded-xl bg-white p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] ${
                   solution.featured
                     ? "border-2 border-wl-orange"
                     : "border border-wl-border"
@@ -100,7 +106,7 @@ export function FormatsSection() {
                   className={`w-full transition-colors ${
                     solution.featured
                       ? "bg-wl-orange hover:bg-wl-orange-dark text-white border-0"
-                      : "bg-transparent border border-wl-border text-wl-text-secondary hover:border-wl-blue hover:text-wl-blue"
+                      : "bg-transparent border border-wl-border text-wl-text-secondary hover:bg-wl-blue hover:text-white hover:border-wl-blue"
                   }`}
                 >
                   <Link

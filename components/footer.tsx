@@ -96,7 +96,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-white/80 transition-colors"
+                    className="text-sm text-white/50 hover:text-white/80 transition-colors duration-200"
                   >
                     {link.name}
                   </Link>
@@ -115,7 +115,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-white/80 transition-colors"
+                    className="text-sm text-white/50 hover:text-white/80 transition-colors duration-200"
                   >
                     {link.name}
                   </Link>
@@ -134,7 +134,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-white/80 transition-colors"
+                    className="text-sm text-white/50 hover:text-white/80 transition-colors duration-200"
                   >
                     {link.name}
                   </Link>
@@ -153,7 +153,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-white/80 transition-colors"
+                    className="text-sm text-white/50 hover:text-white/80 transition-colors duration-200"
                   >
                     {link.name}
                   </Link>
@@ -173,7 +173,7 @@ export function Footer() {
             <Link
               href="https://www.linkedin.com/company/welearnmaroc"
               target="_blank"
-              className="p-2 text-white/50 hover:text-white/80 transition-colors"
+              className="p-2 text-white/50 hover:text-white/80 transition-colors duration-200"
             >
               <Linkedin className="h-5 w-5" />
               <span className="sr-only">LinkedIn</span>
@@ -181,7 +181,7 @@ export function Footer() {
             <Link
               href="https://www.youtube.com/channel/UCPbfyV72PP5PP1f6fH6-hbA"
               target="_blank"
-              className="p-2 text-white/50 hover:text-white/80 transition-colors"
+              className="p-2 text-white/50 hover:text-white/80 transition-colors duration-200"
             >
               <Youtube className="h-5 w-5" />
               <span className="sr-only">YouTube</span>
@@ -189,7 +189,7 @@ export function Footer() {
             <Link
               href="https://web.facebook.com/WelearnMaroc"
               target="_blank"
-              className="p-2 text-white/50 hover:text-white/80 transition-colors"
+              className="p-2 text-white/50 hover:text-white/80 transition-colors duration-200"
             >
               <Facebook className="h-5 w-5" />
               <span className="sr-only">Facebook</span>
@@ -197,7 +197,7 @@ export function Footer() {
             <Link
               href="https://x.com/welearnmaroc"
               target="_blank"
-              className="p-2 text-white/50 hover:text-white/80 transition-colors"
+              className="p-2 text-white/50 hover:text-white/80 transition-colors duration-200"
             >
               <Twitter className="h-5 w-5" />
               <span className="sr-only">Twitter</span>
