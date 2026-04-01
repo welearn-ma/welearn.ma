@@ -5,6 +5,37 @@
 
 /* Welearn brand colors - navy blue primary from logo, yellow only for hovers */
 :root {
+  /* ─── Design system tokens (reference design) ─── */
+  /* Brand */
+  --color-blue: #1B5FAA;
+  --color-blue-dark: #0D3D6E;
+  --color-orange: #E8721C;
+  --color-orange-dark: #D4600F;
+
+  /* Backgrounds */
+  --color-white: #FFFFFF;
+  --color-gray-light: #F5F6F8;
+  --color-surface: #FFFFFF;
+
+  /* Borders */
+  --color-border-ui: #E8EAED;
+
+  /* Text */
+  --color-text-primary: #1A1D23;
+  --color-text-secondary: #5C6370;
+  --color-text-tertiary: #8E95A2;
+
+  /* Semantic */
+  --color-success: #0E8A5F;
+  --color-accent-purple: #7C3AED;
+  --color-star: #F59E0B;
+  --color-highlight: #FDB44B;
+
+  /* Tints (icon backgrounds) */
+  --color-blue-tint: #E6F1FB;
+  --color-orange-tint: #FFF3E6;
+  --color-success-tint: #E6F5EE;
+  --color-purple-tint: #F0EDFF;
   --background: oklch(1 0 0);
   --foreground: oklch(0.2 0.05 250);
   --card: oklch(1 0 0);
@@ -76,6 +107,27 @@
   --sidebar-accent-foreground: oklch(0.98 0 0);
   --sidebar-border: oklch(0.3 0.03 250);
   --sidebar-ring: oklch(0.4 0.08 250);
+}
+
+@theme {
+  /* ─── Welearn utility tokens (wl- prefix) ─── */
+  --color-wl-blue: #1B5FAA;
+  --color-wl-blue-dark: #0D3D6E;
+  --color-wl-blue-tint: #E6F1FB;
+  --color-wl-orange: #E8721C;
+  --color-wl-orange-dark: #D4600F;
+  --color-wl-orange-tint: #FFF3E6;
+  --color-wl-gray-light: #F5F6F8;
+  --color-wl-border: #E8EAED;
+  --color-wl-text: #1A1D23;
+  --color-wl-text-secondary: #5C6370;
+  --color-wl-text-tertiary: #8E95A2;
+  --color-wl-success: #0E8A5F;
+  --color-wl-success-tint: #E6F5EE;
+  --color-wl-accent-purple: #7C3AED;
+  --color-wl-purple-tint: #F0EDFF;
+  --color-wl-star: #F59E0B;
+  --color-wl-highlight: #FDB44B;
 }
 
 @theme inline {

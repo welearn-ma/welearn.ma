@@ -65,29 +65,29 @@ function MegaMenuItem({ item }: { item: NavItem }) {
     <div className="relative group">
       <Link
         href={item.href}
-        className="flex items-center gap-1 text-sm font-medium text-foreground/80 hover:text-primary transition-colors py-2"
+        className="flex items-center gap-1 text-sm font-medium text-wl-text-secondary hover:text-wl-blue transition-colors py-2"
       >
         {item.name}
         {item.children && <ChevronDown className="h-4 w-4" />}
       </Link>
       {item.children && (
         <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-          <div className="bg-white rounded-xl shadow-xl border border-border p-3 min-w-[260px]">
+          <div className="bg-white rounded-xl shadow-xl border border-wl-border p-3 min-w-[260px]">
             {item.children.map((child) => (
               <div key={child.name} className="relative group/sub">
                 {child.children ? (
                   <>
-                    <div className="flex items-center justify-between px-4 py-2.5 text-sm text-foreground/80 hover:bg-secondary hover:text-primary rounded-lg transition-colors cursor-pointer">
+                    <div className="flex items-center justify-between px-4 py-2.5 text-sm text-wl-text-secondary hover:bg-wl-gray-light hover:text-wl-blue rounded-lg transition-colors cursor-pointer">
                       <span>{child.name}</span>
                       <ChevronRight className="h-4 w-4" />
                     </div>
                     <div className="absolute left-full top-0 pl-2 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200">
-                      <div className="bg-white rounded-xl shadow-xl border border-border p-3 min-w-60">
+                      <div className="bg-white rounded-xl shadow-xl border border-wl-border p-3 min-w-60">
                         {child.children.map((subChild) => (
                           <Link
                             key={subChild.name}
                             href={subChild.href}
-                            className="block px-4 py-2.5 text-sm text-foreground/80 hover:bg-secondary hover:text-primary rounded-lg transition-colors"
+                            className="block px-4 py-2.5 text-sm text-wl-text-secondary hover:bg-wl-gray-light hover:text-wl-blue rounded-lg transition-colors"
                           >
                             {subChild.name}
                           </Link>
@@ -98,7 +98,7 @@ function MegaMenuItem({ item }: { item: NavItem }) {
                 ) : (
                   <Link
                     href={child.href}
-                    className="block px-4 py-2.5 text-sm text-foreground/80 hover:bg-secondary hover:text-primary rounded-lg transition-colors"
+                    className="block px-4 py-2.5 text-sm text-wl-text-secondary hover:bg-wl-gray-light hover:text-wl-blue rounded-lg transition-colors"
                   >
                     {child.name}
                   </Link>
@@ -126,7 +126,7 @@ function MobileMenuItem({
       <div className="flex items-center justify-between">
         <Link
           href={item.href}
-          className="block py-2 text-base font-medium text-foreground/80 hover:text-primary"
+          className="block py-2 text-base font-medium text-wl-text-secondary hover:text-wl-blue"
           onClick={onClose}
         >
           {item.name}
@@ -135,7 +135,7 @@ function MobileMenuItem({
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2 text-muted-foreground hover:text-primary"
+            className="p-2 text-wl-text-tertiary hover:text-wl-blue"
           >
             <ChevronDown
               className={`h-5 w-5 transition-transform ${
@@ -151,7 +151,7 @@ function MobileMenuItem({
             <div key={child.name}>
               <Link
                 href={child.href}
-                className="block py-2 text-sm text-muted-foreground hover:text-primary"
+                className="block py-2 text-sm text-wl-text-tertiary hover:text-wl-blue"
                 onClick={onClose}
               >
                 {child.name}
@@ -162,7 +162,7 @@ function MobileMenuItem({
                     <Link
                       key={subChild.name}
                       href={subChild.href}
-                      className="block py-1.5 text-sm text-muted-foreground/80 hover:text-primary"
+                      className="block py-1.5 text-sm text-wl-text-tertiary hover:text-wl-blue"
                       onClick={onClose}
                     >
                       {subChild.name}
@@ -182,9 +182,9 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/80 border-b border-border">
-      <nav className="flex max-w-7xl items-center justify-between gap-4 px-4  lg:px-8 min-w-full">
-        <Link href="/" className="flex items-center gap-2">
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-wl-border">
+      <nav className="flex h-[72px] max-w-7xl items-center justify-between gap-4 px-4 lg:px-8 min-w-full">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
           <Image
             src="/images/welearn-logo.png"
             alt="Welearn"
@@ -200,12 +200,12 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="hidden xl:flex xl:items-center xl:gap-3">
+        <div className="hidden xl:flex xl:items-center xl:gap-3 shrink-0">
           <Button
             asChild
             variant="outline"
             size="sm"
-            className="border-primary text-primary hover:bg-primary hover:text-white bg-transparent"
+            className="border-wl-blue text-wl-blue hover:bg-wl-blue-tint bg-transparent"
           >
             <Link href="https://welearn.ac" target="_blank">
               Accéder au LMS
@@ -214,7 +214,7 @@ export function Navbar() {
           <Button
             asChild
             size="sm"
-            className="bg-primary hover:bg-primary/90 text-white"
+            className="bg-wl-orange hover:bg-wl-orange-dark text-white border-0 rounded-lg px-6"
           >
             <Link href="/contact">Nous contacter</Link>
           </Button>
@@ -223,8 +223,9 @@ export function Navbar() {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="xl:hidden p-2 text-foreground"
+          className="xl:hidden p-2 text-wl-text-secondary"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
         >
           {mobileMenuOpen ? (
             <X className="h-6 w-6" />
@@ -236,7 +237,7 @@ export function Navbar() {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="xl:hidden border-t border-border bg-white max-h-[80vh] overflow-y-auto">
+        <div className="xl:hidden border-t border-wl-border bg-white max-h-[80vh] overflow-y-auto">
           <div className="px-4 py-4 space-y-1">
             {navigation.map((item) => (
               <MobileMenuItem
@@ -245,17 +246,20 @@ export function Navbar() {
                 onClose={() => setMobileMenuOpen(false)}
               />
             ))}
-            <div className="pt-4 space-y-2 border-t border-border mt-4">
+            <div className="pt-4 space-y-2 border-t border-wl-border mt-4">
               <Button
                 asChild
                 variant="outline"
-                className="w-full border-primary text-primary bg-transparent"
+                className="w-full border-wl-blue text-wl-blue hover:bg-wl-blue-tint bg-transparent"
               >
                 <Link href="https://welearn.ac" target="_blank">
                   Accéder au LMS
                 </Link>
               </Button>
-              <Button asChild className="w-full bg-primary text-white">
+              <Button
+                asChild
+                className="w-full bg-wl-orange hover:bg-wl-orange-dark text-white border-0"
+              >
                 <Link href="/contact">Nous contacter</Link>
               </Button>
             </div>

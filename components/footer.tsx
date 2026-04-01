@@ -55,7 +55,7 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="bg-(--color-welearn-navy-dark) text-white">
+    <footer className="bg-wl-text text-white">
       <div className="mx-auto max-w-7xl px-4 pt-16 pb-4 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
           {/* Brand */}
@@ -66,21 +66,21 @@ export function Footer() {
               width={100}
               height={100}
             />
-            <p className="text-white/80 text-sm leading-relaxed mb-6 max-w-sm">
+            <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-sm mt-4">
               EdTech destinée au secteur de la Construction, reconnue comme
               Jeune Entreprise Innovante® en France et au Maroc.
             </p>
             <div className="space-y-3">
-              <div className="flex items-center gap-3 text-sm text-white/80">
-                <Mail className="h-4 w-4 text-white" />
+              <div className="flex items-center gap-3 text-sm text-white/50">
+                <Mail className="h-4 w-4 text-white/50 shrink-0" />
                 <span>contact@welearn.ma</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-white/80">
-                <Phone className="h-4 w-4 text-white" />
+              <div className="flex items-center gap-3 text-sm text-white/50">
+                <Phone className="h-4 w-4 text-white/50 shrink-0" />
                 <span>+212 520 850 850</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-white/80">
-                <MapPin className="h-4 w-4 text-white" />
+              <div className="flex items-center gap-3 text-sm text-white/50">
+                <MapPin className="h-4 w-4 text-white/50 shrink-0" />
                 <span>300, Technopark Casablanca, Maroc</span>
               </div>
             </div>
@@ -88,7 +88,7 @@ export function Footer() {
 
           {/* Formations Links */}
           <div>
-            <h3 className="font-sans font-semibold text-base mb-4">
+            <h3 className="font-sans font-semibold text-sm text-white mb-4">
               Formations
             </h3>
             <ul className="space-y-2">
@@ -96,7 +96,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/70 hover:text-(--color-welearn-gold) transition-colors"
+                    className="text-sm text-white/50 hover:text-white/80 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -107,13 +107,15 @@ export function Footer() {
 
           {/* Services Links */}
           <div>
-            <h3 className="font-sans font-semibold text-base mb-4">Services</h3>
+            <h3 className="font-sans font-semibold text-sm text-white mb-4">
+              Services
+            </h3>
             <ul className="space-y-2">
               {footerLinks.services.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/70 hover:text-(--color-welearn-gold) transition-colors"
+                    className="text-sm text-white/50 hover:text-white/80 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -124,13 +126,15 @@ export function Footer() {
 
           {/* Company Links */}
           <div>
-            <h3 className="font-sans font-semibold text-base mb-4">Welearn</h3>
+            <h3 className="font-sans font-semibold text-sm text-white mb-4">
+              Welearn
+            </h3>
             <ul className="space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/70 hover:text-(--color-welearn-gold) transition-colors"
+                    className="text-sm text-white/50 hover:text-white/80 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -141,13 +145,15 @@ export function Footer() {
 
           {/* Legal Links */}
           <div>
-            <h3 className="font-sans font-semibold text-base mb-4">Légal</h3>
+            <h3 className="font-sans font-semibold text-sm text-white mb-4">
+              Légal
+            </h3>
             <ul className="space-y-2">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/70 hover:text-(--color-welearn-gold) transition-colors"
+                    className="text-sm text-white/50 hover:text-white/80 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -159,7 +165,7 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-white/50">
             © {new Date().getFullYear()} Welearn. Tous droits réservés. Jeune
             Entreprise Innovante®
           </p>
@@ -167,7 +173,7 @@ export function Footer() {
             <Link
               href="https://www.linkedin.com/company/welearnmaroc"
               target="_blank"
-              className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors"
+              className="p-2 text-white/50 hover:text-white/80 transition-colors"
             >
               <Linkedin className="h-5 w-5" />
               <span className="sr-only">LinkedIn</span>
@@ -175,7 +181,7 @@ export function Footer() {
             <Link
               href="https://www.youtube.com/channel/UCPbfyV72PP5PP1f6fH6-hbA"
               target="_blank"
-              className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors"
+              className="p-2 text-white/50 hover:text-white/80 transition-colors"
             >
               <Youtube className="h-5 w-5" />
               <span className="sr-only">YouTube</span>
@@ -183,7 +189,7 @@ export function Footer() {
             <Link
               href="https://web.facebook.com/WelearnMaroc"
               target="_blank"
-              className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors"
+              className="p-2 text-white/50 hover:text-white/80 transition-colors"
             >
               <Facebook className="h-5 w-5" />
               <span className="sr-only">Facebook</span>
@@ -191,7 +197,7 @@ export function Footer() {
             <Link
               href="https://x.com/welearnmaroc"
               target="_blank"
-              className="p-2 text-white/60 hover:text-(--color-welearn-gold) transition-colors"
+              className="p-2 text-white/50 hover:text-white/80 transition-colors"
             >
               <Twitter className="h-5 w-5" />
               <span className="sr-only">Twitter</span>

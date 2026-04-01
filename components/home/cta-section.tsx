@@ -4,9 +4,13 @@ import { ArrowRight, Phone, Mail, MapPin, Globe } from "lucide-react";
 
 export function CTASection() {
   return (
-    <section className="py-20 lg:py-28 bg-(--color-welearn-navy)">
-      <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-(--color-welearn-gold) mb-4">
+    <section className="relative overflow-hidden py-20 lg:py-28 bg-linear-to-br from-wl-blue to-wl-blue-dark">
+      {/* Decorative circles */}
+      <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-white/3 pointer-events-none" />
+      <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-white/2 pointer-events-none" />
+
+      <div className="relative mx-auto max-w-4xl px-4 lg:px-8 text-center">
+        <p className="text-sm font-semibold uppercase tracking-widest text-wl-orange mb-4">
           Passons à l'action
         </p>
         <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
@@ -22,7 +26,7 @@ export function CTASection() {
           <Button
             asChild
             size="lg"
-            className="bg-white hover:bg-(--color-welearn-gold) text-(--color-welearn-navy) font-semibold transition-colors"
+            className="bg-wl-orange hover:bg-wl-orange-dark text-white font-semibold transition-colors border-0"
           >
             <Link href="/contact">
               Contactez-nous
@@ -31,17 +35,17 @@ export function CTASection() {
           </Button>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-white/80">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-white/70">
           <a
             href="mailto:contact@welearn.ma"
-            className="flex items-center justify-center gap-2 hover:text-(--color-welearn-gold) transition-colors text-sm"
+            className="flex items-center justify-center gap-2 hover:text-white transition-colors text-sm"
           >
             <Mail className="h-4 w-4 shrink-0" />
             contact@welearn.ma
           </a>
           <a
             href="tel:+212661499479"
-            className="flex items-center justify-center gap-2 hover:text-(--color-welearn-gold) transition-colors text-sm"
+            className="flex items-center justify-center gap-2 hover:text-white transition-colors text-sm"
           >
             <Phone className="h-4 w-4 shrink-0" />
             +212 661 499 479
@@ -54,7 +58,7 @@ export function CTASection() {
             href="https://welearn.ac"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 hover:text-(--color-welearn-gold) transition-colors text-sm"
+            className="flex items-center justify-center gap-2 hover:text-white transition-colors text-sm"
           >
             <Globe className="h-4 w-4 shrink-0" />
             welearn.ac

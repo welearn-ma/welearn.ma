@@ -11,7 +11,10 @@ const solutions = [
       "Mastère Spécialisé BIM, Executive Master Ingénierie Immobilière, Certification BIM Foundations — co-construits avec l'EHTP.",
     href: "/formations",
     cta: "Découvrir nos programmes",
-    accentColor: "oklch(0.25 0.08 250)",
+    iconBg: "bg-wl-blue-tint",
+    iconColor: "text-wl-blue",
+    barColor: "bg-wl-blue",
+    featured: false,
   },
   {
     icon: Settings,
@@ -20,7 +23,10 @@ const solutions = [
       "Programmes intra-entreprise : analyse des besoins, ingénierie pédagogique, déploiement, évaluation. Accompagnement remboursement CSF inclus.",
     href: "/ingenierie",
     cta: "Demander un programme sur mesure",
-    accentColor: "oklch(0.35 0.08 250)",
+    iconBg: "bg-wl-orange-tint",
+    iconColor: "text-wl-orange",
+    barColor: "bg-wl-orange",
+    featured: true,
   },
   {
     icon: Monitor,
@@ -29,8 +35,11 @@ const solutions = [
       "Plateforme LMS welearn.ac : MOOCs, e-learning, VR, micro-learning, produits par notre studio intégré.",
     href: "https://welearn.ac",
     cta: "Accéder à la plateforme",
-    accentColor: "oklch(0.45 0.08 250)",
+    iconBg: "bg-wl-success-tint",
+    iconColor: "text-wl-success",
+    barColor: "bg-wl-success",
     external: true,
+    featured: false,
   },
   {
     icon: Building2,
@@ -39,7 +48,10 @@ const solutions = [
       "Structurer le développement des compétences à grande échelle : stratégie, parcours, plateforme, déploiement.",
     href: "/contact",
     cta: "En savoir plus",
-    accentColor: "oklch(0.55 0.08 250)",
+    iconBg: "bg-wl-purple-tint",
+    iconColor: "text-wl-accent-purple",
+    barColor: "bg-wl-accent-purple",
+    featured: false,
   },
 ];
 
@@ -59,35 +71,37 @@ export function FormatsSection() {
             return (
               <div
                 key={index}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-white p-6 hover:shadow-xl hover:border-transparent transition-all duration-300"
+                className={`group relative flex flex-col overflow-hidden rounded-xl bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] ${
+                  solution.featured
+                    ? "border-2 border-wl-orange"
+                    : "border border-wl-border"
+                }`}
               >
                 <div
-                  className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl"
-                  style={{ backgroundColor: solution.accentColor }}
+                  className={`absolute top-0 left-0 right-0 h-1 rounded-t-xl ${solution.barColor}`}
                 />
                 <div
-                  className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl"
-                  style={{
-                    backgroundColor: `color-mix(in oklch, ${solution.accentColor} 12%, transparent)`,
-                  }}
+                  className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl ${solution.iconBg}`}
                 >
                   <Icon
-                    className="h-6 w-6"
-                    style={{ color: solution.accentColor }}
+                    className={`h-6 w-6 ${solution.iconColor}`}
                     aria-hidden="true"
                   />
                 </div>
-                <h3 className="font-sans text-lg font-bold text-foreground mb-3 leading-snug">
+                <h3 className="font-sans text-lg font-bold text-wl-text mb-3 leading-snug">
                   {solution.title}
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-6">
+                <p className="text-sm text-wl-text-secondary leading-relaxed flex-1 mb-6">
                   {solution.description}
                 </p>
                 <Button
                   asChild
-                  variant="outline"
                   size="sm"
-                  className="w-full group-hover:border-(--color-welearn-navy) group-hover:text-(--color-welearn-navy) bg-transparent transition-colors"
+                  className={`w-full transition-colors ${
+                    solution.featured
+                      ? "bg-wl-orange hover:bg-wl-orange-dark text-white border-0"
+                      : "bg-transparent border border-wl-border text-wl-text-secondary hover:border-wl-blue hover:text-wl-blue"
+                  }`}
                 >
                   <Link
                     href={solution.href}

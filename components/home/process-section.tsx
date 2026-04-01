@@ -25,10 +25,14 @@ const steps = [
 
 export function ProcessSection() {
   return (
-    <section className="py-20 lg:py-28 bg-(--color-welearn-navy)">
-      <div className="mx-auto max-w-7xl px-4 lg:px-8">
+    <section className="relative overflow-hidden py-20 lg:py-28 bg-linear-to-br from-wl-blue to-wl-blue-dark">
+      {/* Decorative circles */}
+      <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-white/3 pointer-events-none" />
+      <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-white/2 pointer-events-none" />
+
+      <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
         <div className="text-center mb-16">
-          <p className="text-sm font-semibold uppercase tracking-widest text-(--color-welearn-gold) mb-3">
+          <p className="text-sm font-semibold uppercase tracking-widest text-wl-orange mb-3">
             Méthodologie
           </p>
           <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 text-balance">
@@ -70,7 +74,7 @@ export function ProcessSection() {
           <Button
             asChild
             size="lg"
-            className="bg-white hover:bg-(--color-welearn-gold) text-(--color-welearn-navy) font-semibold transition-colors"
+            className="bg-wl-orange hover:bg-wl-orange-dark text-white font-semibold transition-colors border-0"
           >
             <Link href="/contact">
               Lancer votre projet de formation

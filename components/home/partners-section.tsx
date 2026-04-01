@@ -56,11 +56,11 @@ export function PartnersSection() {
           {partnerGroups.map((group, index) => (
             <div
               key={index}
-              className="rounded-2xl border border-border bg-white p-6 hover:shadow-md transition-shadow duration-300"
+              className="rounded-xl border border-wl-border bg-white p-6 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-shadow duration-300"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="h-2.5 w-2.5 rounded-full shrink-0 bg-(--color-welearn-navy)" />
-                <h3 className="font-semibold text-foreground text-sm uppercase tracking-wide">
+                <div className="h-2.5 w-2.5 rounded-full shrink-0 bg-wl-blue" />
+                <h3 className="font-semibold text-wl-text text-sm uppercase tracking-wide">
                   {group.label}
                 </h3>
               </div>
@@ -68,7 +68,7 @@ export function PartnersSection() {
                 {group.partners.map((partner, partnerIdx) => (
                   <span
                     key={partnerIdx}
-                    className="inline-block px-3 py-1 text-xs font-medium text-foreground bg-secondary rounded-full border border-border"
+                    className="inline-block px-3 py-1 text-xs font-medium text-wl-text-secondary bg-wl-gray-light rounded-full border border-wl-border"
                   >
                     {partner}
                   </span>

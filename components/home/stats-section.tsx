@@ -11,17 +11,17 @@ export function StatsSection() {
     <section className="py-20 lg:py-28 bg-white">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="max-w-3xl mb-16">
-          <p className="text-sm font-semibold uppercase tracking-widest text-(--color-welearn-tertiary) mb-3">
+          <p className="text-sm font-semibold uppercase tracking-widest text-wl-orange mb-3">
             Notre impact
           </p>
-          <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance leading-tight">
+          <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-wl-text mb-6 text-balance leading-tight">
             La formation continue, repensée pour le BTP
           </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Le secteur de la construction est l'un des plus grands au monde — et
-            l'un des moins digitalisés. Les professionnels doivent maîtriser de
-            nouvelles compétences : BIM, construction durable, IA, management de
-            projets complexes. Welearn est né pour combler ce fossé.
+          <p className="text-lg text-wl-text-secondary leading-relaxed">
+            Le secteur de la construction est l'un des plus grands au monde —
+            et l'un des moins digitalisés. Les professionnels doivent maîtriser
+            de nouvelles compétences : BIM, construction durable, IA, management
+            de projets complexes. Welearn est né pour combler ce fossé.
           </p>
         </div>
 
@@ -29,12 +29,12 @@ export function StatsSection() {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="relative flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-secondary border border-border hover:border-(--color-welearn-navy)/20 hover:shadow-md transition-all duration-300"
+              className="flex flex-col items-center justify-center text-center p-6 rounded-xl bg-wl-gray-light border border-wl-border hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:border-wl-blue/20 transition-all duration-300"
             >
-              <div className="text-3xl md:text-4xl font-bold text-(--color-welearn-navy) mb-2 font-sans">
+              <div className="text-3xl md:text-4xl font-bold text-wl-blue mb-2 font-sans">
                 {stat.value}
               </div>
-              <div className="text-sm text-muted-foreground font-medium leading-snug">
+              <div className="text-sm text-wl-text-secondary font-medium leading-snug">
                 {stat.label}
               </div>
             </div>

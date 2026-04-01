@@ -27,7 +27,7 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-20 lg:py-28 bg-secondary">
+    <section className="py-20 lg:py-28 bg-white">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <SectionHeader
           eyebrow="Témoignages"
@@ -38,35 +38,44 @@ export function TestimonialsSection() {
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="flex flex-col bg-white rounded-2xl p-8 border border-border shadow-sm hover:shadow-md transition-shadow duration-300"
+              className="flex flex-col bg-wl-gray-light rounded-xl p-7 hover:shadow-sm transition-shadow duration-300"
             >
-              {/* Quote mark */}
-              <div
-                className="text-5xl font-serif leading-none mb-4 select-none"
-                style={{ color: "var(--color-welearn-navy)", opacity: 0.2 }}
-                aria-hidden="true"
-              >
-                &ldquo;
+              {/* 5-star rating */}
+              <div className="flex gap-0.5 mb-4" aria-label="5 étoiles sur 5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <svg
+                    key={i}
+                    className="h-4 w-4 text-wl-star"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    aria-hidden="true"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
               </div>
 
               <blockquote className="flex-1">
-                <p className="text-foreground leading-relaxed mb-6">
-                  {testimonial.quote}
+                <p className="text-wl-text-secondary leading-relaxed italic text-[15px] mb-6">
+                  &ldquo;{testimonial.quote}&rdquo;
                 </p>
               </blockquote>
 
-              <div className="flex items-center gap-4 pt-6 border-t border-border">
-                {/* Logo placeholder */}
-                <div className="h-10 w-10 rounded-full bg-secondary border border-border flex items-center justify-center shrink-0">
-                  <span className="text-xs font-bold text-muted-foreground uppercase">
-                    {testimonial.company.charAt(0)}
+              <div className="flex items-center gap-3 pt-5 border-t border-wl-border">
+                <div className="h-10 w-10 rounded-full bg-wl-blue flex items-center justify-center shrink-0">
+                  <span className="text-sm font-bold text-white uppercase">
+                    {testimonial.author
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .slice(0, 2)}
                   </span>
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground text-sm">
+                  <p className="font-semibold text-wl-text text-sm">
                     {testimonial.author}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-wl-text-tertiary">
                     {testimonial.role}, {testimonial.company}
                   </p>
                 </div>
