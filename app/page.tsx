@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/home/hero-section";
+import { InstancesSection } from "@/components/home/instances-section";
 import { StatsSection } from "@/components/home/stats-section";
 import { ExpertiseSection } from "@/components/home/expertise-section";
 import { FormatsSection } from "@/components/home/formats-section";
@@ -11,6 +12,7 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
+      <InstancesSection />
       <StatsSection />
       <ExpertiseSection />
       <FormatsSection />
