@@ -1,62 +1,44 @@
-import { SectionHeader } from "@/components/section-header";
-import { CardGrid } from "@/components/card-grid";
-import { Target, Lightbulb, Users, Globe, BookOpen, Zap } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
-const missions = [
-  {
-    icon: Target,
-    title: "Former les professionnels de demain",
-    description:
-      "Proposer des formations de haute qualité adaptées aux enjeux contemporains du secteur de la Construction.",
-    color: "bg-primary",
-  },
-  {
-    icon: Lightbulb,
-    title: "Innover en pédagogie",
-    description:
-      "Développer des méthodes d'apprentissage innovantes combinant expertise technique et outils numériques.",
-    color: "bg-primary",
-  },
-  {
-    icon: Users,
-    title: "Accompagner les entreprises",
-    description:
-      "Être le partenaire privilégié des entreprises du BTP dans leur stratégie de développement des compétences.",
-    color: "bg-primary",
-  },
-  {
-    icon: Globe,
-    title: "Rayonner en Afrique",
-    description:
-      "Contribuer au développement des compétences dans le secteur de la Construction à l'échelle du continent.",
-    color: "bg-primary",
-  },
-  {
-    icon: BookOpen,
-    title: "Valoriser les certifications",
-    description:
-      "Permettre l'accès aux certifications internationales reconnues (BIM, PMP®) pour valoriser les parcours.",
-    color: "bg-primary",
-  },
-  {
-    icon: Zap,
-    title: "Accélérer la transformation",
-    description:
-      "Accompagner la transformation numérique du secteur de la Construction par la formation et le conseil.",
-    color: "bg-primary",
-  },
-];
-
-export function MissionsSection() {
+export function AboutCTA() {
   return (
-    <section id="missions" className="py-20 lg:py-28 bg-white">
-      <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <SectionHeader
-          eyebrow="Notre engagement"
-          title="Nos Missions"
-          description="Les missions qui guident notre action au quotidien pour transformer la formation professionnelle."
-        />
-        <CardGrid items={missions} columns={3} />
+    <section className="relative overflow-hidden py-20 lg:py-28 bg-linear-to-br from-wl-blue to-wl-blue-dark">
+      <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-white/3 pointer-events-none" />
+      <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-white/2 pointer-events-none" />
+
+      <div className="relative mx-auto max-w-[1200px] px-6 text-center">
+        <h2 className="font-sans text-3xl md:text-4xl font-bold text-white mb-5 text-balance">
+          Envie de rejoindre l'aventure ?
+        </h2>
+        <p className="text-lg text-white/70 mb-10 max-w-2xl mx-auto leading-relaxed">
+          Que vous soyez un professionnel souhaitant développer vos compétences,
+          une entreprise cherchant un partenaire de formation stratégique, ou un
+          expert désireux de contribuer à nos programmes — nous serions ravis
+          d'échanger avec vous.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button
+            asChild
+            size="lg"
+            className="bg-wl-orange hover:bg-wl-orange-dark text-white font-semibold transition-all duration-200 border-0"
+          >
+            <Link href="/contact">
+              Contactez-nous
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="border-white/30 border-2 text-white hover:bg-white hover:text-wl-blue-dark bg-transparent transition-all duration-200"
+          >
+            <Link href="/contact">Rejoindre notre réseau de formateurs</Link>
+          </Button>
+        </div>
       </div>
     </section>
   );

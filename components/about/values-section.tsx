@@ -1,69 +1,84 @@
-import { SectionHeader } from "@/components/section-header";
-import { CardGrid } from "@/components/card-grid";
-import {
-  Lightbulb,
-  Target,
-  Heart,
-  Zap,
-  BookOpen,
-  Handshake,
-} from "lucide-react";
+import { Lightbulb, Award, Flame, Rocket, BookOpen } from "lucide-react";
 
 const values = [
   {
     icon: Lightbulb,
     title: "Innovation",
     description:
-      "Des fois, pour avancer, il est nécessaire d'envisager ce qui ne l'a jamais encore été. Innover donc, devient pour nous un démultiplicateur de possibilités. Ce n'est, à nos yeux, ni un label ni une image de marque, mais plutôt une extension infinie des horizons.",
-    color: "bg-blue-500",
+      "Pour avancer, il faut oser envisager ce qui n'a jamais été fait. L'innovation est pour nous un multiplicateur de possibilités — pas un label, mais une extension permanente des horizons. Des MOOCs interactifs à l'IA appliquée à l'apprentissage, nous réinventons chaque jour la manière de transmettre le savoir.",
   },
   {
-    icon: Target,
+    icon: Award,
     title: "Excellence",
     description:
-      "Nous répondons aux besoins de nos clients, avec des produits et des services excellents, conçus et montés selon des critères d'excellence. Nous ne considérons pas cette valeur comme une marque de luxe, mais plutôt comme le standard qui doit nous accompagner partout dans la vie.",
-    color: "bg-primary",
+      "Nous répondons aux besoins de nos clients avec des produits et des services conçus selon les plus hauts critères de qualité. L'excellence n'est pas un luxe — c'est le standard qui accompagne chacune de nos actions, de la conception pédagogique au déploiement sur le terrain.",
   },
   {
-    icon: Heart,
+    icon: Flame,
     title: "Passion",
     description:
-      "La passion nous propulse, et nous pousse vers les horizons les plus ouverts et les plus larges. Cela nous dote d'une dynamique permanente, transformant ainsi, challenge après challenge, en succès après succès.",
-    color: "bg-rose-500",
+      "La passion nous propulse et nous pousse vers les horizons les plus ambitieux. Elle nous dote d'une dynamique permanente, transformant chaque challenge en opportunité et chaque projet en succès.",
   },
   {
-    icon: Zap,
+    icon: Rocket,
     title: "Audace",
     description:
-      "Le progrès commence lorsqu'on écarte le mot 'impossible' de notre dictionnaire. Ainsi, pour matérialiser un succès, nous avons de l'ambition, nous osons, et nous tentons en permanence tout ce à quoi nous pourrions avoir accès.",
-    color: "bg-amber-500",
+      "Le progrès commence lorsqu'on écarte le mot « impossible » de son vocabulaire. Nous avons de l'ambition, nous osons, et nous explorons en permanence de nouveaux territoires — nouveaux marchés, nouvelles technologies, nouvelles manières de former.",
   },
   {
     icon: BookOpen,
     title: "Transmission",
     description:
-      "Le partage des savoirs et des expériences est au cœur de notre mission. Nous croyons que la transmission des connaissances est le vecteur principal du progrès et du développement durable dans le secteur de la construction.",
-    color: "bg-emerald-600",
-  },
-  {
-    icon: Handshake,
-    title: "Engagement",
-    description:
-      "Nous nous engageons pleinement auprès de nos partenaires et apprenants, en incarnant nos valeurs au quotidien. Notre engagement est la promesse de résultats durables, d'une écoute active et d'une collaboration sincère pour transformer les aspirations en réalités concrètes.",
-    color: "bg-indigo-600",
+      "La transmission du savoir est au cœur de notre ADN. Nous croyons que la connaissance partagée est la connaissance multipliée — et que chaque professionnel formé contribue à élever l'ensemble du secteur.",
   },
 ];
 
+function ValueCard({
+  icon: Icon,
+  title,
+  description,
+}: (typeof values)[number]) {
+  return (
+    <div className="bg-white border border-wl-border rounded-xl p-7 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+      <div className="h-12 w-12 rounded-xl bg-wl-blue-tint flex items-center justify-center mb-4 shrink-0">
+        <Icon className="h-5 w-5 text-wl-blue" />
+      </div>
+      <h3 className="text-[17px] font-semibold text-wl-text mb-2">{title}</h3>
+      <p className="text-sm text-wl-text-secondary leading-relaxed">
+        {description}
+      </p>
+    </div>
+  );
+}
+
 export function ValuesSection() {
   return (
-    <section id="valeurs" className="py-20 lg:py-28 bg-white">
-      <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <SectionHeader
-          eyebrow="Ce qui nous guide"
-          title="Nos Valeurs"
-          description="Les principes fondamentaux qui définissent notre identité et guident nos actions."
-        />
-        <CardGrid items={values} columns={3} />
+    <section className="py-20 bg-wl-gray-light">
+      <div className="mx-auto max-w-[1200px] px-6">
+        <div className="text-center mb-12">
+          <p className="text-sm font-semibold uppercase tracking-widest text-wl-orange mb-3">
+            NOS VALEURS
+          </p>
+          <h2 className="font-sans text-3xl md:text-4xl font-bold text-wl-text text-balance leading-tight">
+            Les valeurs qui nous portent
+          </h2>
+        </div>
+
+        {/* Row 1 — 3 cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
+          {values.slice(0, 3).map((v) => (
+            <ValueCard key={v.title} {...v} />
+          ))}
+        </div>
+
+        {/* Row 2 — 2 cards centered at 1/3-width each */}
+        <div className="flex flex-col sm:flex-row gap-6 sm:justify-center">
+          {values.slice(3).map((v) => (
+            <div key={v.title} className="w-full sm:w-1/3">
+              <ValueCard {...v} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
