@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { PageHero } from "@/components/page-hero";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -103,6 +104,7 @@ const masters = [
 export default function ExecutiveMastersPage() {
   return (
     <>
+      <Breadcrumb />
       <PageHero
         title="Executive Masters"
         description="Programmes d'excellence pour cadres et dirigeants, en partenariat avec les grandes écoles."

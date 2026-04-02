@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { PageHero } from "@/components/page-hero";
-import { Award } from "lucide-react";
-import { CertifiantesSections } from "@/components/formations/certifiantes-sections";
-import { EntrepriseCta } from "@/components/formations/entreprise-cta";
 import { FormationsCataloguePage } from "@/components/formations/formations-catalogue-page";
 
 export const metadata: Metadata = {
@@ -14,6 +12,7 @@ export const metadata: Metadata = {
 export default function CertifiantesPage() {
   return (
     <>
+      <Breadcrumb />
       <PageHero
         title="Certifications & Formations Intra"
         description="Certifications internationales et formations sur mesure pour développer les compétences de vos équipes."

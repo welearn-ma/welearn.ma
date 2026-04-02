@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Navbar } from "@/components/navbar";
-import { Breadcrumb } from "@/components/breadcrumb";
 import { Footer } from "@/components/footer";
 import { CookieConsent } from "@/components/cookie-consent";
 import "./globals.css";
@@ -45,7 +44,6 @@ export default function RootLayout({
     <html lang="fr">
       <body className={`font-sans antialiased`}>
         <Navbar />
-        <Breadcrumb />
         <main>{children}</main>
         <Footer />
         <CookieConsent />

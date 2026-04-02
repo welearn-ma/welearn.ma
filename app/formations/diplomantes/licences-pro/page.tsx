@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { PageHero } from "@/components/page-hero";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +10,6 @@ import {
   Award,
   CheckCircle,
   ArrowRight,
-  GraduationCap,
   Download,
 } from "lucide-react";
 
@@ -64,6 +64,7 @@ const licences = [
 export default function LicencesProPage() {
   return (
     <>
+      <Breadcrumb />
       <PageHero
         title="Licences Professionnelles"
         description="Diplômes universitaires Bac+3 reconnus par l'État, orientés vers l'insertion professionnelle."

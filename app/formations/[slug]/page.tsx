@@ -1,6 +1,7 @@
 import { CheckCircle } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { FormationHero } from "@/features/formations/FormationHero";
 import { FormationSyllabus } from "@/features/formations/FormationSyllabus";
 import { RegistrationForm } from "@/features/formations/RegistrationForm";
@@ -41,6 +42,7 @@ export default async function FormationDetailPage({ params }: PageProps) {
 
   return (
     <>
+      <Breadcrumb />
       <FormationHero formation={formation} />
 
       <main className="bg-white pb-24">
