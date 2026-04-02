@@ -39,7 +39,7 @@ function DiffCard({
   description,
 }: (typeof differentiators)[number]) {
   return (
-    <div className="bg-white border border-wl-border rounded-xl p-7 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+    <div className="h-full bg-white border border-wl-border rounded-xl p-7 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       <div className="h-12 w-12 rounded-xl bg-wl-blue-tint flex items-center justify-center mb-4 shrink-0">
         <Icon className="h-5 w-5 text-wl-blue" />
       </div>

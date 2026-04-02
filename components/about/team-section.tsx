@@ -9,7 +9,7 @@ const team = [
     initials: "AK",
     name: "Abdelghani KOUIDER",
     role: "Directeur associé",
-    email: null,
+    email: "abdelghni.kouider@welearn.ma",
   },
   {
     initials: "OD",
