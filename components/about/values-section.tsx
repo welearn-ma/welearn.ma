@@ -64,20 +64,22 @@ export function ValuesSection() {
           </h2>
         </div>
 
-        {/* Row 1 — 3 cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
+        {/*
+          Single 6-col grid: each card spans 2 cols → identical widths.
+          Bottom pair starts at col 2 so col 1 and col 6 stay empty → centered.
+        */}
+        <div className="grid grid-cols-1 sm:grid-cols-6 gap-6">
           {values.slice(0, 3).map((v) => (
-            <ValueCard key={v.title} {...v} />
-          ))}
-        </div>
-
-        {/* Row 2 — 2 cards centered at 1/3-width each */}
-        <div className="flex flex-col sm:flex-row gap-6 sm:justify-center">
-          {values.slice(3).map((v) => (
-            <div key={v.title} className="w-full sm:w-1/3">
+            <div key={v.title} className="sm:col-span-2">
               <ValueCard {...v} />
             </div>
           ))}
+          <div className="sm:col-start-2 sm:col-span-2">
+            <ValueCard {...values[3]} />
+          </div>
+          <div className="sm:col-span-2">
+            <ValueCard {...values[4]} />
+          </div>
         </div>
       </div>
     </section>

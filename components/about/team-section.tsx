@@ -48,9 +48,9 @@ export function TeamSection() {
           {team.map((member) => (
             <div
               key={member.initials}
-              className="bg-white border border-wl-border rounded-xl p-6 text-center hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              className="bg-white border border-wl-border rounded-xl p-6 text-center hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col"
             >
-              <div className="h-14 w-14 rounded-full bg-wl-blue flex items-center justify-center mx-auto mb-4">
+              <div className="h-14 w-14 rounded-full bg-wl-blue flex items-center justify-center mx-auto mb-4 shrink-0">
                 <span className="text-white font-bold text-sm">
                   {member.initials}
                 </span>
@@ -58,17 +58,21 @@ export function TeamSection() {
               <h3 className="font-semibold text-wl-text text-[15px] leading-snug mb-1">
                 {member.name}
               </h3>
-              <p className="text-sm text-wl-text-secondary mb-3">
+              {/* flex-1 stretches role text area so email is always pinned to bottom */}
+              <p className="text-sm text-wl-text-secondary flex-1 mb-3">
                 {member.role}
               </p>
-              {member.email && (
-                <a
-                  href={`mailto:${member.email}`}
-                  className="text-xs text-wl-blue hover:underline break-all"
-                >
-                  {member.email}
-                </a>
-              )}
+              {/* Fixed-height slot keeps the email row aligned across all cards */}
+              <div className="min-h-4.5">
+                {member.email && (
+                  <a
+                    href={`mailto:${member.email}`}
+                    className="text-xs text-wl-blue hover:underline break-all"
+                  >
+                    {member.email}
+                  </a>
+                )}
+              </div>
             </div>
           ))}
         </div>
