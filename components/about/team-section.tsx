@@ -2,7 +2,7 @@ const team = [
   {
     initials: "HJ",
     name: "Hassan JAÏ",
-    role: "Fondateur & Directeur associé",
+    role: "CEO",
     email: "hassan.jai@welearn.ma",
   },
   {

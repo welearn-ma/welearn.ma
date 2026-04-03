@@ -208,7 +208,7 @@ export function Navbar() {
             className="border-wl-blue text-wl-blue hover:bg-wl-blue bg-transparent transition-all duration-200"
           >
             <Link href="https://welearn.ac" target="_blank">
-              Accéder au LMS
+              Accéder à la plateforme
             </Link>
           </Button>
           <Button
