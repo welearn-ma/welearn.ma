@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Clock, Briefcase, MapPin, CalendarDays, Users, GraduationCap } from "lucide-react";
 import {
   FormationDetailHero,
   FormationAudience,
@@ -13,15 +12,14 @@ import {
 } from "@/features/formations/sections";
 import { RegistrationForm } from "@/features/formations/RegistrationForm";
 import { StickyRegistrationCTA } from "@/features/formations/StickyRegistrationCTA";
-import { formations, getFormationBySlug } from "@/data/formations";
-import type { FormationModule, FinalBlock, TeachingCard, InscriptionStep, Testimonial } from "@/types/formation-page";
+import { getFormationBySlug, getAllFormationSlugs } from "@/data/formations";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export function generateStaticParams() {
-  return formations.map((formation) => ({ slug: formation.slug }));
+  return getAllFormationSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -35,66 +33,11 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${formation.title} | Welearn`,
-    description: formation.shortDescription,
+    title: formation.seo.title,
+    description: formation.seo.description,
+    keywords: formation.seo.keywords,
   };
 }
-
-function buildModules(formation: NonNullable<ReturnType<typeof getFormationBySlug>>): FormationModule[] {
-  return formation.modules.map((mod, idx) => ({
-    number: idx + 1,
-    title: mod.title,
-    description: mod.description,
-  }));
-}
-
-function buildTeaching(formation: NonNullable<ReturnType<typeof getFormationBySlug>>): TeachingCard[] {
-  const cards: TeachingCard[] = [];
-
-  if (formation.instructors && formation.instructors.length > 0) {
-    cards.push({
-      icon: Users,
-      title: "Intervenants",
-      items: formation.instructors.map((i) => `${i.name} — ${i.title}`),
-    });
-  }
-
-  cards.push({
-    icon: GraduationCap,
-    title: "Approche pédagogique",
-    items: formation.highlights,
-  });
-
-  cards.push({
-    icon: MapPin,
-    title: "Format",
-    text: `${formation.duration} · ${formation.level} · ${formation.language}`,
-  });
-
-  return cards;
-}
-
-const defaultSteps: InscriptionStep[] = [
-  { number: 1, title: "Pré-inscription en ligne", description: "Remplissez le formulaire de pré-inscription." },
-  { number: 2, title: "Dossier de candidature", description: "Déposez votre dossier complet." },
-  { number: 3, title: "Confirmation", description: "Recevez votre confirmation d'inscription." },
-];
-
-// TODO: replace with real testimonials
-const defaultTestimonials: Testimonial[] = [
-  {
-    quote: "Une formation de qualité qui m'a permis de monter en compétences rapidement. L'accompagnement pédagogique est excellent.",
-    author: "Prénom Nom",
-    role: "Professionnel",
-    company: "Entreprise A",
-  },
-  {
-    quote: "Le contenu est directement applicable en contexte professionnel. Je recommande vivement ce programme.",
-    author: "Prénom Nom",
-    role: "Professionnel",
-    company: "Entreprise B",
-  },
-];
 
 export default async function FormationDetailPage({ params }: PageProps) {
   const { slug } = await params;
@@ -104,49 +47,33 @@ export default async function FormationDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const modules = buildModules(formation);
-  const teaching = buildTeaching(formation);
-
-  const finalBlocks: FinalBlock[] = [];
-
-  const heroImage = formation.imageUrl
-    ?? "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80";
-
-  const badges = formation.category === "diplomante"
-    ? ["Formation diplômante", formation.level]
-    : ["Formation certifiante", formation.level];
-
   return (
     <>
       <FormationDetailHero
-        badges={badges}
+        badges={formation.badges}
         title={formation.title}
         subtitle={formation.subtitle}
-        partnerLine={`${formation.duration} · ${formation.language}`}
-        infoBanner={[
-          { icon: Clock, value: formation.duration, label: "Durée" },
-          { icon: Briefcase, value: formation.level, label: "Niveau" },
-          { icon: CalendarDays, value: formation.language, label: "Langue" },
-          { icon: MapPin, value: formation.category === "diplomante" ? "Présentiel" : "En ligne", label: "Format" },
-        ]}
-        heroImage={heroImage}
-        ctaPrimary="Déposer ma candidature"
-        ctaSecondary="Télécharger la brochure"
+        partnerLine={formation.partnerLine}
+        infoBanner={formation.infoBanner}
+        heroImage={formation.heroImage}
+        ctaPrimary={formation.ctaPrimary}
+        ctaSecondary={formation.ctaSecondary}
       />
-      <FormationAudience
-        profiles={[formation.level]}
-        prerequisites={[formation.shortDescription]}
+      <FormationAudience profiles={formation.profiles} prerequisites={formation.prerequisites} />
+      <FormationWhy text={formation.pourquoi} />
+      <FormationObjectives objectives={formation.objectives} />
+      <FormationProgram
+        modules={formation.modules}
+        finalBlocks={formation.finalBlocks}
+        certification={formation.certification}
       />
-      <FormationWhy text={formation.longDescription} />
-      <FormationObjectives objectives={formation.highlights} />
-      <FormationProgram modules={modules} finalBlocks={finalBlocks} />
-      <FormationTeaching cards={teaching} />
+      <FormationTeaching cards={formation.teaching} />
       <FormationInscription
-        steps={defaultSteps}
-        session="Prochaine session disponible"
-        ctaLabel="Déposer ma candidature"
+        steps={formation.steps}
+        session={formation.session}
+        ctaLabel={formation.ctaInscription}
       />
-      <FormationTestimonials testimonials={defaultTestimonials} />
+      <FormationTestimonials testimonials={formation.testimonials} />
 
       {/* ── REGISTRATION FORM (do not modify) ── */}
       <section id="registration-form" className="bg-white py-20">
