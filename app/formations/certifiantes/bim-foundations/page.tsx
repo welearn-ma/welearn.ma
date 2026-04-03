@@ -15,9 +15,11 @@ import { StickyRegistrationCTA } from "@/features/formations/StickyRegistrationC
 import type { FormationPageData } from "@/types/formation-page";
 
 export const metadata: Metadata = {
-  title: "Certification BIM Foundations – Professional | Welearn",
+  title: "Certification BIM Foundations – Professional | buildingSMART | Welearn",
   description:
-    "Certification BIM Maroc, BIM Foundations buildingSMART, formation BIM en ligne, certification BIM international, formation BIM e-learning",
+    "Obtenez la certification BIM internationale de référence délivrée par buildingSMART International. Préparation en e-learning ou présentiel avec Welearn, organisme accrédité.",
+  keywords:
+    "certification BIM Maroc, BIM Foundations buildingSMART, formation BIM en ligne, certification BIM international",
 };
 
 const data: FormationPageData = {
@@ -172,6 +174,11 @@ const data: FormationPageData = {
       company: "Entreprise B",
     },
   ],
+  seo: {
+    title: "Certification BIM Foundations – Professional | buildingSMART | Welearn",
+    description: "Obtenez la certification BIM internationale de référence délivrée par buildingSMART International. Préparation en e-learning ou présentiel avec Welearn, organisme accrédité.",
+    keywords: "certification BIM Maroc, BIM Foundations buildingSMART, formation BIM en ligne, certification BIM international",
+  },
 };
 
 export default function BIMFoundationsPage() {

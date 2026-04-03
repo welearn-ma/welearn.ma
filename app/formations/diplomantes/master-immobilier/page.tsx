@@ -15,9 +15,11 @@ import { StickyRegistrationCTA } from "@/features/formations/StickyRegistrationC
 import type { FormationPageData } from "@/types/formation-page";
 
 export const metadata: Metadata = {
-  title: "Executive Master en Ingénierie Immobilière | Welearn",
+  title: "Executive Master Ingénierie Immobilière — EHTP & Welearn",
   description:
-    "Formation immobilier Maroc, executive master immobilier, formation ingénierie immobilière Casablanca, formation investissement immobilier, master immobilier EHTP",
+    "Maîtrisez la chaîne de valeur immobilière avec l'Executive Master co-construit par l'EHTP et Welearn. Formation exécutive pour professionnels du secteur.",
+  keywords:
+    "formation immobilier Maroc, executive master immobilier, formation ingénierie immobilière Casablanca, master immobilier EHTP",
 };
 
 const data: FormationPageData = {
@@ -138,6 +140,11 @@ const data: FormationPageData = {
       company: "Entreprise B",
     },
   ],
+  seo: {
+    title: "Executive Master Ingénierie Immobilière — EHTP & Welearn",
+    description: "Maîtrisez la chaîne de valeur immobilière avec l'Executive Master co-construit par l'EHTP et Welearn. Formation exécutive pour professionnels du secteur.",
+    keywords: "formation immobilier Maroc, executive master immobilier, formation ingénierie immobilière Casablanca, master immobilier EHTP",
+  },
 };
 
 export default function MasterImmobilierPage() {

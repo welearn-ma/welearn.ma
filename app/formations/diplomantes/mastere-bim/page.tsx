@@ -15,9 +15,11 @@ import { StickyRegistrationCTA } from "@/features/formations/StickyRegistrationC
 import type { FormationPageData } from "@/types/formation-page";
 
 export const metadata: Metadata = {
-  title: "Mastère Spécialisé® BIM & ses Applications | Welearn",
+  title: "Mastère Spécialisé BIM Maroc — EHTP & Welearn",
   description:
-    "Mastère spécialisé BIM Maroc, formation BIM Manager Casablanca, mastère BIM EHTP, formation BIM accrédité CGE, BIM construction Maroc",
+    "Le seul Mastère Spécialisé BIM accrédité CGE et labellisé buildingSMART au Maroc. Co-construit par l'EHTP et Welearn.",
+  keywords:
+    "mastère spécialisé BIM Maroc, formation BIM Manager Casablanca, mastère BIM EHTP, BIM construction Maroc",
 };
 
 const data: FormationPageData = {
@@ -137,6 +139,11 @@ const data: FormationPageData = {
       company: "Entreprise B",
     },
   ],
+  seo: {
+    title: "Mastère Spécialisé BIM Maroc — EHTP & Welearn",
+    description: "Le seul Mastère Spécialisé BIM accrédité CGE et labellisé buildingSMART au Maroc. Co-construit par l'EHTP et Welearn.",
+    keywords: "mastère spécialisé BIM Maroc, formation BIM Manager Casablanca, mastère BIM EHTP, BIM construction Maroc",
+  },
 };
 
 export default function MastereBIMPage() {

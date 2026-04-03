@@ -44,6 +44,12 @@ export type CertificationBlock = {
   text: string;
 };
 
+export type FormationSeo = {
+  title: string;
+  description: string;
+  keywords: string;
+};
+
 export type FormationPageData = {
   slug: string;
   title: string;
@@ -66,4 +72,5 @@ export type FormationPageData = {
   session: string;
   ctaInscription: string;
   testimonials: Testimonial[];
+  seo: FormationSeo;
 };
