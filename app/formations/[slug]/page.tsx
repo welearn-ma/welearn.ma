@@ -1,12 +1,20 @@
-import { CheckCircle } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Breadcrumb } from "@/components/breadcrumb";
-import { FormationHero } from "@/features/formations/FormationHero";
-import { FormationSyllabus } from "@/features/formations/FormationSyllabus";
+import { Clock, Briefcase, MapPin, CalendarDays, Users, GraduationCap } from "lucide-react";
+import {
+  FormationDetailHero,
+  FormationAudience,
+  FormationWhy,
+  FormationObjectives,
+  FormationProgram,
+  FormationTeaching,
+  FormationInscription,
+  FormationTestimonials,
+} from "@/features/formations/sections";
 import { RegistrationForm } from "@/features/formations/RegistrationForm";
 import { StickyRegistrationCTA } from "@/features/formations/StickyRegistrationCTA";
 import { formations, getFormationBySlug } from "@/data/formations";
+import type { FormationModule, FinalBlock, TeachingCard, InscriptionStep, Testimonial } from "@/types/formation-page";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -32,6 +40,62 @@ export async function generateMetadata({
   };
 }
 
+function buildModules(formation: NonNullable<ReturnType<typeof getFormationBySlug>>): FormationModule[] {
+  return formation.modules.map((mod, idx) => ({
+    number: idx + 1,
+    title: mod.title,
+    description: mod.description,
+  }));
+}
+
+function buildTeaching(formation: NonNullable<ReturnType<typeof getFormationBySlug>>): TeachingCard[] {
+  const cards: TeachingCard[] = [];
+
+  if (formation.instructors && formation.instructors.length > 0) {
+    cards.push({
+      icon: Users,
+      title: "Intervenants",
+      items: formation.instructors.map((i) => `${i.name} — ${i.title}`),
+    });
+  }
+
+  cards.push({
+    icon: GraduationCap,
+    title: "Approche pédagogique",
+    items: formation.highlights,
+  });
+
+  cards.push({
+    icon: MapPin,
+    title: "Format",
+    text: `${formation.duration} · ${formation.level} · ${formation.language}`,
+  });
+
+  return cards;
+}
+
+const defaultSteps: InscriptionStep[] = [
+  { number: 1, title: "Pré-inscription en ligne", description: "Remplissez le formulaire de pré-inscription." },
+  { number: 2, title: "Dossier de candidature", description: "Déposez votre dossier complet." },
+  { number: 3, title: "Confirmation", description: "Recevez votre confirmation d'inscription." },
+];
+
+// TODO: replace with real testimonials
+const defaultTestimonials: Testimonial[] = [
+  {
+    quote: "Une formation de qualité qui m'a permis de monter en compétences rapidement. L'accompagnement pédagogique est excellent.",
+    author: "Prénom Nom",
+    role: "Professionnel",
+    company: "Entreprise A",
+  },
+  {
+    quote: "Le contenu est directement applicable en contexte professionnel. Je recommande vivement ce programme.",
+    author: "Prénom Nom",
+    role: "Professionnel",
+    company: "Entreprise B",
+  },
+];
+
 export default async function FormationDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const formation = getFormationBySlug(slug);
@@ -40,77 +104,62 @@ export default async function FormationDetailPage({ params }: PageProps) {
     notFound();
   }
 
+  const modules = buildModules(formation);
+  const teaching = buildTeaching(formation);
+
+  const finalBlocks: FinalBlock[] = [];
+
+  const heroImage = formation.imageUrl
+    ?? "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80";
+
+  const badges = formation.category === "diplomante"
+    ? ["Formation diplômante", formation.level]
+    : ["Formation certifiante", formation.level];
+
   return (
     <>
-      <Breadcrumb />
-      <FormationHero formation={formation} />
+      <FormationDetailHero
+        badges={badges}
+        title={formation.title}
+        subtitle={formation.subtitle}
+        partnerLine={`${formation.duration} · ${formation.language}`}
+        infoBanner={[
+          { icon: Clock, value: formation.duration, label: "Durée" },
+          { icon: Briefcase, value: formation.level, label: "Niveau" },
+          { icon: CalendarDays, value: formation.language, label: "Langue" },
+          { icon: MapPin, value: formation.category === "diplomante" ? "Présentiel" : "En ligne", label: "Format" },
+        ]}
+        heroImage={heroImage}
+        ctaPrimary="Déposer ma candidature"
+        ctaSecondary="Télécharger la brochure"
+      />
+      <FormationAudience
+        profiles={[formation.level]}
+        prerequisites={[formation.shortDescription]}
+      />
+      <FormationWhy text={formation.longDescription} />
+      <FormationObjectives objectives={formation.highlights} />
+      <FormationProgram modules={modules} finalBlocks={finalBlocks} />
+      <FormationTeaching cards={teaching} />
+      <FormationInscription
+        steps={defaultSteps}
+        session="Prochaine session disponible"
+        ctaLabel="Déposer ma candidature"
+      />
+      <FormationTestimonials testimonials={defaultTestimonials} />
 
-      <main className="bg-white pb-24">
-        <section className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
-          <h2 className="text-2xl font-bold text-foreground">
-            À propos de cette formation
-          </h2>
-          <p className="mt-4 max-w-4xl leading-relaxed text-muted-foreground">
-            {formation.longDescription}
-          </p>
-          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-            {formation.highlights.map((highlight) => (
-              <li
-                key={highlight}
-                className="flex items-start gap-2 rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground"
-              >
-                <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <span>{highlight}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-4 pb-14 lg:px-8">
-          <h2 className="mb-5 text-2xl font-bold text-foreground">Programme</h2>
-          <FormationSyllabus modules={formation.modules} />
-        </section>
-
-        {formation.instructors && formation.instructors.length > 0 && (
-          <section className="mx-auto max-w-7xl px-4 pb-14 lg:px-8">
-            <h2 className="mb-5 text-2xl font-bold text-foreground">
-              Intervenants
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {formation.instructors.map((instructor) => (
-                <article
-                  key={instructor.name}
-                  className="rounded-2xl border border-border bg-white p-5 shadow-sm"
-                >
-                  <div
-                    className="mb-3 h-12 w-12 rounded-full bg-primary/15"
-                    aria-hidden="true"
-                  />
-                  <h3 className="font-semibold text-foreground">
-                    {instructor.name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {instructor.title}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-        <section
-          id="registration-form"
-          className="mx-auto max-w-4xl px-4 pb-16 lg:px-8"
-        >
-          <h2 className="mb-5 text-2xl font-bold text-foreground">
+      {/* ── REGISTRATION FORM (do not modify) ── */}
+      <section id="registration-form" className="bg-white py-20">
+        <div className="mx-auto max-w-4xl px-6">
+          <h2 className="mb-5 text-2xl font-bold text-wl-text">
             Demander une inscription
           </h2>
           <RegistrationForm
             formationSlug={formation.slug}
             formationTitle={formation.title}
           />
-        </section>
-      </main>
+        </div>
+      </section>
 
       <StickyRegistrationCTA formationTitle={formation.title} />
     </>

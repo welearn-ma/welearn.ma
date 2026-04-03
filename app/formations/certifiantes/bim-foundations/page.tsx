@@ -1,200 +1,222 @@
 import type { Metadata } from "next";
-import { PageHero } from "@/components/page-hero";
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Clock, BookOpen, Monitor, MapPin } from "lucide-react";
 import {
-  Clock,
-  Users,
-  Award,
-  CheckCircle,
-  ArrowRight,
-  Globe,
-  FileCheck,
-} from "lucide-react";
+  FormationDetailHero,
+  FormationAudience,
+  FormationWhy,
+  FormationObjectives,
+  FormationProgram,
+  FormationTeaching,
+  FormationInscription,
+  FormationTestimonials,
+} from "@/features/formations/sections";
+import { RegistrationForm } from "@/features/formations/RegistrationForm";
+import { StickyRegistrationCTA } from "@/features/formations/StickyRegistrationCTA";
+import type { FormationPageData } from "@/types/formation-page";
 
 export const metadata: Metadata = {
-  title: "BIM Foundations Professional | Formations Certifiantes | Welearn",
+  title: "Certification BIM Foundations – Professional | Welearn",
   description:
-    "Certification officielle BuildingSmart validant vos compétences fondamentales en BIM.",
+    "Certification BIM Maroc, BIM Foundations buildingSMART, formation BIM en ligne, certification BIM international, formation BIM e-learning",
 };
 
-const highlights = [
-  "Certification officielle BuildingSmart International",
-  "Reconnaissance mondiale dans l'industrie",
-  "Concepts openBIM fondamentaux",
-  "Examen en ligne ou sur site",
-  "Préparation intensive incluse",
-  "Support pédagogique complet",
-];
-
-const modules = [
-  {
-    title: "Introduction au BIM",
-    topics: [
-      "Définition et concepts",
-      "Historique et évolution",
-      "Niveaux de maturité BIM",
-    ],
+const data: FormationPageData = {
+  slug: "bim-foundations-professional",
+  title: "Certification BIM Foundations – Professional",
+  subtitle:
+    "Obtenez la certification internationale de référence en BIM, délivrée par buildingSMART International. Formation accessible en e-learning ou en présentiel, en seulement 1 mois.",
+  partnerLine:
+    "Organisme certificateur : buildingSMART International · Organisme accrédité : WeLearn",
+  badges: ["Certification internationale", "buildingSMART", "E-learning + Présentiel"],
+  infoBanner: [
+    { icon: Clock, value: "1 mois", label: "Durée" },
+    { icon: BookOpen, value: "21 heures", label: "Volume" },
+    { icon: Monitor, value: "E-learning + coaching", label: "Format" },
+    { icon: MapPin, value: "En ligne ou présentiel", label: "Lieu" },
+  ],
+  heroImage:
+    "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1600&q=80",
+  ctaPrimary: "S'inscrire à la prochaine session",
+  ctaSecondary: "Demander plus d'informations",
+  profiles: [
+    "Architectes",
+    "Ingénieurs (structures, fluides, électriques, géomètres-topographes)",
+    "Chefs de projets",
+    "Coordinateurs",
+    "Conducteurs de travaux",
+    "Métreurs-vérificateurs",
+    "Responsables qualité",
+    "Bureaux d'études",
+    "Bureaux de contrôle",
+    "Entreprises de travaux",
+    "Maîtres d'ouvrage",
+    "Promoteurs immobiliers",
+    "AMO",
+    "OPC",
+  ],
+  prerequisites: [
+    "Aucun prérequis technique spécifique",
+    "Formation accessible à tous les profils du secteur",
+  ],
+  pourquoi:
+    "Le BIM devient progressivement un standard incontournable dans les marchés de construction, tant au Maroc qu'à l'international. La certification BIM Foundations de buildingSMART International est la référence mondiale pour attester d'un socle de compétences solide et reconnu. En obtenant cette certification, vous démontrez à vos employeurs, clients et partenaires que vous maîtrisez les fondamentaux du BIM — validés par l'organisme international qui définit les standards openBIM. Welearn est l'organisme de formation accrédité par buildingSMART Morocco pour délivrer cette préparation certifiante.",
+  objectives: [
+    "Maîtriser les fondamentaux du BIM, son cadre normatif et ses principaux cas d'usages à travers le cycle de vie d'un projet.",
+    "Comprendre le contexte de développement du BIM, de la transition numérique et de l'écosystème openBIM (standards IFC, BCF, bSDD...).",
+    "Connaître les modalités pratiques, économiques et juridiques liées à la mise en œuvre du BIM dans un projet.",
+    "Pratiquer le BIM en implémentant un projet de construction sous environnement BIM.",
+    "Mettre en place les processus BIM et construire les documents associés (convention BIM, cahier des charges BIM...).",
+  ],
+  modules: [
+    {
+      number: 1,
+      title: "Transformation Numérique, Origines et Portée Mondiale",
+      description:
+        "Comprendre les origines de la transformation numérique dans le secteur de la construction, son impact à l'échelle mondiale et les facteurs qui accélèrent l'adoption du BIM.",
+    },
+    {
+      number: 2,
+      title: "Normes et terminologies du BIM",
+      description:
+        "Standards internationaux (ISO 19650), niveaux de maturité, dimensions (3D à 7D), LOD et terminologie essentielle pour communiquer en environnement BIM.",
+    },
+    {
+      number: 3,
+      title: "Mise en place d'un projet sous BIM",
+      description:
+        "Processus BIM, rôles et responsabilités, convention BIM, cahier des charges BIM, plan d'exécution BIM et coordination entre disciplines.",
+    },
+    {
+      number: 4,
+      title: "OpenBIM® : Principes, Formats et gouvernance",
+      description:
+        "Standards IFC, BCF, bSDD, interopérabilité entre logiciels, plateformes collaboratives et enjeux de gouvernance des données.",
+    },
+    {
+      number: 5,
+      title: "Adoption du BIM dans une organisation",
+      description:
+        "Stratégies de déploiement, conduite du changement, évaluation de la maturité BIM et plan de transition.",
+    },
+  ],
+  finalBlocks: [
+    {
+      badge: "Examen",
+      title: "Examen de certification",
+      description:
+        "Examen en fin de formation. La réussite donne accès au certificat BIM Foundations – Professional délivré par buildingSMART International.",
+      variant: "orange",
+    },
+  ],
+  certification: {
+    title: "Certification délivrée",
+    text: "La réussite de l'examen donne accès au certificat BIM Foundations – Professional délivré par buildingSMART International — la référence mondiale en matière de standards BIM. Ce certificat atteste de votre niveau de compétence, confirmé par un tiers de confiance reconnu à l'échelle internationale. Il est valable partout dans le monde.",
   },
-  {
-    title: "Standards et normes",
-    topics: ["ISO 19650", "IFC et openBIM", "Niveaux de détail (LOD)"],
-  },
-  {
-    title: "Processus BIM",
-    topics: [
-      "Cycle de vie du projet",
-      "Rôles et responsabilités",
-      "Collaboration et coordination",
-    ],
-  },
-  {
-    title: "Outils et technologies",
-    topics: [
-      "Logiciels BIM",
-      "Environnement de données commun (CDE)",
-      "Interopérabilité",
-    ],
-  },
-];
+  teaching: [
+    {
+      icon: Monitor,
+      title: "Mode",
+      text: "Cours en e-learning sur welearn.ac, avec ateliers de coaching optionnels en visioconférence ou en présentiel.",
+    },
+    {
+      icon: BookOpen,
+      title: "Approche pédagogique",
+      items: [
+        "Cours interactifs",
+        "Quizs",
+        "Ressources",
+        "Simulation d'examen",
+        "Coaching personnalisé",
+      ],
+    },
+    {
+      icon: Clock,
+      title: "Durée",
+      text: "21 heures réparties sur 1 mois, à votre rythme.",
+    },
+  ],
+  steps: [
+    {
+      number: 1,
+      title: "Inscription en ligne",
+      description:
+        "Formulaire en ligne ou par contact direct. Aucune sélection sur dossier.",
+    },
+    {
+      number: 2,
+      title: "Accès à la formation",
+      description:
+        "Accès immédiat à la plateforme e-learning et aux ressources pédagogiques.",
+    },
+    {
+      number: 3,
+      title: "Passage de l'examen",
+      description: "Examen de certification à l'issue de la formation.",
+    },
+  ],
+  session: "Disponible toute l'année",
+  ctaInscription: "S'inscrire maintenant",
+  testimonials: [
+    {
+      quote:
+        "La certification BIM Foundations m'a permis de valider mes compétences et de gagner en crédibilité auprès de mes clients. Le format e-learning est très flexible.",
+      author: "Prénom Nom",
+      role: "Architecte",
+      company: "Bureau d'études A",
+    },
+    {
+      quote:
+        "Formation très complète et bien structurée. Le coaching personnalisé m'a aidé à bien me préparer pour l'examen. Je recommande vivement.",
+      author: "Prénom Nom",
+      role: "Ingénieur Structure",
+      company: "Entreprise B",
+    },
+  ],
+};
 
 export default function BIMFoundationsPage() {
   return (
     <>
-      <PageHero
-        title="BIM Foundations Professional"
-        description="Certification officielle BuildingSmart validant vos compétences fondamentales en BIM, reconnue internationalement."
-        eyebrow="Certification Internationale"
-        size="sm"
+      <FormationDetailHero
+        badges={data.badges}
+        title={data.title}
+        subtitle={data.subtitle}
+        partnerLine={data.partnerLine}
+        infoBanner={data.infoBanner}
+        heroImage={data.heroImage}
+        ctaPrimary={data.ctaPrimary}
+        ctaSecondary={data.ctaSecondary}
       />
+      <FormationAudience profiles={data.profiles} prerequisites={data.prerequisites} />
+      <FormationWhy text={data.pourquoi} />
+      <FormationObjectives objectives={data.objectives} />
+      <FormationProgram
+        modules={data.modules}
+        finalBlocks={data.finalBlocks}
+        certification={data.certification}
+      />
+      <FormationTeaching cards={data.teaching} />
+      <FormationInscription
+        steps={data.steps}
+        session={data.session}
+        ctaLabel={data.ctaInscription}
+      />
+      <FormationTestimonials testimonials={data.testimonials} />
 
-      {/* Content */}
-      <section className="py-20 lg:py-28 bg-white">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <div className="grid lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2">
-              <div className="flex flex-wrap gap-2 mb-6">
-                <Badge className="bg-primary/10 text-primary border-0">
-                  <Globe className="h-3 w-3 mr-1" />
-                  BuildingSmart International
-                </Badge>
-                <Badge className="bg-primary/10 text-primary border-0">
-                  <FileCheck className="h-3 w-3 mr-1" />
-                  Certification Officielle
-                </Badge>
-              </div>
-
-              <h2 className="font-sans text-2xl font-bold text-foreground mb-4">
-                À propos de la certification
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-8">
-                La certification BIM Foundations Professional de BuildingSmart
-                International est la référence mondiale pour valider les
-                compétences fondamentales en BIM. Elle atteste de votre maîtrise
-                des concepts openBIM et vous ouvre les portes de l'industrie de
-                la construction numérique.
-              </p>
-
-              <h3 className="font-sans text-xl font-bold text-foreground mb-4">
-                Points clés
-              </h3>
-              <div className="grid sm:grid-cols-2 gap-3 mb-8">
-                {highlights.map((highlight, idx) => (
-                  <div key={idx} className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
-                    <span className="text-foreground">{highlight}</span>
-                  </div>
-                ))}
-              </div>
-
-              <h3 className="font-sans text-xl font-bold text-foreground mb-4">
-                Programme
-              </h3>
-              <div className="grid sm:grid-cols-2 gap-6">
-                {modules.map((module, idx) => (
-                  <div key={idx} className="bg-secondary rounded-xl p-6">
-                    <h4 className="font-semibold text-foreground mb-3">
-                      {module.title}
-                    </h4>
-                    <ul className="space-y-2">
-                      {module.topics.map((topic, tidx) => (
-                        <li
-                          key={tidx}
-                          className="text-sm text-muted-foreground flex items-center gap-2"
-                        >
-                          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                          {topic}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <div className="bg-secondary rounded-2xl p-6 sticky top-24">
-                <h3 className="font-sans text-lg font-bold text-foreground mb-6">
-                  Informations pratiques
-                </h3>
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground flex items-center gap-2">
-                      <Clock className="h-4 w-4" /> Durée
-                    </span>
-                    <span className="font-medium text-foreground">
-                      2-3 jours
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground flex items-center gap-2">
-                      <Users className="h-4 w-4" /> Format
-                    </span>
-                    <span className="font-medium text-foreground">
-                      Présentiel ou en ligne
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground flex items-center gap-2">
-                      <Award className="h-4 w-4" /> Niveau
-                    </span>
-                    <span className="font-medium text-foreground">
-                      Fondamental
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground flex items-center gap-2">
-                      <Globe className="h-4 w-4" /> Validité
-                    </span>
-                    <span className="font-medium text-foreground">
-                      Internationale
-                    </span>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <Button
-                    asChild
-                    className="w-full bg-primary hover:bg-primary/90 text-white"
-                  >
-                    <Link href="/contact">
-                      S'inscrire
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full border-primary text-primary bg-transparent"
-                  >
-                    <Link href="/contact">Demander un devis entreprise</Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* ── REGISTRATION FORM (do not modify) ── */}
+      <section id="registration-form" className="bg-white py-20">
+        <div className="mx-auto max-w-4xl px-6">
+          <h2 className="mb-5 text-2xl font-bold text-wl-text">
+            Demander une inscription
+          </h2>
+          <RegistrationForm
+            formationSlug="bim-foundations-professional"
+            formationTitle="Certification BIM Foundations – Professional"
+          />
         </div>
       </section>
+
+      <StickyRegistrationCTA formationTitle="Certification BIM Foundations – Professional" />
     </>
   );
 }
