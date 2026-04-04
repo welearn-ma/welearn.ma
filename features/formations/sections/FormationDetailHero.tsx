@@ -25,7 +25,7 @@ export function FormationDetailHero({
 }: Props) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <Image src={heroImage} alt="" fill className="object-cover" priority />
+      {heroImage && <Image src={heroImage} alt="" fill className="object-cover" priority />}
       <div className="absolute inset-0 bg-wl-blue/75" />
 
       <div className="relative z-10 mx-auto max-w-[1200px] px-6 py-32 text-center">
