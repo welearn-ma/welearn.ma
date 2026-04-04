@@ -15,6 +15,26 @@ const nextConfig = {
       },
     ];
   },
+
+  async redirects() {
+    return [
+      {
+        source: "/formations/diplomantes/mastere-bim",
+        destination: "/formations/mastere-bim",
+        permanent: true,
+      },
+      {
+        source: "/formations/diplomantes/master-immobilier",
+        destination: "/formations/master-immobilier",
+        permanent: true,
+      },
+      {
+        source: "/formations/certifiantes/bim-foundations",
+        destination: "/formations/bim-foundations",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -85,11 +85,7 @@ function getFormationSlug(diplomante: Diplomante) {
     return diplomante.slug;
   }
 
-  if (diplomante.badge === "Executive Masters") {
-    return "mastere-management-projets-btp";
-  }
-
-  return "bim-foundations-professional";
+  return "mastere-management-projets-btp";
 }
 
 export function DiplomantesCataloguePage() {

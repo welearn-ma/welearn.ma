@@ -2,6 +2,7 @@
   "formations": [
     {
       "id": 1,
+      "slug": "bim-foundations",
       "title": "BIM Foundations - Professional",
       "type": "Certifiante",
       "badge": "Certifiante",
@@ -429,6 +430,7 @@
     },
     {
       "id": 23,
+      "slug": "mastere-bim",
       "title": "Mastère Spécialisé BIM et ses Applications",
       "type": "Diplomante",
       "badge": "Executive Masters",
@@ -449,6 +451,7 @@
     },
     {
       "id": 24,
+      "slug": "master-immobilier",
       "title": "Executive Master Ingénierie Immobilière",
       "type": "Diplomante",
       "badge": "Executive Masters",
@@ -469,6 +472,7 @@
     },
     {
       "id": 25,
+      "slug": "mastere-management-projets-btp",
       "title": "Executive Master Management de Projet – Expert BIM",
       "type": "Diplomante",
       "badge": "Executive Masters",

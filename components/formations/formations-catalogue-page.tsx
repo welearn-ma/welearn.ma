@@ -111,15 +111,11 @@ function getFormationSlug(formation: Formation) {
     return formation.slug;
   }
 
-  if (formation.featured) {
-    return "bim-foundations-professional";
-  }
-
   if (formation.domain === "Digital & IA") {
     return "concepteur-parcours-digital-learning";
   }
 
-  return "bim-foundations-professional";
+  return "bim-foundations";
 }
 
 export function FormationsCataloguePage() {
