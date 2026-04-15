@@ -24,7 +24,8 @@ export async function submitRegistration(
     let errorMessage = "La demande d'inscription a echoue.";
 
     try {
-      const errorPayload = (await response.json()) as Partial<RegistrationResponse>;
+      const errorPayload =
+        (await response.json()) as Partial<RegistrationResponse>;
       if (errorPayload.message) {
         errorMessage = errorPayload.message;
       }

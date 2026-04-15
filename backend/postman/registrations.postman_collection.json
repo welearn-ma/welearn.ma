@@ -13,12 +13,8 @@
         "header": [],
         "url": {
           "raw": "{{baseUrl}}/health",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "health"
-          ]
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
         }
       }
     },
@@ -57,13 +53,8 @@
         },
         "url": {
           "raw": "{{baseUrl}}/api/registrations",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "registrations"
-          ]
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "registrations"]
         }
       }
     },
@@ -97,13 +88,8 @@
         },
         "url": {
           "raw": "{{baseUrl}}/api/registrations",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "registrations"
-          ]
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "registrations"]
         }
       }
     }
