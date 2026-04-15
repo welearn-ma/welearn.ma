@@ -11,7 +11,6 @@ import {
   FormationTestimonials,
 } from "@/features/formations/sections";
 import { RegistrationForm } from "@/features/formations/RegistrationForm";
-import { StickyRegistrationCTA } from "@/features/formations/StickyRegistrationCTA";
 import { getFormationBySlug, getAllFormationSlugs } from "@/data/formations";
 
 type PageProps = {
@@ -59,7 +58,10 @@ export default async function FormationDetailPage({ params }: PageProps) {
         ctaPrimary={formation.ctaPrimary}
         ctaSecondary={formation.ctaSecondary}
       />
-      <FormationAudience profiles={formation.profiles} prerequisites={formation.prerequisites} />
+      <FormationAudience
+        profiles={formation.profiles}
+        prerequisites={formation.prerequisites}
+      />
       <FormationWhy text={formation.pourquoi} />
       <FormationObjectives objectives={formation.objectives} />
       <FormationProgram
@@ -87,8 +89,6 @@ export default async function FormationDetailPage({ params }: PageProps) {
           />
         </div>
       </section>
-
-      <StickyRegistrationCTA formationTitle={formation.title} />
     </>
   );
 }
