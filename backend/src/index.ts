@@ -1,16 +1,31 @@
+import "dotenv/config";
 import cors from "cors";
-import dotenv from "dotenv";
 import express from "express";
 import registrationRouter from "./routes/registrations";
 
-dotenv.config();
-
 const app = express();
 const port = Number(process.env.PORT || 4000);
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "*",
+    origin(origin, callback) {
+      // Requests from Postman or server-side scripts may not include an Origin header.
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      if (allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error("Origin not allowed by CORS"));
+    },
   }),
 );
 app.use(express.json());

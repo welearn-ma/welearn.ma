@@ -1,0 +1,117 @@
+{
+  "info": {
+    "name": "WeLearn Registrations API",
+    "_postman_id": "f2996da8-2af4-4d8f-9d61-f6c1e6f6e71d",
+    "description": "Collection pour tester l'API backend d'inscription des formations.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Registration - Valid",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 201', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Success is true', function () {",
+              "  const jsonData = pm.response.json();",
+              "  pm.expect(jsonData.success).to.eql(true);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Test User\",\n  \"email\": \"test.user@welearn.ma\",\n  \"phone\": \"+212600112233\",\n  \"company\": \"WeLearn\",\n  \"position\": \"Ingenieur\",\n  \"message\": \"Je souhaite rejoindre la prochaine session.\",\n  \"formationSlug\": \"bim-foundations\",\n  \"formationTitle\": \"BIM Foundations\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/registrations",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "registrations"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Registration - Missing fullName (400)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 400', function () {",
+              "  pm.response.to.have.status(400);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"invalid@welearn.ma\",\n  \"phone\": \"+212600112233\",\n  \"formationSlug\": \"bim-foundations\",\n  \"formationTitle\": \"BIM Foundations\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/registrations",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "registrations"
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000"
+    }
+  ]
+}

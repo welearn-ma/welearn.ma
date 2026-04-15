@@ -25,6 +25,9 @@ function isEmpty(value: unknown): value is undefined | null | "" {
   return value === undefined || value === null || value === "";
 }
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
+
 export async function createRegistration(
   req: Request,
   res: Response<RegistrationResponse>,
@@ -43,10 +46,24 @@ export async function createRegistration(
       .json({ success: false, message: "email is required" });
   }
 
+  if (!emailRegex.test(String(payload.email).trim())) {
+    return res.status(400).json({
+      success: false,
+      message: "email format is invalid",
+    });
+  }
+
   if (isEmpty(payload.phone)) {
     return res
       .status(400)
       .json({ success: false, message: "phone is required" });
+  }
+
+  if (!phoneRegex.test(String(payload.phone).trim())) {
+    return res.status(400).json({
+      success: false,
+      message: "phone format is invalid",
+    });
   }
 
   if (isEmpty(payload.formationSlug)) {
@@ -80,6 +97,6 @@ export async function createRegistration(
   }
 
   return res
-    .status(200)
-    .json({ success: true, message: "Demande enregistrée avec succès" });
+    .status(201)
+    .json({ success: true, message: "Demande enregistree avec succes" });
 }

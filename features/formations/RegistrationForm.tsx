@@ -80,10 +80,14 @@ export function RegistrationForm({
         formationTitle,
       });
       setIsSubmitted(true);
-    } catch {
-      setSubmitError(
-        "Une erreur est survenue. Veuillez réessayer ou nous contacter directement.",
-      );
+    } catch (error) {
+      if (error instanceof Error && error.message.trim()) {
+        setSubmitError(error.message);
+      } else {
+        setSubmitError(
+          "Une erreur est survenue. Veuillez reessayer ou nous contacter directement.",
+        );
+      }
     } finally {
       setIsSubmitting(false);
     }

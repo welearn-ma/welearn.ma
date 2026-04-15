@@ -6,7 +6,7 @@ import type {
 export async function submitRegistration(
   payload: RegistrationPayload,
 ): Promise<RegistrationResponse> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
 
   if (!baseUrl) {
     throw new Error("NEXT_PUBLIC_API_URL is not configured");
@@ -21,7 +21,18 @@ export async function submitRegistration(
   });
 
   if (!response.ok) {
-    throw new Error("Registration request failed");
+    let errorMessage = "La demande d'inscription a echoue.";
+
+    try {
+      const errorPayload = (await response.json()) as Partial<RegistrationResponse>;
+      if (errorPayload.message) {
+        errorMessage = errorPayload.message;
+      }
+    } catch {
+      // Ignore malformed response bodies and keep default message.
+    }
+
+    throw new Error(errorMessage);
   }
 
   return (await response.json()) as RegistrationResponse;
