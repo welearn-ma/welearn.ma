@@ -1,7 +1,7 @@
 import { formations as detailedFormations } from "./formations";
 import formationsJsonData from "./formations.json";
 
-export type FormationType = "Certifiante" | "Formation courte" | "Diplomante";
+export type FormationType = "Certifiante" | "Sur mesure" | "Diplomante";
 export type FormationBadge =
   | "Certifiante"
   | "Sur mesure"
@@ -25,7 +25,7 @@ type JsonFormation = {
   id: number;
   slug?: string;
   title: string;
-  type: FormationType;
+  type: "Certifiante" | "Formation courte" | "Diplomante";
   badge: FormationBadge;
   domain: FormationDomain;
   provider: string;
@@ -88,13 +88,15 @@ function toCatalogueFormation(formation: JsonFormation): CatalogueFormation {
   const href = detailSlugs.has(slug)
     ? `/formations/${slug}`
     : getFallbackHref(formation);
+  const type: FormationType =
+    formation.type === "Formation courte" ? "Sur mesure" : formation.type;
 
   return {
     id: formation.id,
     slug,
     href,
     title: formation.title,
-    type: formation.type,
+    type,
     badge: formation.badge,
     domain: formation.domain,
     provider: formation.provider,
