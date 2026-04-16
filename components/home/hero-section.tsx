@@ -14,7 +14,7 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
             {/* Tagline pill */}
-            <div className="inline-flex items-center gap-2 bg-white/[0.12] backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/20">
+            <div className="inline-flex items-center gap-2 bg-white/12 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/20">
               <span className="h-2 w-2 rounded-full bg-[#4ADE80] shrink-0" />
               <span className="text-sm font-medium text-white/90 tracking-wide">
                 Se former · S'informer · Échanger
@@ -59,9 +59,9 @@ export function HeroSection() {
 
           <div className="relative hidden lg:block">
             <div className="relative aspect-square max-w-lg mx-auto">
-              <div className="absolute inset-0 bg-white/[0.06] rounded-3xl rotate-6" />
-              <div className="absolute inset-0 bg-white/[0.04] backdrop-blur-sm rounded-3xl -rotate-3" />
-              <div className="relative bg-white/[0.08] border border-white/10 rounded-3xl p-8 shadow-2xl backdrop-blur-sm">
+              <div className="absolute inset-0 bg-white/6 rounded-3xl rotate-6" />
+              <div className="absolute inset-0 bg-white/4 backdrop-blur-sm rounded-3xl -rotate-3" />
+              <div className="relative bg-white/8 border border-white/10 rounded-3xl p-8 shadow-2xl backdrop-blur-sm">
                 <Image
                   src="/images/welearn-icon.png"
                   alt="Welearn Education"

@@ -30,7 +30,7 @@ export function PageHero({
 
       <div className="relative mx-auto max-w-5xl px-4 lg:px-8 text-center">
         {(badge || eyebrow) && (
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.12] px-4 py-2 mb-6 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/12 px-4 py-2 mb-6 backdrop-blur-sm">
             {badge?.icon && <badge.icon className="h-4 w-4 text-white" />}
             <span className="text-sm font-medium text-white/90 tracking-wide">
               {badge?.text || eyebrow}
