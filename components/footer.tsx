@@ -22,9 +22,9 @@ const footerLinks = {
     },
     {
       name: "BIM Foundations",
-      href: "/formations/certifiantes/bim-foundations",
+      href: "/formations/bim-foundations-professional",
     },
-    { name: "Catalogue intra", href: "/formations/certifiantes/catalogue" },
+    { name: "Catalogue intra", href: "/formations/certifiantes" },
     {
       name: "Formations sur mesure",
       href: "/formations/certifiantes/sur-mesure",

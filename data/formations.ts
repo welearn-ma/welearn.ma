@@ -19,7 +19,8 @@ export const formations: Record<string, FormationPageData> = {
     title: "Mastère Spécialisé® BIM & ses Applications",
     subtitle:
       "Devenez BIM Manager. Maîtrisez la gestion des données d'un projet de construction, de la conception à l'exploitation, avec le programme de référence au Maroc.",
-    partnerLine: "Partenaire académique : École Hassania des Travaux Publics (EHTP)",
+    partnerLine:
+      "Partenaire académique : École Hassania des Travaux Publics (EHTP)",
     badges: [
       "Mastère Spécialisé®",
       "Accrédité CGE",
@@ -63,16 +64,66 @@ export const formations: Record<string, FormationPageData> = {
       "Piloter la conduite du changement liée à l'adoption du BIM dans une organisation.",
     ],
     modules: [
-      { number: 1, title: "BIM et contexte de la Construction 4.0", description: "Panorama de la transition numérique dans le secteur de la construction. Enjeux, tendances et opportunités du BIM dans un contexte de digitalisation accélérée." },
-      { number: 2, title: "BIM et responsabilités des intervenants & Aspects légaux", description: "Cadre juridique et contractuel du BIM. Responsabilités de chaque intervenant, aspects réglementaires et implications sur les marchés de travaux." },
-      { number: 3, title: "Interopérabilité des projets sur BIM", description: "Standards openBIM, formats IFC, échanges de données entre logiciels et intervenants. Mise en place d'un environnement de travail interopérable." },
-      { number: 4, title: "BIM pour un projet de construction", description: "Application concrète du BIM aux différentes phases d'un projet : programmation, conception, exécution, réception." },
-      { number: 5, title: "Captation, collecte & intégration des attributs (Scan to BIM)", description: "Technologies de captation 3D, traitement des nuages de points et intégration dans les maquettes numériques." },
-      { number: 6, title: "Management des projets sous BIM (le BIM Collaboratif)", description: "Mise en place des processus BIM : conventions BIM, plateformes collaboratives, coordination entre les disciplines." },
-      { number: 7, title: "BIM pour les infrastructures", description: "Application du BIM aux projets d'infrastructure : routes, ponts, réseaux." },
-      { number: 8, title: "CIM et intelligence territoriale", description: "Du BIM au CIM : modélisation urbaine, Smart City, gestion intelligente des territoires." },
-      { number: 9, title: "BIM pour la gestion d'un patrimoine immobilier", description: "BIM et exploitation-maintenance : gestion des actifs, Facility Management, jumeau numérique." },
-      { number: 10, title: "Conduite du changement", description: "Stratégies de déploiement du BIM dans une organisation. Management du changement et mesure de la maturité BIM." },
+      {
+        number: 1,
+        title: "BIM et contexte de la Construction 4.0",
+        description:
+          "Panorama de la transition numérique dans le secteur de la construction. Enjeux, tendances et opportunités du BIM dans un contexte de digitalisation accélérée.",
+      },
+      {
+        number: 2,
+        title: "BIM et responsabilités des intervenants & Aspects légaux",
+        description:
+          "Cadre juridique et contractuel du BIM. Responsabilités de chaque intervenant, aspects réglementaires et implications sur les marchés de travaux.",
+      },
+      {
+        number: 3,
+        title: "Interopérabilité des projets sur BIM",
+        description:
+          "Standards openBIM, formats IFC, échanges de données entre logiciels et intervenants. Mise en place d'un environnement de travail interopérable.",
+      },
+      {
+        number: 4,
+        title: "BIM pour un projet de construction",
+        description:
+          "Application concrète du BIM aux différentes phases d'un projet : programmation, conception, exécution, réception.",
+      },
+      {
+        number: 5,
+        title: "Captation, collecte & intégration des attributs (Scan to BIM)",
+        description:
+          "Technologies de captation 3D, traitement des nuages de points et intégration dans les maquettes numériques.",
+      },
+      {
+        number: 6,
+        title: "Management des projets sous BIM (le BIM Collaboratif)",
+        description:
+          "Mise en place des processus BIM : conventions BIM, plateformes collaboratives, coordination entre les disciplines.",
+      },
+      {
+        number: 7,
+        title: "BIM pour les infrastructures",
+        description:
+          "Application du BIM aux projets d'infrastructure : routes, ponts, réseaux.",
+      },
+      {
+        number: 8,
+        title: "CIM et intelligence territoriale",
+        description:
+          "Du BIM au CIM : modélisation urbaine, Smart City, gestion intelligente des territoires.",
+      },
+      {
+        number: 9,
+        title: "BIM pour la gestion d'un patrimoine immobilier",
+        description:
+          "BIM et exploitation-maintenance : gestion des actifs, Facility Management, jumeau numérique.",
+      },
+      {
+        number: 10,
+        title: "Conduite du changement",
+        description:
+          "Stratégies de déploiement du BIM dans une organisation. Management du changement et mesure de la maturité BIM.",
+      },
     ],
     finalBlocks: [
       {
@@ -111,21 +162,35 @@ export const formations: Record<string, FormationPageData> = {
       },
     ],
     steps: [
-      { number: 1, title: "Formulaire de pré-inscription", description: "Remplissez le formulaire de pré-inscription en ligne." },
-      { number: 2, title: "Dossier de candidature", description: "Déposez votre dossier de candidature complet." },
-      { number: 3, title: "Entretien de sélection", description: "Passez un entretien avec la commission de sélection." },
+      {
+        number: 1,
+        title: "Formulaire de pré-inscription",
+        description: "Remplissez le formulaire de pré-inscription en ligne.",
+      },
+      {
+        number: 2,
+        title: "Dossier de candidature",
+        description: "Déposez votre dossier de candidature complet.",
+      },
+      {
+        number: 3,
+        title: "Entretien de sélection",
+        description: "Passez un entretien avec la commission de sélection.",
+      },
     ],
     session: "Octobre 2026",
     ctaInscription: "Déposer ma candidature",
     testimonials: [
       {
-        quote: "Le Mastère BIM de Welearn et l'EHTP m'a permis de faire évoluer ma carrière vers le BIM Management. La qualité des intervenants et la double accréditation en font un programme unique au Maroc.",
+        quote:
+          "Le Mastère BIM de Welearn et l'EHTP m'a permis de faire évoluer ma carrière vers le BIM Management. La qualité des intervenants et la double accréditation en font un programme unique au Maroc.",
         author: "Prénom Nom",
         role: "BIM Manager",
         company: "Bureau d'études A",
       },
       {
-        quote: "Une formation complète qui couvre l'ensemble des dimensions du BIM. Le format modulaire m'a permis de concilier formation et vie professionnelle sans difficulté.",
+        quote:
+          "Une formation complète qui couvre l'ensemble des dimensions du BIM. Le format modulaire m'a permis de concilier formation et vie professionnelle sans difficulté.",
         author: "Prénom Nom",
         role: "Directeur de Projets",
         company: "Entreprise B",
@@ -133,8 +198,10 @@ export const formations: Record<string, FormationPageData> = {
     ],
     seo: {
       title: "Mastère Spécialisé BIM Maroc — EHTP & Welearn",
-      description: "Le seul Mastère Spécialisé BIM accrédité CGE et labellisé buildingSMART au Maroc. Co-construit par l'EHTP et Welearn.",
-      keywords: "mastère spécialisé BIM Maroc, formation BIM Manager Casablanca, mastère BIM EHTP, BIM construction Maroc",
+      description:
+        "Le seul Mastère Spécialisé BIM accrédité CGE et labellisé buildingSMART au Maroc. Co-construit par l'EHTP et Welearn.",
+      keywords:
+        "mastère spécialisé BIM Maroc, formation BIM Manager Casablanca, mastère BIM EHTP, BIM construction Maroc",
     },
   },
 
@@ -146,7 +213,8 @@ export const formations: Record<string, FormationPageData> = {
     title: "Executive Master en Ingénierie Immobilière",
     subtitle:
       "Maîtrisez l'ensemble de la chaîne de valeur immobilière — de l'investissement à l'exploitation — avec le programme exécutif de référence pour les professionnels du secteur.",
-    partnerLine: "Partenaire académique : École Hassania des Travaux Publics (EHTP)",
+    partnerLine:
+      "Partenaire académique : École Hassania des Travaux Publics (EHTP)",
     badges: ["Executive Master", "EHTP", "Formation exécutive"],
     infoBanner: [
       { icon: Clock, value: "18 mois", label: "Durée" },
@@ -186,16 +254,66 @@ export const formations: Record<string, FormationPageData> = {
       "Comprendre les enjeux de la ConTech et de la PropTech et leurs cas d'usages dans l'immobilier de demain.",
     ],
     modules: [
-      { number: 1, title: "Urbanisme et aménagement des territoires", description: "Cadre réglementaire de l'urbanisme au Maroc, documents d'urbanisme, planification territoriale et enjeux d'aménagement." },
-      { number: 2, title: "Droit foncier et immobilier", description: "Régime foncier marocain, immatriculation foncière, copropriété, baux, contentieux immobilier et évolutions réglementaires." },
-      { number: 3, title: "Investissement et gestion des actifs immobiliers", description: "Analyse d'opportunités, stratégies d'investissement, gestion de portefeuille, indicateurs de performance." },
-      { number: 4, title: "Financement des projets immobiliers", description: "Montages financiers, financement bancaire, structures alternatives, partenariats public-privé et gestion des risques." },
-      { number: 5, title: "Le marché de l'immobilier", description: "Analyse des marchés résidentiel, tertiaire et commercial. Tendances, cycles et facteurs de prix." },
-      { number: 6, title: "Évaluation et expertise immobilière", description: "Méthodes d'évaluation (par comparaison, par le revenu, par le coût), expertise judiciaire et normes professionnelles." },
-      { number: 7, title: "Management et innovation dans un projet immobilier", description: "Pilotage de projets, lean construction et intégration des nouvelles technologies." },
-      { number: 8, title: "Marketing et commercialisation", description: "Stratégies de commercialisation, marketing digital immobilier, relation client et techniques de vente." },
-      { number: 9, title: "Comptabilité et fiscalité immobilière", description: "Régime fiscal, TVA immobilière, droits d'enregistrement, comptabilité des promoteurs." },
-      { number: 10, title: "Exploitation et maintenance", description: "Gestion technique des bâtiments, Facility Management, performance énergétique et cycle de vie." },
+      {
+        number: 1,
+        title: "Urbanisme et aménagement des territoires",
+        description:
+          "Cadre réglementaire de l'urbanisme au Maroc, documents d'urbanisme, planification territoriale et enjeux d'aménagement.",
+      },
+      {
+        number: 2,
+        title: "Droit foncier et immobilier",
+        description:
+          "Régime foncier marocain, immatriculation foncière, copropriété, baux, contentieux immobilier et évolutions réglementaires.",
+      },
+      {
+        number: 3,
+        title: "Investissement et gestion des actifs immobiliers",
+        description:
+          "Analyse d'opportunités, stratégies d'investissement, gestion de portefeuille, indicateurs de performance.",
+      },
+      {
+        number: 4,
+        title: "Financement des projets immobiliers",
+        description:
+          "Montages financiers, financement bancaire, structures alternatives, partenariats public-privé et gestion des risques.",
+      },
+      {
+        number: 5,
+        title: "Le marché de l'immobilier",
+        description:
+          "Analyse des marchés résidentiel, tertiaire et commercial. Tendances, cycles et facteurs de prix.",
+      },
+      {
+        number: 6,
+        title: "Évaluation et expertise immobilière",
+        description:
+          "Méthodes d'évaluation (par comparaison, par le revenu, par le coût), expertise judiciaire et normes professionnelles.",
+      },
+      {
+        number: 7,
+        title: "Management et innovation dans un projet immobilier",
+        description:
+          "Pilotage de projets, lean construction et intégration des nouvelles technologies.",
+      },
+      {
+        number: 8,
+        title: "Marketing et commercialisation",
+        description:
+          "Stratégies de commercialisation, marketing digital immobilier, relation client et techniques de vente.",
+      },
+      {
+        number: 9,
+        title: "Comptabilité et fiscalité immobilière",
+        description:
+          "Régime fiscal, TVA immobilière, droits d'enregistrement, comptabilité des promoteurs.",
+      },
+      {
+        number: 10,
+        title: "Exploitation et maintenance",
+        description:
+          "Gestion technique des bâtiments, Facility Management, performance énergétique et cycle de vie.",
+      },
     ],
     finalBlocks: [
       {
@@ -239,21 +357,36 @@ export const formations: Record<string, FormationPageData> = {
       },
     ],
     steps: [
-      { number: 1, title: "Formulaire de pré-inscription", description: "Remplissez le formulaire de pré-inscription en ligne." },
-      { number: 2, title: "Dossier de candidature", description: "Déposez votre dossier de candidature complet." },
-      { number: 3, title: "Entretien approfondi", description: "Passez un entretien approfondi avec la commission de sélection." },
+      {
+        number: 1,
+        title: "Formulaire de pré-inscription",
+        description: "Remplissez le formulaire de pré-inscription en ligne.",
+      },
+      {
+        number: 2,
+        title: "Dossier de candidature",
+        description: "Déposez votre dossier de candidature complet.",
+      },
+      {
+        number: 3,
+        title: "Entretien approfondi",
+        description:
+          "Passez un entretien approfondi avec la commission de sélection.",
+      },
     ],
     session: "Novembre 2026",
     ctaInscription: "Déposer ma candidature",
     testimonials: [
       {
-        quote: "L'Executive Master en Ingénierie Immobilière m'a donné une vision complète du secteur. Les intervenants sont des professionnels reconnus qui partagent leur expérience terrain.",
+        quote:
+          "L'Executive Master en Ingénierie Immobilière m'a donné une vision complète du secteur. Les intervenants sont des professionnels reconnus qui partagent leur expérience terrain.",
         author: "Prénom Nom",
         role: "Promoteur Immobilier",
         company: "Groupe A",
       },
       {
-        quote: "Cette formation m'a permis de monter en compétences sur les aspects juridiques et financiers de l'immobilier. Un programme indispensable pour tout professionnel du secteur.",
+        quote:
+          "Cette formation m'a permis de monter en compétences sur les aspects juridiques et financiers de l'immobilier. Un programme indispensable pour tout professionnel du secteur.",
         author: "Prénom Nom",
         role: "Asset Manager",
         company: "Entreprise B",
@@ -261,8 +394,10 @@ export const formations: Record<string, FormationPageData> = {
     ],
     seo: {
       title: "Executive Master Ingénierie Immobilière — EHTP & Welearn",
-      description: "Maîtrisez la chaîne de valeur immobilière avec l'Executive Master co-construit par l'EHTP et Welearn. Formation exécutive pour professionnels du secteur.",
-      keywords: "formation immobilier Maroc, executive master immobilier, formation ingénierie immobilière Casablanca, master immobilier EHTP",
+      description:
+        "Maîtrisez la chaîne de valeur immobilière avec l'Executive Master co-construit par l'EHTP et Welearn. Formation exécutive pour professionnels du secteur.",
+      keywords:
+        "formation immobilier Maroc, executive master immobilier, formation ingénierie immobilière Casablanca, master immobilier EHTP",
     },
   },
 
@@ -276,7 +411,11 @@ export const formations: Record<string, FormationPageData> = {
       "Obtenez la certification internationale de référence en BIM, délivrée par buildingSMART International. Formation accessible en e-learning ou en présentiel, en seulement 1 mois.",
     partnerLine:
       "Organisme certificateur : buildingSMART International · Organisme accrédité : WeLearn",
-    badges: ["Certification internationale", "buildingSMART", "E-learning + Présentiel"],
+    badges: [
+      "Certification internationale",
+      "buildingSMART",
+      "E-learning + Présentiel",
+    ],
     infoBanner: [
       { icon: Clock, value: "1 mois", label: "Durée" },
       { icon: BookOpen, value: "21 heures", label: "Volume" },
@@ -422,9 +561,12 @@ export const formations: Record<string, FormationPageData> = {
       },
     ],
     seo: {
-      title: "Certification BIM Foundations – Professional | buildingSMART | Welearn",
-      description: "Obtenez la certification BIM internationale de référence délivrée par buildingSMART International. Préparation en e-learning ou présentiel avec Welearn, organisme accrédité.",
-      keywords: "certification BIM Maroc, BIM Foundations buildingSMART, formation BIM en ligne, certification BIM international",
+      title:
+        "Certification BIM Foundations – Professional | buildingSMART | Welearn",
+      description:
+        "Obtenez la certification BIM internationale de référence délivrée par buildingSMART International. Préparation en e-learning ou présentiel avec Welearn, organisme accrédité.",
+      keywords:
+        "certification BIM Maroc, BIM Foundations buildingSMART, formation BIM en ligne, certification BIM international",
     },
   },
 
@@ -510,17 +652,31 @@ export const formations: Record<string, FormationPageData> = {
       },
     ],
     steps: [
-      { number: 1, title: "Pré-inscription en ligne", description: "Remplissez le formulaire de pré-inscription." },
-      { number: 2, title: "Dossier de candidature", description: "Déposez votre dossier complet." },
-      { number: 3, title: "Confirmation", description: "Recevez votre confirmation d'inscription." },
+      {
+        number: 1,
+        title: "Pré-inscription en ligne",
+        description: "Remplissez le formulaire de pré-inscription.",
+      },
+      {
+        number: 2,
+        title: "Dossier de candidature",
+        description: "Déposez votre dossier complet.",
+      },
+      {
+        number: 3,
+        title: "Confirmation",
+        description: "Recevez votre confirmation d'inscription.",
+      },
     ],
     session: "",
     ctaInscription: "Déposer ma candidature",
     testimonials: [],
     seo: {
       title: "Mastère Exécutif Management Projets BTP | Welearn",
-      description: "Un programme diplômant orienté leadership, planification et performance des projets BTP.",
-      keywords: "mastère management projets BTP, formation BTP Maroc, management construction",
+      description:
+        "Un programme diplômant orienté leadership, planification et performance des projets BTP.",
+      keywords:
+        "mastère management projets BTP, formation BTP Maroc, management construction",
     },
   },
 
@@ -598,25 +754,47 @@ export const formations: Record<string, FormationPageData> = {
       },
     ],
     steps: [
-      { number: 1, title: "Pré-inscription en ligne", description: "Remplissez le formulaire de pré-inscription." },
-      { number: 2, title: "Dossier de candidature", description: "Déposez votre dossier complet." },
-      { number: 3, title: "Confirmation", description: "Recevez votre confirmation d'inscription." },
+      {
+        number: 1,
+        title: "Pré-inscription en ligne",
+        description: "Remplissez le formulaire de pré-inscription.",
+      },
+      {
+        number: 2,
+        title: "Dossier de candidature",
+        description: "Déposez votre dossier complet.",
+      },
+      {
+        number: 3,
+        title: "Confirmation",
+        description: "Recevez votre confirmation d'inscription.",
+      },
     ],
     session: "",
     ctaInscription: "Déposer ma candidature",
     testimonials: [],
     seo: {
       title: "Concepteur Parcours Digital Learning | Welearn",
-      description: "Une certification pratique pour créer, structurer et déployer des contenus digitaux à impact.",
-      keywords: "formation digital learning, concepteur e-learning, parcours digital Maroc",
+      description:
+        "Une certification pratique pour créer, structurer et déployer des contenus digitaux à impact.",
+      keywords:
+        "formation digital learning, concepteur e-learning, parcours digital Maroc",
     },
   },
 };
 
-export function getFormationBySlug(slug: string): FormationPageData | undefined {
-  return formations[slug];
+export function getFormationBySlug(
+  slug: string,
+): FormationPageData | undefined {
+  const byObjectKey = formations[slug];
+
+  if (byObjectKey) {
+    return byObjectKey;
+  }
+
+  return Object.values(formations).find((formation) => formation.slug === slug);
 }
 
 export function getAllFormationSlugs(): string[] {
-  return Object.keys(formations);
+  return Object.values(formations).map((formation) => formation.slug);
 }

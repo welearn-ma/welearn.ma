@@ -44,8 +44,7 @@ Fonctionnalites majeures actuellement en place:
 - /about
 - /formations
 - /formations/certifiantes
-- /formations/certifiantes/bim-foundations
-- /formations/certifiantes/catalogue
+- /formations/bim-foundations-professional
 - /formations/certifiantes/sur-mesure
 - /formations/diplomantes
 - /formations/diplomantes/executive-masters

@@ -32,9 +32,7 @@ export function FormationsCta() {
             variant="outline"
             className="border-white/30 border-2 bg-transparent text-white hover:bg-white hover:text-wl-blue-dark transition-all duration-200"
           >
-            <Link href="/formations/certifiantes/catalogue">
-              Voir le catalogue
-            </Link>
+            <Link href="/formations/certifiantes">Voir le catalogue</Link>
           </Button>
         </div>
       </div>

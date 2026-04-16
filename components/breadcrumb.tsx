@@ -17,6 +17,7 @@ const routeLabels: Record<string, string> = {
   "executive-masters": "Executive Masters",
   "licences-pro": "Licences Professionnelles",
   "bim-foundations": "BIM Foundations Professional",
+  "bim-foundations-professional": "BIM Foundations Professional",
   catalogue: "Catalogue des formations",
   "sur-mesure": "Formations sur mesure",
   ingenierie: "Ingénierie de Formation",

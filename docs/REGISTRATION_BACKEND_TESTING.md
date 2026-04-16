@@ -95,7 +95,7 @@ pnpm dev
 
 2. Open a formation page, for example:
 
-- `http://localhost:3000/formations/bim-foundations`
+- `http://localhost:3000/formations/bim-foundations-professional`
 
 3. Submit the form in section `Demander une inscription`.
 

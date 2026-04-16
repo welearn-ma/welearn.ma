@@ -13,53 +13,16 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import formationsData from "@/data/formations.json";
+import {
+  certifiantesFormations,
+  type FormationType,
+  type FormationBadge,
+  type FormationDomain,
+  type FormationFormat,
+  type FormationLevel,
+} from "../../data/formations-catalogue";
 
-type FormationType = "Certifiante" | "Formation courte";
-type FormationBadge = "Certifiante" | "Sur mesure";
-type FormationDomain =
-  | "BIM"
-  | "BTP"
-  | "Immobilier"
-  | "Digital & IA"
-  | "Management";
-type FormationFormat = "E-learning" | "Présentiel";
-type FormationLevel =
-  | "Débutant"
-  | "Intermédiaire"
-  | "Avancé"
-  | "Tous niveaux"
-  | "Professionnel";
-
-interface FormationContact {
-  email: string | null;
-  phone: string[];
-}
-
-interface Formation {
-  id: number;
-  slug?: string;
-  title: string;
-  type: FormationType;
-  badge: FormationBadge;
-  domain: FormationDomain;
-  provider: string;
-  issuer: string | null;
-  format: FormationFormat[];
-  duration: string;
-  level: FormationLevel;
-  target: string[];
-  summary: string;
-  objectives: string[];
-  modules: string[];
-  accreditation: string | null;
-  contact: FormationContact | null;
-  featured: boolean;
-}
-
-const formations = (formationsData.formations as Formation[]).filter(
-  (f) => (f.type as string) !== "Diplomante",
-);
+const formations = certifiantesFormations;
 
 interface ActiveFilters {
   type: FormationType | "all";
@@ -78,6 +41,8 @@ const defaultFilters: ActiveFilters = {
 const badgeClasses: Record<FormationBadge, string> = {
   Certifiante: "bg-primary/10 text-primary border-primary/25",
   "Sur mesure": "bg-slate-100 text-slate-700 border-slate-200",
+  "Executive Masters": "bg-primary/10 text-primary border-primary/25",
+  "Licence Pro": "bg-amber-50 text-amber-700 border-amber-200",
 };
 
 const domainStripeClasses: Record<FormationDomain, string> = {
@@ -104,18 +69,6 @@ function getFormatIcon(formats: FormationFormat[]) {
     return Building2;
   }
   return Laptop;
-}
-
-function getFormationSlug(formation: Formation) {
-  if (formation.slug) {
-    return formation.slug;
-  }
-
-  if (formation.domain === "Digital & IA") {
-    return "concepteur-parcours-digital-learning";
-  }
-
-  return "bim-foundations";
 }
 
 export function FormationsCataloguePage() {
@@ -339,7 +292,7 @@ export function FormationsCataloguePage() {
               return (
                 <Link
                   key={formation.id}
-                  href={`/formations/${getFormationSlug(formation)}`}
+                  href={formation.href}
                   className="block h-full"
                 >
                   <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">

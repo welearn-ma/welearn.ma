@@ -5,25 +5,18 @@ import { useMemo, useState } from "react";
 import { ArrowRight, Clock3, GraduationCap, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import formationsData from "@/data/formations.json";
+import {
+  diplomantesFormations,
+  type FormationDomain,
+  type FormationLevel,
+} from "../../data/formations-catalogue";
 
 type DiplomanteBadge = "Executive Masters" | "Licence Pro";
-type FormationDomain =
-  | "BIM"
-  | "BTP"
-  | "Immobilier"
-  | "Digital & IA"
-  | "Management";
-type FormationLevel =
-  | "Débutant"
-  | "Intermédiaire"
-  | "Avancé"
-  | "Tous niveaux"
-  | "Professionnel";
 
 interface Diplomante {
   id: number;
-  slug?: string;
+  slug: string;
+  href: string;
   title: string;
   type: "Diplomante";
   badge: DiplomanteBadge;
@@ -33,19 +26,11 @@ interface Diplomante {
   format: string[];
   duration: string;
   level: FormationLevel;
-  target: string[];
   summary: string;
-  objectives: string[];
-  modules: string[];
-  accreditation: string | null;
-  contact: null;
-  featured: boolean;
   tags?: string[];
 }
 
-const diplomantes = (formationsData.formations as unknown[]).filter(
-  (f) => (f as { type: string }).type === "Diplomante",
-) as Diplomante[];
+const diplomantes = diplomantesFormations as Diplomante[];
 
 interface ActiveFilters {
   badge: DiplomanteBadge | "all";
@@ -79,14 +64,6 @@ const levelIndicatorClasses: Record<FormationLevel, string> = {
   "Tous niveaux": "bg-slate-100 text-slate-700",
   Professionnel: "bg-indigo-100 text-indigo-700",
 };
-
-function getFormationSlug(diplomante: Diplomante) {
-  if (diplomante.slug) {
-    return diplomante.slug;
-  }
-
-  return "mastere-management-projets-btp";
-}
 
 export function DiplomantesCataloguePage() {
   const [filters, setFilters] = useState<ActiveFilters>(defaultFilters);
@@ -256,7 +233,7 @@ export function DiplomantesCataloguePage() {
             {filtered.map((diplomante) => (
               <Link
                 key={diplomante.id}
-                href={`/formations/${getFormationSlug(diplomante)}`}
+                href={diplomante.href}
                 className="block h-full"
               >
                 <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
