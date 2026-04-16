@@ -2,6 +2,7 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import registrationRouter from "./routes/registrations";
+import contactRouter from "./routes/contact";
 
 const app = express();
 const port = Number(process.env.PORT || 4000);
@@ -35,6 +36,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/registrations", registrationRouter);
+app.use("/api/contact", contactRouter);
 
 app.listen(port, () => {
   console.log(`Backend running on port ${port}`);

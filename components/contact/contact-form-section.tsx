@@ -74,11 +74,21 @@ export function ContactFormSection() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">Prénom *</Label>
-                <Input id="firstName" placeholder="Votre prénom" required />
+                <Input
+                  id="firstName"
+                  name="firstName"
+                  placeholder="Votre prénom"
+                  required
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Nom *</Label>
-                <Input id="lastName" placeholder="Votre nom" required />
+                <Input
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Votre nom"
+                  required
+                />
               </div>
             </div>
 
@@ -86,6 +96,7 @@ export function ContactFormSection() {
               <Label htmlFor="email">Email *</Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="votre@email.com"
                 required
@@ -94,13 +105,19 @@ export function ContactFormSection() {
 
             <div className="space-y-2">
               <Label htmlFor="phone">Téléphone</Label>
-              <Input id="phone" type="tel" placeholder="+212 6XX XXX XXX" />
+              <Input
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="+212 6XX XXX XXX"
+              />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="subject">Sujet *</Label>
               <Input
                 id="subject"
+                name="subject"
                 placeholder="Objet de votre message"
                 required
               />
@@ -110,6 +127,7 @@ export function ContactFormSection() {
               <Label htmlFor="message">Message *</Label>
               <Textarea
                 id="message"
+                name="message"
                 placeholder="Décrivez votre projet ou posez votre question..."
                 rows={5}
                 className="min-h-40 flex-1 resize-none"
