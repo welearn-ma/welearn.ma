@@ -32,7 +32,7 @@ const solutions = [
 
 export function DigitalLearningSolutionsSection() {
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="py-20 lg:py-28 bg-wl-gray-light">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <SectionHeader
           eyebrow="Nos solutions"
@@ -44,15 +44,15 @@ export function DigitalLearningSolutionsSection() {
           {solutions.map((solution) => (
             <div
               key={solution.title}
-              className="bg-secondary rounded-2xl p-8 flex flex-col hover:shadow-lg transition-all"
+              className="flex flex-col rounded-xl border border-wl-border bg-white p-8 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
             >
-              <div className="inline-flex p-4 bg-primary/10 rounded-2xl mb-6 w-fit">
-                <solution.icon className="h-8 w-8 text-primary" />
+              <div className="inline-flex w-fit rounded-2xl bg-wl-blue-tint p-4 mb-6">
+                <solution.icon className="h-8 w-8 text-wl-blue" />
               </div>
-              <h2 className="font-sans text-xl font-bold text-foreground mb-3">
+              <h2 className="font-sans text-xl font-bold text-wl-text mb-3">
                 {solution.title}
               </h2>
-              <p className="text-muted-foreground leading-relaxed mb-6 flex-1">
+              <p className="text-wl-text-secondary leading-relaxed mb-6 flex-1">
                 {solution.description}
               </p>
 
@@ -60,9 +60,9 @@ export function DigitalLearningSolutionsSection() {
                 {solution.features.map((feature, idx) => (
                   <li
                     key={idx}
-                    className="flex items-center gap-2 text-sm text-foreground"
+                    className="flex items-center gap-2 text-sm text-wl-text"
                   >
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-wl-orange" />
                     {feature}
                   </li>
                 ))}
@@ -70,7 +70,7 @@ export function DigitalLearningSolutionsSection() {
 
               <Button
                 asChild
-                className="w-full bg-primary hover:bg-primary/90 text-white"
+                className="w-full bg-wl-blue hover:bg-wl-blue-dark text-white transition-all duration-200"
               >
                 <Link href={solution.href}>
                   En savoir plus

@@ -14,7 +14,7 @@ const parcours = [
 
 export function ParcoursExamplesSection() {
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="py-20 lg:py-28 bg-wl-gray-light">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <SectionHeader
           eyebrow="Exemples de parcours"
@@ -26,10 +26,10 @@ export function ParcoursExamplesSection() {
           {parcours.map((parcour, index) => (
             <div
               key={index}
-              className="bg-secondary rounded-xl px-6 py-4 hover:bg-(--color-welearn-navy) hover:text-white transition-colors group cursor-pointer"
+              className="group cursor-pointer rounded-xl border border-wl-border bg-white px-6 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:bg-wl-blue hover:text-white hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
             >
               <div className="flex items-center gap-3">
-                <div className="h-2 w-2 bg-primary group-hover:bg-(--color-welearn-gold) rounded-full transition-colors" />
+                <div className="h-2 w-2 rounded-full bg-wl-orange transition-colors group-hover:bg-white" />
                 <span className="font-medium">{parcour}</span>
               </div>
             </div>
@@ -41,7 +41,7 @@ export function ParcoursExamplesSection() {
             asChild
             size="lg"
             variant="outline"
-            className="border-primary text-primary hover:bg-primary hover:text-white bg-transparent"
+            className="border-wl-blue text-wl-blue hover:bg-wl-blue hover:text-white bg-transparent transition-all duration-200"
           >
             <Link href="/contact">
               Demander un devis personnalisé

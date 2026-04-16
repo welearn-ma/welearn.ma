@@ -4,11 +4,14 @@ import { Building2, CheckCircle, ArrowRight } from "lucide-react";
 
 export function CorporateAcademySection() {
   return (
-    <section className="py-20 lg:py-28 bg-(--color-welearn-navy)">
-      <div className="mx-auto max-w-7xl px-4 lg:px-8">
+    <section className="relative overflow-hidden py-20 lg:py-28 bg-linear-to-br from-wl-blue to-wl-blue-dark">
+      <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-white/3 pointer-events-none" />
+      <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-white/2 pointer-events-none" />
+
+      <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <span className="inline-block text-sm font-semibold uppercase tracking-wider text-white/80 mb-3">
+            <span className="inline-block text-sm font-semibold uppercase tracking-widest text-wl-highlight mb-3">
               Académies d'entreprise
             </span>
             <h2 className="font-sans text-3xl md:text-4xl font-bold text-white mb-6 text-balance">
@@ -36,7 +39,7 @@ export function CorporateAcademySection() {
             <Button
               asChild
               size="lg"
-              className="bg-white hover:bg-(--color-welearn-gold) text-(--color-welearn-navy) font-semibold transition-colors"
+              className="bg-white hover:bg-white/90 text-wl-blue-dark font-semibold transition-all duration-200"
             >
               <Link href="/contact">
                 Discuter de votre projet
@@ -45,7 +48,7 @@ export function CorporateAcademySection() {
             </Button>
           </div>
           <div className="relative">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+            <div className="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-sm shadow-2xl">
               <Building2 className="h-16 w-16 text-white mb-6" />
               <h3 className="font-sans text-2xl font-bold text-white mb-4">
                 Votre Académie
@@ -55,11 +58,11 @@ export function CorporateAcademySection() {
                 organisation avec une académie qui porte vos valeurs.
               </p>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/10 rounded-lg p-4 text-center">
+                <div className="rounded-lg bg-white/10 p-4 text-center">
                   <div className="text-2xl font-bold text-white">100%</div>
                   <div className="text-sm text-white/70">Personnalisable</div>
                 </div>
-                <div className="bg-white/10 rounded-lg p-4 text-center">
+                <div className="rounded-lg bg-white/10 p-4 text-center">
                   <div className="text-2xl font-bold text-white">24/7</div>
                   <div className="text-sm text-white/70">Accessible</div>
                 </div>

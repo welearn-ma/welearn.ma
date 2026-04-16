@@ -120,7 +120,7 @@ export default function AcademiePage() {
         size="sm"
       />
 
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28 bg-wl-gray-light">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Pourquoi ce dispositif"
@@ -131,14 +131,14 @@ export default function AcademiePage() {
             {valuePoints.map((point, idx) => (
               <div
                 key={point}
-                className="group relative rounded-xl border border-border bg-secondary p-6 hover:shadow-lg hover:border-primary/20 transition-all duration-300"
+                className="group relative rounded-xl border border-wl-border bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
               >
-                <div className="absolute top-0 left-0 w-1 h-12 bg-linear-to-b from-primary to-primary/50 rounded-r-full"></div>
+                <div className="absolute top-0 left-0 h-12 w-1 rounded-r-full bg-linear-to-b from-wl-blue to-wl-orange"></div>
                 <div className="flex items-start gap-4 ml-3">
-                  <div className="rounded-lg bg-primary/10 p-3 group-hover:bg-primary/15 transition-colors">
-                    <Lightbulb className="h-5 w-5 text-primary" />
+                  <div className="rounded-lg bg-wl-blue-tint p-3 transition-colors group-hover:bg-wl-orange-tint">
+                    <Lightbulb className="h-5 w-5 text-wl-blue" />
                   </div>
-                  <p className="text-foreground font-medium leading-relaxed">
+                  <p className="font-medium leading-relaxed text-wl-text">
                     {point}
                   </p>
                 </div>
@@ -159,27 +159,27 @@ export default function AcademiePage() {
             {offerBlocks.map((block, idx) => (
               <div
                 key={block.title}
-                className="group relative rounded-2xl bg-secondary border border-border overflow-hidden hover:shadow-xl hover:border-primary/20 transition-all duration-300"
+                className="group relative overflow-hidden rounded-2xl border border-wl-border bg-wl-gray-light transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
               >
                 {/* Number badge */}
-                <div className="absolute -top-12 -right-12 w-32 h-32 bg-linear-to-br from-primary/5 to-primary/2 rounded-full blur-2xl group-hover:from-primary/10 transition-all duration-300"></div>
+                <div className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-linear-to-br from-wl-blue/10 to-wl-orange/10 blur-2xl transition-all duration-300 group-hover:from-wl-blue/20"></div>
 
                 <div className="relative p-6">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="rounded-lg bg-primary/10 p-3 group-hover:shadow-md transition-shadow">
-                      <block.icon className="h-6 w-6 text-primary" />
+                    <div className="rounded-lg bg-wl-blue-tint p-3 transition-shadow group-hover:shadow-md">
+                      <block.icon className="h-6 w-6 text-wl-blue" />
                     </div>
-                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-wl-orange-tint text-sm font-bold text-wl-orange">
                       {idx + 1}
                     </span>
                   </div>
-                  <h3 className="font-sans font-bold text-foreground mb-3 text-lg leading-snug">
+                  <h3 className="mb-3 font-sans text-lg font-bold leading-snug text-wl-text">
                     {block.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                  <p className="mb-4 text-sm leading-relaxed text-wl-text-secondary">
                     {block.description}
                   </p>
-                  <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-xs font-semibold text-primary group-hover:bg-primary/20 transition-colors">
+                  <div className="inline-block rounded-full bg-wl-blue-tint px-3 py-1 text-xs font-semibold text-wl-blue transition-colors group-hover:bg-wl-orange-tint group-hover:text-wl-orange">
                     4 étapes
                   </div>
                 </div>
@@ -189,7 +189,7 @@ export default function AcademiePage() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28 bg-wl-gray-light">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Livrables"
@@ -200,14 +200,14 @@ export default function AcademiePage() {
             {deliverables.map((item, idx) => (
               <div
                 key={item}
-                className="group relative rounded-xl border border-border bg-secondary p-6 hover:shadow-md hover:border-primary/20 transition-all duration-300"
+                className="group relative rounded-xl border border-wl-border bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
               >
-                <div className="absolute top-4 right-4 flex items-center justify-center w-9 h-9 rounded-lg bg-primary/10 text-primary font-bold text-sm group-hover:bg-primary/20 transition-colors">
+                <div className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-lg bg-wl-blue-tint text-sm font-bold text-wl-blue transition-colors group-hover:bg-wl-orange-tint group-hover:text-wl-orange">
                   {idx + 1}
                 </div>
                 <div className="flex items-start gap-4 pr-12">
-                  <ListChecks className="h-5 w-5 text-primary mt-1 shrink-0" />
-                  <span className="text-foreground font-medium leading-relaxed">
+                  <ListChecks className="mt-1 h-5 w-5 shrink-0 text-wl-blue" />
+                  <span className="font-medium leading-relaxed text-wl-text">
                     {item}
                   </span>
                 </div>
@@ -229,34 +229,34 @@ export default function AcademiePage() {
               <div key={block.title} className="group">
                 {/* Connector line */}
                 {idx < offerBlocks.length - 1 && (
-                  <div className="hidden lg:block absolute left-1/2 ml-6 h-12 w-0.5 bg-linear-to-b from-primary to-transparent pointer-events-none"></div>
+                  <div className="pointer-events-none absolute left-1/2 ml-6 hidden h-12 w-0.5 bg-linear-to-b from-wl-blue to-transparent lg:block"></div>
                 )}
 
-                <div className="relative rounded-2xl border border-border bg-secondary p-8 hover:shadow-lg hover:border-primary/20 transition-all duration-300">
+                <div className="relative rounded-2xl border border-wl-border bg-wl-gray-light p-8 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
                   {/* Left accent bar */}
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-primary to-primary/60 rounded-l-2xl"></div>
+                  <div className="absolute bottom-0 left-0 top-0 w-1 rounded-l-2xl bg-linear-to-b from-wl-blue to-wl-orange"></div>
 
                   <div className="flex items-start gap-6">
                     {/* Step number */}
                     <div className="shrink-0">
-                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-primary to-primary/80 text-white font-bold text-lg shadow-md group-hover:shadow-lg transition-shadow">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-wl-blue to-wl-blue-dark text-lg font-bold text-white shadow-md transition-shadow group-hover:shadow-lg">
                         {idx + 1}
                       </div>
                     </div>
 
                     {/* Content */}
                     <div className="flex-1 ml-2">
-                      <h3 className="font-sans text-2xl font-bold text-foreground mb-2">
+                      <h3 className="mb-2 font-sans text-2xl font-bold text-wl-text">
                         {block.title}
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed mb-6">
+                      <p className="mb-6 leading-relaxed text-wl-text-secondary">
                         {block.description}
                       </p>
                       <div className="grid md:grid-cols-2 gap-4">
                         {block.bullets.map((bullet) => (
                           <div key={bullet} className="flex items-start gap-3">
-                            <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 shrink-0" />
-                            <span className="text-foreground text-sm leading-relaxed">
+                            <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-wl-success" />
+                            <span className="text-sm leading-relaxed text-wl-text">
                               {bullet}
                             </span>
                           </div>
@@ -271,10 +271,9 @@ export default function AcademiePage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" />
-        </div>
+      <section className="relative overflow-hidden py-20 lg:py-28 bg-linear-to-br from-wl-blue to-wl-blue-dark">
+        <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-white/3 pointer-events-none" />
+        <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-white/2 pointer-events-none" />
 
         <div className="relative mx-auto max-w-5xl px-4 lg:px-8">
           <SectionHeader
@@ -287,11 +286,11 @@ export default function AcademiePage() {
             {expectedResults.map((point, idx) => (
               <div
                 key={point}
-                className="group relative rounded-xl bg-white/10 backdrop-blur-md border border-white/20 p-6 hover:bg-white/15 hover:border-white/30 transition-all duration-300"
+                className="group relative rounded-xl border border-white/20 bg-white/10 p-6 backdrop-blur-md transition-all duration-300 hover:bg-white/15 hover:border-white/30"
               >
                 <div className="flex items-start gap-4">
                   <div className="shrink-0">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/20 group-hover:bg-white/30 transition-colors">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/20 transition-colors group-hover:bg-white/30">
                       <TrendingUp className="h-5 w-5 text-white" />
                     </div>
                   </div>
@@ -305,7 +304,7 @@ export default function AcademiePage() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28 bg-wl-gray-light">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Pourquoi Welearn"
@@ -315,10 +314,10 @@ export default function AcademiePage() {
           <div className="grid lg:grid-cols-2 gap-12 items-stretch">
             {/* Left column - Text content */}
             <div className="flex flex-col justify-center">
-              <div className="space-y-5 text-muted-foreground leading-relaxed">
+              <div className="space-y-5 leading-relaxed text-wl-text-secondary">
                 <p className="text-lg">
                   Welearn est une EdTech reconnue comme{" "}
-                  <span className="font-semibold text-foreground">
+                  <span className="font-semibold text-wl-text">
                     Jeune Entreprise Innovante®
                   </span>{" "}
                   en France et au Maroc, spécialisée dans la formation continue
@@ -334,7 +333,7 @@ export default function AcademiePage() {
               <Button
                 asChild
                 variant="outline"
-                className="mt-8 w-fit bg-transparent border-border text-foreground hover:bg-secondary hover:text-primary"
+                className="mt-8 w-fit border-wl-blue bg-transparent text-wl-blue hover:bg-wl-blue hover:text-white"
               >
                 <Link href="/about" className="flex items-center gap-2">
                   Découvrir Welearn
@@ -344,20 +343,20 @@ export default function AcademiePage() {
             </div>
 
             {/* Right column - Expertise domains */}
-            <div className="rounded-2xl border border-border bg-secondary p-8 shadow-sm hover:shadow-md transition-shadow">
-              <h3 className="font-sans text-2xl font-bold text-foreground mb-6">
+            <div className="rounded-2xl border border-wl-border bg-white p-8 shadow-sm transition-shadow hover:shadow-md">
+              <h3 className="mb-6 font-sans text-2xl font-bold text-wl-text">
                 Nos domaines d'expertise
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 {expertiseDomains.map((domain) => (
                   <div
                     key={domain}
-                    className="group flex items-center gap-3 p-3 rounded-lg bg-primary/5 hover:bg-primary/10 transition-colors"
+                    className="group flex items-center gap-3 rounded-lg bg-wl-gray-light p-3 transition-colors hover:bg-wl-blue-tint"
                   >
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 group-hover:bg-primary/30 transition-colors">
-                      <Target className="h-4 w-4 text-primary" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-wl-blue-tint transition-colors group-hover:bg-white">
+                      <Target className="h-4 w-4 text-wl-blue" />
                     </div>
-                    <span className="text-sm font-medium text-foreground">
+                    <span className="text-sm font-medium text-wl-text">
                       {domain}
                     </span>
                   </div>

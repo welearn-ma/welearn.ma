@@ -88,19 +88,19 @@ export default function EvenementsPage() {
       />
 
       {/* Upcoming Events */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28 bg-wl-gray-light">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <h2 className="font-sans text-3xl font-bold text-foreground mb-8">
+          <h2 className="font-sans text-3xl font-bold text-wl-text mb-8">
             Événements à venir
           </h2>
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             {upcomingEvents.map((event) => (
               <div
                 key={event.id}
-                className="bg-secondary rounded-xl overflow-hidden hover:shadow-lg transition-shadow border-2 border-primary"
+                className="overflow-hidden rounded-xl border border-wl-border bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
               >
-                <div className="bg-primary p-6">
-                  <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-medium rounded-full mb-3">
+                <div className="bg-linear-to-r from-wl-blue to-wl-blue-dark p-6">
+                  <span className="mb-3 inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white">
                     {event.type}
                   </span>
                   <h3 className="font-sans text-xl font-bold text-white">
@@ -108,28 +108,28 @@ export default function EvenementsPage() {
                   </h3>
                 </div>
                 <div className="p-6">
-                  <p className="text-muted-foreground mb-4">
+                  <p className="mb-4 text-wl-text-secondary">
                     {event.description}
                   </p>
                   <div className="space-y-2 mb-6">
-                    <div className="flex items-center gap-2 text-sm text-foreground">
-                      <MapPin className="h-4 w-4 text-primary" />
+                    <div className="flex items-center gap-2 text-sm text-wl-text">
+                      <MapPin className="h-4 w-4 text-wl-orange" />
                       {event.location}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-foreground">
-                      <Calendar className="h-4 w-4 text-primary" />
+                    <div className="flex items-center gap-2 text-sm text-wl-text">
+                      <Calendar className="h-4 w-4 text-wl-orange" />
                       {new Date(event.date).toLocaleDateString("fr-FR", {
                         day: "numeric",
                         month: "long",
                         year: "numeric",
                       })}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Users className="h-4 w-4 text-primary" />
+                    <div className="flex items-center gap-2 text-sm text-wl-text-secondary">
+                      <Users className="h-4 w-4 text-wl-blue" />
                       {event.audience}
                     </div>
                   </div>
-                  <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                  <Button className="w-full bg-wl-blue hover:bg-wl-blue-dark text-white">
                     S'inscrire
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -139,17 +139,17 @@ export default function EvenementsPage() {
           </div>
 
           {/* Past Events */}
-          <h2 className="font-sans text-3xl font-bold text-foreground mb-8">
+          <h2 className="font-sans text-3xl font-bold text-wl-text mb-8">
             Événements passés
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pastEvents.map((event) => (
               <div
                 key={event.id}
-                className="bg-secondary rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
+                className="overflow-hidden rounded-xl border border-wl-border bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
               >
-                <div className="bg-primary/80 p-4">
-                  <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-medium rounded-full mb-2">
+                <div className="bg-linear-to-r from-wl-blue/90 to-wl-blue-dark/90 p-4">
+                  <span className="mb-2 inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white">
                     {event.type}
                   </span>
                   <h3 className="font-sans text-lg font-bold text-white">
@@ -157,21 +157,21 @@ export default function EvenementsPage() {
                   </h3>
                 </div>
                 <div className="p-6">
-                  <p className="text-muted-foreground mb-4 text-sm line-clamp-2">
+                  <p className="mb-4 text-sm text-wl-text-secondary line-clamp-2">
                     {event.description}
                   </p>
                   <div className="space-y-2 mb-4">
-                    <div className="flex items-center gap-2 text-sm text-foreground">
-                      <MapPin className="h-4 w-4 text-primary" />
+                    <div className="flex items-center gap-2 text-sm text-wl-text">
+                      <MapPin className="h-4 w-4 text-wl-orange" />
                       {event.location}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-foreground">
-                      <Calendar className="h-4 w-4 text-primary" />
+                    <div className="flex items-center gap-2 text-sm text-wl-text">
+                      <Calendar className="h-4 w-4 text-wl-orange" />
                       {event.year}
                     </div>
                   </div>
-                  <div className="pt-4 border-t border-border">
-                    <span className="text-xs text-muted-foreground">
+                  <div className="border-t border-wl-border pt-4">
+                    <span className="text-xs text-wl-text-secondary">
                       {event.audience}
                     </span>
                   </div>

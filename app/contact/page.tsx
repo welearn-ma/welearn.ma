@@ -79,15 +79,15 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-border">
+    <div className="border-b border-wl-border last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-5 flex items-center justify-between text-left hover:text-primary transition-colors"
+        className="flex w-full items-center justify-between py-5 text-left transition-colors hover:text-wl-blue"
       >
-        <span className="font-medium text-foreground pr-4">{question}</span>
+        <span className="pr-4 font-medium text-wl-text">{question}</span>
         <ChevronDown
           className={cn(
-            "h-5 w-5 text-primary shrink-0 transition-transform",
+            "h-5 w-5 shrink-0 text-wl-blue transition-transform",
             isOpen && "rotate-180",
           )}
         />
@@ -98,7 +98,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
           isOpen ? "max-h-96 pb-5" : "max-h-0",
         )}
       >
-        <p className="text-muted-foreground">{answer}</p>
+        <p className="text-wl-text-secondary">{answer}</p>
       </div>
     </div>
   );
@@ -114,7 +114,7 @@ export default function ContactPage() {
       />
 
       {/* Contact Section */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28 bg-wl-gray-light">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
             <ContactInfoSection />
@@ -124,13 +124,19 @@ export default function ContactPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 lg:py-28 bg-primary">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8">
+      <section className="relative overflow-hidden py-20 lg:py-28 bg-linear-to-br from-wl-blue to-wl-blue-dark">
+        <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-white/3 pointer-events-none" />
+        <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-white/2 pointer-events-none" />
+
+        <div className="relative mx-auto max-w-4xl px-4 lg:px-8">
           <div className="mb-12 text-center">
+            <p className="text-sm font-semibold uppercase tracking-widest text-wl-highlight mb-4">
+              FAQ
+            </p>
             <h2 className="font-sans text-4xl md:text-5xl font-bold text-white mb-4">
               Questions fréquentes
             </h2>
-            <p className="text-lg text-white/90">
+            <p className="text-lg text-white/80">
               Retrouvez les réponses aux questions les plus posées sur nos
               formations et services.
             </p>
@@ -139,10 +145,10 @@ export default function ContactPage() {
           <div className="space-y-12">
             {faqCategories.map((category) => (
               <div key={category.name}>
-                <h2 className="font-sans text-2xl font-bold text-secondary mb-6">
+                <h2 className="font-sans text-2xl font-bold text-wl-highlight mb-6">
                   {category.name}
                 </h2>
-                <div className="bg-secondary rounded-xl p-6">
+                <div className="rounded-xl border border-white/15 bg-white p-6 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
                   {category.questions.map((item, index) => (
                     <FAQItem key={index} question={item.q} answer={item.a} />
                   ))}

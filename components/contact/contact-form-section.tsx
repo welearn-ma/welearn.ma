@@ -78,22 +78,22 @@ export function ContactFormSection() {
   };
 
   return (
-    <div className="bg-secondary rounded-2xl p-8">
+    <div className="rounded-2xl border border-wl-border bg-white p-8 shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
       {submitted ? (
         <div className="flex flex-col items-center justify-center h-full py-12">
-          <div className="p-4 bg-primary/10 rounded-full mb-6">
-            <CheckCircle className="h-12 w-12 text-primary" />
+          <div className="p-4 bg-wl-success-tint rounded-full mb-6">
+            <CheckCircle className="h-12 w-12 text-wl-success" />
           </div>
-          <h3 className="font-sans text-2xl font-bold text-foreground mb-2">
+          <h3 className="font-sans text-2xl font-bold text-wl-text mb-2">
             Message envoyé !
           </h3>
-          <p className="text-muted-foreground text-center max-w-md">
+          <p className="text-wl-text-secondary text-center max-w-md">
             {getConfirmationMessage()}
           </p>
         </div>
       ) : (
         <>
-          <h3 className="font-sans text-2xl font-bold text-foreground mb-6">
+          <h3 className="font-sans text-2xl font-bold text-wl-text mb-6">
             Envoyez-nous un message
           </h3>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -108,12 +108,14 @@ export function ContactFormSection() {
                     onClick={() => setRequestType(type.value)}
                     className={`p-4 rounded-lg border-2 text-left transition-all ${
                       requestType === type.value
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50"
+                        ? "border-wl-blue bg-wl-blue-tint/60"
+                        : "border-wl-border hover:border-wl-blue/40"
                     }`}
                   >
-                    <div className="font-medium text-sm">{type.label}</div>
-                    <div className="text-xs text-muted-foreground mt-1">
+                    <div className="font-medium text-sm text-wl-text">
+                      {type.label}
+                    </div>
+                    <div className="text-xs text-wl-text-secondary mt-1">
                       {type.description}
                     </div>
                   </button>
@@ -175,16 +177,16 @@ export function ContactFormSection() {
             {/* File Upload */}
             <div className="space-y-2">
               <Label htmlFor="files">Pièces jointes (optionnel)</Label>
-              <div className="border-2 border-dashed border-border rounded-lg p-4 hover:border-primary/50 transition-colors">
+              <div className="rounded-lg border-2 border-dashed border-wl-border p-4 transition-colors hover:border-wl-blue/40">
                 <label
                   htmlFor="files"
                   className="flex flex-col items-center gap-2 cursor-pointer"
                 >
-                  <Upload className="h-6 w-6 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">
+                  <Upload className="h-6 w-6 text-wl-text-secondary" />
+                  <span className="text-sm text-wl-text-secondary">
                     Cliquez pour ajouter des fichiers
                   </span>
-                  <span className="text-xs text-muted-foreground/70">
+                  <span className="text-xs text-wl-text-tertiary">
                     PDF, DOC, DOCX, XLS, XLSX (Max 10 Mo)
                   </span>
                   <input
@@ -202,15 +204,15 @@ export function ContactFormSection() {
                   {files.map((file, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between bg-white rounded-lg p-3 border border-border"
+                      className="flex items-center justify-between rounded-lg border border-wl-border bg-wl-gray-light p-3"
                     >
-                      <span className="text-sm text-foreground truncate">
+                      <span className="text-sm text-wl-text truncate">
                         {file.name}
                       </span>
                       <button
                         type="button"
                         onClick={() => removeFile(index)}
-                        className="ml-2 p-1 text-muted-foreground hover:text-destructive transition-colors"
+                        className="ml-2 p-1 text-wl-text-secondary transition-colors hover:text-destructive"
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -223,17 +225,17 @@ export function ContactFormSection() {
             <Button
               type="submit"
               size="lg"
-              className="w-full bg-primary hover:bg-primary/90 text-white"
+              className="w-full bg-wl-blue hover:bg-wl-blue-dark text-white transition-all duration-200"
             >
               Envoyer le message
               <Send className="ml-2 h-5 w-5" />
             </Button>
 
-            <p className="text-xs text-muted-foreground text-center">
+            <p className="text-xs text-wl-text-secondary text-center">
               En soumettant ce formulaire, vous acceptez notre{" "}
               <a
                 href="/confidentialite"
-                className="text-primary hover:underline"
+                className="text-wl-blue hover:underline"
               >
                 politique de confidentialité
               </a>

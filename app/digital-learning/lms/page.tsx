@@ -75,17 +75,17 @@ export default function LMSPage() {
       />
 
       {/* Platform Preview */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28 bg-wl-gray-light">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <span className="inline-block text-sm font-semibold uppercase tracking-wider text-primary mb-3">
+              <span className="inline-block text-sm font-semibold uppercase tracking-widest text-wl-orange mb-3">
                 welearn.ac
               </span>
-              <h2 className="font-sans text-3xl md:text-4xl font-bold text-foreground mb-6 text-balance">
+              <h2 className="font-sans text-3xl md:text-4xl font-bold text-wl-text mb-6 text-balance">
                 Une plateforme conçue pour vous
               </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+              <p className="text-lg text-wl-text-secondary leading-relaxed mb-8">
                 Notre LMS a été développé en interne pour répondre aux besoins
                 spécifiques des professionnels de la Construction. Interface
                 intuitive, contenus riches et suivi personnalisé pour maximiser
@@ -95,8 +95,8 @@ export default function LMSPage() {
               <div className="grid sm:grid-cols-2 gap-3 mb-8">
                 {benefits.map((benefit, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary shrink-0" />
-                    <span className="text-foreground">{benefit}</span>
+                    <CheckCircle className="h-5 w-5 text-wl-blue shrink-0" />
+                    <span className="text-wl-text">{benefit}</span>
                   </div>
                 ))}
               </div>
@@ -105,7 +105,7 @@ export default function LMSPage() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-primary hover:bg-primary/90 text-white"
+                  className="bg-wl-blue hover:bg-wl-blue-dark text-white"
                 >
                   <Link href="https://welearn.ac" target="_blank">
                     Découvrir la plateforme
@@ -116,7 +116,7 @@ export default function LMSPage() {
                   asChild
                   size="lg"
                   variant="outline"
-                  className="border-primary text-primary bg-transparent"
+                  className="border-wl-blue text-wl-blue bg-transparent hover:bg-wl-blue hover:text-white"
                 >
                   <Link href="/contact">
                     <Play className="mr-2 h-4 w-4" />
@@ -127,7 +127,7 @@ export default function LMSPage() {
             </div>
 
             <div className="relative">
-              <div className="bg-secondary rounded-2xl p-4 border border-border">
+              <div className="rounded-2xl border border-wl-border bg-white p-4 shadow-[0_12px_36px_rgba(0,0,0,0.08)]">
                 <Image
                   src="/modern-lms-dashboard-interface-with-courses-progre.jpg"
                   alt="Plateforme LMS Welearn"
@@ -142,13 +142,13 @@ export default function LMSPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 lg:py-28 bg-secondary">
+      <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="text-center mb-12">
-            <span className="inline-block text-sm font-semibold uppercase tracking-wider text-primary mb-3">
+            <span className="inline-block text-sm font-semibold uppercase tracking-widest text-wl-orange mb-3">
               Fonctionnalités
             </span>
-            <h2 className="font-sans text-3xl md:text-4xl font-bold text-foreground">
+            <h2 className="font-sans text-3xl md:text-4xl font-bold text-wl-text">
               Tout ce dont vous avez besoin
             </h2>
           </div>
@@ -157,15 +157,15 @@ export default function LMSPage() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl p-6 hover:shadow-lg transition-shadow"
+                className="rounded-xl border border-wl-border bg-wl-gray-light p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
               >
-                <div className="p-3 bg-primary/10 rounded-xl w-fit mb-4">
-                  <feature.icon className="h-6 w-6 text-primary" />
+                <div className="w-fit rounded-xl bg-wl-blue-tint p-3 mb-4">
+                  <feature.icon className="h-6 w-6 text-wl-blue" />
                 </div>
-                <h3 className="font-sans text-lg font-semibold text-foreground mb-2">
+                <h3 className="font-sans text-lg font-semibold text-wl-text mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <p className="text-wl-text-secondary">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -173,8 +173,14 @@ export default function LMSPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
+      <section className="relative overflow-hidden py-20 lg:py-28 bg-linear-to-br from-wl-blue to-wl-blue-dark">
+        <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-white/3 pointer-events-none" />
+        <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-white/2 pointer-events-none" />
+
+        <div className="relative mx-auto max-w-4xl px-4 lg:px-8 text-center">
+          <p className="text-sm font-semibold uppercase tracking-widest text-wl-highlight mb-4">
+            Passage à l'action
+          </p>
           <h2 className="font-sans text-3xl md:text-4xl font-bold text-white mb-6">
             Prêt à commencer votre formation ?
           </h2>
@@ -186,7 +192,7 @@ export default function LMSPage() {
             <Button
               asChild
               size="lg"
-              className="bg-white text-primary hover:bg-white/90"
+              className="bg-white text-wl-blue-dark hover:bg-white/90 font-semibold"
             >
               <Link href="https://welearn.ac" target="_blank">
                 Créer un compte
@@ -197,7 +203,7 @@ export default function LMSPage() {
               asChild
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-primary bg-transparent"
+              className="border-white/30 border-2 bg-transparent text-white hover:bg-white hover:text-wl-blue-dark"
             >
               <Link href="/contact">Nous contacter</Link>
             </Button>

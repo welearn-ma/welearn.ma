@@ -74,7 +74,7 @@ export default function IngenieriePage() {
       <ParcoursExamplesSection />
 
       {/* Strategy Section */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28 bg-wl-gray-light">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Stratégie de Formation"
@@ -84,14 +84,17 @@ export default function IngenieriePage() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {strategyServices.map((service, idx) => (
-              <div key={idx} className="bg-secondary rounded-2xl p-8">
-                <div className="p-4 bg-primary/10 rounded-2xl w-fit mb-6">
-                  <service.icon className="h-8 w-8 text-primary" />
+              <div
+                key={idx}
+                className="rounded-2xl border border-wl-border bg-white p-8 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+              >
+                <div className="w-fit rounded-2xl bg-wl-blue-tint p-4 mb-6">
+                  <service.icon className="h-8 w-8 text-wl-blue" />
                 </div>
-                <h3 className="font-sans text-xl font-bold text-foreground mb-3">
+                <h3 className="font-sans text-xl font-bold text-wl-text mb-3">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-wl-text-secondary leading-relaxed">
                   {service.description}
                 </p>
               </div>
@@ -101,17 +104,17 @@ export default function IngenieriePage() {
       </section>
 
       {/* Strategy Benefits */}
-      <section className="py-20 lg:py-28 bg-secondary">
+      <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <span className="inline-block text-sm font-semibold uppercase tracking-wider text-primary mb-3">
+              <span className="inline-block text-sm font-semibold uppercase tracking-widest text-wl-orange mb-3">
                 Avantages
               </span>
-              <h2 className="font-sans text-3xl md:text-4xl font-bold text-foreground mb-6">
+              <h2 className="font-sans text-3xl md:text-4xl font-bold text-wl-text mb-6">
                 Pourquoi définir une stratégie formation ?
               </h2>
-              <p className="text-muted-foreground leading-relaxed mb-8">
+              <p className="text-wl-text-secondary leading-relaxed mb-8">
                 Une stratégie de formation structurée permet d'optimiser vos
                 investissements et d'assurer l'adéquation entre les compétences
                 de vos équipes et les besoins de votre entreprise.
@@ -119,7 +122,7 @@ export default function IngenieriePage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-primary hover:bg-primary/90 text-white"
+                className="bg-wl-blue hover:bg-wl-blue-dark text-white"
               >
                 <Link href="/contact">
                   Prendre rendez-vous
@@ -127,12 +130,12 @@ export default function IngenieriePage() {
                 </Link>
               </Button>
             </div>
-            <div className="bg-white rounded-2xl p-8">
+            <div className="rounded-2xl border border-wl-border bg-wl-gray-light p-8">
               <div className="space-y-4">
                 {strategyBenefits.map((benefit, idx) => (
                   <div key={idx} className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
-                    <span className="text-foreground">{benefit}</span>
+                    <CheckCircle className="h-5 w-5 mt-0.5 shrink-0 text-wl-blue" />
+                    <span className="text-wl-text">{benefit}</span>
                   </div>
                 ))}
               </div>

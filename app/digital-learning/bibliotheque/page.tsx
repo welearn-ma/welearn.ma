@@ -87,7 +87,7 @@ export default function BibliothequePage() {
       />
 
       {/* Courses */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28 bg-wl-gray-light">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Nos cours"
@@ -101,7 +101,7 @@ export default function BibliothequePage() {
               <Badge
                 key={category}
                 variant={category === "Tous" ? "default" : "outline"}
-                className={`cursor-pointer px-4 py-2 ${category === "Tous" ? "bg-primary text-white" : "hover:bg-primary/10"}`}
+                className={`cursor-pointer px-4 py-2 ${category === "Tous" ? "bg-wl-blue text-white" : "border-wl-border bg-white text-wl-text hover:bg-wl-blue-tint"}`}
               >
                 {category}
               </Badge>
@@ -113,40 +113,40 @@ export default function BibliothequePage() {
             {courses.map((course, idx) => (
               <div
                 key={idx}
-                className="bg-secondary rounded-2xl overflow-hidden hover:shadow-lg transition-all group"
+                className="group overflow-hidden rounded-2xl border border-wl-border bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
               >
-                <div className="aspect-video bg-primary/10 relative flex items-center justify-center">
-                  <div className="p-4 bg-white/80 backdrop-blur-sm rounded-full group-hover:bg-primary group-hover:scale-110 transition-all">
-                    <Play className="h-8 w-8 text-primary group-hover:text-white" />
+                <div className="relative flex aspect-video items-center justify-center bg-linear-to-br from-wl-blue-tint to-wl-orange-tint">
+                  <div className="rounded-full bg-white/90 p-4 backdrop-blur-sm transition-all group-hover:scale-110 group-hover:bg-wl-blue">
+                    <Play className="h-8 w-8 text-wl-blue group-hover:text-white" />
                   </div>
-                  <Badge className="absolute top-3 right-3 bg-white text-foreground">
+                  <Badge className="absolute top-3 right-3 bg-white text-wl-text border border-wl-border">
                     {course.category}
                   </Badge>
                 </div>
                 <div className="p-6">
-                  <h3 className="font-sans text-lg font-bold text-foreground mb-2">
+                  <h3 className="font-sans text-lg font-bold text-wl-text mb-2">
                     {course.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="mb-4 text-sm text-wl-text-secondary">
                     {course.description}
                   </p>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                  <div className="mb-4 flex items-center gap-4 text-sm text-wl-text-secondary">
                     <span className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
+                      <Clock className="h-4 w-4 text-wl-orange" />
                       {course.duration}
                     </span>
                     <span className="flex items-center gap-1">
-                      <BookOpen className="h-4 w-4" />
+                      <BookOpen className="h-4 w-4 text-wl-orange" />
                       {course.modules} modules
                     </span>
                     <span className="flex items-center gap-1">
-                      <Users className="h-4 w-4" />
+                      <Users className="h-4 w-4 text-wl-blue" />
                       {course.learners}+
                     </span>
                   </div>
                   <Button
                     asChild
-                    className="w-full bg-primary hover:bg-primary/90 text-white"
+                    className="w-full bg-wl-blue hover:bg-wl-blue-dark text-white"
                   >
                     <Link href="/contact">Accéder au cours</Link>
                   </Button>
@@ -158,12 +158,18 @@ export default function BibliothequePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
+      <section className="relative overflow-hidden py-20 lg:py-28 bg-linear-to-br from-wl-blue to-wl-blue-dark">
+        <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-white/3 pointer-events-none" />
+        <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-white/2 pointer-events-none" />
+
+        <div className="relative mx-auto max-w-4xl px-4 lg:px-8 text-center">
+          <p className="text-sm font-semibold uppercase tracking-widest text-wl-highlight mb-4">
+            Catalogue complet
+          </p>
           <h2 className="font-sans text-3xl md:text-4xl font-bold text-white mb-6">
             Vous souhaitez accéder à la bibliothèque complète ?
           </h2>
-          <p className="text-lg text-white/90 mb-8">
+          <p className="text-lg text-white/80 mb-8">
             Créez votre compte sur notre plateforme LMS pour accéder à tous nos
             cours.
           </p>
@@ -171,7 +177,7 @@ export default function BibliothequePage() {
             <Button
               asChild
               size="lg"
-              className="bg-white text-primary hover:bg-white/90"
+              className="bg-white text-wl-blue-dark hover:bg-white/90 font-semibold"
             >
               <Link href="https://welearn.ac" target="_blank">
                 Créer un compte
@@ -182,7 +188,7 @@ export default function BibliothequePage() {
               asChild
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-primary bg-transparent"
+              className="border-white/30 border-2 bg-transparent text-white hover:bg-white hover:text-wl-blue-dark"
             >
               <Link href="/contact">Demander un accès entreprise</Link>
             </Button>

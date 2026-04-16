@@ -9,18 +9,21 @@ const stats = [
 
 export function StatsSection() {
   return (
-    <section className="py-12 bg-white border-b border-border">
+    <section className="py-16 bg-white border-b border-wl-border">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="inline-flex p-3 bg-primary/10 rounded-xl mb-3">
-                <stat.icon className="h-6 w-6 text-primary" />
+            <div
+              key={index}
+              className="rounded-xl border border-wl-border bg-wl-gray-light p-6 text-center transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+            >
+              <div className="inline-flex rounded-xl bg-wl-blue-tint p-3 mb-4">
+                <stat.icon className="h-6 w-6 text-wl-blue" />
               </div>
-              <div className="text-3xl font-bold text-foreground mb-1">
+              <div className="text-3xl font-bold text-wl-text mb-1">
                 {stat.value}
               </div>
-              <div className="text-sm text-muted-foreground">{stat.label}</div>
+              <div className="text-sm text-wl-text-secondary">{stat.label}</div>
             </div>
           ))}
         </div>

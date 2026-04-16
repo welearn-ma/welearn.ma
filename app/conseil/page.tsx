@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
+import { ConseilCta } from "@/components/conseil/conseil-cta";
 import { SectionHeader } from "@/components/section-header";
 import { Button } from "@/components/ui/button";
 import {
@@ -126,7 +127,7 @@ export default function ConseilPage() {
       />
 
       {/* Strategic Consulting Section */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28 bg-wl-gray-light">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Conseil Stratégique"
@@ -136,14 +137,17 @@ export default function ConseilPage() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {strategicServices.map((service, idx) => (
-              <div key={idx} className="bg-secondary rounded-2xl p-8">
-                <div className="p-4 bg-primary/10 rounded-2xl w-fit mb-6">
-                  <service.icon className="h-8 w-8 text-primary" />
+              <div
+                key={idx}
+                className="rounded-2xl border border-wl-border bg-white p-8 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+              >
+                <div className="w-fit rounded-2xl bg-wl-blue-tint p-4 mb-6">
+                  <service.icon className="h-8 w-8 text-wl-blue" />
                 </div>
-                <h3 className="font-sans text-xl font-bold text-foreground mb-3">
+                <h3 className="font-sans text-xl font-bold text-wl-text mb-3">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-wl-text-secondary leading-relaxed">
                   {service.description}
                 </p>
               </div>
@@ -153,7 +157,7 @@ export default function ConseilPage() {
       </section>
 
       {/* Digital Transformation Section */}
-      <section className="py-20 lg:py-28 bg-secondary">
+      <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Transformation Digitale"
@@ -163,14 +167,17 @@ export default function ConseilPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {transformationPillars.map((pillar, idx) => (
-              <div key={idx} className="bg-white rounded-2xl p-6 text-center">
-                <div className="p-4 bg-primary/10 rounded-2xl w-fit mx-auto mb-4">
-                  <pillar.icon className="h-8 w-8 text-primary" />
+              <div
+                key={idx}
+                className="rounded-2xl border border-wl-border bg-wl-gray-light p-6 text-center transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+              >
+                <div className="mx-auto mb-4 w-fit rounded-2xl bg-wl-orange-tint p-4">
+                  <pillar.icon className="h-8 w-8 text-wl-orange" />
                 </div>
-                <h3 className="font-sans text-lg font-bold text-foreground mb-2">
+                <h3 className="font-sans text-lg font-bold text-wl-text mb-2">
                   {pillar.title}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-wl-text-secondary">
                   {pillar.description}
                 </p>
               </div>
@@ -180,10 +187,10 @@ export default function ConseilPage() {
           {/* Benefits */}
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h3 className="font-sans text-3xl font-bold text-foreground mb-6">
+              <h3 className="font-sans text-3xl font-bold text-wl-text mb-6">
                 Pourquoi se transformer ?
               </h3>
-              <p className="text-muted-foreground leading-relaxed mb-8">
+              <p className="text-wl-text-secondary leading-relaxed mb-8">
                 La transformation digitale est un levier majeur de compétitivité
                 pour les entreprises du BTP. Elle permet d'optimiser les
                 processus, de réduire les coûts et d'améliorer la qualité.
@@ -191,7 +198,7 @@ export default function ConseilPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-primary hover:bg-primary/90 text-white"
+                className="bg-wl-blue hover:bg-wl-blue-dark text-white"
               >
                 <Link href="/contact">
                   Lancer votre transformation
@@ -199,12 +206,12 @@ export default function ConseilPage() {
                 </Link>
               </Button>
             </div>
-            <div className="bg-white rounded-2xl p-8">
+            <div className="rounded-2xl border border-wl-border bg-wl-gray-light p-8">
               <div className="grid grid-cols-2 gap-4">
                 {transformationBenefits.map((benefit, idx) => (
                   <div key={idx} className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary shrink-0" />
-                    <span className="text-foreground text-sm">{benefit}</span>
+                    <CheckCircle className="h-5 w-5 text-wl-blue shrink-0" />
+                    <span className="text-wl-text text-sm">{benefit}</span>
                   </div>
                 ))}
               </div>
@@ -214,7 +221,7 @@ export default function ConseilPage() {
       </section>
 
       {/* Audits & Diagnostics Section */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28 bg-wl-gray-light">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
             eyebrow="Études, Audits & Diagnostics"
@@ -224,14 +231,17 @@ export default function ConseilPage() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {auditServices.map((service, idx) => (
-              <div key={idx} className="bg-secondary rounded-2xl p-8">
-                <div className="p-4 bg-primary/10 rounded-2xl w-fit mb-6">
-                  <service.icon className="h-8 w-8 text-primary" />
+              <div
+                key={idx}
+                className="rounded-2xl border border-wl-border bg-white p-8 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+              >
+                <div className="w-fit rounded-2xl bg-wl-blue-tint p-4 mb-6">
+                  <service.icon className="h-8 w-8 text-wl-blue" />
                 </div>
-                <h3 className="font-sans text-xl font-bold text-foreground mb-3">
+                <h3 className="font-sans text-xl font-bold text-wl-text mb-3">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-wl-text-secondary leading-relaxed">
                   {service.description}
                 </p>
               </div>
@@ -240,25 +250,7 @@ export default function ConseilPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 lg:py-28 bg-(--color-welearn-navy)">
-        <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
-          <h2 className="font-sans text-3xl md:text-4xl font-bold text-white mb-6">
-            Prêt à accélérer votre performance ?
-          </h2>
-          <p className="text-lg text-white/90 mb-8">
-            Contactez-nous pour discuter de vos enjeux stratégiques et de
-            transformation.
-          </p>
-          <Button
-            asChild
-            size="lg"
-            className="bg-white text-primary hover:bg-white/90"
-          >
-            <Link href="/contact">Prendre rendez-vous</Link>
-          </Button>
-        </div>
-      </section>
+      <ConseilCta />
     </>
   );
 }
