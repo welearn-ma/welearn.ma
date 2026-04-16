@@ -51,7 +51,14 @@ const navigation = [
     name: "Conseil & Transformation",
     href: "/conseil",
   },
-  { name: "Événements", href: "/evenements" },
+  {
+    name: "Communauté",
+    href: "/communaute",
+    children: [
+      { name: "Blog", href: "/blog" },
+      { name: "Événements", href: "/evenements" },
+    ],
+  },
 ];
 
 interface NavItem {

@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 const upcomingEvents = [
   {
     id: 1,
-    title: "Journées Nationales de l'Architecte 2025",
+    title: "Journées Nationales de l'Architecte 2026",
     location: "Fès",
-    date: "2025-03-15",
+    date: "2026-08-15",
     type: "Conférence",
     description:
       "Événement majeur réunissant les architectes du Maroc autour des enjeux contemporains.",
@@ -26,9 +26,10 @@ const upcomingEvents = [
     id: 2,
     title: "Forum BIM Maroc",
     location: "Casablanca",
-    date: "2025-05-20",
+    date: "2026-11-20",
     type: "Forum",
-    description: "Le rendez-vous annuel des professionnels du BIM au Maroc.",
+    description:
+      "Le rendez-vous annuel des professionnels du BIM qui se tient une fois par an au Maroc.",
     audience: "BIM Managers, architectes, ingénieurs",
     upcoming: true,
   },
