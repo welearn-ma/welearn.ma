@@ -530,6 +530,26 @@
       "contact": null,
       "featured": false,
       "tags": ["Bac+3", "Management"]
+    },
+    {
+      "id": 28,
+      "slug": "commercialisation-immobiliere",
+      "title": "Commercialisation Immobilière",
+      "type": "Formation courte",
+      "badge": "Sur mesure",
+      "domain": "Immobilier",
+      "provider": "Welearn (Intra / Sur mesure)",
+      "issuer": null,
+      "format": ["Présentiel"],
+      "duration": "2 jours",
+      "level": "Intermédiaire",
+      "target": [],
+      "summary": "Maîtrisez les techniques de commercialisation immobilière pour mieux positionner, vendre et valoriser vos offres.",
+      "objectives": [],
+      "modules": [],
+      "accreditation": null,
+      "contact": null,
+      "featured": false
     }
   ]
 }
