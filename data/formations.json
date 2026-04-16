@@ -31,7 +31,7 @@
     },
     {
       "id": 2,
-      "title": "Coordination BIM & Synthese technique",
+      "title": "Coordination BIM & Synthèse technique",
       "type": "Formation courte",
       "badge": "Sur mesure",
       "domain": "BIM",
@@ -50,7 +50,7 @@
     },
     {
       "id": 3,
-      "title": "Modelisation BIM",
+      "title": "Modélisation BIM",
       "type": "Formation courte",
       "badge": "Sur mesure",
       "domain": "BIM",
@@ -69,7 +69,7 @@
     },
     {
       "id": 4,
-      "title": "BIM pour la Maitrise d'Ouvrage",
+      "title": "BIM pour la Maîtrise d'Ouvrage",
       "type": "Formation courte",
       "badge": "Sur mesure",
       "domain": "BIM",
@@ -88,7 +88,7 @@
     },
     {
       "id": 5,
-      "title": "BIM pour la Maitrise d'Oeuvre",
+      "title": "BIM pour la Maîtrise d'Œuvre",
       "type": "Formation courte",
       "badge": "Sur mesure",
       "domain": "BIM",
@@ -126,7 +126,7 @@
     },
     {
       "id": 7,
-      "title": "Etancheite & Isolation",
+      "title": "Étanchéité & Isolation",
       "type": "Formation courte",
       "badge": "Sur mesure",
       "domain": "BTP",
@@ -145,7 +145,7 @@
     },
     {
       "id": 8,
-      "title": "Pathologies du Batiment",
+      "title": "Pathologies du Bâtiment",
       "type": "Formation courte",
       "badge": "Sur mesure",
       "domain": "BTP",
@@ -183,7 +183,7 @@
     },
     {
       "id": 10,
-      "title": "Qualite et Securite Incendie",
+      "title": "Qualité et Sécurité Incendie",
       "type": "Formation courte",
       "badge": "Sur mesure",
       "domain": "BTP",
@@ -297,7 +297,7 @@
     },
     {
       "id": 16,
-      "title": "Developpement de Projets Immobiliers",
+      "title": "Développement de Projets Immobiliers",
       "type": "Formation courte",
       "badge": "Sur mesure",
       "domain": "Immobilier",
@@ -316,7 +316,7 @@
     },
     {
       "id": 17,
-      "title": "VEFA (Vente en l'Etat Futur d'Achevement)",
+      "title": "VEFA (Vente en l'État Futur d'Achèvement)",
       "type": "Formation courte",
       "badge": "Sur mesure",
       "domain": "Immobilier",
@@ -335,7 +335,7 @@
     },
     {
       "id": 18,
-      "title": "Expertise Immobiliere",
+      "title": "Expertise Immobilière",
       "type": "Formation courte",
       "badge": "Sur mesure",
       "domain": "Immobilier",
