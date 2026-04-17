@@ -1,18 +1,16 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import {
-  createAdminSessionToken,
-  getAdminConfig,
   getAdminSessionCookieName,
-  getAdminSessionDurationSeconds,
+  isAdminAuthConfigured,
+  signInAdminWithPassword,
   verifyAdminSessionToken,
 } from "@/lib/admin-auth";
 
 async function loginAction(formData: FormData) {
   "use server";
 
-  const { adminEmail, adminPassword, sessionSecret } = getAdminConfig();
-  if (!adminEmail || !adminPassword || !sessionSecret) {
+  if (!isAdminAuthConfigured()) {
     redirect("/admin/login?error=config");
   }
 
@@ -22,23 +20,31 @@ async function loginAction(formData: FormData) {
   const password = String(formData.get("password") ?? "").trim();
   const next = String(formData.get("next") ?? "").trim();
 
-  if (email !== adminEmail.toLowerCase() || password !== adminPassword) {
+  const signedIn = await signInAdminWithPassword(email, password);
+  if (!signedIn.ok) {
+    const code =
+      signedIn.reason === "not_admin"
+        ? "not_admin"
+        : signedIn.reason === "email_not_confirmed"
+          ? "email_not_confirmed"
+          : signedIn.reason === "config"
+            ? "config"
+            : "invalid";
+
     redirect(
-      `/admin/login?error=invalid${next ? `&next=${encodeURIComponent(next)}` : ""}`,
+      `/admin/login?error=${code}${next ? `&next=${encodeURIComponent(next)}` : ""}`,
     );
   }
-
-  const token = await createAdminSessionToken(email, sessionSecret);
 
   const cookieStore = await cookies();
   cookieStore.set({
     name: getAdminSessionCookieName(),
-    value: token,
+    value: signedIn.accessToken,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: getAdminSessionDurationSeconds(),
+    maxAge: signedIn.expiresIn,
   });
 
   if (next.startsWith("/admin")) {
@@ -56,20 +62,16 @@ type LoginPageProps = {
 };
 
 export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
-  const { sessionSecret } = getAdminConfig();
   const params = (await searchParams) ?? {};
   const error = params.error ?? "";
   const next = params.next ?? "";
 
-  if (sessionSecret) {
+  if (isAdminAuthConfigured()) {
     const sessionToken = (await cookies()).get(
       getAdminSessionCookieName(),
     )?.value;
     if (sessionToken) {
-      const payload = await verifyAdminSessionToken(
-        sessionToken,
-        sessionSecret,
-      );
+      const payload = await verifyAdminSessionToken(sessionToken);
       if (payload) {
         redirect(next.startsWith("/admin") ? next : "/admin");
       }
@@ -79,10 +81,14 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
   const errorMessage =
     error === "invalid"
       ? "Identifiants invalides."
+      : error === "not_admin"
+        ? "Compte authentifie, mais non autorise pour le dashboard admin. Ajoutez votre email dans ADMIN_ALLOWED_EMAILS ou attribuez le role admin dans Supabase."
+        : error === "email_not_confirmed"
+          ? "Email non confirme dans Supabase Auth. Confirmez l'email puis reessayez."
       : error === "session"
         ? "Session invalide ou expiree. Merci de vous reconnecter."
         : error === "config"
-          ? "Configuration admin manquante (ADMIN_EMAIL / ADMIN_PASSWORD / ADMIN_SESSION_SECRET)."
+          ? "Configuration Supabase manquante (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)."
           : "";
 
   return (

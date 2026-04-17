@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
-  getAdminConfig,
   getAdminSessionCookieName,
+  isAdminAuthConfigured,
   verifyAdminSessionToken,
 } from "@/lib/admin-auth";
 
@@ -12,9 +12,7 @@ export async function middleware(request: NextRequest) {
   const isAdminLogin = pathname === "/admin/login";
   const isAdminLogout = pathname === "/admin/logout";
 
-  const { sessionSecret } = getAdminConfig();
-
-  if (!sessionSecret) {
+  if (!isAdminAuthConfigured()) {
     if (!isAdminPath) {
       return NextResponse.next();
     }
@@ -32,7 +30,7 @@ export async function middleware(request: NextRequest) {
   const sessionToken = request.cookies.get(getAdminSessionCookieName())?.value;
 
   if (sessionToken) {
-    const payload = await verifyAdminSessionToken(sessionToken, sessionSecret);
+    const payload = await verifyAdminSessionToken(sessionToken);
 
     if (payload) {
       if (!isAdminPath) {

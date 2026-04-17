@@ -2,15 +2,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AdminDashboard } from "@/components/admin/admin-dashboard";
 import {
-  getAdminConfig,
   getAdminSessionCookieName,
+  isAdminAuthConfigured,
   verifyAdminSessionToken,
 } from "@/lib/admin-auth";
 
 export default async function AdminPage() {
-  const { sessionSecret } = getAdminConfig();
-
-  if (!sessionSecret) {
+  if (!isAdminAuthConfigured()) {
     redirect("/admin/login?error=config");
   }
 
@@ -21,7 +19,7 @@ export default async function AdminPage() {
     redirect("/admin/login");
   }
 
-  const payload = await verifyAdminSessionToken(sessionToken, sessionSecret);
+  const payload = await verifyAdminSessionToken(sessionToken);
   if (!payload) {
     redirect("/admin/login?error=session");
   }
