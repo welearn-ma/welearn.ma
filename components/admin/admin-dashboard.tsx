@@ -9,9 +9,11 @@ import {
   Filter,
   FolderKanban,
   Inbox,
+  LogOut,
   Mail,
   RefreshCw,
   Search,
+  ShieldCheck,
   Users,
   X,
 } from "lucide-react";
@@ -231,7 +233,7 @@ function ViewShell({
   );
 }
 
-export function AdminDashboard() {
+export function AdminDashboard({ adminEmail }: { adminEmail: string }) {
   const [view, setView] = useState<AdminView>("inscriptions");
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState<DateFilter>("30d");
@@ -401,6 +403,37 @@ export function AdminDashboard() {
         </aside>
 
         <div className="space-y-6">
+          <header className="rounded-2xl border border-wl-border bg-white p-4 shadow-sm">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-3">
+                <div className="rounded-lg bg-wl-blue-tint p-2 text-wl-blue">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-wl-text-tertiary">
+                    Session admin
+                  </p>
+                  <p className="text-sm font-medium text-wl-text">
+                    {adminEmail}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  asChild
+                  variant="outline"
+                  className={neutralActionButtonClass}
+                >
+                  <a href="/admin/logout">
+                    <LogOut className="h-4 w-4" />
+                    Se deconnecter
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </header>
+
           {notice ? (
             <div className="rounded-xl border border-wl-orange/30 bg-wl-orange-tint px-4 py-3 text-sm text-wl-text-secondary">
               {notice}
