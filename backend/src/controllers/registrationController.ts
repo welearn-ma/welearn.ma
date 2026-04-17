@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { supabase } from "../lib/supabaseClient";
 import type {
   RegistrationPayload,
+  RegistrationListResponse,
+  RegistrationRecord,
   RegistrationResponse,
 } from "../types/registration";
 
@@ -99,4 +101,69 @@ export async function createRegistration(
   return res
     .status(201)
     .json({ success: true, message: "Demande enregistree avec succes" });
+}
+
+export async function listRegistrations(
+  req: Request,
+  res: Response<RegistrationListResponse>,
+) {
+  const rawLimit = Number(req.query.limit ?? 200);
+  const limit = Number.isFinite(rawLimit)
+    ? Math.min(Math.max(rawLimit, 1), 1000)
+    : 200;
+  const formationSlug = String(req.query.formationSlug ?? "").trim();
+
+  let query = supabase
+    .from("registration_requests")
+    .select(
+      "id, full_name, email, phone, company, position, message, formation_slug, formation_title, created_at",
+    )
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (formationSlug) {
+    query = query.eq("formation_slug", formationSlug);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Supabase select error:", error);
+    return res.status(500).json({
+      success: false,
+      data: [],
+      message: "Impossible de recuperer les demandes d'inscription",
+    });
+  }
+
+  const rows = (data ?? []) as Array<{
+    id: string;
+    full_name: string;
+    email: string;
+    phone: string;
+    company: string | null;
+    position: string | null;
+    message: string | null;
+    formation_slug: string;
+    formation_title: string;
+    created_at: string;
+  }>;
+
+  const responseData: RegistrationRecord[] = rows.map((item) => ({
+    id: item.id,
+    fullName: item.full_name,
+    email: item.email,
+    phone: item.phone,
+    company: item.company,
+    position: item.position,
+    message: item.message,
+    formationSlug: item.formation_slug,
+    formationTitle: item.formation_title,
+    createdAt: item.created_at,
+  }));
+
+  return res.status(200).json({
+    success: true,
+    data: responseData,
+  });
 }
