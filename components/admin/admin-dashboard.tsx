@@ -36,6 +36,9 @@ const viewConfig: ViewConfig[] = [
   { id: "activite", label: "Activite", icon: Activity },
 ];
 
+const neutralActionButtonClass =
+  "border-wl-border text-wl-text-secondary transition-colors hover:border-wl-blue/30 hover:bg-wl-blue-tint hover:text-wl-blue";
+
 const mockRegistrations: AdminRegistrationRecord[] = [
   {
     id: "demo-1",
@@ -163,14 +166,14 @@ function ViewShell({
             <Button
               onClick={onRefresh}
               variant="outline"
-              className="border-wl-border text-wl-text-secondary hover:bg-wl-gray-light"
+              className={`w-full sm:w-auto ${neutralActionButtonClass}`}
             >
               <RefreshCw className="h-4 w-4" />
               Actualiser
             </Button>
             <Button
               onClick={onExport}
-              className="bg-wl-blue text-white hover:bg-wl-blue-dark"
+              className="w-full bg-wl-blue text-white hover:bg-wl-blue-dark sm:w-auto"
             >
               <Download className="h-4 w-4" />
               Export CSV
@@ -456,11 +459,11 @@ export function AdminDashboard() {
                           {formatDate(item.createdAt)}
                         </td>
                         <td className="py-3">
-                          <div className="flex gap-2">
+                          <div className="flex flex-col gap-2 sm:flex-row">
                             <Button
                               variant="outline"
                               size="sm"
-                              className="border-wl-border text-wl-text-secondary transition-colors hover:border-wl-blue/30 hover:bg-wl-blue-tint hover:text-wl-blue"
+                              className={neutralActionButtonClass}
                               onClick={() => setSelectedRequest(item)}
                             >
                               <Eye className="h-4 w-4" />
@@ -611,7 +614,7 @@ export function AdminDashboard() {
               onClick={() => setSelectedRequest(null)}
             >
               <div
-                className="w-full max-w-2xl rounded-2xl border border-wl-border bg-white shadow-xl"
+                className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-wl-border bg-white shadow-xl"
                 onClick={(event) => event.stopPropagation()}
                 role="dialog"
                 aria-modal="true"
@@ -686,7 +689,7 @@ export function AdminDashboard() {
                 <div className="flex items-center justify-end gap-2 border-t border-wl-border p-5">
                   <Button
                     variant="outline"
-                    className="border-wl-border text-wl-text-secondary hover:bg-wl-gray-light"
+                    className={neutralActionButtonClass}
                     onClick={() => setSelectedRequest(null)}
                   >
                     Fermer
