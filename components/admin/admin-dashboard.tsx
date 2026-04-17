@@ -241,8 +241,7 @@ export function AdminDashboard({ adminEmail }: { adminEmail: string }) {
   const [formationFilter, setFormationFilter] = useState("all");
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
-  const [rows, setRows] =
-    useState<AdminRegistrationRecord[]>(mockRegistrations);
+  const [rows, setRows] = useState<AdminRegistrationRecord[]>([]);
   const [selectedRequest, setSelectedRequest] =
     useState<AdminRegistrationRecord | null>(null);
 

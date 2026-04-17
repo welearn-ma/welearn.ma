@@ -37,7 +37,6 @@ function getSupabaseAuthClient() {
   });
 }
 
-
 export function isAdminAuthConfigured() {
   const { supabaseUrl, supabaseAnonKey } = getSupabaseAuthConfig();
   return Boolean(supabaseUrl && supabaseAnonKey);
