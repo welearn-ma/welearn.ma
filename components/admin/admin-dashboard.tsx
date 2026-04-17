@@ -350,7 +350,7 @@ export function AdminDashboard() {
   ).length;
 
   return (
-    <div className="bg-wl-gray-light py-10">
+    <div className="min-h-screen bg-wl-gray-light pt-10 pb-4">
       <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 lg:grid-cols-[260px_1fr] lg:px-8">
         <aside className="h-fit rounded-2xl border border-wl-border bg-white p-4 shadow-sm">
           <div className="mb-5 rounded-xl border border-wl-blue/20 bg-wl-blue-tint p-4">
@@ -460,7 +460,7 @@ export function AdminDashboard() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="border-wl-border text-wl-text-secondary hover:bg-wl-gray-light"
+                              className="border-wl-border text-wl-text-secondary transition-colors hover:border-wl-blue/30 hover:bg-wl-blue-tint hover:text-wl-blue"
                               onClick={() => setSelectedRequest(item)}
                             >
                               <Eye className="h-4 w-4" />
