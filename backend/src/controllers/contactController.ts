@@ -171,7 +171,7 @@ export async function submitContactRequest(
           <!-- Footer -->
           <tr>
             <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
-              <p style="margin:0;font-size:12px;color:#8ba8c9;">© ${new Date().getFullYear()} Welearn — welearn.ma</p>
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© ${new Date().getFullYear()} Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
               <p style="margin:6px 0 0;font-size:11px;color:#6b8aad;">Ce message a été envoyé depuis le formulaire de contact du site.</p>
             </td>
           </tr>
