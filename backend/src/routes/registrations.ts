@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
-	createRegistration,
-	listRegistrations,
+  createRegistration,
+  listRegistrations,
 } from "../controllers/registrationController";
 
 const router = Router();

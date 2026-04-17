@@ -192,7 +192,9 @@ function ViewShell({
             <CalendarDays className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-wl-text-tertiary" />
             <select
               value={dateFilter}
-              onChange={(event) => onDateFilter(event.target.value as DateFilter)}
+              onChange={(event) =>
+                onDateFilter(event.target.value as DateFilter)
+              }
               className="h-9 w-full rounded-md border border-wl-border bg-white pl-9 pr-3 text-sm text-wl-text outline-none focus:ring-2 focus:ring-wl-blue/20"
             >
               <option value="all">Toutes les dates</option>
@@ -232,7 +234,8 @@ export function AdminDashboard() {
   const [formationFilter, setFormationFilter] = useState("all");
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
-  const [rows, setRows] = useState<AdminRegistrationRecord[]>(mockRegistrations);
+  const [rows, setRows] =
+    useState<AdminRegistrationRecord[]>(mockRegistrations);
 
   const refreshData = async () => {
     setLoading(true);
@@ -266,7 +269,10 @@ export function AdminDashboard() {
     const now = Date.now();
 
     return rows.filter((item) => {
-      if (formationFilter !== "all" && item.formationTitle !== formationFilter) {
+      if (
+        formationFilter !== "all" &&
+        item.formationTitle !== formationFilter
+      ) {
         return false;
       }
 
@@ -336,7 +342,8 @@ export function AdminDashboard() {
 
   const totalRows = filteredRows.length;
   const last24h = filteredRows.filter(
-    (item) => Date.now() - new Date(item.createdAt).getTime() <= 24 * 60 * 60 * 1000,
+    (item) =>
+      Date.now() - new Date(item.createdAt).getTime() <= 24 * 60 * 60 * 1000,
   ).length;
 
   return (
@@ -344,8 +351,12 @@ export function AdminDashboard() {
       <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 lg:grid-cols-[260px_1fr] lg:px-8">
         <aside className="h-fit rounded-2xl border border-wl-border bg-white p-4 shadow-sm">
           <div className="mb-5 rounded-xl border border-wl-blue/20 bg-wl-blue-tint p-4">
-            <p className="text-xs uppercase tracking-wide text-wl-blue">Admin</p>
-            <h1 className="mt-1 text-lg font-semibold text-wl-text">Tracking Inscriptions</h1>
+            <p className="text-xs uppercase tracking-wide text-wl-blue">
+              Admin
+            </p>
+            <h1 className="mt-1 text-lg font-semibold text-wl-text">
+              Tracking Inscriptions
+            </h1>
           </div>
 
           <nav className="space-y-1">
@@ -419,7 +430,9 @@ export function AdminDashboard() {
                     {filteredRows.map((item) => (
                       <tr key={item.id} className="align-top">
                         <td className="py-3 pr-4">
-                          <p className="font-medium text-wl-text">{item.fullName}</p>
+                          <p className="font-medium text-wl-text">
+                            {item.fullName}
+                          </p>
                           <p className="text-xs text-wl-text-secondary">
                             {item.company || "Entreprise non renseignee"}
                           </p>
@@ -458,7 +471,9 @@ export function AdminDashboard() {
                               size="sm"
                               className="bg-wl-orange text-white hover:bg-wl-orange-dark"
                               onClick={() =>
-                                window.open(`mailto:${encodeURIComponent(item.email)}`)
+                                window.open(
+                                  `mailto:${encodeURIComponent(item.email)}`,
+                                )
                               }
                             >
                               <Mail className="h-4 w-4" />
@@ -501,14 +516,22 @@ export function AdminDashboard() {
                     className="rounded-xl border border-wl-border bg-white p-4"
                   >
                     <p className="text-sm text-wl-text-secondary">Formation</p>
-                    <h3 className="mt-1 text-base font-semibold text-wl-text">{item.title}</h3>
+                    <h3 className="mt-1 text-base font-semibold text-wl-text">
+                      {item.title}
+                    </h3>
                     <div className="mt-4 flex items-center justify-between">
                       <div>
-                        <p className="text-xs text-wl-text-secondary">Inscriptions</p>
-                        <p className="text-2xl font-semibold text-wl-blue">{item.count}</p>
+                        <p className="text-xs text-wl-text-secondary">
+                          Inscriptions
+                        </p>
+                        <p className="text-2xl font-semibold text-wl-blue">
+                          {item.count}
+                        </p>
                       </div>
                       <div>
-                        <p className="text-xs text-wl-text-secondary">Entreprises</p>
+                        <p className="text-xs text-wl-text-secondary">
+                          Entreprises
+                        </p>
                         <p className="text-right text-lg font-medium text-wl-text">
                           {item.companiesCount}
                         </p>
@@ -562,8 +585,8 @@ export function AdminDashboard() {
                       </span>
                     </div>
                     <p className="mt-2 text-sm text-wl-text">
-                      <strong>{item.fullName}</strong> a demande des informations sur{" "}
-                      <strong>{item.formationTitle}</strong>.
+                      <strong>{item.fullName}</strong> a demande des
+                      informations sur <strong>{item.formationTitle}</strong>.
                     </p>
                   </li>
                 ))}
@@ -578,7 +601,9 @@ export function AdminDashboard() {
           ) : null}
 
           {loading ? (
-            <p className="text-sm text-wl-text-secondary">Chargement du dashboard...</p>
+            <p className="text-sm text-wl-text-secondary">
+              Chargement du dashboard...
+            </p>
           ) : null}
         </div>
       </div>
