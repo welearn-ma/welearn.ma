@@ -13,6 +13,7 @@ import {
   RefreshCw,
   Search,
   Users,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -236,6 +237,8 @@ export function AdminDashboard() {
   const [notice, setNotice] = useState<string | null>(null);
   const [rows, setRows] =
     useState<AdminRegistrationRecord[]>(mockRegistrations);
+  const [selectedRequest, setSelectedRequest] =
+    useState<AdminRegistrationRecord | null>(null);
 
   const refreshData = async () => {
     setLoading(true);
@@ -458,11 +461,7 @@ export function AdminDashboard() {
                               variant="outline"
                               size="sm"
                               className="border-wl-border text-wl-text-secondary hover:bg-wl-gray-light"
-                              onClick={() =>
-                                window.alert(
-                                  `${item.fullName}\n${item.email}\n\n${item.message || "Aucun message"}`,
-                                )
-                              }
+                              onClick={() => setSelectedRequest(item)}
                             >
                               <Eye className="h-4 w-4" />
                               Voir
@@ -604,6 +603,102 @@ export function AdminDashboard() {
             <p className="text-sm text-wl-text-secondary">
               Chargement du dashboard...
             </p>
+          ) : null}
+
+          {selectedRequest ? (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4"
+              onClick={() => setSelectedRequest(null)}
+            >
+              <div
+                className="w-full max-w-2xl rounded-2xl border border-wl-border bg-white shadow-xl"
+                onClick={(event) => event.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Details de la demande"
+              >
+                <div className="flex items-center justify-between border-b border-wl-border p-5">
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-wl-text-tertiary">
+                      Demande d'inscription
+                    </p>
+                    <h3 className="mt-1 text-lg font-semibold text-wl-text">
+                      {selectedRequest.fullName}
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    className="rounded-lg p-2 text-wl-text-secondary transition-colors hover:bg-wl-gray-light"
+                    onClick={() => setSelectedRequest(null)}
+                    aria-label="Fermer"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <div className="grid gap-4 p-5 md:grid-cols-2">
+                  <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3">
+                    <p className="text-xs text-wl-text-tertiary">Email</p>
+                    <p className="mt-1 text-sm text-wl-text">{selectedRequest.email}</p>
+                  </div>
+                  <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3">
+                    <p className="text-xs text-wl-text-tertiary">Telephone</p>
+                    <p className="mt-1 text-sm text-wl-text">{selectedRequest.phone}</p>
+                  </div>
+                  <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3">
+                    <p className="text-xs text-wl-text-tertiary">Entreprise</p>
+                    <p className="mt-1 text-sm text-wl-text">
+                      {selectedRequest.company || "Non renseignee"}
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3">
+                    <p className="text-xs text-wl-text-tertiary">Poste</p>
+                    <p className="mt-1 text-sm text-wl-text">
+                      {selectedRequest.position || "Non renseigne"}
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3 md:col-span-2">
+                    <p className="text-xs text-wl-text-tertiary">Formation</p>
+                    <p className="mt-1 text-sm text-wl-text">
+                      {selectedRequest.formationTitle}
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3 md:col-span-2">
+                    <p className="text-xs text-wl-text-tertiary">Date de soumission</p>
+                    <p className="mt-1 text-sm text-wl-text">
+                      {formatDate(selectedRequest.createdAt)}
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3 md:col-span-2">
+                    <p className="text-xs text-wl-text-tertiary">Message</p>
+                    <p className="mt-1 whitespace-pre-wrap text-sm text-wl-text">
+                      {selectedRequest.message || "Aucun message saisi."}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end gap-2 border-t border-wl-border p-5">
+                  <Button
+                    variant="outline"
+                    className="border-wl-border text-wl-text-secondary hover:bg-wl-gray-light"
+                    onClick={() => setSelectedRequest(null)}
+                  >
+                    Fermer
+                  </Button>
+                  <Button
+                    className="bg-wl-orange text-white hover:bg-wl-orange-dark"
+                    onClick={() =>
+                      window.open(
+                        `mailto:${encodeURIComponent(selectedRequest.email)}`,
+                      )
+                    }
+                  >
+                    <Mail className="h-4 w-4" />
+                    Contacter
+                  </Button>
+                </div>
+              </div>
+            </div>
           ) : null}
         </div>
       </div>

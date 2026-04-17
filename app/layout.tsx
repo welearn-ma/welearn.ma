@@ -2,9 +2,8 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
 import { CookieConsent } from "@/components/cookie-consent";
+import { SiteChrome } from "@/components/layout/site-chrome";
 import "./globals.css";
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -43,9 +42,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={`font-sans antialiased`}>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <SiteChrome>{children}</SiteChrome>
         <CookieConsent />
         <Analytics />
       </body>
