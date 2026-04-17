@@ -52,7 +52,7 @@ const mockRegistrations: AdminRegistrationRecord[] = [
     message: "Interessee par la prochaine cohorte et les pre-requis.",
     formationSlug: "mastere-bim",
     formationTitle: "Mastere Specialise BIM & ses Applications",
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 6).toISOString(),
+    createdAt: "2026-04-17T06:00:00.000Z",
   },
   {
     id: "demo-2",
@@ -64,7 +64,7 @@ const mockRegistrations: AdminRegistrationRecord[] = [
     message: "Je souhaite recevoir le programme detaille.",
     formationSlug: "master-immobilier",
     formationTitle: "Executive Master en Ingenierie Immobiliere",
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 26).toISOString(),
+    createdAt: "2026-04-16T10:00:00.000Z",
   },
   {
     id: "demo-3",
@@ -76,7 +76,7 @@ const mockRegistrations: AdminRegistrationRecord[] = [
     message: "Disponibilites weekend ?",
     formationSlug: "mastere-bim",
     formationTitle: "Mastere Specialise BIM & ses Applications",
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 72).toISOString(),
+    createdAt: "2026-04-14T11:30:00.000Z",
   },
 ];
 
@@ -84,6 +84,7 @@ function formatDate(value: string) {
   return new Intl.DateTimeFormat("fr-MA", {
     dateStyle: "medium",
     timeStyle: "short",
+    timeZone: "Africa/Casablanca",
   }).format(new Date(value));
 }
 
