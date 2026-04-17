@@ -8,17 +8,21 @@ import {
 
 export async function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
-
-  if (!pathname.startsWith("/admin")) {
-    return NextResponse.next();
-  }
-
-  if (pathname === "/admin/login" || pathname === "/admin/logout") {
-    return NextResponse.next();
-  }
+  const isAdminPath = pathname.startsWith("/admin");
+  const isAdminLogin = pathname === "/admin/login";
+  const isAdminLogout = pathname === "/admin/logout";
 
   const { sessionSecret } = getAdminConfig();
+
   if (!sessionSecret) {
+    if (!isAdminPath) {
+      return NextResponse.next();
+    }
+
+    if (isAdminLogin || isAdminLogout) {
+      return NextResponse.next();
+    }
+
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/admin/login";
     loginUrl.searchParams.set("error", "config");
@@ -26,6 +30,30 @@ export async function middleware(request: NextRequest) {
   }
 
   const sessionToken = request.cookies.get(getAdminSessionCookieName())?.value;
+
+  if (sessionToken) {
+    const payload = await verifyAdminSessionToken(sessionToken, sessionSecret);
+
+    if (payload) {
+      if (!isAdminPath) {
+        const dashboardUrl = request.nextUrl.clone();
+        dashboardUrl.pathname = "/admin";
+        dashboardUrl.search = "";
+        return NextResponse.redirect(dashboardUrl);
+      }
+
+      return NextResponse.next();
+    }
+  }
+
+  if (!isAdminPath) {
+    return NextResponse.next();
+  }
+
+  if (isAdminLogin || isAdminLogout) {
+    return NextResponse.next();
+  }
+
   if (!sessionToken) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/admin/login";
@@ -36,17 +64,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  const payload = await verifyAdminSessionToken(sessionToken, sessionSecret);
-  if (!payload) {
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/admin/login";
-    loginUrl.searchParams.set("error", "session");
-    return NextResponse.redirect(loginUrl);
-  }
-
-  return NextResponse.next();
+  const loginUrl = request.nextUrl.clone();
+  loginUrl.pathname = "/admin/login";
+  loginUrl.searchParams.set("error", "session");
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)"],
 };
