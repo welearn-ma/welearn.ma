@@ -639,11 +639,15 @@ export function AdminDashboard() {
                 <div className="grid gap-4 p-5 md:grid-cols-2">
                   <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3">
                     <p className="text-xs text-wl-text-tertiary">Email</p>
-                    <p className="mt-1 text-sm text-wl-text">{selectedRequest.email}</p>
+                    <p className="mt-1 text-sm text-wl-text">
+                      {selectedRequest.email}
+                    </p>
                   </div>
                   <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3">
                     <p className="text-xs text-wl-text-tertiary">Telephone</p>
-                    <p className="mt-1 text-sm text-wl-text">{selectedRequest.phone}</p>
+                    <p className="mt-1 text-sm text-wl-text">
+                      {selectedRequest.phone}
+                    </p>
                   </div>
                   <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3">
                     <p className="text-xs text-wl-text-tertiary">Entreprise</p>
@@ -664,7 +668,9 @@ export function AdminDashboard() {
                     </p>
                   </div>
                   <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3 md:col-span-2">
-                    <p className="text-xs text-wl-text-tertiary">Date de soumission</p>
+                    <p className="text-xs text-wl-text-tertiary">
+                      Date de soumission
+                    </p>
                     <p className="mt-1 text-sm text-wl-text">
                       {formatDate(selectedRequest.createdAt)}
                     </p>
