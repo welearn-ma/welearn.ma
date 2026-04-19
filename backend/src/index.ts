@@ -1,12 +1,16 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
+import path from "path";
 import adminRouter from "./routes/admin";
 import registrationRouter from "./routes/registrations";
 import contactRouter from "./routes/contact";
 
 const app = express();
 const port = Number(process.env.PORT || 4000);
+
+// Let AutoSSL / Let's Encrypt DCV files be served directly.
+app.use("/.well-known", express.static(path.join(process.cwd(), ".well-known")));
 
 function normalizeOrigin(value: string) {
   return value.trim().replace(/\/+$/, "").toLowerCase();
