@@ -12,13 +12,19 @@ export async function submitRegistration(
     throw new Error("NEXT_PUBLIC_API_URL is not configured");
   }
 
-  const response = await fetch(`${baseUrl}/api/registrations`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(`${baseUrl}/api/registrations`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error("Impossible de joindre l'API d'inscription (reseau/CORS).");
+  }
 
   if (!response.ok) {
     let errorMessage = "La demande d'inscription a echoue.";

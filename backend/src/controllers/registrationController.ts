@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { getBearerToken, validateAdminAccessToken } from "../lib/adminAuth";
 import { supabase } from "../lib/supabaseClient";
 import type {
   RegistrationPayload,
@@ -107,6 +108,25 @@ export async function listRegistrations(
   req: Request,
   res: Response<RegistrationListResponse>,
 ) {
+  const token = getBearerToken(req.header("authorization"));
+  const access = await validateAdminAccessToken(token);
+
+  if (!access.ok) {
+    if (access.reason === "not_admin") {
+      return res.status(403).json({
+        success: false,
+        data: [],
+        message: "Acces refuse: compte non admin.",
+      });
+    }
+
+    return res.status(401).json({
+      success: false,
+      data: [],
+      message: "Session admin invalide ou expiree.",
+    });
+  }
+
   const rawLimit = Number(req.query.limit ?? 200);
   const limit = Number.isFinite(rawLimit)
     ? Math.min(Math.max(rawLimit, 1), 1000)

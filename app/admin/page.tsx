@@ -1,28 +1,19 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
 import { AdminDashboard } from "@/components/admin/admin-dashboard";
-import {
-  getAdminSessionCookieName,
-  isAdminAuthConfigured,
-  verifyAdminSessionToken,
-} from "@/lib/admin-auth";
 
-export default async function AdminPage() {
-  if (!isAdminAuthConfigured()) {
-    redirect("/admin/login?error=config");
-  }
+const ADMIN_EMAIL_STORAGE_KEY = "wl_admin_email";
 
-  const sessionToken = (await cookies()).get(
-    getAdminSessionCookieName(),
-  )?.value;
-  if (!sessionToken) {
-    redirect("/admin/login");
-  }
+export default function AdminPage() {
+  const [adminEmail, setAdminEmail] = useState("admin@welearn.ma");
 
-  const payload = await verifyAdminSessionToken(sessionToken);
-  if (!payload) {
-    redirect("/admin/login?error=session");
-  }
+  useEffect(() => {
+    const stored = window.localStorage.getItem(ADMIN_EMAIL_STORAGE_KEY)?.trim();
+    if (stored) {
+      setAdminEmail(stored);
+    }
+  }, []);
 
-  return <AdminDashboard adminEmail={payload.email} />;
+  return <AdminDashboard adminEmail={adminEmail} />;
 }

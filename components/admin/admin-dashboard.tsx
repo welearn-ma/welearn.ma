@@ -234,7 +234,7 @@ function ViewShell({
   );
 }
 
-export function AdminDashboard({ adminEmail }: { adminEmail: string }) {
+export function AdminDashboard({ adminEmail }: { adminEmail?: string }) {
   const [view, setView] = useState<AdminView>("inscriptions");
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState<DateFilter>("30d");
@@ -414,7 +414,7 @@ export function AdminDashboard({ adminEmail }: { adminEmail: string }) {
                     Session admin
                   </p>
                   <p className="text-sm font-medium text-wl-text">
-                    {adminEmail}
+                    {adminEmail || "Session locale"}
                   </p>
                 </div>
               </div>
@@ -425,7 +425,12 @@ export function AdminDashboard({ adminEmail }: { adminEmail: string }) {
                   variant="outline"
                   className={neutralActionButtonClass}
                 >
-                  <a href="/admin/logout">
+                  <a
+                    href="/admin/login?logout=1"
+                    onClick={() => {
+                      window.localStorage.removeItem("wl_admin_email");
+                    }}
+                  >
                     <LogOut className="h-4 w-4" />
                     Se deconnecter
                   </a>

@@ -1,87 +1,34 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import {
-  getAdminSessionCookieName,
-  isAdminAuthConfigured,
-  signInAdminWithPassword,
-  verifyAdminSessionToken,
-} from "@/lib/admin-auth";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-async function loginAction(formData: FormData) {
-  "use server";
+const ADMIN_EMAIL_STORAGE_KEY = "wl_admin_email";
 
-  if (!isAdminAuthConfigured()) {
-    redirect("/admin/login?error=config");
-  }
+export default function AdminLoginPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error") ?? "";
+  const next = searchParams.get("next") ?? "";
+  const logoutRequested = searchParams.get("logout") === "1";
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const email = String(formData.get("email") ?? "")
-    .trim()
-    .toLowerCase();
-  const password = String(formData.get("password") ?? "").trim();
-  const next = String(formData.get("next") ?? "").trim();
-
-  const signedIn = await signInAdminWithPassword(email, password);
-  if (!signedIn.ok) {
-    const code =
-      signedIn.reason === "not_admin"
-        ? "not_admin"
-        : signedIn.reason === "email_not_confirmed"
-          ? "email_not_confirmed"
-          : signedIn.reason === "config"
-            ? "config"
-            : "invalid";
-
-    redirect(
-      `/admin/login?error=${code}${next ? `&next=${encodeURIComponent(next)}` : ""}`,
-    );
-  }
-
-  const cookieStore = await cookies();
-  cookieStore.set({
-    name: getAdminSessionCookieName(),
-    value: signedIn.accessToken,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: signedIn.expiresIn,
-  });
-
-  if (next.startsWith("/admin")) {
-    redirect(next);
-  }
-
-  redirect("/admin");
-}
-
-type LoginPageProps = {
-  searchParams?: Promise<{
-    error?: string;
-    next?: string;
-  }>;
-};
-
-export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
-  const params = (await searchParams) ?? {};
-  const error = params.error ?? "";
-  const next = params.next ?? "";
-
-  if (isAdminAuthConfigured()) {
-    const sessionToken = (await cookies()).get(
-      getAdminSessionCookieName(),
-    )?.value;
-    if (sessionToken) {
-      const payload = await verifyAdminSessionToken(sessionToken);
-      if (payload) {
-        redirect(next.startsWith("/admin") ? next : "/admin");
-      }
+  useEffect(() => {
+    if (!logoutRequested) {
+      return;
     }
-  }
 
-  const errorMessage =
-    error === "invalid"
+    window.localStorage.removeItem(ADMIN_EMAIL_STORAGE_KEY);
+  }, [logoutRequested]);
+
+  const errorMessage = useMemo(() => {
+    if (logoutRequested) {
+      return "Session locale deconnectee. Reconnectez-vous pour continuer.";
+    }
+
+    return error === "invalid"
       ? "Identifiants invalides."
       : error === "not_admin"
         ? "Compte authentifie, mais non autorise pour le dashboard admin. Ajoutez votre email dans ADMIN_ALLOWED_EMAILS ou attribuez le role admin dans Supabase."
@@ -92,6 +39,20 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
             : error === "config"
               ? "Configuration Supabase manquante (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)."
               : "";
+  }, [error, logoutRequested]);
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail || !password.trim()) {
+      return;
+    }
+
+    window.localStorage.setItem(ADMIN_EMAIL_STORAGE_KEY, normalizedEmail);
+    const target = next.startsWith("/admin") ? next : "/admin";
+    router.push(target);
+  };
 
   return (
     <main className="min-h-screen bg-wl-gray-light px-4 py-16">
@@ -120,15 +81,14 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
             </p>
           ) : null}
 
-          <form action={loginAction} className="mt-6 space-y-4">
-            <input type="hidden" name="next" value={next} />
-
+          <form onSubmit={onSubmit} className="mt-6 space-y-4">
             <label className="block space-y-1">
               <span className="text-sm text-wl-text">Email</span>
               <input
-                name="email"
                 type="email"
                 required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 className="h-10 w-full rounded-md border border-wl-border px-3 text-sm text-wl-text outline-none focus:ring-2 focus:ring-wl-blue/25"
                 placeholder="admin@welearn.ma"
               />
@@ -137,9 +97,10 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
             <label className="block space-y-1">
               <span className="text-sm text-wl-text">Mot de passe</span>
               <input
-                name="password"
                 type="password"
                 required
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
                 className="h-10 w-full rounded-md border border-wl-border px-3 text-sm text-wl-text outline-none focus:ring-2 focus:ring-wl-blue/25"
                 placeholder="********"
               />

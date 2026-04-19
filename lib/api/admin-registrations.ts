@@ -12,13 +12,19 @@ export async function getAdminRegistrations(): Promise<
     throw new Error("NEXT_PUBLIC_API_URL is not configured");
   }
 
-  const response = await fetch(`${baseUrl}/api/registrations?limit=500`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    cache: "no-store",
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(`${baseUrl}/api/registrations?limit=500`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
+  } catch {
+    throw new Error("Impossible de joindre l'API admin (reseau/CORS).");
+  }
 
   if (!response.ok) {
     throw new Error("Impossible de charger les demandes d'inscription.");
