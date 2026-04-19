@@ -7,33 +7,68 @@ import contactRouter from "./routes/contact";
 
 const app = express();
 const port = Number(process.env.PORT || 4000);
+
+function normalizeOrigin(value: string) {
+  return value.trim().replace(/\/+$/, "").toLowerCase();
+}
+
+function withWwwVariant(origin: string) {
+  try {
+    const url = new URL(origin);
+    const host = url.hostname.toLowerCase();
+
+    if (host.startsWith("www.")) {
+      return `${url.protocol}//${host.replace(/^www\./, "")}${url.port ? `:${url.port}` : ""}`;
+    }
+
+    return `${url.protocol}//www.${host}${url.port ? `:${url.port}` : ""}`;
+  } catch {
+    return "";
+  }
+}
+
 const corsOriginSource =
   process.env.CORS_ORIGIN ||
   process.env.FRONTEND_URL ||
   "http://localhost:3000";
-const allowedOrigins = corsOriginSource
+const configuredOrigins = corsOriginSource
   .split(",")
-  .map((origin) => origin.trim())
+  .map((origin) => normalizeOrigin(origin))
   .filter(Boolean);
 
-app.use(
-  cors({
-    origin(origin, callback) {
-      // Requests from Postman or server-side scripts may not include an Origin header.
-      if (!origin) {
-        callback(null, true);
-        return;
-      }
+const allowedOrigins = new Set(configuredOrigins);
 
-      if (allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
-        callback(null, true);
-        return;
-      }
+for (const origin of configuredOrigins) {
+  const variant = withWwwVariant(origin);
+  if (variant) {
+    allowedOrigins.add(normalizeOrigin(variant));
+  }
+}
 
-      callback(new Error("Origin not allowed by CORS"));
-    },
-  }),
-);
+const corsOptions: cors.CorsOptions = {
+  origin(origin, callback) {
+    // Requests from Postman or server-side scripts may not include an Origin header.
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+
+    const normalized = normalizeOrigin(origin);
+
+    if (allowedOrigins.has("*") || allowedOrigins.has(normalized)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error("Origin not allowed by CORS"));
+  },
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json());
 
 app.get("/health", (_req, res) => {
