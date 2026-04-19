@@ -1,8 +1,0 @@
-1:"$Sreact.fragment"
-2:I[17151,["/_next/static/chunks/82bb46684686dddc.js","/_next/static/chunks/8c79525eefbc5792.js"],"ViewportBoundary"]
-4:I[17151,["/_next/static/chunks/82bb46684686dddc.js","/_next/static/chunks/8c79525eefbc5792.js"],"MetadataBoundary"]
-5:"$Sreact.suspense"
-7:I[75986,["/_next/static/chunks/82bb46684686dddc.js","/_next/static/chunks/8c79525eefbc5792.js"],"IconMark"]
-0:{"buildId":"KHTRZLLYrtzD_Ao7KZtyM","rsc":["$","$1","h",{"children":[null,["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
-3:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
-6:[["$","title","0",{"children":"Certification BIM Foundations – Professional | buildingSMART | Welearn"}],["$","meta","1",{"name":"description","content":"Obtenez la certification BIM internationale de référence délivrée par buildingSMART International. Préparation en e-learning ou présentiel avec Welearn, organisme accrédité."}],["$","meta","2",{"name":"generator","content":"@wa1ead"}],["$","meta","3",{"name":"keywords","content":"certification BIM Maroc, BIM Foundations buildingSMART, formation BIM en ligne, certification BIM international"}],["$","link","4",{"rel":"icon","href":"/images/icon-welearn-dark.png","media":"(prefers-color-scheme: light)"}],["$","link","5",{"rel":"icon","href":"/images/icon-welearn-light.png","media":"(prefers-color-scheme: dark)"}],["$","link","6",{"rel":"icon","href":"/images/welearn-icon.png","type":"image/svg+xml"}],["$","$L7","7",{}]]

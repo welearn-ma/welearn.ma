@@ -3,9 +3,7 @@ import type {
   AdminRegistrationRecord,
 } from "@/types/admin-registration";
 
-export async function getAdminRegistrations(): Promise<
-  AdminRegistrationRecord[]
-> {
+export async function getAdminRegistrations(
   accessToken: string,
 ): Promise<AdminRegistrationRecord[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
