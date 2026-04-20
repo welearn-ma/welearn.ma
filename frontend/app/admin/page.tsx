@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AuthGuard } from "@/components/AuthGuard";
 import { AdminDashboard } from "@/components/admin/admin-dashboard";
 import {
   ADMIN_ACCESS_TOKEN_STORAGE_KEY,
@@ -28,9 +27,5 @@ export default function AdminPage() {
     );
   }
 
-  return (
-    <AuthGuard>
-      <AdminDashboard accessToken={accessToken} />
-    </AuthGuard>
-  );
+  return <AdminDashboard accessToken={accessToken} />;
 }

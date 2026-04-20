@@ -2,6 +2,7 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { AuthGuard } from "@/components/AuthGuard";
 import { CookieConsent } from "@/components/cookie-consent";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import "./globals.css";
@@ -42,7 +43,9 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={`font-sans antialiased`}>
-        <SiteChrome>{children}</SiteChrome>
+        <AuthGuard>
+          <SiteChrome>{children}</SiteChrome>
+        </AuthGuard>
         <CookieConsent />
         <Analytics />
       </body>

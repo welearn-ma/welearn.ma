@@ -397,19 +397,16 @@ export function AdminDashboard({
 
               <div className="flex flex-wrap gap-2">
                 <Button
-                  asChild
+                  type="button"
                   variant="outline"
                   className={neutralActionButtonClass}
+                  onClick={() => {
+                    clearAdminSessionStorage();
+                    router.replace("/admin/login");
+                  }}
                 >
-                  <a
-                    href="/admin/login"
-                    onClick={() => {
-                      clearAdminSessionStorage();
-                    }}
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Se deconnecter
-                  </a>
+                  <LogOut className="h-4 w-4" />
+                  Se deconnecter
                 </Button>
               </div>
             </div>

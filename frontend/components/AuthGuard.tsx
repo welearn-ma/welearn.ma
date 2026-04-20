@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ADMIN_ACCESS_TOKEN_STORAGE_KEY,
@@ -16,20 +16,32 @@ type AuthGuardProps = {
 export function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const [isChecking, setIsChecking] = useState(true);
-  const sessionClearedOnNav = useRef(false);
+  const isProtectedAdminRoute =
+    pathname.startsWith("/admin") && !pathname.startsWith("/admin/login");
+  const [isChecking, setIsChecking] = useState(isProtectedAdminRoute);
 
-  // Issue 1 — clear session when user leaves the /admin area
+  // Issue 1 — keep authenticated admins inside the /admin area
   useEffect(() => {
     if (!pathname.startsWith("/admin")) {
-      clearAdminSessionStorage();
-      sessionClearedOnNav.current = true;
+      const token =
+        window.sessionStorage.getItem(ADMIN_ACCESS_TOKEN_STORAGE_KEY)?.trim() ??
+        "";
+
+      if (token) {
+        router.replace("/admin");
+      }
     }
-  }, [pathname]);
+  }, [pathname, router]);
 
   // Issue 2 — verify token on mount with immediate redirect if missing, timeout if slow
   useEffect(() => {
+    if (!isProtectedAdminRoute) {
+      setIsChecking(false);
+      return;
+    }
+
     let isMounted = true;
+    setIsChecking(true);
 
     const verifySession = async () => {
       const token =
@@ -84,7 +96,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
     return () => {
       isMounted = false;
     };
-  }, [router]);
+  }, [isProtectedAdminRoute, router]);
 
   if (isChecking) {
     return (
