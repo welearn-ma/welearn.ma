@@ -6,41 +6,31 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { verifyAdminSession } from "@/lib/api/admin-session";
 import { signInAdminWithPassword } from "@/lib/admin-auth";
 import {
-  ADMIN_ACCESS_TOKEN_STORAGE_KEY,
-  ADMIN_EMAIL_STORAGE_KEY,
   clearAdminSessionStorage,
+  getStoredAdminAccessToken,
+  persistAdminSessionStorage,
 } from "@/lib/admin-session-storage";
 
 function AdminLoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const error = searchParams.get("error") ?? "";
+  const expired = searchParams.get("expired") === "1";
   const next = searchParams.get("next") ?? "";
-  const logoutRequested = searchParams.get("logout") === "1";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
 
   useEffect(() => {
-    if (!logoutRequested) {
-      return;
-    }
-
-    clearAdminSessionStorage();
-  }, [logoutRequested]);
+    setFormError("");
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
 
     const run = async () => {
-      if (logoutRequested) {
-        return;
-      }
-
-      const token =
-        window.localStorage.getItem(ADMIN_ACCESS_TOKEN_STORAGE_KEY)?.trim() ??
-        "";
+      const token = getStoredAdminAccessToken();
 
       if (!token) {
         return;
@@ -60,25 +50,21 @@ function AdminLoginContent() {
     return () => {
       isMounted = false;
     };
-  }, [logoutRequested, next, router]);
+  }, [next, router]);
 
   const errorMessage = useMemo(() => {
-    if (logoutRequested) {
-      return "Session locale deconnectee. Reconnectez-vous pour continuer.";
-    }
-
     return error === "invalid"
       ? "Identifiants invalides."
       : error === "not_admin"
         ? "Compte authentifie, mais non autorise pour le dashboard admin. Veuillez attribuer le role admin dans Supabase."
         : error === "email_not_confirmed"
           ? "Email non confirme dans Supabase Auth. Confirmez l'email puis reessayez."
-          : error === "session"
+          : error === "session" && expired
             ? "Session invalide ou expiree. Merci de vous reconnecter."
             : error === "config"
               ? "Configuration Supabase manquante (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)."
               : "";
-  }, [error, logoutRequested]);
+  }, [error, expired]);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -124,11 +110,7 @@ function AdminLoginContent() {
       return;
     }
 
-    window.localStorage.setItem(
-      ADMIN_ACCESS_TOKEN_STORAGE_KEY,
-      signIn.accessToken,
-    );
-    window.localStorage.setItem(ADMIN_EMAIL_STORAGE_KEY, session.email);
+    persistAdminSessionStorage(signIn.accessToken);
     const target = next.startsWith("/admin") ? next : "/admin";
     router.push(target);
   };

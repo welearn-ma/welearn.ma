@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AuthGuard } from "@/components/AuthGuard";
 import { AdminDashboard } from "@/components/admin/admin-dashboard";
 
 const ADMIN_EMAIL_STORAGE_KEY = "wl_admin_email";
@@ -15,5 +16,9 @@ export default function AdminPage() {
     }
   }, []);
 
-  return <AdminDashboard adminEmail={adminEmail} />;
+  return (
+    <AuthGuard>
+      <AdminDashboard adminEmail={adminEmail} />
+    </AuthGuard>
+  );
 }

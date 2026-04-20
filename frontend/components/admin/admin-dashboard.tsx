@@ -229,7 +229,7 @@ export function AdminDashboard({
 
       if (message === "ADMIN_UNAUTHORIZED") {
         clearAdminSessionStorage();
-        router.replace("/admin/login?error=session&next=/admin");
+        router.replace("/admin/login");
         return;
       }
 
@@ -402,7 +402,7 @@ export function AdminDashboard({
                   className={neutralActionButtonClass}
                 >
                   <a
-                    href="/admin/login?logout=1"
+                    href="/admin/login"
                     onClick={() => {
                       clearAdminSessionStorage();
                     }}

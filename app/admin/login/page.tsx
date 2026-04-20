@@ -5,51 +5,48 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const ADMIN_EMAIL_STORAGE_KEY = "wl_admin_email";
+const ADMIN_ACCESS_TOKEN_STORAGE_KEY = "wl_admin_access_token";
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const error = searchParams.get("error") ?? "";
+  const expired = searchParams.get("expired") === "1";
   const next = searchParams.get("next") ?? "";
-  const logoutRequested = searchParams.get("logout") === "1";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
-    if (!logoutRequested) {
-      return;
-    }
-
-    window.localStorage.removeItem(ADMIN_EMAIL_STORAGE_KEY);
-  }, [logoutRequested]);
+    setFormError("");
+  }, []);
 
   const errorMessage = useMemo(() => {
-    if (logoutRequested) {
-      return "Session locale deconnectee. Reconnectez-vous pour continuer.";
-    }
-
     return error === "invalid"
       ? "Identifiants invalides."
       : error === "not_admin"
         ? "Compte authentifie, mais non autorise pour le dashboard admin. Veuillez attribuer le role admin dans Supabase."
         : error === "email_not_confirmed"
           ? "Email non confirme dans Supabase Auth. Confirmez l'email puis reessayez."
-          : error === "session"
+          : error === "session" && expired
             ? "Session invalide ou expiree. Merci de vous reconnecter."
             : error === "config"
               ? "Configuration Supabase manquante (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)."
               : "";
-  }, [error, logoutRequested]);
+  }, [error, expired]);
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setFormError("");
 
     const normalizedEmail = email.trim().toLowerCase();
     if (!normalizedEmail || !password.trim()) {
+      setFormError("Veuillez renseigner un email et un mot de passe.");
       return;
     }
 
-    window.localStorage.setItem(ADMIN_EMAIL_STORAGE_KEY, normalizedEmail);
+    window.sessionStorage.setItem(ADMIN_EMAIL_STORAGE_KEY, normalizedEmail);
+    window.sessionStorage.setItem(ADMIN_ACCESS_TOKEN_STORAGE_KEY, "");
     const target = next.startsWith("/admin") ? next : "/admin";
     router.push(target);
   };
@@ -78,6 +75,12 @@ export default function AdminLoginPage() {
           {errorMessage ? (
             <p className="mt-4 rounded-lg border border-wl-orange/30 bg-wl-orange-tint px-3 py-2 text-sm text-wl-text-secondary">
               {errorMessage}
+            </p>
+          ) : null}
+
+          {formError ? (
+            <p className="mt-4 rounded-lg border border-wl-orange/30 bg-wl-orange-tint px-3 py-2 text-sm text-wl-text-secondary">
+              {formError}
             </p>
           ) : null}
 
