@@ -11,26 +11,15 @@ type AdminAccessResult =
       reason: "missing_token" | "invalid_token" | "not_admin";
     };
 
-const allowedAdminEmails = new Set(
-  String(process.env.ADMIN_ALLOWED_EMAILS ?? "")
-    .split(",")
-    .map((value) => value.trim().toLowerCase())
-    .filter(Boolean),
-);
-
 function isUserAdmin(user: User) {
-  const email = String(user.email ?? "").trim().toLowerCase();
-
-  if (email && allowedAdminEmails.has(email)) {
-    return true;
-  }
-
   const appRole = String(user.app_metadata?.role ?? "").toLowerCase();
   const userRole = String(user.user_metadata?.role ?? "").toLowerCase();
   const appIsAdmin = user.app_metadata?.is_admin === true;
   const userIsAdmin = user.user_metadata?.is_admin === true;
 
-  return appRole === "admin" || userRole === "admin" || appIsAdmin || userIsAdmin;
+  return (
+    appRole === "admin" || userRole === "admin" || appIsAdmin || userIsAdmin
+  );
 }
 
 export function getBearerToken(authorizationHeader?: string) {
@@ -64,6 +53,8 @@ export async function validateAdminAccessToken(
 
   return {
     ok: true,
-    email: String(data.user.email ?? "").trim().toLowerCase(),
+    email: String(data.user.email ?? "")
+      .trim()
+      .toLowerCase(),
   };
 }

@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
     return error === "invalid"
       ? "Identifiants invalides."
       : error === "not_admin"
-        ? "Compte authentifie, mais non autorise pour le dashboard admin. Ajoutez votre email dans ADMIN_ALLOWED_EMAILS ou attribuez le role admin dans Supabase."
+        ? "Compte authentifie, mais non autorise pour le dashboard admin. Veuillez attribuer le role admin dans Supabase."
         : error === "email_not_confirmed"
           ? "Email non confirme dans Supabase Auth. Confirmez l'email puis reessayez."
           : error === "session"
