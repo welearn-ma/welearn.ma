@@ -10,7 +10,10 @@ const app = express();
 const port = Number(process.env.PORT || 4000);
 
 // Let AutoSSL / Let's Encrypt DCV files be served directly.
-app.use("/.well-known", express.static(path.join(process.cwd(), ".well-known")));
+app.use(
+  "/.well-known",
+  express.static(path.join(process.cwd(), ".well-known")),
+);
 
 function normalizeOrigin(value: string) {
   return value.trim().replace(/\/+$/, "").toLowerCase();
@@ -31,17 +34,26 @@ function withWwwVariant(origin: string) {
   }
 }
 
-const corsOriginSource =
-  process.env.CORS_ORIGIN ||
-  process.env.FRONTEND_URL ||
-  "http://localhost:3000";
-const configuredOrigins = corsOriginSource
-  .split(",")
+// Build list of allowed origins with FRONTEND_URL as primary and fallbacks
+const frontendUrl = process.env.FRONTEND_URL || "https://welearn.ma";
+const corsOriginSource = process.env.CORS_ORIGIN || frontendUrl;
+
+// Combine CORS_ORIGIN (if set) with fallback values
+const originsList = [
+  ...corsOriginSource.split(",").map((o) => o.trim()),
+  "https://welearn.ma",
+  "https://www.welearn.ma",
+  "http://localhost:3000",
+];
+
+const configuredOrigins = originsList
   .map((origin) => normalizeOrigin(origin))
   .filter(Boolean);
 
+// Remove duplicates
 const allowedOrigins = new Set(configuredOrigins);
 
+// Add www variants for all origins
 for (const origin of configuredOrigins) {
   const variant = withWwwVariant(origin);
   if (variant) {
@@ -66,13 +78,15 @@ const corsOptions: cors.CorsOptions = {
 
     callback(new Error("Origin not allowed by CORS"));
   },
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  optionsSuccessStatus: 204,
+  exposedHeaders: ["Content-Length", "X-JSON-Response-Size"],
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
-app.options("/{*path}", cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json());
 
 app.get("/health", (_req, res) => {
