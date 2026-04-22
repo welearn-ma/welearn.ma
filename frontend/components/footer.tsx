@@ -12,23 +12,14 @@ import {
 
 const footerLinks = {
   formations: [
+    { name: "Diplomantes", href: "/formations/diplomantes" },
+    { name: "Certifiantes", href: "/formations/certifiantes" },
+    { name: "Plateforme LMS", href: "/digital-learning/lms" },
     {
-      name: "Executive Masters",
-      href: "/formations/diplomantes/executive-masters",
+      name: "Contenus e-learning",
+      href: "/digital-learning/contenus-elearning",
     },
-    {
-      name: "Licences Professionnelles",
-      href: "/formations/diplomantes/licences-pro",
-    },
-    {
-      name: "BIM Foundations",
-      href: "/formations/bim-foundations-professional",
-    },
-    { name: "Catalogue intra", href: "/formations/certifiantes" },
-    {
-      name: "Formations sur mesure",
-      href: "/formations/certifiantes/sur-mesure",
-    },
+    { name: "Bibliothèque", href: "/digital-learning/bibliotheque" },
   ],
   services: [
     { name: "Ingénierie de formation", href: "/ingenierie" },
@@ -42,14 +33,9 @@ const footerLinks = {
   ],
   company: [
     { name: "À propos", href: "/about" },
-    { name: "Notre équipe", href: "/about/equipe" },
-    { name: "Références", href: "/about/references" },
-    { name: "Événements", href: "/events" },
-  ],
-  legal: [
-    { name: "Mentions légales", href: "/mentions-legales" },
-    { name: "CGU", href: "/cgu" },
-    { name: "Politique de confidentialité", href: "/confidentialite" },
+    { name: "Événements", href: "/evenements" },
+    { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
   ],
 };
 
@@ -57,7 +43,7 @@ export function Footer() {
   return (
     <footer className="bg-wl-text text-white">
       <div className="mx-auto max-w-7xl px-4 pt-16 pb-4 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
           <div className="lg:col-span-2">
             <Image
@@ -77,7 +63,7 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-3 text-sm text-white/50">
                 <Phone className="h-4 w-4 text-white/50 shrink-0" />
-                <span>+212 520 850 850</span>
+                <span>+212 661 499 479</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-white/50">
                 <MapPin className="h-4 w-4 text-white/50 shrink-0" />
@@ -131,25 +117,6 @@ export function Footer() {
             </h3>
             <ul className="space-y-2">
               {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/50 hover:text-white/80 transition-colors duration-200"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal Links */}
-          <div>
-            <h3 className="font-sans font-semibold text-sm text-white mb-4">
-              Légal
-            </h3>
-            <ul className="space-y-2">
-              {footerLinks.legal.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
