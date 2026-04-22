@@ -43,6 +43,7 @@ const badgeClasses: Record<FormationBadge, string> = {
   "Sur mesure": "bg-slate-100 text-slate-700 border-slate-200",
   "Executive Masters": "bg-primary/10 text-primary border-primary/25",
   "Licence Pro": "bg-amber-50 text-amber-700 border-amber-200",
+  MasterClass: "bg-violet-100 text-violet-700 border-violet-200",
 };
 
 const domainStripeClasses: Record<FormationDomain, string> = {
@@ -51,10 +52,12 @@ const domainStripeClasses: Record<FormationDomain, string> = {
   Immobilier: "bg-amber-500",
   "Digital & IA": "bg-violet-500",
   Management: "bg-cyan-600",
+  "Intelligence Artificielle & BTP": "bg-fuchsia-600",
 };
 
 const levelIndicatorClasses: Record<FormationLevel, string> = {
   Débutant: "bg-emerald-100 text-emerald-700",
+  Initiation: "bg-emerald-100 text-emerald-700",
   Intermédiaire: "bg-amber-100 text-amber-700",
   Avancé: "bg-rose-100 text-rose-700",
   "Tous niveaux": "bg-slate-100 text-slate-700",

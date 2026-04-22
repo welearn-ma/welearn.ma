@@ -571,6 +571,131 @@ export const formations: Record<string, FormationPageData> = {
   },
 
   /* ──────────────────────────────────────────────────────────
+   * MASTERCLASS LE CHANTIER IA
+   * ────────────────────────────────────────────────────────── */
+  "masterclass-chantier-ia": {
+    slug: "masterclass-chantier-ia",
+    title: "MasterClass Le Chantier IA",
+    subtitle:
+      "Une introduction concrète à l'utilisation de l'IA et du Prompt Engineering pour améliorer la gestion, la prise de décision et le suivi des projets de construction.",
+    partnerLine:
+      "Programme proposé par WeLearn / BIM Pioneers · Build x AI Lab",
+    badges: ["MasterClass", "Non-diplomante", "Initiation"],
+    infoBanner: [
+      { icon: Clock, value: "1 jour", label: "Durée" },
+      { icon: Briefcase, value: "Initiation", label: "Niveau" },
+      { icon: CalendarDays, value: "Dates sur demande", label: "Session" },
+      { icon: MapPin, value: "Présentiel", label: "Format" },
+    ],
+    heroImage:
+      "https://images.unsplash.com/photo-1581092921461-eab10380f308?w=1600&q=80",
+    ctaPrimary: "Réserver ma place",
+    ctaSecondary: "Demander le programme",
+    profiles: [
+      "Professionnels du BTP",
+      "Chefs de projet construction",
+      "Ingénieurs",
+      "BIM Managers",
+    ],
+    prerequisites: [
+      "Aucun prérequis technique spécifique",
+      "Une expérience terrain en construction est recommandée",
+    ],
+    pourquoi:
+      "L'IA générative transforme déjà la préparation, l'exécution et le pilotage des projets de construction. Cette masterclass vous donne un cadre simple et immédiatement applicable pour comprendre les fondamentaux de l'IA, formuler de meilleurs prompts et intégrer ces outils dans vos pratiques chantier et projet.",
+    objectives: [
+      "Comprendre les principes fondamentaux de l'Intelligence Artificielle.",
+      "Identifier les usages pertinents de l'IA pour les projets de construction.",
+      "Formuler des prompts efficaces pour exploiter les outils d'IA générative.",
+      "Mettre en pratique ces méthodes à travers des exercices appliqués à des situations réelles de projets de construction.",
+    ],
+    modules: [
+      {
+        number: 1,
+        title: "Fondamentaux et généralités de l'IA",
+        description:
+          "Introduction aux concepts clés de l'intelligence artificielle et panorama des outils disponibles.",
+      },
+      {
+        number: 2,
+        title: "Les techniques du Prompt Engineering",
+        description:
+          "Méthodes et bonnes pratiques pour formuler des prompts efficaces à destination des outils d'IA générative.",
+      },
+      {
+        number: 3,
+        title: "Exercices pratiques sur des usages spécifiques en construction",
+        description:
+          "Mise en pratique de l'IA sur des cas réels : prise de décision, analyse d'informations et suivi de projets BTP.",
+      },
+    ],
+    finalBlocks: [
+      {
+        badge: "Livrable",
+        title: "Boîte à outils IA chantier",
+        description:
+          "Vous repartez avec une base de prompts et un canevas de cas d'usage directement réutilisables dans vos projets.",
+        variant: "blue",
+      },
+    ],
+    teaching: [
+      {
+        icon: Users,
+        title: "Intervenants",
+        items: [
+          "Experts WeLearn",
+          "BIM Pioneers",
+          "Facilitateurs Build x AI Lab",
+        ],
+      },
+      {
+        icon: GraduationCap,
+        title: "Approche pédagogique",
+        items: [
+          "Apports ciblés et démonstrations guidées",
+          "Prompt labs orientés construction",
+          "Exercices en sous-groupes sur cas projet",
+        ],
+      },
+      {
+        icon: MapPin,
+        title: "Format",
+        text: "Présentiel · 1 jour · Cas pratiques BTP",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Demande d'information",
+        description:
+          "Contactez-nous via masterclass@welearn.ma ou par téléphone.",
+      },
+      {
+        number: 2,
+        title: "Confirmation de session",
+        description:
+          "Nous vous transmettons la date, le lieu et les modalités de participation.",
+      },
+      {
+        number: 3,
+        title: "Participation à la masterclass",
+        description:
+          "Participez à la journée en présentiel et repartez avec des cas d'usage prêts à l'emploi.",
+      },
+    ],
+    session: "Dates sur demande",
+    ctaInscription: "Réserver ma place",
+    testimonials: [],
+    seo: {
+      title: "MasterClass Le Chantier IA | WeLearn",
+      description:
+        "Découvrez les fondamentaux de l'IA et du Prompt Engineering appliqués au BTP avec la MasterClass Le Chantier IA.",
+      keywords:
+        "masterclass IA BTP, prompt engineering construction, IA chantier, formation IA construction Maroc",
+    },
+  },
+
+  /* ──────────────────────────────────────────────────────────
    * MASTÈRE EXÉCUTIF EN MANAGEMENT DE PROJETS BTP (placeholder)
    * ────────────────────────────────────────────────────────── */
   "mastere-management-projets-btp": {

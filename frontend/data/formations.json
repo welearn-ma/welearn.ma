@@ -510,6 +510,64 @@
       "accreditation": null,
       "contact": null,
       "featured": false
+    },
+    {
+      "id": 29,
+      "slug": "masterclass-chantier-ia",
+      "title": "MasterClass Le Chantier IA",
+      "type": "Certifiante",
+      "badge": "MasterClass",
+      "domain": "Intelligence Artificielle & BTP",
+      "provider": "WeLearn / BIM Pioneers",
+      "issuer": "Build x AI Lab",
+      "format": ["Présentiel"],
+      "duration": "1 jour",
+      "level": "Tous niveaux",
+      "target": [
+        "Professionnels du BTP",
+        "Chefs de projet construction",
+        "Ingénieurs",
+        "BIM Managers"
+      ],
+      "summary": "Une introduction concrète à l'utilisation de l'IA et du Prompt Engineering pour améliorer la gestion, la prise de décision et le suivi des projets de construction.",
+      "objectives": [
+        "Comprendre les principes fondamentaux de l'Intelligence Artificielle.",
+        "Identifier les usages pertinents de l'IA pour les projets de construction.",
+        "Formuler des prompts efficaces pour exploiter les outils d'IA générative.",
+        "Mettre en pratique ces méthodes à travers des exercices appliqués à des situations réelles de projets de construction."
+      ],
+      "modules": [
+        {
+          "number": 1,
+          "title": "Fondamentaux et généralités de l'IA",
+          "description": "Introduction aux concepts clés de l'intelligence artificielle et panorama des outils disponibles."
+        },
+        {
+          "number": 2,
+          "title": "Les techniques du Prompt Engineering",
+          "description": "Méthodes et bonnes pratiques pour formuler des prompts efficaces à destination des outils d'IA générative."
+        },
+        {
+          "number": 3,
+          "title": "Exercices pratiques sur des usages spécifiques en construction",
+          "description": "Mise en pratique de l'IA sur des cas réels : prise de décision, analyse d'informations et suivi de projets BTP."
+        }
+      ],
+      "accreditation": null,
+      "contact": {
+        "email": "masterclass@welearn.ma",
+        "phone": "+212 661 499 479",
+        "website": "www.welearn.ma"
+      },
+      "featured": false,
+      "tags": [
+        "IA",
+        "Prompt Engineering",
+        "BTP",
+        "Construction",
+        "Digital",
+        "BIM"
+      ]
     }
   ]
 }

@@ -6,16 +6,19 @@ export type FormationBadge =
   | "Certifiante"
   | "Sur mesure"
   | "Executive Masters"
-  | "Licence Pro";
+  | "Licence Pro"
+  | "MasterClass";
 export type FormationDomain =
   | "BIM"
   | "BTP"
   | "Immobilier"
   | "Digital & IA"
-  | "Management";
+  | "Management"
+  | "Intelligence Artificielle & BTP";
 export type FormationFormat = "E-learning" | "Présentiel";
 export type FormationLevel =
   | "Débutant"
+  | "Initiation"
   | "Intermédiaire"
   | "Avancé"
   | "Tous niveaux"
@@ -25,7 +28,7 @@ type JsonFormation = {
   id: number;
   slug?: string;
   title: string;
-  type: "Certifiante" | "Formation courte" | "Diplomante";
+  type: "Certifiante" | "Formation courte" | "Diplomante" | "Non-diplomante";
   badge: FormationBadge;
   domain: FormationDomain;
   provider: string;
@@ -89,7 +92,11 @@ function toCatalogueFormation(formation: JsonFormation): CatalogueFormation {
     ? `/formations/${slug}`
     : getFallbackHref(formation);
   const type: FormationType =
-    formation.type === "Formation courte" ? "Sur mesure" : formation.type;
+    formation.type === "Formation courte"
+      ? "Sur mesure"
+      : formation.type === "Non-diplomante"
+        ? "Certifiante"
+        : formation.type;
 
   return {
     id: formation.id,
