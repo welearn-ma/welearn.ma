@@ -35,10 +35,10 @@ export function ContactInfoSection() {
           <div>
             <h3 className="font-semibold text-wl-text mb-1">Téléphone</h3>
             <a
-              href="tel:+212522000000"
+              href="tel:+212661499479"
               className="text-wl-text-secondary hover:text-wl-blue transition-colors"
             >
-              +212 520 850 850
+              +212 661 499 479
             </a>
           </div>
         </div>
