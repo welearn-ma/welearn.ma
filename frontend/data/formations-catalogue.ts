@@ -13,12 +13,10 @@ export type FormationDomain =
   | "BTP"
   | "Immobilier"
   | "Digital & IA"
-  | "Management"
-  | "Intelligence Artificielle & BTP";
+  | "Management";
 export type FormationFormat = "E-learning" | "Présentiel";
 export type FormationLevel =
   | "Débutant"
-  | "Initiation"
   | "Intermédiaire"
   | "Avancé"
   | "Tous niveaux"

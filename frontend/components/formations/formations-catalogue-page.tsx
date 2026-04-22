@@ -52,12 +52,10 @@ const domainStripeClasses: Record<FormationDomain, string> = {
   Immobilier: "bg-amber-500",
   "Digital & IA": "bg-violet-500",
   Management: "bg-cyan-600",
-  "Intelligence Artificielle & BTP": "bg-fuchsia-600",
 };
 
 const levelIndicatorClasses: Record<FormationLevel, string> = {
   Débutant: "bg-emerald-100 text-emerald-700",
-  Initiation: "bg-emerald-100 text-emerald-700",
   Intermédiaire: "bg-amber-100 text-amber-700",
   Avancé: "bg-rose-100 text-rose-700",
   "Tous niveaux": "bg-slate-100 text-slate-700",
