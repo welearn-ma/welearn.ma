@@ -26,17 +26,9 @@ export function AboutCTA() {
             className="bg-wl-orange hover:bg-wl-orange-dark text-white font-semibold transition-all duration-200 border-0"
           >
             <Link href="/contact">
-              Contactez-nous
+              Rejoindre notre réseau de formateurs
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-          </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="border-white/30 border-2 text-white hover:bg-white hover:text-wl-blue-dark bg-transparent transition-all duration-200"
-          >
-            <Link href="/contact">Rejoindre notre réseau de formateurs</Link>
           </Button>
         </div>
       </div>
