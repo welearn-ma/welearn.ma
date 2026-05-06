@@ -175,6 +175,20 @@ export function AdminDashboard({
     window.open(`mailto:${encodeURIComponent(email)}`);
   };
 
+  const handleViewChange = (nextView: AdminView) => {
+    setView(nextView);
+    setSearch("");
+    setDateFilter("30d");
+    setFormationFilter("all");
+    setSelectedFormationTitle(null);
+    setSelectedRequest(null);
+  };
+
+  const handleViewRequest = (record: AdminRegistrationRecord) => {
+    setSelectedFormationTitle(null);
+    setSelectedRequest(record);
+  };
+
   const handleSelectFormation = (formationTitle: string) => {
     setSelectedFormationTitle(formationTitle);
   };
@@ -184,7 +198,7 @@ export function AdminDashboard({
       <div className="grid w-full gap-6 px-4 lg:grid-cols-[260px_minmax(0,1fr)] lg:px-8">
         <DashboardSidebar
           view={view}
-          onViewChange={setView}
+          onViewChange={handleViewChange}
           totalRows={totalRows}
           last24h={last24h}
         />
@@ -217,7 +231,7 @@ export function AdminDashboard({
             >
               <DashboardInscriptionsTable
                 rows={filteredRows}
-                onView={setSelectedRequest}
+                onView={handleViewRequest}
                 onContact={handleContact}
               />
             </DashboardViewShell>
@@ -281,7 +295,7 @@ export function AdminDashboard({
               formationTitle={selectedFormationTitle}
               rows={selectedFormationRows}
               onClose={() => setSelectedFormationTitle(null)}
-              onView={setSelectedRequest}
+              onView={handleViewRequest}
               onContact={handleContact}
             />
           ) : null}
