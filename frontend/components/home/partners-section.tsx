@@ -7,7 +7,10 @@ const partnerRows = [
     logos: [
       { name: "EHTP", src: "/partners/ehtp.webp" },
       { name: "ESLSCA", src: "/partners/ESLSCA-Business-School-Rabat.webp" },
-      { name: "Ecole Centrale Casablanca", src: "/partners/ecole-centrale-casablanca.webp" },
+      {
+        name: "Ecole Centrale Casablanca",
+        src: "/partners/ecole-centrale-casablanca.webp",
+      },
       { name: "ACCA", src: "/partners/Logo-acca.svg.webp" },
     ],
   },
@@ -20,7 +23,10 @@ const partnerRows = [
       { name: "FedEC", src: "/partners/fedec.webp" },
       { name: "OFPPT", src: "/partners/ofppt.webp" },
       { name: "FNPI", src: "/partners/fnpi.webp" },
-      { name: "buildingSMART Morocco", src: "/partners/buildingsmart-morocco.webp" },
+      {
+        name: "buildingSMART Morocco",
+        src: "/partners/buildingsmart-morocco.webp",
+      },
     ],
   },
   {
@@ -62,7 +68,10 @@ const partnerRows = [
     logos: [
       { name: "Societe Generale", src: "/partners/societe-generale.webp" },
       { name: "CIH Bank", src: "/partners/cih-bank.webp" },
-      { name: "Bank of Africa", src: "/partners/bank-of-africa-bmce-group.webp" },
+      {
+        name: "Bank of Africa",
+        src: "/partners/bank-of-africa-bmce-group.webp",
+      },
       { name: "Bank Al-Maghrib", src: "/partners/bank-al-maghrib.webp" },
       { name: "Atlanta Sanad", src: "/partners/atlanta-sanad-assurance.webp" },
       { name: "SAHAM Assurance", src: "/partners/saham-assurance.webp" },
@@ -84,7 +93,10 @@ export function PartnersSection() {
           <table className="w-full border-collapse">
             <tbody>
               {partnerRows.map((row, index) => (
-                <tr key={row.label} className="border-b border-wl-border last:border-b-0">
+                <tr
+                  key={row.label}
+                  className="border-b border-wl-border last:border-b-0"
+                >
                   <th
                     scope="row"
                     className="w-56 align-top border-r border-wl-border bg-wl-gray-light/70 px-5 py-6 text-left text-xs font-semibold uppercase tracking-[0.08em] text-wl-text"
