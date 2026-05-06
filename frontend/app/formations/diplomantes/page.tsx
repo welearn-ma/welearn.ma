@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { PageHero } from "@/components/page-hero";
-import { DiplomantesCataloguePage } from "@/components/formations/diplomantes-catalogue-page";
+import { DiplomantesCataloguePage } from "@/components/formations/diplomantes-catalogue-page/diplomantes-catalogue-page";
 
 export const metadata: Metadata = {
   title: "Masters & Licences Professionnelles | Welearn",

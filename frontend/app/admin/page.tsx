@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AdminDashboard } from "@/components/admin/admin-dashboard";
+import { AdminDashboard } from "@/components/admin/admin-dashboard/admin-dashboard";
 import {
   ADMIN_ACCESS_TOKEN_STORAGE_KEY,
   decodeEmailFromAccessToken,

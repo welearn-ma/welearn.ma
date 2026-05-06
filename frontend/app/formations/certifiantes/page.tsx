@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { PageHero } from "@/components/page-hero";
-import { FormationsCataloguePage } from "@/components/formations/formations-catalogue-page";
+import { FormationsCataloguePage } from "@/components/formations/formations-catalogue-page/formations-catalogue-page";
 
 export const metadata: Metadata = {
   title: "Formations Certifiantes | Welearn",
