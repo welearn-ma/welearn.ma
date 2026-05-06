@@ -6,6 +6,7 @@ import { getAdminRegistrations } from "@/lib/api/admin-registrations";
 import { clearAdminSessionStorage } from "@/lib/admin-session-storage";
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
 import { DashboardActivityList } from "./dashboard/dashboard-activity-list";
+import { DashboardFormationCandidatesModal } from "./dashboard/dashboard-formation-candidates-modal";
 import { DashboardFormationsGrid } from "./dashboard/dashboard-formations-grid";
 import { DashboardInscriptionsTable } from "./dashboard/dashboard-inscriptions-table";
 import { DashboardRequestModal } from "./dashboard/dashboard-request-modal";
@@ -31,6 +32,9 @@ export function AdminDashboard({
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState<DateFilter>("30d");
   const [formationFilter, setFormationFilter] = useState("all");
+  const [selectedFormationTitle, setSelectedFormationTitle] = useState<
+    string | null
+  >(null);
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [rows, setRows] = useState<AdminRegistrationRecord[]>([]);
@@ -146,6 +150,16 @@ export function AdminDashboard({
       .sort((a, b) => b.count - a.count);
   }, [filteredRows]);
 
+  const selectedFormationRows = useMemo(() => {
+    if (!selectedFormationTitle) {
+      return [];
+    }
+
+    return rows.filter(
+      (item) => item.formationTitle === selectedFormationTitle,
+    );
+  }, [rows, selectedFormationTitle]);
+
   const totalRows = filteredRows.length;
   const last24h = filteredRows.filter(
     (item) =>
@@ -159,6 +173,10 @@ export function AdminDashboard({
 
   const handleContact = (email: string) => {
     window.open(`mailto:${encodeURIComponent(email)}`);
+  };
+
+  const handleSelectFormation = (formationTitle: string) => {
+    setSelectedFormationTitle(formationTitle);
   };
 
   return (
@@ -219,7 +237,10 @@ export function AdminDashboard({
               onRefresh={() => void refreshData()}
               onExport={() => exportCsv(filteredRows)}
             >
-              <DashboardFormationsGrid rows={groupedByFormation} />
+              <DashboardFormationsGrid
+                rows={groupedByFormation}
+                onSelectFormation={handleSelectFormation}
+              />
             </DashboardViewShell>
           ) : null}
 
@@ -251,6 +272,16 @@ export function AdminDashboard({
             <DashboardRequestModal
               selectedRequest={selectedRequest}
               onClose={() => setSelectedRequest(null)}
+              onContact={handleContact}
+            />
+          ) : null}
+
+          {selectedFormationTitle ? (
+            <DashboardFormationCandidatesModal
+              formationTitle={selectedFormationTitle}
+              rows={selectedFormationRows}
+              onClose={() => setSelectedFormationTitle(null)}
+              onView={setSelectedRequest}
               onContact={handleContact}
             />
           ) : null}

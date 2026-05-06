@@ -3,16 +3,20 @@ import type { FormationSummary } from "./dashboard-types";
 
 export function DashboardFormationsGrid({
   rows,
+  onSelectFormation,
 }: {
   rows: FormationSummary[];
+  onSelectFormation: (formationTitle: string) => void;
 }) {
   return (
     <>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {rows.map((item) => (
-          <article
+          <button
             key={item.title}
-            className="rounded-xl border border-wl-border bg-white p-4"
+            type="button"
+            onClick={() => onSelectFormation(item.title)}
+            className="cursor-pointer rounded-xl border border-wl-border bg-white p-4 text-left transition-transform duration-200 hover:scale-[1.02] hover:shadow-md"
           >
             <p className="text-sm text-wl-text-secondary">Formation</p>
             <h3 className="mt-1 text-base font-semibold text-wl-text">
@@ -35,7 +39,7 @@ export function DashboardFormationsGrid({
             <p className="mt-4 text-xs text-wl-text-secondary">
               Derniere demande: {formatDate(item.latest)}
             </p>
-          </article>
+          </button>
         ))}
       </div>
 
