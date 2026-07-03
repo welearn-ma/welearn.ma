@@ -165,7 +165,7 @@ export function SponsorshipForm() {
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <Label htmlFor="nom" className="text-sm font-medium text-wl-text">
-              Nom
+              <span className="text-wl-orange">*</span> Nom
             </Label>
             <Input
               id="nom"
@@ -184,7 +184,7 @@ export function SponsorshipForm() {
               htmlFor="prenom"
               className="text-sm font-medium text-wl-text"
             >
-              Prénom
+              <span className="text-wl-orange">*</span> Prénom
             </Label>
             <Input
               id="prenom"
@@ -205,7 +205,7 @@ export function SponsorshipForm() {
               htmlFor="entreprise"
               className="text-sm font-medium text-wl-text"
             >
-              Entreprise
+              <span className="text-wl-orange">*</span> Entreprise
             </Label>
             <Input
               id="entreprise"
@@ -238,7 +238,7 @@ export function SponsorshipForm() {
               htmlFor="telephone"
               className="text-sm font-medium text-wl-text"
             >
-              Téléphone
+              <span className="text-wl-orange">*</span> Téléphone
             </Label>
             <Input
               id="telephone"
@@ -255,7 +255,7 @@ export function SponsorshipForm() {
 
           <div>
             <Label htmlFor="email" className="text-sm font-medium text-wl-text">
-              Email
+              <span className="text-wl-orange">*</span> Email
             </Label>
             <Input
               id="email"
@@ -273,7 +273,7 @@ export function SponsorshipForm() {
 
         <fieldset>
           <legend className="text-sm font-medium text-wl-text">
-            MOOCs à sponsoriser
+            <span className="text-wl-orange">*</span> MOOCs à sponsoriser
           </legend>
           <p className="mt-1 text-xs text-wl-text-tertiary">
             Sélectionnez un ou plusieurs MOOCs.

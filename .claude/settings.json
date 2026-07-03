@@ -6,7 +6,9 @@
       "Bash(echo \"===BACKEND TSC EXIT: $?===\")",
       "Bash(echo \"===FRONTEND TSC EXIT: $?===\")",
       "Bash(timeout 15 npx ts-node src/index.ts)",
-      "Bash(echo \"===TSC EXIT: $?===\")"
+      "Bash(echo \"===TSC EXIT: $?===\")",
+      "Bash(echo \"===BACKEND EXIT: $?===\")",
+      "Bash(echo \"===FRONTEND EXIT: $?===\")"
     ]
   }
 }
