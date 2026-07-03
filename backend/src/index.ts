@@ -5,6 +5,7 @@ import path from "path";
 import adminRouter from "./routes/admin";
 import registrationRouter from "./routes/registrations";
 import contactRouter from "./routes/contact";
+import sponsorRouter from "./routes/sponsors";
 
 const app = express();
 const port = Number(process.env.PORT || 4000);
@@ -86,7 +87,9 @@ const corsOptions: cors.CorsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+// Express 5 (path-to-regexp v8) rejects the bare "*" path string; use a
+// RegExp catch-all to enable CORS pre-flight across all routes.
+app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 
 app.get("/health", (_req, res) => {
@@ -96,6 +99,7 @@ app.get("/health", (_req, res) => {
 app.use("/api/admin", adminRouter);
 app.use("/api/registrations", registrationRouter);
 app.use("/api/contact", contactRouter);
+app.use("/api/sponsors", sponsorRouter);
 
 app.listen(port, () => {
   console.log(`Backend running on port ${port}`);

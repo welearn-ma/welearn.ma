@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la ../supabase)",
+      "Bash(ls -la supabase)",
+      "Bash(echo \"===BACKEND TSC EXIT: $?===\")",
+      "Bash(echo \"===FRONTEND TSC EXIT: $?===\")",
+      "Bash(timeout 15 npx ts-node src/index.ts)"
+    ]
+  }
+}
