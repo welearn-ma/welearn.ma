@@ -1,71 +1,99 @@
-import { HeartHandshake } from "lucide-react";
-import { PageHero } from "@/components/page-hero";
+import { ArrowRight, HeartHandshake, Mail, Phone } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { SponsorshipForm } from "@/features/sponsoring/SponsorshipForm";
 
-const benefits = [
-  {
-    title: "Formez la filière",
-    description:
-      "Financez l'accès à des MOOCs techniques de référence pour les professionnels du BTP et de la construction.",
-  },
-  {
-    title: "Valorisez votre marque",
-    description:
-      "Associez votre entreprise à des contenus pédagogiques reconnus et à la montée en compétences du secteur.",
-  },
-  {
-    title: "Un impact mesurable",
-    description:
-      "Chaque MOOC parrainé ouvre l'apprentissage à davantage d'apprenants, partout au Maroc.",
-  },
+const anepStats = [
+  { value: "+40 ans", label: "d'expertise" },
+  { value: "3 000+", label: "projets ANEP" },
+  { value: "55 Mds DH", label: "d'investissement" },
 ];
 
 export default function SponsoringPage() {
   return (
     <>
-      <PageHero
-        title="Programme de sponsoring des MOOCs"
-        description="Parrainez un ou plusieurs MOOCs Welearn et rendez la formation technique accessible à toute la filière. Choisissez les MOOCs que vous souhaitez soutenir et notre équipe revient vers vous."
-        eyebrow="Devenez sponsor"
-        badge={{ icon: HeartHandshake, text: "Devenez sponsor" }}
-        size="lg"
-      />
-
-      <section className="bg-wl-gray-light py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-widest text-wl-orange">
-                Pourquoi sponsoriser ?
-              </p>
-              <h2 className="mt-3 font-sans text-3xl font-bold text-wl-text md:text-4xl">
-                Soutenez les compétences de demain
-              </h2>
-              <p className="mt-4 text-lg leading-relaxed text-wl-text-secondary">
-                Le sponsoring permet à votre organisation de financer l'accès à
-                des MOOCs spécialisés et de contribuer directement à la
-                professionnalisation du secteur de la construction.
-              </p>
-
-              <div className="mt-8 space-y-6">
-                {benefits.map((benefit) => (
-                  <div key={benefit.title} className="flex gap-4">
-                    <div className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-wl-orange" />
-                    <div>
-                      <h3 className="font-semibold text-wl-text">
-                        {benefit.title}
-                      </h3>
-                      <p className="mt-1 text-wl-text-secondary">
-                        {benefit.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <SponsorshipForm />
+      {/* Hero court */}
+      <section className="relative overflow-hidden bg-linear-to-br from-wl-blue to-wl-blue-dark py-16 lg:py-20">
+        <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/4" />
+        <div className="pointer-events-none absolute -bottom-16 -left-16 h-56 w-56 rounded-full bg-white/3" />
+        <div className="relative mx-auto max-w-4xl px-4 text-center lg:px-8">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/12 px-4 py-2 backdrop-blur-sm">
+            <HeartHandshake className="h-4 w-4 text-white" />
+            <span className="text-sm font-medium tracking-wide text-white/90">
+              Devenez sponsor
+            </span>
           </div>
+          <h1 className="mb-5 font-sans text-4xl font-bold leading-tight tracking-tight text-balance text-white md:text-5xl">
+            Sponsorisez les MOOCs Welearn
+          </h1>
+          <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-white/75">
+            Parrainez un ou plusieurs MOOCs et rendez la formation technique
+            accessible à toute la filière BTP.
+          </p>
+          <Button
+            asChild
+            size="lg"
+            className="bg-wl-orange text-white transition-all duration-200 hover:bg-wl-orange-dark"
+          >
+            <a href="#sponsor-form">
+              Sponsoriser un MOOC
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </a>
+          </Button>
+        </div>
+      </section>
+
+      {/* Bandeau de crédibilité compact */}
+      <section className="border-b border-wl-border bg-white py-8 lg:py-10">
+        <div className="mx-auto max-w-5xl px-4 lg:px-8">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {anepStats.map((stat) => (
+              <div
+                key={stat.label}
+                className="flex items-baseline justify-center gap-2 rounded-xl border border-wl-border bg-wl-gray-light px-5 py-4 text-center"
+              >
+                <span className="font-sans text-2xl font-bold text-wl-blue md:text-3xl">
+                  {stat.value}
+                </span>
+                <span className="text-sm font-medium text-wl-text-secondary">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Formulaire de sponsoring */}
+      <section
+        id="sponsor-form"
+        className="scroll-mt-24 bg-wl-gray-light py-16 lg:py-20"
+      >
+        <div className="mx-auto max-w-2xl px-4 lg:px-8">
+          <SponsorshipForm />
+
+          {/* Contact compact */}
+          <p className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-center text-sm text-wl-text-secondary">
+            <span>
+              Un échange direct ?{" "}
+              <span className="font-medium text-wl-text">
+                Mohamed Taha Mazoz
+              </span>
+            </span>
+            <a
+              href="tel:+212703175052"
+              className="inline-flex items-center gap-1.5 font-medium text-wl-blue transition-colors hover:text-wl-blue-dark"
+            >
+              <Phone className="h-4 w-4" />
+              +212 7 03 17 50 52
+            </a>
+            <a
+              href="mailto:taha.mazoz@welearn.ma"
+              className="inline-flex items-center gap-1.5 font-medium text-wl-blue transition-colors hover:text-wl-blue-dark"
+            >
+              <Mail className="h-4 w-4" />
+              taha.mazoz@welearn.ma
+            </a>
+          </p>
         </div>
       </section>
     </>
