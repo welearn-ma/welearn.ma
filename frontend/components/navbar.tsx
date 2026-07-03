@@ -45,6 +45,7 @@ const navigation = [
         href: "/digital-learning/contenus-elearning",
       },
       { name: "Bibliothèque de cours", href: "/digital-learning/bibliotheque" },
+      { name: "Devenez sponsor", href: "/sponsoring" },
     ],
   },
   {
