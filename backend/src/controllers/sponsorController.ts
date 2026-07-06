@@ -1,6 +1,12 @@
 import { Request, Response } from "express";
+import { getBearerToken, validateAdminAccessToken } from "../lib/adminAuth";
 import { supabase } from "../lib/supabaseClient";
-import type { SponsorPayload, SponsorResponse } from "../types/sponsor";
+import type {
+  SponsorListResponse,
+  SponsorPayload,
+  SponsorRecord,
+  SponsorResponse,
+} from "../types/sponsor";
 
 /*
 -- CREATE TABLE sponsors (
@@ -124,4 +130,76 @@ export async function createSponsor(
   return res
     .status(201)
     .json({ success: true, message: "Demande de sponsoring enregistree avec succes" });
+}
+
+export async function listSponsors(
+  req: Request,
+  res: Response<SponsorListResponse>,
+) {
+  const token = getBearerToken(req.header("authorization"));
+  const access = await validateAdminAccessToken(token);
+
+  if (!access.ok) {
+    if (access.reason === "not_admin") {
+      return res.status(403).json({
+        success: false,
+        data: [],
+        message: "Acces refuse: compte non admin.",
+      });
+    }
+
+    return res.status(401).json({
+      success: false,
+      data: [],
+      message: "Session admin invalide ou expiree.",
+    });
+  }
+
+  const rawLimit = Number(req.query.limit ?? 200);
+  const limit = Number.isFinite(rawLimit)
+    ? Math.min(Math.max(rawLimit, 1), 1000)
+    : 200;
+
+  const { data, error } = await supabase
+    .from("sponsors")
+    .select(
+      "id, created_at, nom, prenom, entreprise, role, telephone, email, sponsor_moocs(mooc_name)",
+    )
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Supabase select error (sponsors):", error);
+    return res.status(500).json({
+      success: false,
+      data: [],
+      message: "Impossible de recuperer les sponsors",
+    });
+  }
+
+  const rows = (data ?? []) as Array<{
+    id: string;
+    created_at: string;
+    nom: string;
+    prenom: string;
+    entreprise: string;
+    role: string | null;
+    telephone: string;
+    email: string;
+    sponsor_moocs: Array<{ mooc_name: string }> | null;
+  }>;
+
+  const responseData: SponsorRecord[] = rows.map((item) => ({
+    id: item.id,
+    nom: item.nom,
+    prenom: item.prenom,
+    entreprise: item.entreprise,
+    role: item.role,
+    telephone: item.telephone,
+    email: item.email,
+    moocs: (item.sponsor_moocs ?? []).map((mooc) => mooc.mooc_name),
+    createdAt: item.created_at,
+  }));
+
+  return res.status(200).json({ success: true, data: responseData });
 }

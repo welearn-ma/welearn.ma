@@ -1,10 +1,11 @@
-import { Activity, FolderKanban, Inbox } from "lucide-react";
+import { Activity, FolderKanban, HeartHandshake, Inbox } from "lucide-react";
 import type { AdminView } from "./dashboard-types";
 
 const viewConfig = [
   { id: "inscriptions", label: "Inscriptions", icon: Inbox },
   { id: "formations", label: "Par formation", icon: FolderKanban },
   { id: "activite", label: "Activite", icon: Activity },
+  { id: "sponsors", label: "Sponsors", icon: HeartHandshake },
 ] as const;
 
 export function DashboardSidebar({

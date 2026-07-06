@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { createSponsor } from "../controllers/sponsorController";
+import { createSponsor, listSponsors } from "../controllers/sponsorController";
 
 const router = Router();
 
+router.get("/", listSponsors);
 router.post("/", createSponsor);
 
 export default router;

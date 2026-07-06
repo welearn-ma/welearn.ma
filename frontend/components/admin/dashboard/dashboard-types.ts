@@ -1,4 +1,8 @@
-export type AdminView = "inscriptions" | "formations" | "activite";
+export type AdminView =
+  | "inscriptions"
+  | "formations"
+  | "activite"
+  | "sponsors";
 export type DateFilter = "all" | "7d" | "30d" | "90d";
 
 export type FormationSummary = {

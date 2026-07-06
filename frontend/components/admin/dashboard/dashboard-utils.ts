@@ -1,4 +1,5 @@
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
+import type { AdminSponsorRecord } from "@/types/sponsor";
 
 export const neutralActionButtonClass =
   "border-wl-border text-wl-text-secondary transition-colors hover:border-wl-blue/30 hover:bg-wl-blue-tint hover:text-wl-blue";
@@ -49,6 +50,50 @@ export function exportCsv(rows: AdminRegistrationRecord[]) {
   const link = document.createElement("a");
   link.href = url;
   link.download = `inscriptions-${new Date().toISOString().slice(0, 10)}.csv`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function toSponsorsCsv(rows: AdminSponsorRecord[]) {
+  const header = [
+    "id",
+    "nom",
+    "prenom",
+    "entreprise",
+    "role",
+    "email",
+    "telephone",
+    "moocs",
+    "createdAt",
+  ];
+
+  const lines = rows.map((item) =>
+    [
+      item.id,
+      item.nom,
+      item.prenom,
+      item.entreprise,
+      item.role || "",
+      item.email,
+      item.telephone,
+      item.moocs.join(" | "),
+      item.createdAt,
+    ]
+      .map((field) => `"${String(field).replaceAll('"', '""')}"`)
+      .join(","),
+  );
+
+  return [header.join(","), ...lines].join("\n");
+}
+
+export function exportSponsorsCsv(rows: AdminSponsorRecord[]) {
+  const blob = new Blob([toSponsorsCsv(rows)], {
+    type: "text/csv;charset=utf-8;",
+  });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `sponsors-${new Date().toISOString().slice(0, 10)}.csv`;
   link.click();
   URL.revokeObjectURL(url);
 }

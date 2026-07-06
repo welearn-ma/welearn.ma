@@ -7,8 +7,9 @@ import { DashboardInscriptionsTable } from "../dashboard/dashboard-inscriptions-
 import { DashboardRequestModal } from "../dashboard/dashboard-request-modal";
 import { DashboardSessionHeader } from "../dashboard/dashboard-session-header";
 import { DashboardSidebar } from "../dashboard/dashboard-sidebar";
+import { DashboardSponsorsView } from "../dashboard/dashboard-sponsors-view";
 import { DashboardViewShell } from "../dashboard/dashboard-view-shell";
-import { exportCsv } from "../dashboard/dashboard-utils";
+import { exportCsv, exportSponsorsCsv } from "../dashboard/dashboard-utils";
 import { useAdminDashboardController } from "./use-admin-dashboard-controller";
 
 export function AdminDashboard({
@@ -101,6 +102,17 @@ export function AdminDashboard({
             >
               <DashboardActivityList rows={controller.filteredRows} />
             </DashboardViewShell>
+          ) : null}
+
+          {controller.view === "sponsors" ? (
+            <DashboardSponsorsView
+              rows={controller.filteredSponsors}
+              search={controller.sponsorSearch}
+              onSearch={controller.setSponsorSearch}
+              onRefresh={() => void controller.refreshSponsors()}
+              onExport={() => exportSponsorsCsv(controller.filteredSponsors)}
+              onContact={controller.handleContact}
+            />
           ) : null}
 
           {controller.loading ? (

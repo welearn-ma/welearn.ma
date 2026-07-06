@@ -3,8 +3,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getAdminRegistrations } from "@/lib/api/admin-registrations";
+import { getAdminSponsors } from "@/lib/api/admin-sponsors";
 import { clearAdminSessionStorage } from "@/lib/admin-session-storage";
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
+import type { AdminSponsorRecord } from "@/types/sponsor";
 import type {
   AdminView,
   DateFilter,
@@ -25,6 +27,8 @@ export function useAdminDashboardController(accessToken: string) {
   const [rows, setRows] = useState<AdminRegistrationRecord[]>([]);
   const [selectedRequest, setSelectedRequest] =
     useState<AdminRegistrationRecord | null>(null);
+  const [sponsorRows, setSponsorRows] = useState<AdminSponsorRecord[]>([]);
+  const [sponsorSearch, setSponsorSearch] = useState("");
 
   const refreshData = useCallback(async () => {
     setLoading(true);
@@ -51,9 +55,27 @@ export function useAdminDashboardController(accessToken: string) {
     }
   }, [accessToken, router]);
 
+  const refreshSponsors = useCallback(async () => {
+    try {
+      const data = await getAdminSponsors(accessToken);
+      setSponsorRows(data);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "";
+
+      if (message === "ADMIN_UNAUTHORIZED") {
+        clearAdminSessionStorage();
+        router.replace("/admin/login");
+        return;
+      }
+
+      setSponsorRows([]);
+    }
+  }, [accessToken, router]);
+
   useEffect(() => {
     void refreshData();
-  }, [refreshData]);
+    void refreshSponsors();
+  }, [refreshData, refreshSponsors]);
 
   const formationOptions = useMemo(
     () => Array.from(new Set(rows.map((item) => item.formationTitle))).sort(),
@@ -145,8 +167,26 @@ export function useAdminDashboardController(accessToken: string) {
     );
   }, [rows, selectedFormationTitle]);
 
-  const totalRows = filteredRows.length;
-  const last24h = filteredRows.filter(
+  const filteredSponsors = useMemo(() => {
+    if (!sponsorSearch.trim()) {
+      return sponsorRows;
+    }
+
+    const needle = sponsorSearch.toLowerCase();
+    return sponsorRows.filter(
+      (item) =>
+        `${item.prenom} ${item.nom}`.toLowerCase().includes(needle) ||
+        item.entreprise.toLowerCase().includes(needle) ||
+        item.email.toLowerCase().includes(needle) ||
+        (item.role ?? "").toLowerCase().includes(needle) ||
+        item.moocs.some((mooc) => mooc.toLowerCase().includes(needle)),
+    );
+  }, [sponsorRows, sponsorSearch]);
+
+  const activeRows: Array<{ createdAt: string }> =
+    view === "sponsors" ? filteredSponsors : filteredRows;
+  const totalRows = activeRows.length;
+  const last24h = activeRows.filter(
     (item) =>
       Date.now() - new Date(item.createdAt).getTime() <= 24 * 60 * 60 * 1000,
   ).length;
@@ -167,6 +207,7 @@ export function useAdminDashboardController(accessToken: string) {
     setFormationFilter("all");
     setSelectedFormationTitle(null);
     setSelectedRequest(null);
+    setSponsorSearch("");
   };
 
   const handleViewRequest = (record: AdminRegistrationRecord) => {
@@ -187,6 +228,10 @@ export function useAdminDashboardController(accessToken: string) {
     notice,
     formationOptions,
     filteredRows,
+    filteredSponsors,
+    sponsorSearch,
+    setSponsorSearch,
+    refreshSponsors,
     groupedByFormation,
     selectedFormationTitle,
     selectedFormationRows,
