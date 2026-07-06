@@ -29,6 +29,9 @@ export function useAdminDashboardController(accessToken: string) {
     useState<AdminRegistrationRecord | null>(null);
   const [sponsorRows, setSponsorRows] = useState<AdminSponsorRecord[]>([]);
   const [sponsorSearch, setSponsorSearch] = useState("");
+  const [sponsorProgramFilter, setSponsorProgramFilter] = useState("all");
+  const [selectedSponsor, setSelectedSponsor] =
+    useState<AdminSponsorRecord | null>(null);
 
   const refreshData = useCallback(async () => {
     setLoading(true);
@@ -167,21 +170,36 @@ export function useAdminDashboardController(accessToken: string) {
     );
   }, [rows, selectedFormationTitle]);
 
-  const filteredSponsors = useMemo(() => {
-    if (!sponsorSearch.trim()) {
-      return sponsorRows;
-    }
+  const sponsorProgramOptions = useMemo(
+    () =>
+      Array.from(new Set(sponsorRows.flatMap((item) => item.moocs))).sort(),
+    [sponsorRows],
+  );
 
-    const needle = sponsorSearch.toLowerCase();
-    return sponsorRows.filter(
-      (item) =>
+  const filteredSponsors = useMemo(() => {
+    const needle = sponsorSearch.trim().toLowerCase();
+
+    return sponsorRows.filter((item) => {
+      if (
+        sponsorProgramFilter !== "all" &&
+        !item.moocs.includes(sponsorProgramFilter)
+      ) {
+        return false;
+      }
+
+      if (!needle) {
+        return true;
+      }
+
+      return (
         `${item.prenom} ${item.nom}`.toLowerCase().includes(needle) ||
         item.entreprise.toLowerCase().includes(needle) ||
         item.email.toLowerCase().includes(needle) ||
         (item.role ?? "").toLowerCase().includes(needle) ||
-        item.moocs.some((mooc) => mooc.toLowerCase().includes(needle)),
-    );
-  }, [sponsorRows, sponsorSearch]);
+        item.moocs.some((mooc) => mooc.toLowerCase().includes(needle))
+      );
+    });
+  }, [sponsorRows, sponsorSearch, sponsorProgramFilter]);
 
   const activeRows: Array<{ createdAt: string }> =
     view === "sponsors" ? filteredSponsors : filteredRows;
@@ -208,6 +226,8 @@ export function useAdminDashboardController(accessToken: string) {
     setSelectedFormationTitle(null);
     setSelectedRequest(null);
     setSponsorSearch("");
+    setSponsorProgramFilter("all");
+    setSelectedSponsor(null);
   };
 
   const handleViewRequest = (record: AdminRegistrationRecord) => {
@@ -231,6 +251,11 @@ export function useAdminDashboardController(accessToken: string) {
     filteredSponsors,
     sponsorSearch,
     setSponsorSearch,
+    sponsorProgramFilter,
+    setSponsorProgramFilter,
+    sponsorProgramOptions,
+    selectedSponsor,
+    setSelectedSponsor,
     refreshSponsors,
     groupedByFormation,
     selectedFormationTitle,

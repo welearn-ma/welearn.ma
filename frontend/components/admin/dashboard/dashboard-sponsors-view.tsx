@@ -1,4 +1,4 @@
-import { Download, Mail, RefreshCw, Search } from "lucide-react";
+import { Download, Eye, Filter, Mail, RefreshCw, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,15 +18,23 @@ export function DashboardSponsorsView({
   rows,
   search,
   onSearch,
+  programFilter,
+  onProgramFilter,
+  programOptions,
   onRefresh,
   onExport,
+  onView,
   onContact,
 }: {
   rows: AdminSponsorRecord[];
   search: string;
   onSearch: (value: string) => void;
+  programFilter: string;
+  onProgramFilter: (value: string) => void;
+  programOptions: string[];
   onRefresh: () => void;
   onExport: () => void;
+  onView: (sponsor: AdminSponsorRecord) => void;
   onContact: (email: string) => void;
 }) {
   const totalMoocs = rows.reduce((sum, item) => sum + item.moocs.length, 0);
@@ -69,15 +77,33 @@ export function DashboardSponsorsView({
           <StatTile label="Entreprises" value={uniqueCompanies} />
         </div>
 
-        <label className="relative mt-4 block">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-wl-text-tertiary" />
-          <Input
-            value={search}
-            onChange={(event) => onSearch(event.target.value)}
-            placeholder="Rechercher un sponsor, entreprise, email, MOOC..."
-            className="border-wl-border bg-white pl-9 text-wl-text placeholder:text-wl-text-tertiary"
-          />
-        </label>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          <label className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-wl-text-tertiary" />
+            <Input
+              value={search}
+              onChange={(event) => onSearch(event.target.value)}
+              placeholder="Rechercher un sponsor, entreprise, email, MOOC..."
+              className="border-wl-border bg-white pl-9 text-wl-text placeholder:text-wl-text-tertiary"
+            />
+          </label>
+
+          <label className="relative">
+            <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-wl-text-tertiary" />
+            <select
+              value={programFilter}
+              onChange={(event) => onProgramFilter(event.target.value)}
+              className="h-9 w-full rounded-md border border-wl-border bg-white pl-9 pr-3 text-sm text-wl-text outline-none focus:ring-2 focus:ring-wl-blue/20"
+            >
+              <option value="all">Tous les programmes</option>
+              {programOptions.map((program) => (
+                <option key={program} value={program}>
+                  {program}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
 
       <div className="p-5 md:p-6">
@@ -134,14 +160,25 @@ export function DashboardSponsorsView({
                     {formatDate(item.createdAt)}
                   </td>
                   <td className="py-3">
-                    <Button
-                      size="sm"
-                      className="bg-wl-orange text-white hover:bg-wl-orange-dark"
-                      onClick={() => onContact(item.email)}
-                    >
-                      <Mail className="h-4 w-4" />
-                      Email
-                    </Button>
+                    <div className="flex flex-col gap-2 sm:flex-row">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className={neutralActionButtonClass}
+                        onClick={() => onView(item)}
+                      >
+                        <Eye className="h-4 w-4" />
+                        Voir
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="bg-wl-orange text-white hover:bg-wl-orange-dark"
+                        onClick={() => onContact(item.email)}
+                      >
+                        <Mail className="h-4 w-4" />
+                        Email
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -7,6 +7,7 @@ import { DashboardInscriptionsTable } from "../dashboard/dashboard-inscriptions-
 import { DashboardRequestModal } from "../dashboard/dashboard-request-modal";
 import { DashboardSessionHeader } from "../dashboard/dashboard-session-header";
 import { DashboardSidebar } from "../dashboard/dashboard-sidebar";
+import { DashboardSponsorModal } from "../dashboard/dashboard-sponsor-modal";
 import { DashboardSponsorsView } from "../dashboard/dashboard-sponsors-view";
 import { DashboardViewShell } from "../dashboard/dashboard-view-shell";
 import { exportCsv, exportSponsorsCsv } from "../dashboard/dashboard-utils";
@@ -109,8 +110,12 @@ export function AdminDashboard({
               rows={controller.filteredSponsors}
               search={controller.sponsorSearch}
               onSearch={controller.setSponsorSearch}
+              programFilter={controller.sponsorProgramFilter}
+              onProgramFilter={controller.setSponsorProgramFilter}
+              programOptions={controller.sponsorProgramOptions}
               onRefresh={() => void controller.refreshSponsors()}
               onExport={() => exportSponsorsCsv(controller.filteredSponsors)}
+              onView={controller.setSelectedSponsor}
               onContact={controller.handleContact}
             />
           ) : null}
@@ -125,6 +130,14 @@ export function AdminDashboard({
             <DashboardRequestModal
               selectedRequest={controller.selectedRequest}
               onClose={() => controller.setSelectedRequest(null)}
+              onContact={controller.handleContact}
+            />
+          ) : null}
+
+          {controller.selectedSponsor ? (
+            <DashboardSponsorModal
+              selectedSponsor={controller.selectedSponsor}
+              onClose={() => controller.setSelectedSponsor(null)}
               onContact={controller.handleContact}
             />
           ) : null}
