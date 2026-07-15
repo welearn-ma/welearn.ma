@@ -60,26 +60,6 @@ export function TestimonialsSection() {
                   &ldquo;{testimonial.quote}&rdquo;
                 </p>
               </blockquote>
-
-              <div className="flex items-center gap-3 pt-5 border-t border-wl-border">
-                <div className="h-10 w-10 rounded-full bg-wl-blue flex items-center justify-center shrink-0">
-                  <span className="text-sm font-bold text-white uppercase">
-                    {testimonial.author
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")
-                      .slice(0, 2)}
-                  </span>
-                </div>
-                <div>
-                  <p className="font-semibold text-wl-text text-sm">
-                    {testimonial.author}
-                  </p>
-                  <p className="text-xs text-wl-text-tertiary">
-                    {testimonial.role}, {testimonial.company}
-                  </p>
-                </div>
-              </div>
             </div>
           ))}
         </div>
