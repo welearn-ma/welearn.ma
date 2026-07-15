@@ -128,6 +128,13 @@
   --color-wl-purple-tint: #F0EDFF;
   --color-wl-star: #F59E0B;
   --color-wl-highlight: #FDB44B;
+
+  /* ─── Sponsoring landing shades (ADDITIVE — ne pas redéfinir les tokens wl-* existants) ─── */
+  --color-wl-navy: #0F3A66;
+  --color-wl-navy-deep: #0B2C4E;
+  --color-wl-tint: #A9CBEF;
+  --color-wl-chip-blue: #E6EFF8;
+  --color-wl-chip-orange: #FCEBDD;
 }
 
 @theme inline {
