@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { submitSponsor } from "@/lib/api/sponsors";
-import type { SponsorPayload } from "@/types/sponsor";
+import type { SponsorPayload, SponsorProgram } from "@/types/sponsor";
 
 const MOOCS = [
   "MOOC Etanchéité – Toitures Terrasses et Toitures Inclinées",
@@ -16,6 +16,11 @@ const MOOCS = [
   "MOOC Planchers et dalles en béton",
   "MOOC Fondamentaux du BIM",
 ] as const;
+
+type SponsorshipFormProps = {
+  program?: SponsorProgram;
+  items?: readonly string[];
+};
 
 type FormValues = {
   nom: string;
@@ -34,7 +39,22 @@ const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
 const inputClassName =
   "mt-1 h-11 border-wl-border text-wl-text placeholder:text-wl-text-tertiary focus-visible:border-wl-blue focus-visible:ring-wl-blue/25";
 
-export function SponsorshipForm() {
+export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
+  // Sans props, le rendu et le payload restent identiques au /sponsoring
+  // historique ; seuls les items et le libellé du sélecteur varient.
+  const choices = items ?? MOOCS;
+  const isFnpi = program === "fnpi";
+  const itemsLegend = isFnpi ? "Départements à sponsoriser" : "MOOCs à sponsoriser";
+  const itemsHint = isFnpi
+    ? "Sélectionnez un ou plusieurs départements."
+    : "Sélectionnez un ou plusieurs MOOCs.";
+  const itemsError = isFnpi
+    ? "Sélectionnez au moins un département à sponsoriser."
+    : "Sélectionnez au moins un MOOC à sponsoriser.";
+  const formTitle = isFnpi
+    ? "Parrainer un ou plusieurs départements"
+    : "Parrainer un ou plusieurs MOOCs";
+
   const [values, setValues] = useState<FormValues>({
     nom: "",
     prenom: "",
@@ -70,7 +90,7 @@ export function SponsorshipForm() {
     }
 
     if (selectedMoocs.length === 0) {
-      nextErrors.moocs = "Sélectionnez au moins un MOOC à sponsoriser.";
+      nextErrors.moocs = itemsError;
     }
 
     setErrors(nextErrors);
@@ -107,6 +127,7 @@ export function SponsorshipForm() {
         telephone: values.telephone.trim(),
         email: values.email.trim(),
         moocs: selectedMoocs,
+        ...(program ? { program } : {}),
       };
       await submitSponsor(payload);
       setIsSubmitted(true);
@@ -147,7 +168,7 @@ export function SponsorshipForm() {
           Sponsoring
         </p>
         <h3 className="mt-1 text-lg font-semibold text-wl-text sm:text-xl">
-          Parrainer un ou plusieurs MOOCs
+          {formTitle}
         </h3>
         <p className="mt-1 text-sm text-wl-text-secondary">
           Complétez le formulaire et notre équipe vous répond sous 48h.
@@ -273,13 +294,13 @@ export function SponsorshipForm() {
 
         <fieldset>
           <legend className="text-sm font-medium text-wl-text">
-            <span className="text-wl-orange">*</span> MOOCs à sponsoriser
+            <span className="text-wl-orange">*</span> {itemsLegend}
           </legend>
           <p className="mt-1 text-xs text-wl-text-tertiary">
-            Sélectionnez un ou plusieurs MOOCs.
+            {itemsHint}
           </p>
           <div className="mt-3 space-y-2">
-            {MOOCS.map((mooc) => {
+            {choices.map((mooc) => {
               const checked = selectedMoocs.includes(mooc);
               return (
                 <label

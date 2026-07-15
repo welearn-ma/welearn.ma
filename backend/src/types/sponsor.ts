@@ -1,3 +1,5 @@
+export type SponsorProgram = "sponsoring" | "mooc" | "fnpi";
+
 export type SponsorPayload = {
   nom: string;
   prenom: string;
@@ -6,6 +8,7 @@ export type SponsorPayload = {
   telephone: string;
   email: string;
   moocs: string[];
+  program?: SponsorProgram;
 };
 
 export type SponsorResponse = {

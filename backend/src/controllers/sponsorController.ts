@@ -17,7 +17,8 @@ import type {
 --   entreprise text NOT NULL,
 --   role text,
 --   telephone text NOT NULL,
---   email text NOT NULL
+--   email text NOT NULL,
+--   program text DEFAULT 'sponsoring' -- 'sponsoring' | 'mooc' | 'fnpi'
 -- );
 -- CREATE TABLE sponsor_moocs (
 --   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -34,6 +35,8 @@ function isEmpty(value: unknown): value is undefined | null | "" {
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
+
+const ALLOWED_PROGRAMS = ["sponsoring", "mooc", "fnpi"] as const;
 
 export async function createSponsor(
   req: Request,
@@ -91,6 +94,21 @@ export async function createSponsor(
       .json({ success: false, message: "au moins un MOOC est requis" });
   }
 
+  // Champ optionnel : absent => le default SQL 'sponsoring' s'applique,
+  // les anciens clients restent donc inchanges.
+  const program = isEmpty(payload.program)
+    ? undefined
+    : String(payload.program).trim();
+
+  if (
+    program !== undefined &&
+    !(ALLOWED_PROGRAMS as readonly string[]).includes(program)
+  ) {
+    return res
+      .status(400)
+      .json({ success: false, message: "program is invalid" });
+  }
+
   const { data: sponsor, error: sponsorError } = await supabase
     .from("sponsors")
     .insert({
@@ -100,6 +118,7 @@ export async function createSponsor(
       role: payload.role ?? null,
       telephone: payload.telephone,
       email: payload.email,
+      ...(program !== undefined ? { program } : {}),
     })
     .select("id")
     .single();
