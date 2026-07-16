@@ -129,10 +129,8 @@ const CONTENT: SponsoringLandingProps = {
   form: {
     program: "fnpi",
     heading: "Rejoignez nos partenaires",
-    subtitles: [
-      "Gagnez en visibilité, valorisez votre marque et accompagnez la montée en compétences de toute la filière immobilière",
+    subtitle:
       "Laissez-nous vos coordonnées : notre équipe revient vers vous avec le dossier de partenariat correspondant.",
-    ],
   },
   contacts: [
     {

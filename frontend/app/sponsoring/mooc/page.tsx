@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
-import { Award, Building2, Droplets, Eye, Flame, Layers, Package, Target } from "lucide-react";
+import {
+  Award,
+  Building2,
+  Droplets,
+  Eye,
+  Flame,
+  Layers,
+  Package,
+  Target,
+} from "lucide-react";
 import {
   SponsoringLanding,
   type SponsoringLandingProps,
@@ -111,10 +120,8 @@ const CONTENT: SponsoringLandingProps = {
   form: {
     program: "mooc",
     heading: "Rejoignez nos partenaires",
-    subtitles: [
-      "Gagnez en visibilité, valorisez votre marque et accompagnez la montée en compétences de toute la filière construction",
+    subtitle:
       "Laissez-nous vos coordonnées : notre équipe revient vers vous avec le dossier de partenariat correspondant.",
-    ],
   },
   contacts: [
     {

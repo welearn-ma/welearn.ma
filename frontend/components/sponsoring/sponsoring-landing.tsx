@@ -62,7 +62,7 @@ export type SponsoringLandingProps = {
     program: SponsorProgram;
     heading: string;
     /** Les deux lignes d'introduction sous le titre. */
-    subtitles: [string, string];
+    subtitle: string;
   };
   contacts: LandingContact[];
   legal: string;
@@ -79,8 +79,6 @@ export function SponsoringLanding({
   programme,
   pourquoi,
   form,
-  contacts,
-  legal,
 }: SponsoringLandingProps) {
   return (
     <>
@@ -295,58 +293,11 @@ export function SponsoringLanding({
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-wl-text">
               {form.heading}
             </h2>
-            <p className="mb-2 text-base leading-relaxed text-wl-text-secondary">
-              {form.subtitles[0]}
-            </p>
-            <p className="text-base leading-relaxed text-wl-text-secondary">
-              {form.subtitles[1]}
-            </p>
           </div>
           <SponsorshipForm
             program={form.program}
             items={programme.items.map((item) => item.title)}
           />
-        </div>
-      </section>
-
-      {/* Contacts + mention légale */}
-      <section className="relative overflow-hidden bg-linear-to-br from-wl-blue to-wl-blue-dark py-16 lg:py-20">
-        <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/4" />
-        <div className="pointer-events-none absolute -bottom-16 -left-16 h-56 w-56 rounded-full bg-white/3" />
-        <div className="relative mx-auto max-w-[1200px] px-6">
-          <div className="flex flex-wrap justify-center gap-x-14 gap-y-8 text-center sm:text-left">
-            {contacts.map((contact) => (
-              <div key={contact.name} className="min-w-[220px]">
-                <p className="font-semibold text-white">{contact.name}</p>
-                <p className="mt-0.5 text-sm text-white/60">{contact.role}</p>
-                <div className="mt-2 space-y-1 text-sm text-white/80">
-                  {contact.phone && (
-                    <p className="flex items-center justify-center gap-2 sm:justify-start">
-                      <Phone className="h-4 w-4 shrink-0 text-white/60" />
-                      <a
-                        href={`tel:${contact.phone.replace(/\s/g, "")}`}
-                        className="transition-colors hover:text-white"
-                      >
-                        {contact.phone}
-                      </a>
-                    </p>
-                  )}
-                  <p className="flex items-center justify-center gap-2 sm:justify-start">
-                    <Mail className="h-4 w-4 shrink-0 text-white/60" />
-                    <a
-                      href={`mailto:${contact.email}`}
-                      className="transition-colors hover:text-white"
-                    >
-                      {contact.email}
-                    </a>
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="mt-12 border-t border-white/15 pt-6 text-center text-xs leading-relaxed text-white/50">
-            {legal}
-          </p>
         </div>
       </section>
     </>
