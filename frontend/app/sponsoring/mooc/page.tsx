@@ -18,6 +18,13 @@ const CONTENT: SponsoringLandingProps = {
     titleEmphasis: "MOOCs qui forment toute la filière construction",
     subtitle:
       "L'Agence Nationale des Équipements Publics et Welearn lancent une série de MOOCs gratuits destinés aux professionnels de la construction : entreprises, industriels, bureaux d'études, banques et assurances.",
+    partnerName: "ANEP",
+    partnerLogo: "/partners/anep.webp",
+    chips: [
+      "MOOCs gratuits",
+      "En ligne, accessible à tout moment",
+      "Vidéos courtes et ludiques",
+    ],
   },
   contexte: {
     heading:
