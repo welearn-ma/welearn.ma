@@ -122,6 +122,16 @@ const CONTENT: SponsoringLandingProps = {
     heading: "Rejoignez nos partenaires",
     subtitle:
       "Laissez-nous vos coordonnées : notre équipe revient vers vous avec le dossier de partenariat correspondant.",
+    // Liste sponsorisable dédiée (≠ cartes du programme) : l'Étanchéité est
+    // découpée en 3 sous-formations. Libellés stockés tels quels en base.
+    sponsorItems: [
+      "MOOC Etanchéité – Toitures Terrasses et Toitures Inclinées",
+      "MOOC Etanchéité – Façade",
+      "MOOC Etanchéité – Sous sol, salles d'eau et gradins",
+      "MOOC Planchers et dalles en béton",
+      "MOOC Fondamentaux du BIM",
+      "MOOC Sécurité Incendie",
+    ],
   },
   contacts: [
     {

@@ -19,7 +19,10 @@
       "Bash(curl -s -L --max-time 15 -o /tmp/fnpi3.html http://localhost:3000/sponsoring/fnpi)",
       "Bash(curl -s -L --max-time 15 -o /tmp/mooc4.html http://localhost:3000/sponsoring/mooc)",
       "Bash(curl -s -L --max-time 15 -o /tmp/fnpi4.html http://localhost:3000/sponsoring/fnpi)",
-      "Bash(curl -s -L --max-time 15 http://localhost:3000/sponsoring/mooc)"
+      "Bash(curl -s -L --max-time 15 http://localhost:3000/sponsoring/mooc)",
+      "Bash(curl -s -L --max-time 15 -o /tmp/mooc5.html http://localhost:3000/sponsoring/mooc)",
+      "Bash(curl -s -L --max-time 15 -o /tmp/fnpi5.html http://localhost:3000/sponsoring/fnpi)",
+      "Bash(curl -s -L --max-time 15 -o /tmp/sponso.html http://localhost:3000/sponsoring)"
     ]
   }
 }

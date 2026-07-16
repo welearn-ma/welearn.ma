@@ -131,6 +131,8 @@ const CONTENT: SponsoringLandingProps = {
     heading: "Rejoignez nos partenaires",
     subtitle:
       "Laissez-nous vos coordonnées : notre équipe revient vers vous avec le dossier de partenariat correspondant.",
+    // FNPI : formulaire contact seul — aucun sélecteur de formation.
+    sponsorItems: [],
   },
   contacts: [
     {

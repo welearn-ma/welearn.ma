@@ -43,6 +43,9 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
   // Sans props, le rendu et le payload restent identiques au /sponsoring
   // historique ; seuls les items et le libellé du sélecteur varient.
   const choices = items ?? MOOCS;
+  // Liste explicitement vide => formulaire contact seul : aucun sélecteur,
+  // aucune formation exigée, `moocs` part vide vers l'API.
+  const contactOnly = items !== undefined && items.length === 0;
   const isFnpi = program === "fnpi";
   const itemsLegend = isFnpi ? "Départements à sponsoriser" : "MOOCs à sponsoriser";
   const itemsHint = isFnpi
@@ -51,9 +54,11 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
   const itemsError = isFnpi
     ? "Sélectionnez au moins un département à sponsoriser."
     : "Sélectionnez au moins un MOOC à sponsoriser.";
-  const formTitle = isFnpi
-    ? "Parrainer un ou plusieurs départements"
-    : "Parrainer un ou plusieurs MOOCs";
+  const formTitle = contactOnly
+    ? "Devenir partenaire"
+    : isFnpi
+      ? "Parrainer un ou plusieurs départements"
+      : "Parrainer un ou plusieurs MOOCs";
 
   const [values, setValues] = useState<FormValues>({
     nom: "",
@@ -89,7 +94,7 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
       nextErrors.email = "Veuillez saisir un email valide.";
     }
 
-    if (selectedMoocs.length === 0) {
+    if (!contactOnly && selectedMoocs.length === 0) {
       nextErrors.moocs = itemsError;
     }
 
@@ -292,6 +297,7 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
           </div>
         </div>
 
+        {!contactOnly && (
         <fieldset>
           <legend className="text-sm font-medium text-wl-text">
             <span className="text-wl-orange">*</span> {itemsLegend}
@@ -326,6 +332,7 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
             <p className="mt-2 text-xs text-red-600">{errors.moocs}</p>
           )}
         </fieldset>
+        )}
 
         <p className="text-xs leading-relaxed text-wl-text-tertiary">
           En soumettant ce formulaire, vous acceptez d'être recontacté par

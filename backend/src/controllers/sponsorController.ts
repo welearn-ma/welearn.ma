@@ -88,12 +88,6 @@ export async function createSponsor(
     ? payload.moocs.map((mooc) => String(mooc).trim()).filter(Boolean)
     : [];
 
-  if (moocs.length === 0) {
-    return res
-      .status(400)
-      .json({ success: false, message: "au moins un MOOC est requis" });
-  }
-
   // Champ optionnel : absent => le default SQL 'sponsoring' s'applique,
   // les anciens clients restent donc inchanges.
   const program = isEmpty(payload.program)
@@ -107,6 +101,14 @@ export async function createSponsor(
     return res
       .status(400)
       .json({ success: false, message: "program is invalid" });
+  }
+
+  // FNPI : formulaire contact seul, un sponsor peut etre cree sans aucune
+  // formation liee. Les autres programmes exigent toujours au moins un item.
+  if (moocs.length === 0 && program !== "fnpi") {
+    return res
+      .status(400)
+      .json({ success: false, message: "au moins un MOOC est requis" });
   }
 
   const { data: sponsor, error: sponsorError } = await supabase
@@ -130,20 +132,22 @@ export async function createSponsor(
       .json({ success: false, message: "Une erreur interne est survenue" });
   }
 
-  const { error: moocsError } = await supabase.from("sponsor_moocs").insert(
-    moocs.map((mooc_name) => ({
-      sponsor_id: sponsor.id,
-      mooc_name,
-    })),
-  );
+  if (moocs.length > 0) {
+    const { error: moocsError } = await supabase.from("sponsor_moocs").insert(
+      moocs.map((mooc_name) => ({
+        sponsor_id: sponsor.id,
+        mooc_name,
+      })),
+    );
 
-  if (moocsError) {
-    console.error("Supabase insert error (sponsor_moocs):", moocsError);
-    // Rollback the parent row so no orphan sponsor is left without MOOCs.
-    await supabase.from("sponsors").delete().eq("id", sponsor.id);
-    return res
-      .status(500)
-      .json({ success: false, message: "Une erreur interne est survenue" });
+    if (moocsError) {
+      console.error("Supabase insert error (sponsor_moocs):", moocsError);
+      // Rollback the parent row so no orphan sponsor is left without MOOCs.
+      await supabase.from("sponsors").delete().eq("id", sponsor.id);
+      return res
+        .status(500)
+        .json({ success: false, message: "Une erreur interne est survenue" });
+    }
   }
 
   return res

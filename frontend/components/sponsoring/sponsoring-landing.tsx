@@ -63,6 +63,13 @@ export type SponsoringLandingProps = {
     heading: string;
     /** Les deux lignes d'introduction sous le titre. */
     subtitle: string;
+    /**
+     * Liste dédiée des éléments sponsorisables, indépendante des cartes du
+     * programme affichées. Les libellés sont stockés tels quels en base
+     * (sponsor_moocs.mooc_name). Liste vide = formulaire contact seul,
+     * sans sélecteur.
+     */
+    sponsorItems: readonly string[];
   };
   contacts: LandingContact[];
   legal: string;
@@ -294,10 +301,7 @@ export function SponsoringLanding({
               {form.heading}
             </h2>
           </div>
-          <SponsorshipForm
-            program={form.program}
-            items={programme.items.map((item) => item.title)}
-          />
+          <SponsorshipForm program={form.program} items={form.sponsorItems} />
         </div>
       </section>
     </>
