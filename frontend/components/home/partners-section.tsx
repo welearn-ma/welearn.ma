@@ -19,7 +19,7 @@ const partnerRows = [
     logos: [
       { name: "ANEP", src: "/partners/anep.webp" },
       { name: "CNOA", src: "/partners/cnoa.webp" },
-      { name: "ONIGT", src: "/partners/onigt.webp" },
+      // { name: "ONIGT", src: "/partners/onigt.webp" },
       { name: "FedEC", src: "/partners/fedec.webp" },
       { name: "OFPPT", src: "/partners/ofppt.webp" },
       { name: "FNPI", src: "/partners/fnpi.webp" },
@@ -55,26 +55,26 @@ const partnerRows = [
   {
     label: "Maîtrise d'ouvrage",
     logos: [
-      { name: "CGI", src: "/partners/cgi.webp" },
+      // { name: "CGI", src: "/partners/cgi.webp" },
       { name: "Chaabi Lil Iskane", src: "/partners/chaabi-lil-iskane.webp" },
       { name: "Ewane Assets", src: "/partners/ewane-assets.webp" },
       { name: "ASMA Invest", src: "/partners/asma-invest.webp" },
       { name: "Wafa Immobilier", src: "/partners/wafa-immobilier.webp" },
-      { name: "CDG", src: "/partners/1200px-CDG.svg.webp" },
+      // { name: "CDG", src: "/partners/1200px-CDG.svg.webp" },
     ],
   },
   {
     label: "Financement & Assurance",
     logos: [
       { name: "Societe Generale", src: "/partners/societe-generale.webp" },
-      { name: "CIH Bank", src: "/partners/cih-bank.webp" },
-      {
-        name: "Bank of Africa",
-        src: "/partners/bank-of-africa-bmce-group.webp",
-      },
+      // { name: "CIH Bank", src: "/partners/cih-bank.webp" },
+      // {
+      //   name: "Bank of Africa",
+      //   src: "/partners/bank-of-africa-bmce-group.webp",
+      // },
       { name: "Bank Al-Maghrib", src: "/partners/bank-al-maghrib.webp" },
-      { name: "Atlanta Sanad", src: "/partners/atlanta-sanad-assurance.webp" },
-      { name: "SAHAM Assurance", src: "/partners/saham-assurance.webp" },
+      // { name: "Atlanta Sanad", src: "/partners/atlanta-sanad-assurance.webp" },
+      // { name: "SAHAM Assurance", src: "/partners/saham-assurance.webp" },
     ],
   },
 ];
