@@ -1,12 +1,5 @@
 import Image from "next/image";
-import {
-  CheckCircle,
-  ChevronRight,
-  HeartHandshake,
-  Mail,
-  Phone,
-  type LucideIcon,
-} from "lucide-react";
+import { CheckCircle, ChevronRight, type LucideIcon } from "lucide-react";
 import { SponsorshipForm } from "@/features/sponsoring/SponsorshipForm";
 import type { SponsorProgram } from "@/types/sponsor";
 
@@ -94,81 +87,71 @@ export function SponsoringLanding({
       <section className="relative overflow-hidden bg-linear-to-br from-wl-blue to-wl-blue-dark py-10 lg:py-14">
         <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/4" />
         <div className="pointer-events-none absolute -bottom-16 -left-16 h-56 w-56 rounded-full bg-white/3" />
-        <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
-          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
-            <div className="text-center lg:text-left">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/12 px-4 py-2 backdrop-blur-sm">
-                <HeartHandshake className="h-4 w-4 shrink-0 text-white" />
-                <span className="text-sm font-medium tracking-wide text-white/90">
-                  {hero.eyebrow}
-                </span>
-              </div>
-              <h1 className="mb-4 font-sans text-3xl font-bold leading-tight tracking-tight text-balance text-white sm:text-4xl xl:text-5xl">
-                {hero.titleLead}{" "}
-                <span className="text-wl-highlight">{hero.titleEmphasis}</span>
-              </h1>
-              <p className="mx-auto mb-5 max-w-2xl text-base leading-relaxed text-white/75 md:text-lg lg:mx-0">
-                {hero.subtitle}
-              </p>
-              <div className="mb-7 flex flex-wrap justify-center gap-2 lg:justify-start">
-                {hero.chips.map((chip) => (
-                  <span
-                    key={chip}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/12 px-3.5 py-1.5 text-sm font-medium text-white/90 backdrop-blur-sm"
-                  >
-                    <CheckCircle className="h-3.5 w-3.5 shrink-0 text-wl-highlight" />
-                    {chip}
-                  </span>
-                ))}
-              </div>
-              <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
-                <a
-                  href="#sponsor-form"
-                  className="inline-flex items-center rounded-lg bg-wl-orange px-8 py-3 font-semibold text-white transition-colors hover:bg-wl-orange-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                >
-                  Devenir partenaire
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </a>
-                <a
-                  href="#programme"
-                  className="inline-flex items-center rounded-lg border border-white/40 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                >
-                  Découvrir le programme
-                </a>
-              </div>
-            </div>
-
-            {/* Lockup co-brandé Welearn × partenaire */}
-            <div className="order-first mx-auto w-fit lg:order-none">
-              <div className="flex items-center gap-4 rounded-2xl bg-white px-6 py-4 shadow-xl lg:flex-col lg:gap-5 lg:px-12 lg:py-9">
-                {/* welearn-logo.png : canevas carré aux larges marges
-                    transparentes — cadrage sur la bande du wordmark. */}
-                <div className="relative aspect-[2.9/1] w-32 overflow-hidden lg:w-52">
-                  <Image
-                    src="/images/welearn-logo.png"
-                    alt="Welearn"
-                    fill
-                    sizes="(min-width: 1024px) 208px, 128px"
-                    className="object-cover"
-                  />
-                </div>
-                <span
-                  aria-hidden
-                  className="flex items-center gap-3 text-base font-light leading-none text-wl-text-tertiary lg:w-full lg:text-lg"
-                >
-                  <span className="hidden h-px flex-1 bg-wl-border lg:block" />
-                  ×
-                  <span className="hidden h-px flex-1 bg-wl-border lg:block" />
-                </span>
+        <div className="relative mx-auto max-w-6xl px-4 text-center lg:px-8">
+          {/* Lockup co-brandé Welearn × partenaire, horizontal au-dessus du
+              contenu. Il remplace le badge texte : les logos disent déjà le
+              partenariat. */}
+          <div className="mx-auto mb-7 w-fit">
+            <div className="flex items-center gap-3 rounded-xl bg-white px-4 py-2.5 shadow-lg sm:gap-4 lg:px-5 lg:py-3">
+              {/* welearn-logo.png : canevas carré aux larges marges
+                  transparentes — cadrage sur la bande du wordmark. */}
+              <div className="relative aspect-[2.9/1] w-24 overflow-hidden sm:w-28 lg:w-32">
                 <Image
-                  src={hero.partnerLogo}
-                  alt={hero.partnerName}
-                  width={180}
-                  height={180}
-                  className="h-16 w-auto object-contain lg:h-32"
+                  src="/images/welearn-logo.png"
+                  alt="Welearn"
+                  fill
+                  sizes="128px"
+                  className="object-cover"
                 />
               </div>
+              <span
+                aria-hidden
+                className="text-sm font-light leading-none text-wl-text-tertiary"
+              >
+                ×
+              </span>
+              <Image
+                src={hero.partnerLogo}
+                alt={hero.partnerName}
+                width={120}
+                height={120}
+                className="h-9 w-auto object-contain sm:h-10 lg:h-12"
+              />
             </div>
+          </div>
+
+          <h1 className="mb-4 font-sans text-3xl font-bold leading-tight tracking-tight text-balance text-white sm:text-4xl xl:text-5xl">
+            {hero.titleLead}{" "}
+            <span className="text-wl-highlight">{hero.titleEmphasis}</span>
+          </h1>
+          <p className="mx-auto mb-5 max-w-4xl text-base leading-relaxed text-white/75 md:text-lg">
+            {hero.subtitle}
+          </p>
+          <div className="mb-7 flex flex-wrap justify-center gap-2">
+            {hero.chips.map((chip) => (
+              <span
+                key={chip}
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/12 px-3.5 py-1.5 text-sm font-medium text-white/90 backdrop-blur-sm"
+              >
+                <CheckCircle className="h-3.5 w-3.5 shrink-0 text-wl-highlight" />
+                {chip}
+              </span>
+            ))}
+          </div>
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a
+              href="#sponsor-form"
+              className="inline-flex items-center rounded-lg bg-wl-orange px-8 py-3 font-semibold text-white transition-colors hover:bg-wl-orange-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              Devenir partenaire
+              <ChevronRight className="ml-1 h-4 w-4" />
+            </a>
+            <a
+              href="#programme"
+              className="inline-flex items-center rounded-lg border border-white/40 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              Découvrir le programme
+            </a>
           </div>
         </div>
       </section>
@@ -183,7 +166,7 @@ export function SponsoringLanding({
             {contexte.heading}
           </h2>
 
-          <div className="grid items-start gap-10 md:grid-cols-2">
+          <div className="grid items-stretch text-stretch gap-10 md:grid-cols-2">
             <div className="space-y-4">
               {contexte.paragraphs.map((paragraph) => (
                 <p
@@ -223,7 +206,7 @@ export function SponsoringLanding({
           <h2 className="mb-6 text-3xl font-bold tracking-tight text-wl-text">
             {programme.heading}
           </h2>
-          <p className="mb-10 max-w-3xl text-base leading-relaxed text-wl-text-secondary">
+          <p className="mb-10 text-base leading-relaxed text-wl-text-secondary">
             {programme.intro}
           </p>
 
