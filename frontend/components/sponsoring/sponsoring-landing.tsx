@@ -134,32 +134,32 @@ export function SponsoringLanding({
 
             {/* Lockup co-brandé Welearn × partenaire */}
             <div className="order-first mx-auto w-fit lg:order-none">
-              <div className="flex flex-col items-center gap-4 rounded-2xl bg-white px-10 py-7 shadow-xl lg:gap-5 lg:px-12 lg:py-9">
+              <div className="flex items-center gap-4 rounded-2xl bg-white px-6 py-4 shadow-xl lg:flex-col lg:gap-5 lg:px-12 lg:py-9">
                 {/* welearn-logo.png : canevas carré aux larges marges
                     transparentes — cadrage sur la bande du wordmark. */}
-                <div className="relative aspect-[2.9/1] w-40 overflow-hidden lg:w-52">
+                <div className="relative aspect-[2.9/1] w-32 overflow-hidden lg:w-52">
                   <Image
                     src="/images/welearn-logo.png"
                     alt="Welearn"
                     fill
-                    sizes="(min-width: 1024px) 208px, 160px"
+                    sizes="(min-width: 1024px) 208px, 128px"
                     className="object-cover"
                   />
                 </div>
                 <span
                   aria-hidden
-                  className="flex w-full items-center gap-3 text-base font-light leading-none text-wl-text-tertiary lg:text-lg"
+                  className="flex items-center gap-3 text-base font-light leading-none text-wl-text-tertiary lg:w-full lg:text-lg"
                 >
-                  <span className="h-px flex-1 bg-wl-border" />
+                  <span className="hidden h-px flex-1 bg-wl-border lg:block" />
                   ×
-                  <span className="h-px flex-1 bg-wl-border" />
+                  <span className="hidden h-px flex-1 bg-wl-border lg:block" />
                 </span>
                 <Image
                   src={hero.partnerLogo}
                   alt={hero.partnerName}
                   width={180}
                   height={180}
-                  className="h-20 w-auto object-contain lg:h-32"
+                  className="h-16 w-auto object-contain lg:h-32"
                 />
               </div>
             </div>
