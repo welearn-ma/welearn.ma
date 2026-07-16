@@ -170,11 +170,20 @@ export function useAdminDashboardController(accessToken: string) {
     );
   }, [rows, selectedFormationTitle]);
 
-  const sponsorProgramOptions = useMemo(
-    () =>
-      Array.from(new Set(sponsorRows.flatMap((item) => item.moocs))).sort(),
-    [sponsorRows],
-  );
+  // Filtre groupé par formation_slug (clé stable) ; le libellé affiché est
+  // dérivé du référentiel côté API. Fallback sur le nom pour les lignes
+  // legacy sans slug.
+  const sponsorProgramOptions = useMemo(() => {
+    const options = new Map<string, string>();
+    for (const item of sponsorRows) {
+      for (const formation of item.formations) {
+        options.set(formation.slug ?? formation.name, formation.name);
+      }
+    }
+    return Array.from(options.entries())
+      .map(([value, label]) => ({ value, label }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, [sponsorRows]);
 
   const filteredSponsors = useMemo(() => {
     const needle = sponsorSearch.trim().toLowerCase();
@@ -182,7 +191,10 @@ export function useAdminDashboardController(accessToken: string) {
     return sponsorRows.filter((item) => {
       if (
         sponsorProgramFilter !== "all" &&
-        !item.moocs.includes(sponsorProgramFilter)
+        !item.formations.some(
+          (formation) =>
+            (formation.slug ?? formation.name) === sponsorProgramFilter,
+        )
       ) {
         return false;
       }
@@ -196,7 +208,9 @@ export function useAdminDashboardController(accessToken: string) {
         item.entreprise.toLowerCase().includes(needle) ||
         item.email.toLowerCase().includes(needle) ||
         (item.role ?? "").toLowerCase().includes(needle) ||
-        item.moocs.some((mooc) => mooc.toLowerCase().includes(needle))
+        item.formations.some((formation) =>
+          formation.name.toLowerCase().includes(needle),
+        )
       );
     });
   }, [sponsorRows, sponsorSearch, sponsorProgramFilter]);

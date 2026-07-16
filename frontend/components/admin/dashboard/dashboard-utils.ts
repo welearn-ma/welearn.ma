@@ -63,7 +63,8 @@ function toSponsorsCsv(rows: AdminSponsorRecord[]) {
     "role",
     "email",
     "telephone",
-    "moocs",
+    "formationSlugs",
+    "formationNames",
     "createdAt",
   ];
 
@@ -76,7 +77,8 @@ function toSponsorsCsv(rows: AdminSponsorRecord[]) {
       item.role || "",
       item.email,
       item.telephone,
-      item.moocs.join(" | "),
+      item.formations.map((formation) => formation.slug ?? "").join(" | "),
+      item.formations.map((formation) => formation.name).join(" | "),
       item.createdAt,
     ]
       .map((field) => `"${String(field).replaceAll('"', '""')}"`)

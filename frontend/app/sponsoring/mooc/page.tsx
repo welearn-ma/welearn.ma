@@ -13,6 +13,7 @@ import {
   SponsoringLanding,
   type SponsoringLandingProps,
 } from "@/components/sponsoring/sponsoring-landing";
+import { FORMATION_SLUGS } from "@/lib/sponsoring/formations";
 
 export const metadata: Metadata = {
   title: "Programme Digital Learning — ANEP × Welearn | Welearn",
@@ -123,15 +124,9 @@ const CONTENT: SponsoringLandingProps = {
     subtitle:
       "Laissez-nous vos coordonnées : notre équipe revient vers vous avec le dossier de partenariat correspondant.",
     // Liste sponsorisable dédiée (≠ cartes du programme) : l'Étanchéité est
-    // découpée en 3 sous-formations. Libellés stockés tels quels en base.
-    sponsorItems: [
-      "MOOC Etanchéité – Toitures Terrasses et Toitures Inclinées",
-      "MOOC Etanchéité – Façade",
-      "MOOC Etanchéité – Sous sol, salles d'eau et gradins",
-      "MOOC Planchers et dalles en béton",
-      "MOOC Fondamentaux du BIM",
-      "MOOC Sécurité Incendie",
-    ],
+    // découpée en 3 sous-formations. Slugs canoniques du référentiel
+    // (lib/sponsoring/formations.ts) — les libellés affichés en dérivent.
+    sponsorItems: FORMATION_SLUGS,
   },
   contacts: [
     {

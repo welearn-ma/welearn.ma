@@ -64,10 +64,11 @@ export type SponsoringLandingProps = {
     /** Les deux lignes d'introduction sous le titre. */
     subtitle: string;
     /**
-     * Liste dédiée des éléments sponsorisables, indépendante des cartes du
-     * programme affichées. Les libellés sont stockés tels quels en base
-     * (sponsor_moocs.mooc_name). Liste vide = formulaire contact seul,
-     * sans sélecteur.
+     * Slugs canoniques des éléments sponsorisables (référentiel
+     * lib/sponsoring/formations.ts), indépendants des cartes du programme
+     * affichées. Le formulaire soumet le slug (sponsor_formations.
+     * formation_slug) et affiche le libellé dérivé du référentiel. Liste
+     * vide = formulaire contact seul, sans sélecteur.
      */
     sponsorItems: readonly string[];
   };

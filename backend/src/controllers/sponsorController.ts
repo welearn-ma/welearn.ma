@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import { getBearerToken, validateAdminAccessToken } from "../lib/adminAuth";
 import { supabase } from "../lib/supabaseClient";
+import {
+  formationLabel,
+  resolveFormation,
+  type Formation,
+} from "../config/formations";
 import type {
   SponsorListResponse,
   SponsorPayload,
@@ -20,13 +25,14 @@ import type {
 --   email text NOT NULL,
 --   program text DEFAULT 'sponsoring' -- 'sponsoring' | 'mooc' | 'fnpi'
 -- );
--- CREATE TABLE sponsor_moocs (
+-- CREATE TABLE sponsor_formations (
 --   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
 --   sponsor_id uuid NOT NULL REFERENCES sponsors(id) ON DELETE CASCADE,
---   mooc_name text NOT NULL
+--   formation_name text NOT NULL, -- cache d'affichage derive du slug
+--   formation_slug text           -- cle stable (CHECK sur le referentiel)
 -- );
 -- ALTER TABLE sponsors ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE sponsor_moocs ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE sponsor_formations ENABLE ROW LEVEL SECURITY;
 */
 
 function isEmpty(value: unknown): value is undefined | null | "" {
@@ -84,9 +90,28 @@ export async function createSponsor(
       .json({ success: false, message: "email format is invalid" });
   }
 
-  const moocs = Array.isArray(payload.moocs)
-    ? payload.moocs.map((mooc) => String(mooc).trim()).filter(Boolean)
-    : [];
+  // `formations` = slugs canoniques ; `moocs` = compat anciens clients
+  // (libelles affiches). Chaque valeur est normalisee vers le referentiel :
+  // le slug fait foi, le libelle stocke est derive du referentiel.
+  const rawItems = Array.isArray(payload.formations)
+    ? payload.formations
+    : Array.isArray(payload.moocs)
+      ? payload.moocs
+      : [];
+
+  const formations: Formation[] = [];
+  for (const rawItem of rawItems) {
+    const trimmed = String(rawItem).trim();
+    if (!trimmed) continue;
+
+    const formation = resolveFormation(trimmed);
+    if (!formation) {
+      return res
+        .status(400)
+        .json({ success: false, message: `formation inconnue: ${trimmed}` });
+    }
+    formations.push(formation);
+  }
 
   // Champ optionnel : absent => le default SQL 'sponsoring' s'applique,
   // les anciens clients restent donc inchanges.
@@ -105,7 +130,7 @@ export async function createSponsor(
 
   // FNPI : formulaire contact seul, un sponsor peut etre cree sans aucune
   // formation liee. Les autres programmes exigent toujours au moins un item.
-  if (moocs.length === 0 && program !== "fnpi") {
+  if (formations.length === 0 && program !== "fnpi") {
     return res
       .status(400)
       .json({ success: false, message: "au moins un MOOC est requis" });
@@ -132,17 +157,23 @@ export async function createSponsor(
       .json({ success: false, message: "Une erreur interne est survenue" });
   }
 
-  if (moocs.length > 0) {
-    const { error: moocsError } = await supabase.from("sponsor_moocs").insert(
-      moocs.map((mooc_name) => ({
-        sponsor_id: sponsor.id,
-        mooc_name,
-      })),
-    );
+  if (formations.length > 0) {
+    const { error: formationsError } = await supabase
+      .from("sponsor_formations")
+      .insert(
+        formations.map((formation) => ({
+          sponsor_id: sponsor.id,
+          formation_slug: formation.slug,
+          formation_name: formation.label,
+        })),
+      );
 
-    if (moocsError) {
-      console.error("Supabase insert error (sponsor_moocs):", moocsError);
-      // Rollback the parent row so no orphan sponsor is left without MOOCs.
+    if (formationsError) {
+      console.error(
+        "Supabase insert error (sponsor_formations):",
+        formationsError,
+      );
+      // Rollback the parent row so no orphan sponsor is left without items.
       await supabase.from("sponsors").delete().eq("id", sponsor.id);
       return res
         .status(500)
@@ -186,7 +217,7 @@ export async function listSponsors(
   const { data, error } = await supabase
     .from("sponsors")
     .select(
-      "id, created_at, nom, prenom, entreprise, role, telephone, email, sponsor_moocs(mooc_name)",
+      "id, created_at, nom, prenom, entreprise, role, telephone, email, sponsor_formations(formation_slug, formation_name)",
     )
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -209,7 +240,10 @@ export async function listSponsors(
     role: string | null;
     telephone: string;
     email: string;
-    sponsor_moocs: Array<{ mooc_name: string }> | null;
+    sponsor_formations: Array<{
+      formation_slug: string | null;
+      formation_name: string;
+    }> | null;
   }>;
 
   const responseData: SponsorRecord[] = rows.map((item) => ({
@@ -220,7 +254,10 @@ export async function listSponsors(
     role: item.role,
     telephone: item.telephone,
     email: item.email,
-    moocs: (item.sponsor_moocs ?? []).map((mooc) => mooc.mooc_name),
+    formations: (item.sponsor_formations ?? []).map((formation) => ({
+      slug: formation.formation_slug,
+      name: formationLabel(formation.formation_slug, formation.formation_name),
+    })),
     createdAt: item.created_at,
   }));
 

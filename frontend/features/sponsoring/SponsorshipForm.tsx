@@ -6,19 +6,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { submitSponsor } from "@/lib/api/sponsors";
+import {
+  FORMATION_SLUGS,
+  formationLabel,
+} from "@/lib/sponsoring/formations";
 import type { SponsorPayload, SponsorProgram } from "@/types/sponsor";
-
-const MOOCS = [
-  "MOOC Etanchéité – Toitures Terrasses et Toitures Inclinées",
-  "MOOC Etanchéité – Façade",
-  "MOOC Etanchéité – Sous sol, salles d'eau et gradins",
-  "MOOC Sécurité Incendie",
-  "MOOC Planchers et dalles en béton",
-  "MOOC Fondamentaux du BIM",
-] as const;
 
 type SponsorshipFormProps = {
   program?: SponsorProgram;
+  /**
+   * Slugs canoniques des formations proposees (cf.
+   * lib/sponsoring/formations.ts). Le formulaire affiche le libelle derive
+   * du referentiel et soumet le slug tel quel a l'API.
+   */
   items?: readonly string[];
 };
 
@@ -31,7 +31,7 @@ type FormValues = {
   email: string;
 };
 
-type FormErrors = Partial<Record<keyof FormValues | "moocs", string>>;
+type FormErrors = Partial<Record<keyof FormValues | "formations", string>>;
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
@@ -40,9 +40,10 @@ const inputClassName =
   "mt-1 h-11 border-wl-border text-wl-text placeholder:text-wl-text-tertiary focus-visible:border-wl-blue focus-visible:ring-wl-blue/25";
 
 export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
-  // Sans props, le rendu et le payload restent identiques au /sponsoring
-  // historique ; seuls les items et le libellé du sélecteur varient.
-  const choices = items ?? MOOCS;
+  // Sans props (page /sponsoring historique), toutes les formations du
+  // référentiel sont proposées ; seuls les items et le libellé du
+  // sélecteur varient selon la page.
+  const choices = items ?? FORMATION_SLUGS;
   // Liste explicitement vide => formulaire contact seul : aucun sélecteur,
   // aucune formation exigée, `moocs` part vide vers l'API.
   const contactOnly = items !== undefined && items.length === 0;
@@ -68,7 +69,7 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
     telephone: "",
     email: "",
   });
-  const [selectedMoocs, setSelectedMoocs] = useState<string[]>([]);
+  const [selectedFormations, setSelectedFormations] = useState<string[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -94,8 +95,8 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
       nextErrors.email = "Veuillez saisir un email valide.";
     }
 
-    if (!contactOnly && selectedMoocs.length === 0) {
-      nextErrors.moocs = itemsError;
+    if (!contactOnly && selectedFormations.length === 0) {
+      nextErrors.formations = itemsError;
     }
 
     setErrors(nextErrors);
@@ -107,13 +108,13 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
     setErrors((current) => ({ ...current, [field]: undefined }));
   };
 
-  const toggleMooc = (mooc: string) => {
-    setSelectedMoocs((current) =>
-      current.includes(mooc)
-        ? current.filter((item) => item !== mooc)
-        : [...current, mooc],
+  const toggleFormation = (slug: string) => {
+    setSelectedFormations((current) =>
+      current.includes(slug)
+        ? current.filter((item) => item !== slug)
+        : [...current, slug],
     );
-    setErrors((current) => ({ ...current, moocs: undefined }));
+    setErrors((current) => ({ ...current, formations: undefined }));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -131,7 +132,7 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
         role: values.role.trim() || undefined,
         telephone: values.telephone.trim(),
         email: values.email.trim(),
-        moocs: selectedMoocs,
+        formations: selectedFormations,
         ...(program ? { program } : {}),
       };
       await submitSponsor(payload);
@@ -306,11 +307,11 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
             {itemsHint}
           </p>
           <div className="mt-3 space-y-2">
-            {choices.map((mooc) => {
-              const checked = selectedMoocs.includes(mooc);
+            {choices.map((slug) => {
+              const checked = selectedFormations.includes(slug);
               return (
                 <label
-                  key={mooc}
+                  key={slug}
                   className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3 py-3 transition-colors ${
                     checked
                       ? "border-wl-blue bg-wl-blue-tint"
@@ -320,16 +321,18 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
                   <input
                     type="checkbox"
                     checked={checked}
-                    onChange={() => toggleMooc(mooc)}
+                    onChange={() => toggleFormation(slug)}
                     className="mt-0.5 h-4 w-4 shrink-0 rounded border-wl-border accent-wl-blue"
                   />
-                  <span className="text-sm text-wl-text">{mooc}</span>
+                  <span className="text-sm text-wl-text">
+                    {formationLabel(slug)}
+                  </span>
                 </label>
               );
             })}
           </div>
-          {errors.moocs && (
-            <p className="mt-2 text-xs text-red-600">{errors.moocs}</p>
+          {errors.formations && (
+            <p className="mt-2 text-xs text-red-600">{errors.formations}</p>
           )}
         </fieldset>
         )}

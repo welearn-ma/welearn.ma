@@ -69,17 +69,17 @@ export function DashboardSponsorModal({
           </div>
           <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3 md:col-span-2">
             <p className="text-xs text-wl-text-tertiary">
-              MOOCs sponsorisés ({selectedSponsor.moocs.length})
+              MOOCs sponsorisés ({selectedSponsor.formations.length})
             </p>
             <div className="mt-2 flex flex-wrap gap-1.5">
-              {selectedSponsor.moocs.length ? (
-                selectedSponsor.moocs.map((mooc) => (
+              {selectedSponsor.formations.length ? (
+                selectedSponsor.formations.map((formation, index) => (
                   <Badge
-                    key={mooc}
+                    key={`${formation.slug ?? formation.name}-${index}`}
                     variant="outline"
                     className="border-wl-blue/20 bg-wl-blue-tint text-wl-blue"
                   >
-                    {mooc}
+                    {formation.name}
                   </Badge>
                 ))
               ) : (

@@ -31,13 +31,16 @@ export function DashboardSponsorsView({
   onSearch: (value: string) => void;
   programFilter: string;
   onProgramFilter: (value: string) => void;
-  programOptions: string[];
+  programOptions: Array<{ value: string; label: string }>;
   onRefresh: () => void;
   onExport: () => void;
   onView: (sponsor: AdminSponsorRecord) => void;
   onContact: (email: string) => void;
 }) {
-  const totalMoocs = rows.reduce((sum, item) => sum + item.moocs.length, 0);
+  const totalMoocs = rows.reduce(
+    (sum, item) => sum + item.formations.length,
+    0,
+  );
   const uniqueCompanies = new Set(
     rows.map((item) => item.entreprise.trim().toLowerCase()),
   ).size;
@@ -96,9 +99,9 @@ export function DashboardSponsorsView({
               className="h-9 w-full rounded-md border border-wl-border bg-white pl-9 pr-3 text-sm text-wl-text outline-none focus:ring-2 focus:ring-wl-blue/20"
             >
               <option value="all">Tous les programmes</option>
-              {programOptions.map((program) => (
-                <option key={program} value={program}>
-                  {program}
+              {programOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </select>
@@ -139,14 +142,14 @@ export function DashboardSponsorsView({
                   </td>
                   <td className="py-3 pr-4">
                     <div className="flex max-w-md flex-wrap gap-1.5">
-                      {item.moocs.length ? (
-                        item.moocs.map((mooc) => (
+                      {item.formations.length ? (
+                        item.formations.map((formation, index) => (
                           <Badge
-                            key={mooc}
+                            key={`${formation.slug ?? formation.name}-${index}`}
                             variant="outline"
                             className="border-wl-blue/20 bg-wl-blue-tint text-wl-blue"
                           >
-                            {mooc}
+                            {formation.name}
                           </Badge>
                         ))
                       ) : (

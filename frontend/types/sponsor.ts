@@ -7,13 +7,21 @@ export type SponsorPayload = {
   role?: string;
   telephone: string;
   email: string;
-  moocs: string[];
+  /** Slugs canoniques des formations (cf. lib/sponsoring/formations.ts). */
+  formations: string[];
   program?: SponsorProgram;
 };
 
 export type SponsorResponse = {
   success: boolean;
   message: string;
+};
+
+export type SponsorFormation = {
+  /** Cle stable de reporting ; null uniquement pour une ligne legacy. */
+  slug: string | null;
+  /** Libelle d'affichage derive du slug via le referentiel canonique. */
+  name: string;
 };
 
 export type AdminSponsorRecord = {
@@ -24,7 +32,7 @@ export type AdminSponsorRecord = {
   role?: string | null;
   telephone: string;
   email: string;
-  moocs: string[];
+  formations: SponsorFormation[];
   createdAt: string;
 };
 
