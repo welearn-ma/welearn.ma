@@ -16,7 +16,10 @@
       "Bash(curl -s -L --max-time 10 -o /tmp/fnpi.html http://localhost:3000/sponsoring/fnpi)",
       "Bash(grep -o \"montée en compétences de la filière immobilière\" /tmp/fnpi2.html | head -1 ; grep -o \"Top Management\" /tmp/fnpi2.html | head -1 ; grep -o \"omar.oukrid@fnpi.ma\" /tmp/fnpi2.html | head -1 ; grep -c \"from-wl-blue\" /tmp/fnpi2.html)",
       "Bash(curl -s -L --max-time 15 -o /tmp/mooc3.html http://localhost:3000/sponsoring/mooc)",
-      "Bash(curl -s -L --max-time 15 -o /tmp/fnpi3.html http://localhost:3000/sponsoring/fnpi)"
+      "Bash(curl -s -L --max-time 15 -o /tmp/fnpi3.html http://localhost:3000/sponsoring/fnpi)",
+      "Bash(curl -s -L --max-time 15 -o /tmp/mooc4.html http://localhost:3000/sponsoring/mooc)",
+      "Bash(curl -s -L --max-time 15 -o /tmp/fnpi4.html http://localhost:3000/sponsoring/fnpi)",
+      "Bash(curl -s -L --max-time 15 http://localhost:3000/sponsoring/mooc)"
     ]
   }
 }

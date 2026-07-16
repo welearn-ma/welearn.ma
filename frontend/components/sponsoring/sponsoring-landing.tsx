@@ -85,26 +85,26 @@ export function SponsoringLanding({
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-linear-to-br from-wl-blue to-wl-blue-dark py-16 lg:py-24">
+      <section className="relative overflow-hidden bg-linear-to-br from-wl-blue to-wl-blue-dark py-10 lg:py-14">
         <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/4" />
         <div className="pointer-events-none absolute -bottom-16 -left-16 h-56 w-56 rounded-full bg-white/3" />
         <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
             <div className="text-center lg:text-left">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/12 px-4 py-2 backdrop-blur-sm">
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/12 px-4 py-2 backdrop-blur-sm">
                 <HeartHandshake className="h-4 w-4 shrink-0 text-white" />
                 <span className="text-sm font-medium tracking-wide text-white/90">
                   {hero.eyebrow}
                 </span>
               </div>
-              <h1 className="mb-5 font-sans text-4xl font-bold leading-tight tracking-tight text-balance text-white md:text-5xl">
+              <h1 className="mb-4 font-sans text-3xl font-bold leading-tight tracking-tight text-balance text-white sm:text-4xl xl:text-5xl">
                 {hero.titleLead}{" "}
                 <span className="text-wl-highlight">{hero.titleEmphasis}</span>
               </h1>
-              <p className="mx-auto mb-7 max-w-2xl text-lg leading-relaxed text-white/75 lg:mx-0">
+              <p className="mx-auto mb-5 max-w-2xl text-base leading-relaxed text-white/75 md:text-lg lg:mx-0">
                 {hero.subtitle}
               </p>
-              <div className="mb-9 flex flex-wrap justify-center gap-2 lg:justify-start">
+              <div className="mb-7 flex flex-wrap justify-center gap-2 lg:justify-start">
                 {hero.chips.map((chip) => (
                   <span
                     key={chip}
@@ -133,29 +133,34 @@ export function SponsoringLanding({
             </div>
 
             {/* Lockup co-brandé Welearn × partenaire */}
-            <div className="relative mx-auto w-full max-w-sm">
-              <div
-                aria-hidden
-                className="absolute inset-0 rotate-3 rounded-3xl bg-white/6"
-              />
-              <div className="relative rounded-3xl border border-white/10 bg-white/8 p-5 shadow-2xl backdrop-blur-sm">
-                <div className="flex items-center justify-center gap-5 rounded-2xl bg-white px-6 py-9 sm:gap-6">
+            <div className="order-first mx-auto w-fit lg:order-none">
+              <div className="flex flex-col items-center gap-4 rounded-2xl bg-white px-10 py-7 shadow-xl lg:gap-5 lg:px-12 lg:py-9">
+                {/* welearn-logo.png : canevas carré aux larges marges
+                    transparentes — cadrage sur la bande du wordmark. */}
+                <div className="relative aspect-[2.9/1] w-40 overflow-hidden lg:w-52">
                   <Image
                     src="/images/welearn-logo.png"
                     alt="Welearn"
-                    width={150}
-                    height={64}
-                    className="h-10 w-auto object-contain sm:h-11"
-                  />
-                  <span aria-hidden className="h-12 w-px shrink-0 bg-wl-border" />
-                  <Image
-                    src={hero.partnerLogo}
-                    alt={hero.partnerName}
-                    width={150}
-                    height={64}
-                    className="h-10 w-auto object-contain sm:h-11"
+                    fill
+                    sizes="(min-width: 1024px) 208px, 160px"
+                    className="object-cover"
                   />
                 </div>
+                <span
+                  aria-hidden
+                  className="flex w-full items-center gap-3 text-base font-light leading-none text-wl-text-tertiary lg:text-lg"
+                >
+                  <span className="h-px flex-1 bg-wl-border" />
+                  ×
+                  <span className="h-px flex-1 bg-wl-border" />
+                </span>
+                <Image
+                  src={hero.partnerLogo}
+                  alt={hero.partnerName}
+                  width={180}
+                  height={180}
+                  className="h-20 w-auto object-contain lg:h-32"
+                />
               </div>
             </div>
           </div>
