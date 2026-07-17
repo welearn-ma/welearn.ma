@@ -224,10 +224,13 @@ export async function listSponsors(
 
   if (error) {
     console.error("Supabase select error (sponsors):", error);
+    // Route reservee aux admins authentifies : exposer le code PostgREST
+    // (ex. PGRST200 = embed introuvable -> backend desynchronise du schema)
+    // rend le diagnostic possible sans acces aux logs du serveur.
     return res.status(500).json({
       success: false,
       data: [],
-      message: "Impossible de recuperer les sponsors",
+      message: `Impossible de recuperer les sponsors (${error.code ?? "?"}: ${error.message})`,
     });
   }
 
