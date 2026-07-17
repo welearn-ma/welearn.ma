@@ -84,10 +84,13 @@ export function SponsoringLanding({
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-linear-to-br from-wl-blue to-wl-blue-dark py-10 lg:py-14">
+      {/* min-h = viewport moins la navbar sticky (72px, en flux) : le hero
+          remplit exactement la première vue, la section suivante commence
+          au pli — ni bande blanche, ni débordement. */}
+      <section className="relative flex min-h-[calc(100svh-72px)] items-center overflow-hidden bg-linear-to-br from-wl-blue to-wl-blue-dark py-10 lg:py-14">
         <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/4" />
         <div className="pointer-events-none absolute -bottom-16 -left-16 h-56 w-56 rounded-full bg-white/3" />
-        <div className="relative mx-auto max-w-6xl px-4 text-center lg:px-8">
+        <div className="relative mx-auto w-full max-w-6xl px-4 text-center lg:px-8">
           {/* Lockup co-brandé Welearn × partenaire, horizontal au-dessus du
               contenu. Il remplace le badge texte : les logos disent déjà le
               partenariat. */}
@@ -166,18 +169,18 @@ export function SponsoringLanding({
             {contexte.heading}
           </h2>
 
-          <div className="grid items-stretch text-stretch gap-10 md:grid-cols-2">
+          <div className="grid items-stretch gap-10 md:grid-cols-2">
             <div className="space-y-4">
               {contexte.paragraphs.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className="text-base leading-relaxed text-wl-text-secondary"
+                  className="text-justify text-base leading-relaxed text-wl-text-secondary"
                 >
                   {paragraph}
                 </p>
               ))}
             </div>
-            <div className="rounded-xl border border-wl-blue/20 bg-wl-blue-tint p-8">
+            <div className="flex flex-col justify-center rounded-xl border border-wl-blue/20 bg-wl-blue-tint p-8">
               <h3 className="mb-4 font-semibold text-wl-text">
                 {contexte.cardTitle}
               </h3>
