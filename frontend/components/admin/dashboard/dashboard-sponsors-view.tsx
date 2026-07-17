@@ -1,14 +1,44 @@
-import { Download, Eye, Filter, Mail, RefreshCw, Search } from "lucide-react";
+import {
+  CalendarDays,
+  Clock,
+  Download,
+  Eye,
+  Filter,
+  FolderKanban,
+  Mail,
+  RefreshCw,
+  RotateCcw,
+  Search,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { AdminSponsorRecord } from "@/types/sponsor";
-import { formatDate, neutralActionButtonClass } from "./dashboard-utils";
+import {
+  formatDate,
+  neutralActionButtonClass,
+  sponsorProgramLabel,
+} from "./dashboard-utils";
 
-function StatTile({ label, value }: { label: string; value: number }) {
+function StatTile({
+  label,
+  value,
+  total,
+}: {
+  label: string;
+  value: number;
+  total: number;
+}) {
   return (
     <div className="rounded-xl border border-wl-border bg-wl-gray-light px-4 py-3">
-      <p className="text-2xl font-semibold text-wl-blue">{value}</p>
+      <p className="text-2xl font-semibold text-wl-blue">
+        {value}
+        {total !== value ? (
+          <span className="ml-1.5 text-sm font-normal text-wl-text-tertiary">
+            sur {total}
+          </span>
+        ) : null}
+      </p>
       <p className="mt-0.5 text-xs text-wl-text-secondary">{label}</p>
     </div>
   );
@@ -16,28 +46,50 @@ function StatTile({ label, value }: { label: string; value: number }) {
 
 export function DashboardSponsorsView({
   rows,
+  totals,
   search,
   onSearch,
   programFilter,
   onProgramFilter,
   programOptions,
+  formationFilter,
+  onFormationFilter,
+  formationOptions,
+  dateFrom,
+  onDateFrom,
+  dateTo,
+  onDateTo,
+  last24h,
+  onLast24h,
+  onResetFilters,
   onRefresh,
   onExport,
   onView,
   onContact,
 }: {
   rows: AdminSponsorRecord[];
+  totals: { sponsors: number; formations: number; entreprises: number };
   search: string;
   onSearch: (value: string) => void;
   programFilter: string;
   onProgramFilter: (value: string) => void;
   programOptions: Array<{ value: string; label: string }>;
+  formationFilter: string;
+  onFormationFilter: (value: string) => void;
+  formationOptions: Array<{ value: string; label: string }>;
+  dateFrom: string;
+  onDateFrom: (value: string) => void;
+  dateTo: string;
+  onDateTo: (value: string) => void;
+  last24h: boolean;
+  onLast24h: (value: boolean) => void;
+  onResetFilters: () => void;
   onRefresh: () => void;
   onExport: () => void;
   onView: (sponsor: AdminSponsorRecord) => void;
   onContact: (email: string) => void;
 }) {
-  const totalMoocs = rows.reduce(
+  const totalFormations = rows.reduce(
     (sum, item) => sum + item.formations.length,
     0,
   );
@@ -52,7 +104,7 @@ export function DashboardSponsorsView({
           <div>
             <h2 className="text-2xl font-semibold text-wl-text">Sponsors</h2>
             <p className="mt-1 text-sm text-wl-text-secondary">
-              Organisations souhaitant parrainer un ou plusieurs MOOCs
+              Organisations souhaitant parrainer une ou plusieurs formations
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -75,18 +127,26 @@ export function DashboardSponsorsView({
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          <StatTile label="Sponsors" value={rows.length} />
-          <StatTile label="MOOCs parrainés" value={totalMoocs} />
-          <StatTile label="Entreprises" value={uniqueCompanies} />
+          <StatTile label="Sponsors" value={rows.length} total={totals.sponsors} />
+          <StatTile
+            label="Formations parrainées"
+            value={totalFormations}
+            total={totals.formations}
+          />
+          <StatTile
+            label="Entreprises"
+            value={uniqueCompanies}
+            total={totals.entreprises}
+          />
         </div>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-2">
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
           <label className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-wl-text-tertiary" />
             <Input
               value={search}
               onChange={(event) => onSearch(event.target.value)}
-              placeholder="Rechercher un sponsor, entreprise, email, MOOC..."
+              placeholder="Rechercher un sponsor, entreprise, email, formation..."
               className="border-wl-border bg-white pl-9 text-wl-text placeholder:text-wl-text-tertiary"
             />
           </label>
@@ -106,6 +166,78 @@ export function DashboardSponsorsView({
               ))}
             </select>
           </label>
+
+          <label className="relative">
+            <FolderKanban className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-wl-text-tertiary" />
+            <select
+              value={formationFilter}
+              onChange={(event) => onFormationFilter(event.target.value)}
+              disabled={!formationOptions.length}
+              className="h-9 w-full rounded-md border border-wl-border bg-white pl-9 pr-3 text-sm text-wl-text outline-none focus:ring-2 focus:ring-wl-blue/20 disabled:cursor-not-allowed disabled:bg-wl-gray-light disabled:text-wl-text-tertiary"
+            >
+              {formationOptions.length ? (
+                <>
+                  <option value="all">Toutes les formations</option>
+                  {formationOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </>
+              ) : (
+                <option value="all">Aucune formation</option>
+              )}
+            </select>
+          </label>
+        </div>
+
+        <div className="mt-3 grid gap-3 md:grid-cols-[1fr_1fr_auto_auto]">
+          <label className="relative">
+            <CalendarDays className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-wl-text-tertiary" />
+            <Input
+              type="date"
+              value={dateFrom}
+              onChange={(event) => onDateFrom(event.target.value)}
+              aria-label="Date de début"
+              className="border-wl-border bg-white pl-9 text-wl-text"
+            />
+          </label>
+
+          <label className="relative">
+            <CalendarDays className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-wl-text-tertiary" />
+            <Input
+              type="date"
+              value={dateTo}
+              onChange={(event) => onDateTo(event.target.value)}
+              aria-label="Date de fin"
+              className="border-wl-border bg-white pl-9 text-wl-text"
+            />
+          </label>
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => onLast24h(!last24h)}
+            aria-pressed={last24h}
+            className={
+              last24h
+                ? "border-wl-blue bg-wl-blue text-white hover:bg-wl-blue-dark hover:text-white"
+                : neutralActionButtonClass
+            }
+          >
+            <Clock className="h-4 w-4" />
+            Dernières 24h
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onResetFilters}
+            className={neutralActionButtonClass}
+          >
+            <RotateCcw className="h-4 w-4" />
+            Réinitialiser
+          </Button>
         </div>
       </div>
 
@@ -117,7 +249,8 @@ export function DashboardSponsorsView({
                 <th className="py-3 pr-4 font-medium">Sponsor</th>
                 <th className="py-3 pr-4 font-medium">Rôle</th>
                 <th className="py-3 pr-4 font-medium">Contact</th>
-                <th className="py-3 pr-4 font-medium">MOOCs sponsorisés</th>
+                <th className="py-3 pr-4 font-medium">Programme</th>
+                <th className="py-3 pr-4 font-medium">Formations sponsorisées</th>
                 <th className="py-3 pr-4 font-medium">Date</th>
                 <th className="py-3 font-medium">Actions</th>
               </tr>
@@ -141,6 +274,14 @@ export function DashboardSponsorsView({
                     <p>{item.telephone}</p>
                   </td>
                   <td className="py-3 pr-4">
+                    <Badge
+                      variant="outline"
+                      className="border-wl-border bg-wl-gray-light text-wl-text-secondary"
+                    >
+                      {sponsorProgramLabel(item.program)}
+                    </Badge>
+                  </td>
+                  <td className="py-3 pr-4">
                     <div className="flex max-w-md flex-wrap gap-1.5">
                       {item.formations.length ? (
                         item.formations.map((formation, index) => (
@@ -154,7 +295,9 @@ export function DashboardSponsorsView({
                         ))
                       ) : (
                         <span className="text-xs text-wl-text-tertiary">
-                          Aucun MOOC
+                          {item.program === "fnpi"
+                            ? "Contact seul"
+                            : "Aucune formation"}
                         </span>
                       )}
                     </div>

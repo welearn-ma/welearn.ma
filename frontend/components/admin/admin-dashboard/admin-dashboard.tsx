@@ -101,18 +101,29 @@ export function AdminDashboard({
               onRefresh={() => void controller.refreshData()}
               onExport={() => exportCsv(controller.filteredRows)}
             >
-              <DashboardActivityList rows={controller.filteredRows} />
+              <DashboardActivityList items={controller.activityItems} />
             </DashboardViewShell>
           ) : null}
 
           {controller.view === "sponsors" ? (
             <DashboardSponsorsView
               rows={controller.filteredSponsors}
+              totals={controller.sponsorTotals}
               search={controller.sponsorSearch}
               onSearch={controller.setSponsorSearch}
               programFilter={controller.sponsorProgramFilter}
               onProgramFilter={controller.setSponsorProgramFilter}
               programOptions={controller.sponsorProgramOptions}
+              formationFilter={controller.sponsorFormationFilter}
+              onFormationFilter={controller.setSponsorFormationFilter}
+              formationOptions={controller.sponsorFormationOptions}
+              dateFrom={controller.sponsorDateFrom}
+              onDateFrom={controller.setSponsorDateFrom}
+              dateTo={controller.sponsorDateTo}
+              onDateTo={controller.setSponsorDateTo}
+              last24h={controller.sponsorLast24h}
+              onLast24h={controller.setSponsorLast24h}
+              onResetFilters={controller.resetSponsorFilters}
               onRefresh={() => void controller.refreshSponsors()}
               onExport={() => exportSponsorsCsv(controller.filteredSponsors)}
               onView={controller.setSelectedSponsor}

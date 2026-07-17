@@ -8,10 +8,12 @@ import { clearAdminSessionStorage } from "@/lib/admin-session-storage";
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
 import type { AdminSponsorRecord } from "@/types/sponsor";
 import type {
+  ActivityItem,
   AdminView,
   DateFilter,
   FormationSummary,
 } from "../dashboard/dashboard-types";
+import { sponsorProgramLabel } from "../dashboard/dashboard-utils";
 
 export function useAdminDashboardController(accessToken: string) {
   const router = useRouter();
@@ -30,6 +32,10 @@ export function useAdminDashboardController(accessToken: string) {
   const [sponsorRows, setSponsorRows] = useState<AdminSponsorRecord[]>([]);
   const [sponsorSearch, setSponsorSearch] = useState("");
   const [sponsorProgramFilter, setSponsorProgramFilter] = useState("all");
+  const [sponsorFormationFilter, setSponsorFormationFilter] = useState("all");
+  const [sponsorDateFrom, setSponsorDateFrom] = useState("");
+  const [sponsorDateTo, setSponsorDateTo] = useState("");
+  const [sponsorLast24h, setSponsorLast24h] = useState(false);
   const [selectedSponsor, setSelectedSponsor] =
     useState<AdminSponsorRecord | null>(null);
 
@@ -170,12 +176,35 @@ export function useAdminDashboardController(accessToken: string) {
     );
   }, [rows, selectedFormationTitle]);
 
-  // Filtre groupé par formation_slug (clé stable) ; le libellé affiché est
-  // dérivé du référentiel côté API. Fallback sur le nom pour les lignes
-  // legacy sans slug.
+  // Programmes reellement presents en donnees (sponsors.program) ; aucune
+  // valeur codee en dur pour absorber les programmes futurs.
   const sponsorProgramOptions = useMemo(() => {
+    const values = new Set<string>();
+    for (const item of sponsorRows) {
+      if (item.program) {
+        values.add(item.program);
+      }
+    }
+    return Array.from(values)
+      .map((value) => ({
+        value,
+        label: sponsorProgramLabel(value as AdminSponsorRecord["program"]),
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, [sponsorRows]);
+
+  // Options formation DEPENDANTES du programme selectionne : couples
+  // slug (cle stable) / libelle canonique presents dans les donnees du
+  // programme. Fallback sur le nom pour les lignes legacy sans slug.
+  const sponsorFormationOptions = useMemo(() => {
     const options = new Map<string, string>();
     for (const item of sponsorRows) {
+      if (
+        sponsorProgramFilter !== "all" &&
+        item.program !== sponsorProgramFilter
+      ) {
+        continue;
+      }
       for (const formation of item.formations) {
         options.set(formation.slug ?? formation.name, formation.name);
       }
@@ -183,19 +212,48 @@ export function useAdminDashboardController(accessToken: string) {
     return Array.from(options.entries())
       .map(([value, label]) => ({ value, label }))
       .sort((a, b) => a.label.localeCompare(b.label));
-  }, [sponsorRows]);
+  }, [sponsorRows, sponsorProgramFilter]);
 
   const filteredSponsors = useMemo(() => {
+    const now = Date.now();
     const needle = sponsorSearch.trim().toLowerCase();
+    const fromTime = sponsorDateFrom
+      ? new Date(`${sponsorDateFrom}T00:00:00`).getTime()
+      : null;
+    const toTime = sponsorDateTo
+      ? new Date(`${sponsorDateTo}T23:59:59.999`).getTime()
+      : null;
 
     return sponsorRows.filter((item) => {
       if (
         sponsorProgramFilter !== "all" &&
+        item.program !== sponsorProgramFilter
+      ) {
+        return false;
+      }
+
+      if (
+        sponsorFormationFilter !== "all" &&
         !item.formations.some(
           (formation) =>
-            (formation.slug ?? formation.name) === sponsorProgramFilter,
+            (formation.slug ?? formation.name) === sponsorFormationFilter,
         )
       ) {
+        return false;
+      }
+
+      const createdAt = new Date(item.createdAt).getTime();
+
+      if (fromTime !== null && createdAt < fromTime) {
+        return false;
+      }
+
+      if (toTime !== null && createdAt > toTime) {
+        return false;
+      }
+
+      // Meme fenetre que le compteur "Dernieres 24h" de la sidebar.
+      if (sponsorLast24h && now - createdAt > 24 * 60 * 60 * 1000) {
         return false;
       }
 
@@ -213,10 +271,102 @@ export function useAdminDashboardController(accessToken: string) {
         )
       );
     });
-  }, [sponsorRows, sponsorSearch, sponsorProgramFilter]);
+  }, [
+    sponsorRows,
+    sponsorSearch,
+    sponsorProgramFilter,
+    sponsorFormationFilter,
+    sponsorDateFrom,
+    sponsorDateTo,
+    sponsorLast24h,
+  ]);
+
+  // Totaux non filtres, affiches en regard des stats filtrees ("sur N").
+  const sponsorTotals = useMemo(
+    () => ({
+      sponsors: sponsorRows.length,
+      formations: sponsorRows.reduce(
+        (sum, item) => sum + item.formations.length,
+        0,
+      ),
+      entreprises: new Set(
+        sponsorRows.map((item) => item.entreprise.trim().toLowerCase()),
+      ).size,
+    }),
+    [sponsorRows],
+  );
+
+  // Flux d'activite : agregation des tables sources (registration_requests
+  // + sponsors) — il n'existe pas de table d'evenements dediee. Les
+  // evenements sponsor respectent les memes filtres date/recherche/formation
+  // que les inscriptions.
+  const activityItems = useMemo<ActivityItem[]>(() => {
+    const now = Date.now();
+    const needle = search.trim().toLowerCase();
+    const maxAgeMs =
+      dateFilter === "all"
+        ? null
+        : dateFilter === "7d"
+          ? 7 * 24 * 60 * 60 * 1000
+          : dateFilter === "30d"
+            ? 30 * 24 * 60 * 60 * 1000
+            : 90 * 24 * 60 * 60 * 1000;
+
+    const sponsorEvents: ActivityItem[] = sponsorRows
+      .filter((item) => {
+        if (
+          formationFilter !== "all" &&
+          !item.formations.some(
+            (formation) => formation.name === formationFilter,
+          )
+        ) {
+          return false;
+        }
+
+        if (
+          maxAgeMs !== null &&
+          now - new Date(item.createdAt).getTime() > maxAgeMs
+        ) {
+          return false;
+        }
+
+        if (!needle) {
+          return true;
+        }
+
+        return (
+          `${item.prenom} ${item.nom}`.toLowerCase().includes(needle) ||
+          item.entreprise.toLowerCase().includes(needle) ||
+          item.email.toLowerCase().includes(needle) ||
+          item.formations.some((formation) =>
+            formation.name.toLowerCase().includes(needle),
+          )
+        );
+      })
+      .map((record) => ({
+        kind: "sponsor" as const,
+        createdAt: record.createdAt,
+        record,
+      }));
+
+    const registrationEvents: ActivityItem[] = filteredRows.map((record) => ({
+      kind: "inscription" as const,
+      createdAt: record.createdAt,
+      record,
+    }));
+
+    return [...registrationEvents, ...sponsorEvents].sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+  }, [filteredRows, sponsorRows, search, dateFilter, formationFilter]);
 
   const activeRows: Array<{ createdAt: string }> =
-    view === "sponsors" ? filteredSponsors : filteredRows;
+    view === "sponsors"
+      ? filteredSponsors
+      : view === "activite"
+        ? activityItems
+        : filteredRows;
   const totalRows = activeRows.length;
   const last24h = activeRows.filter(
     (item) =>
@@ -232,6 +382,22 @@ export function useAdminDashboardController(accessToken: string) {
     window.open(`mailto:${encodeURIComponent(email)}`);
   };
 
+  const resetSponsorFilters = () => {
+    setSponsorSearch("");
+    setSponsorProgramFilter("all");
+    setSponsorFormationFilter("all");
+    setSponsorDateFrom("");
+    setSponsorDateTo("");
+    setSponsorLast24h(false);
+  };
+
+  // Changer de programme reinitialise la formation : ses options dependent
+  // du programme et la valeur courante peut ne plus exister.
+  const handleSponsorProgramFilter = (value: string) => {
+    setSponsorProgramFilter(value);
+    setSponsorFormationFilter("all");
+  };
+
   const handleViewChange = (nextView: AdminView) => {
     setView(nextView);
     setSearch("");
@@ -239,8 +405,7 @@ export function useAdminDashboardController(accessToken: string) {
     setFormationFilter("all");
     setSelectedFormationTitle(null);
     setSelectedRequest(null);
-    setSponsorSearch("");
-    setSponsorProgramFilter("all");
+    resetSponsorFilters();
     setSelectedSponsor(null);
   };
 
@@ -266,8 +431,20 @@ export function useAdminDashboardController(accessToken: string) {
     sponsorSearch,
     setSponsorSearch,
     sponsorProgramFilter,
-    setSponsorProgramFilter,
+    setSponsorProgramFilter: handleSponsorProgramFilter,
     sponsorProgramOptions,
+    sponsorFormationFilter,
+    setSponsorFormationFilter,
+    sponsorFormationOptions,
+    sponsorDateFrom,
+    setSponsorDateFrom,
+    sponsorDateTo,
+    setSponsorDateTo,
+    sponsorLast24h,
+    setSponsorLast24h,
+    resetSponsorFilters,
+    sponsorTotals,
+    activityItems,
     selectedSponsor,
     setSelectedSponsor,
     refreshSponsors,

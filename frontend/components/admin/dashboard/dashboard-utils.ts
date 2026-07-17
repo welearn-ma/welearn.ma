@@ -1,8 +1,22 @@
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
-import type { AdminSponsorRecord } from "@/types/sponsor";
+import type { AdminSponsorRecord, SponsorProgram } from "@/types/sponsor";
 
 export const neutralActionButtonClass =
   "border-wl-border text-wl-text-secondary transition-colors hover:border-wl-blue/30 hover:bg-wl-blue-tint hover:text-wl-blue";
+
+/**
+ * Libelles d'affichage des programmes de sponsoring (valeurs de
+ * sponsors.program). 'sponsoring' = page generique historique /sponsoring.
+ */
+const SPONSOR_PROGRAM_LABELS: Record<SponsorProgram, string> = {
+  sponsoring: "Sponsoring (général)",
+  mooc: "MOOC",
+  fnpi: "FNPI",
+};
+
+export function sponsorProgramLabel(program: SponsorProgram | null): string {
+  return program ? (SPONSOR_PROGRAM_LABELS[program] ?? program) : "—";
+}
 
 export function formatDate(value: string) {
   return new Intl.DateTimeFormat("fr-MA", {
@@ -63,6 +77,7 @@ function toSponsorsCsv(rows: AdminSponsorRecord[]) {
     "role",
     "email",
     "telephone",
+    "program",
     "formationSlugs",
     "formationNames",
     "createdAt",
@@ -77,6 +92,7 @@ function toSponsorsCsv(rows: AdminSponsorRecord[]) {
       item.role || "",
       item.email,
       item.telephone,
+      item.program ?? "",
       item.formations.map((formation) => formation.slug ?? "").join(" | "),
       item.formations.map((formation) => formation.name).join(" | "),
       item.createdAt,

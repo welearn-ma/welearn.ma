@@ -2,7 +2,11 @@ import { Mail, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { AdminSponsorRecord } from "@/types/sponsor";
-import { formatDate, neutralActionButtonClass } from "./dashboard-utils";
+import {
+  formatDate,
+  neutralActionButtonClass,
+  sponsorProgramLabel,
+} from "./dashboard-utils";
 
 export function DashboardSponsorModal({
   selectedSponsor,
@@ -68,8 +72,14 @@ export function DashboardSponsorModal({
             </p>
           </div>
           <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3 md:col-span-2">
+            <p className="text-xs text-wl-text-tertiary">Programme</p>
+            <p className="mt-1 text-sm text-wl-text">
+              {sponsorProgramLabel(selectedSponsor.program)}
+            </p>
+          </div>
+          <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3 md:col-span-2">
             <p className="text-xs text-wl-text-tertiary">
-              MOOCs sponsorisés ({selectedSponsor.formations.length})
+              Formations sponsorisées ({selectedSponsor.formations.length})
             </p>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {selectedSponsor.formations.length ? (
@@ -84,7 +94,9 @@ export function DashboardSponsorModal({
                 ))
               ) : (
                 <span className="text-sm text-wl-text-tertiary">
-                  Aucun MOOC
+                  {selectedSponsor.program === "fnpi"
+                    ? "Contact seul"
+                    : "Aucune formation"}
                 </span>
               )}
             </div>

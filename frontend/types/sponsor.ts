@@ -33,6 +33,8 @@ export type AdminSponsorRecord = {
   telephone: string;
   email: string;
   formations: SponsorFormation[];
+  /** Page d'origine de la demande ; null uniquement pour une ligne legacy. */
+  program: SponsorProgram | null;
   createdAt: string;
 };
 

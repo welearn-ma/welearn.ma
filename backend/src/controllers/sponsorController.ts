@@ -217,7 +217,7 @@ export async function listSponsors(
   const { data, error } = await supabase
     .from("sponsors")
     .select(
-      "id, created_at, nom, prenom, entreprise, role, telephone, email, sponsor_formations(formation_slug, formation_name)",
+      "id, created_at, nom, prenom, entreprise, role, telephone, email, program, sponsor_formations(formation_slug, formation_name)",
     )
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -240,6 +240,7 @@ export async function listSponsors(
     role: string | null;
     telephone: string;
     email: string;
+    program: string | null;
     sponsor_formations: Array<{
       formation_slug: string | null;
       formation_name: string;
@@ -258,6 +259,11 @@ export async function listSponsors(
       slug: formation.formation_slug,
       name: formationLabel(formation.formation_slug, formation.formation_name),
     })),
+    program: (ALLOWED_PROGRAMS as readonly string[]).includes(
+      item.program ?? "",
+    )
+      ? (item.program as SponsorRecord["program"])
+      : null,
     createdAt: item.created_at,
   }));
 
