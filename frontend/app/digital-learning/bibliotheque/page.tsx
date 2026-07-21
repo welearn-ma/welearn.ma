@@ -14,55 +14,31 @@ export const metadata: Metadata = {
 
 const courses = [
   {
-    title: "Technologie Béton",
+    title: "Le béton, le matériau de construction par excellence",
     category: "Matériaux",
-    duration: "4h",
-    modules: 24,
+    duration: "10h",
+    modules: 5,
     learners: 1100,
     description:
       "Formation complète sur la technologie du béton : composition, mise en œuvre, pathologies.",
   },
   {
-    title: "Étanchéité Bâtiment",
+    title:
+      "Étanchéité et isolation des toitures terrasses et des toitures inclinées",
     category: "Techniques",
-    duration: "3h",
-    modules: 18,
-    learners: 500,
+    duration: "10h",
+    modules: 5,
+    learners: 100,
     description:
       "Maîtrisez les techniques d'étanchéité : toitures, fondations, façades.",
   },
   {
-    title: "Introduction au BIM",
+    title: "BIM Foundations - Professional",
     category: "BIM",
-    duration: "2h",
-    modules: 12,
-    learners: 800,
+    duration: "21h",
+    modules: 5,
+    learners: 130,
     description: "Découvrez les fondamentaux du Building Information Modeling.",
-  },
-  {
-    title: "Sécurité Chantier",
-    category: "Sécurité",
-    duration: "2h30",
-    modules: 15,
-    learners: 1500,
-    description:
-      "Les règles essentielles de sécurité sur les chantiers de construction.",
-  },
-  {
-    title: "Réglementation Thermique",
-    category: "Réglementation",
-    duration: "3h",
-    modules: 20,
-    learners: 600,
-    description: "Comprendre et appliquer la réglementation thermique RE2020.",
-  },
-  {
-    title: "Lecture de Plans",
-    category: "Fondamentaux",
-    duration: "2h",
-    modules: 10,
-    learners: 900,
-    description: "Apprendre à lire et interpréter les plans de construction.",
   },
 ];
 
@@ -148,7 +124,13 @@ export default function BibliothequePage() {
                     asChild
                     className="w-full bg-wl-blue hover:bg-wl-blue-dark text-white"
                   >
-                    <Link href="/contact">Accéder au cours</Link>
+                    <a
+                      href="https://welearn.ac"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Accéder au cours
+                    </a>
                   </Button>
                 </div>
               </div>
