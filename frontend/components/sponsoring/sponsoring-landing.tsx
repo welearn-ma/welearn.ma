@@ -26,8 +26,16 @@ export type SponsoringLandingProps = {
     subtitle: string;
     /** Nom du partenaire co-brandé (alt du logo). */
     partnerName: string;
-    /** Chemin du logo partenaire — le fichier doit exister dans /public. */
+    /**
+     * Chemin du logo partenaire — le fichier doit exister dans /public.
+     * Utiliser un visuel recadré sur le pictogramme + sigle (sans le
+     * sous-texte multilingue), sous peine d'un rendu illisible/pixelisé
+     * une fois réduit à la hauteur du bandeau du hero.
+     */
     partnerLogo: string;
+    /** Dimensions intrinsèques du fichier ci-dessus, pour un ratio correct. */
+    partnerLogoWidth: number;
+    partnerLogoHeight: number;
     /** 2 à 4 points de valeur repris du contenu existant de la page. */
     chips: string[];
   };
@@ -116,8 +124,8 @@ export function SponsoringLanding({
               <Image
                 src={hero.partnerLogo}
                 alt={hero.partnerName}
-                width={120}
-                height={120}
+                width={hero.partnerLogoWidth}
+                height={hero.partnerLogoHeight}
                 className="h-9 w-auto object-contain sm:h-10 lg:h-12"
               />
             </div>
