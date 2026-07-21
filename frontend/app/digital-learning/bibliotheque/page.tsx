@@ -42,16 +42,6 @@ const courses = [
   },
 ];
 
-const categories = [
-  "Tous",
-  "BIM",
-  "Matériaux",
-  "Techniques",
-  "Sécurité",
-  "Réglementation",
-  "Fondamentaux",
-];
-
 export default function BibliothequePage() {
   return (
     <>
@@ -71,25 +61,12 @@ export default function BibliothequePage() {
             description="Des formations accessibles 24/7 pour monter en compétences à votre rythme."
           />
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap gap-2 mb-12 justify-center">
-            {categories.map((category) => (
-              <Badge
-                key={category}
-                variant={category === "Tous" ? "default" : "outline"}
-                className={`cursor-pointer px-4 py-2 ${category === "Tous" ? "bg-wl-blue text-white" : "border-wl-border bg-white text-wl-text hover:bg-wl-blue-tint"}`}
-              >
-                {category}
-              </Badge>
-            ))}
-          </div>
-
           {/* Courses Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course, idx) => (
               <div
                 key={idx}
-                className="group overflow-hidden rounded-2xl border border-wl-border bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-wl-border bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
               >
                 <div className="relative flex aspect-video items-center justify-center bg-linear-to-br from-wl-blue-tint to-wl-orange-tint">
                   <div className="rounded-full bg-white/90 p-4 backdrop-blur-sm transition-all group-hover:scale-110 group-hover:bg-wl-blue">
@@ -99,11 +76,11 @@ export default function BibliothequePage() {
                     {course.category}
                   </Badge>
                 </div>
-                <div className="p-6">
+                <div className="flex flex-1 flex-col p-6">
                   <h3 className="font-sans text-lg font-bold text-wl-text mb-2">
                     {course.title}
                   </h3>
-                  <p className="mb-4 text-sm text-wl-text-secondary">
+                  <p className="mb-4 flex-1 text-sm text-wl-text-secondary">
                     {course.description}
                   </p>
                   <div className="mb-4 flex items-center gap-4 text-sm text-wl-text-secondary">
