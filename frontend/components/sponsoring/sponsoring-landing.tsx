@@ -104,17 +104,16 @@ export function SponsoringLanding({
               partenariat. */}
           <div className="mx-auto mb-7 w-fit">
             <div className="flex items-center gap-3 rounded-xl bg-white px-4 py-2.5 shadow-lg sm:gap-4 lg:px-5 lg:py-3">
-              {/* welearn-logo.png : canevas carré aux larges marges
-                  transparentes — cadrage sur la bande du wordmark. */}
-              <div className="relative aspect-[2.9/1] w-24 overflow-hidden sm:w-28 lg:w-32">
-                <Image
-                  src="/images/welearn-logo.png"
-                  alt="Welearn"
-                  fill
-                  sizes="128px"
-                  className="object-cover"
-                />
-              </div>
+              {/* welearn-wordmark.png : wordmark détouré (marges transparentes
+                  supprimées), rendu comme le logo partenaire — object-contain
+                  à hauteur fixe, ratio naturel, sans recadrage. */}
+              <Image
+                src="/images/welearn-wordmark.png"
+                alt="Welearn"
+                width={1778}
+                height={534}
+                className="h-6 w-auto object-contain sm:h-7 lg:h-8"
+              />
               <span
                 aria-hidden
                 className="text-sm font-light leading-none text-wl-text-tertiary"
@@ -132,7 +131,8 @@ export function SponsoringLanding({
           </div>
 
           <h1 className="mb-4 font-sans text-3xl font-bold leading-tight tracking-tight text-balance text-white sm:text-4xl xl:text-5xl">
-            {hero.titleLead}{" "}
+            {hero.titleLead}
+            <br />
             <span className="text-wl-highlight">{hero.titleEmphasis}</span>
           </h1>
           <p className="mx-auto mb-5 max-w-4xl text-base leading-relaxed text-white/75 md:text-lg">

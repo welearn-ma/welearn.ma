@@ -24,11 +24,11 @@ export const metadata: Metadata = {
 const CONTENT: SponsoringLandingProps = {
   hero: {
     eyebrow: "Formation FNPI × Welearn",
-    titleLead: "Programme de formation FNPI —",
+    titleLead: "Plan de formation FNPI - Welearn",
     titleEmphasis:
       "Devenez partenaire de la montée en compétences de la filière immobilière",
     subtitle:
-      "La Fédération Nationale de la Promotion Immobilière et Welearn lancent un programme de formation présentielle destiné à l'ensemble des professionnels de la promotion immobilière au Maroc.",
+      "Dans le cadre du Plan de Formation FNPI 2026/2027, nous lançons un plan de formation présentielle destiné à l'ensemble des professionnels de la promotion immobilière au Maroc.",
     partnerName: "FNPI",
     partnerLogo: "/partners/fnpi-mark.webp",
     partnerLogoWidth: 1280,
