@@ -48,7 +48,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
       <div className="mx-auto max-w-3xl px-4 lg:px-8">
         <Link
           href="/blog/"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-wl-blue hover:underline mb-10"
+          className="flex w-fit items-center gap-2 text-sm font-semibold text-wl-blue hover:underline mb-10"
         >
           <ArrowLeft className="h-4 w-4" /> Retour au blog
         </Link>
