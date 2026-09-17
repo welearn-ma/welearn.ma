@@ -26,9 +26,9 @@ import { sponsorProgramLabel } from "../dashboard/dashboard-utils";
 
 export function useAdminDashboardController(accessToken: string) {
   const router = useRouter();
-  const [view, setView] = useState<AdminView>("inscriptions");
+  const [view, setView] = useState<AdminView>("activite");
   const [search, setSearch] = useState("");
-  const [dateFilter, setDateFilter] = useState<DateFilter>("30d");
+  const [dateFilter, setDateFilter] = useState<DateFilter>("all");
   const [formationFilter, setFormationFilter] = useState("all");
   const [selectedFormationTitle, setSelectedFormationTitle] = useState<
     string | null
@@ -383,7 +383,7 @@ export function useAdminDashboardController(accessToken: string) {
   const handleViewChange = (nextView: AdminView) => {
     setView(nextView);
     setSearch("");
-    setDateFilter("30d");
+    setDateFilter("all");
     setFormationFilter("all");
     setSelectedFormationTitle(null);
     setSelectedRequest(null);

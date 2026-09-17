@@ -2,9 +2,9 @@ import { Activity, HeartHandshake, Inbox } from "lucide-react";
 import type { AdminView } from "./dashboard-types";
 
 const viewConfig = [
+  { id: "activite", label: "Activite", icon: Activity },
   { id: "inscriptions", label: "Inscriptions", icon: Inbox },
   { id: "sponsors", label: "Sponsors", icon: HeartHandshake },
-  { id: "activite", label: "Activite", icon: Activity },
 ] as const;
 
 export function DashboardSidebar({
