@@ -1,8 +1,23 @@
+import { FolderKanban, Users } from "lucide-react";
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
 import type { AdminSponsorRecord, SponsorProgram } from "@/types/sponsor";
+import type { InscriptionsDisplayMode, RequestStatus } from "./dashboard-types";
+import type { SegmentedToggleOption } from "./dashboard-segmented-toggle";
 
 export const neutralActionButtonClass =
   "border-wl-border text-wl-text-secondary transition-colors hover:border-wl-blue/30 hover:bg-wl-blue-tint hover:text-wl-blue";
+
+export const REQUEST_STATUS_OPTIONS: Array<SegmentedToggleOption<RequestStatus>> = [
+  { id: "new", label: "Nouveaux" },
+  { id: "treated", label: "Traités" },
+];
+
+export const INSCRIPTIONS_DISPLAY_MODE_OPTIONS: Array<
+  SegmentedToggleOption<InscriptionsDisplayMode>
+> = [
+  { id: "students", label: "Étudiants", icon: Users },
+  { id: "formations", label: "Formations", icon: FolderKanban },
+];
 
 /**
  * Libelles d'affichage des programmes de sponsoring (valeurs de

@@ -1,9 +1,8 @@
-import { Activity, FolderKanban, HeartHandshake, Inbox } from "lucide-react";
+import { Activity, HeartHandshake, Inbox } from "lucide-react";
 import type { AdminView } from "./dashboard-types";
 
 const viewConfig = [
   { id: "inscriptions", label: "Inscriptions", icon: Inbox },
-  { id: "formations", label: "Par formation", icon: FolderKanban },
   { id: "sponsors", label: "Sponsors", icon: HeartHandshake },
   { id: "activite", label: "Activite", icon: Activity },
 ] as const;

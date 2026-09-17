@@ -8,10 +8,15 @@ import { DashboardRequestModal } from "../dashboard/dashboard-request-modal";
 import { DashboardSessionHeader } from "../dashboard/dashboard-session-header";
 import { DashboardSidebar } from "../dashboard/dashboard-sidebar";
 import { DashboardSponsorModal } from "../dashboard/dashboard-sponsor-modal";
+import { DashboardSegmentedToggle } from "../dashboard/dashboard-segmented-toggle";
 import { DashboardSponsorsView } from "../dashboard/dashboard-sponsors-view";
-import { DashboardStatusTabs } from "../dashboard/dashboard-status-tabs";
 import { DashboardViewShell } from "../dashboard/dashboard-view-shell";
-import { exportCsv, exportSponsorsCsv } from "../dashboard/dashboard-utils";
+import {
+  exportCsv,
+  exportSponsorsCsv,
+  INSCRIPTIONS_DISPLAY_MODE_OPTIONS,
+  REQUEST_STATUS_OPTIONS,
+} from "../dashboard/dashboard-utils";
 import { useAdminDashboardController } from "./use-admin-dashboard-controller";
 
 export function AdminDashboard({
@@ -59,41 +64,34 @@ export function AdminDashboard({
               onRefresh={() => void controller.refreshData()}
               onExport={() => exportCsv(controller.filteredRows)}
             >
-              <div className="mb-4">
-                <DashboardStatusTabs
-                  status={controller.registrationStatus}
-                  onStatusChange={controller.setRegistrationStatus}
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                <DashboardSegmentedToggle
+                  value={controller.registrationStatus}
+                  options={REQUEST_STATUS_OPTIONS}
+                  onChange={controller.setRegistrationStatus}
+                />
+                <DashboardSegmentedToggle
+                  value={controller.inscriptionsDisplayMode}
+                  options={INSCRIPTIONS_DISPLAY_MODE_OPTIONS}
+                  onChange={controller.setInscriptionsDisplayMode}
                 />
               </div>
-              <DashboardInscriptionsTable
-                rows={controller.filteredRows}
-                status={controller.registrationStatus}
-                onView={controller.handleViewRequest}
-                onContact={controller.handleContact}
-                onMarkTreated={controller.handleMarkTreated}
-                onUnmarkTreated={controller.handleUnmarkTreated}
-              />
-            </DashboardViewShell>
-          ) : null}
 
-          {controller.view === "formations" ? (
-            <DashboardViewShell
-              title="Performance par formation"
-              subtitle="Vision consolidee des inscriptions par programme"
-              search={controller.search}
-              onSearch={controller.setSearch}
-              dateFilter={controller.dateFilter}
-              onDateFilter={controller.setDateFilter}
-              formationFilter={controller.formationFilter}
-              onFormationFilter={controller.setFormationFilter}
-              formationOptions={controller.formationOptions}
-              onRefresh={() => void controller.refreshData()}
-              onExport={() => exportCsv(controller.filteredRows)}
-            >
-              <DashboardFormationsGrid
-                rows={controller.groupedByFormation}
-                onSelectFormation={controller.handleSelectFormation}
-              />
+              {controller.inscriptionsDisplayMode === "students" ? (
+                <DashboardInscriptionsTable
+                  rows={controller.filteredRows}
+                  status={controller.registrationStatus}
+                  onView={controller.handleViewRequest}
+                  onContact={controller.handleContact}
+                  onMarkTreated={controller.handleMarkTreated}
+                  onUnmarkTreated={controller.handleUnmarkTreated}
+                />
+              ) : (
+                <DashboardFormationsGrid
+                  rows={controller.groupedByFormation}
+                  onSelectFormation={controller.handleSelectFormation}
+                />
+              )}
             </DashboardViewShell>
           ) : null}
 

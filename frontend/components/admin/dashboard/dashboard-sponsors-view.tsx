@@ -19,9 +19,10 @@ import type { AdminSponsorRecord } from "@/types/sponsor";
 import {
   formatDate,
   neutralActionButtonClass,
+  REQUEST_STATUS_OPTIONS,
   sponsorProgramLabel,
 } from "./dashboard-utils";
-import { DashboardStatusTabs } from "./dashboard-status-tabs";
+import { DashboardSegmentedToggle } from "./dashboard-segmented-toggle";
 import type { RequestStatus } from "./dashboard-types";
 
 function StatTile({
@@ -119,7 +120,11 @@ export function DashboardSponsorsView({
               Organisations souhaitant parrainer une ou plusieurs formations
             </p>
             <div className="mt-3">
-              <DashboardStatusTabs status={status} onStatusChange={onStatusChange} />
+              <DashboardSegmentedToggle
+                value={status}
+                options={REQUEST_STATUS_OPTIONS}
+                onChange={onStatusChange}
+              />
             </div>
           </div>
           <div className="flex flex-wrap gap-2">

@@ -19,6 +19,7 @@ import type {
   AdminView,
   DateFilter,
   FormationSummary,
+  InscriptionsDisplayMode,
   RequestStatus,
 } from "../dashboard/dashboard-types";
 import { sponsorProgramLabel } from "../dashboard/dashboard-utils";
@@ -36,6 +37,8 @@ export function useAdminDashboardController(accessToken: string) {
   const [notice, setNotice] = useState<string | null>(null);
   const [registrationStatus, setRegistrationStatus] =
     useState<RequestStatus>("new");
+  const [inscriptionsDisplayMode, setInscriptionsDisplayMode] =
+    useState<InscriptionsDisplayMode>("students");
   const [rows, setRows] = useState<AdminRegistrationRecord[]>([]);
   const [selectedRequest, setSelectedRequest] =
     useState<AdminRegistrationRecord | null>(null);
@@ -385,6 +388,7 @@ export function useAdminDashboardController(accessToken: string) {
     setSelectedFormationTitle(null);
     setSelectedRequest(null);
     setRegistrationStatus("new");
+    setInscriptionsDisplayMode("students");
     resetSponsorFilters();
     setSelectedSponsor(null);
     setSponsorStatus("new");
@@ -452,6 +456,8 @@ export function useAdminDashboardController(accessToken: string) {
     notice,
     registrationStatus,
     setRegistrationStatus,
+    inscriptionsDisplayMode,
+    setInscriptionsDisplayMode,
     formationOptions,
     filteredRows,
     filteredSponsors,
