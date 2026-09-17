@@ -11,6 +11,8 @@ import type {
   SponsorPayload,
   SponsorRecord,
   SponsorResponse,
+  UpdateSponsorTreatedPayload,
+  UpdateSponsorTreatedResponse,
 } from "../types/sponsor";
 
 /*
@@ -23,7 +25,10 @@ import type {
 --   role text,
 --   telephone text NOT NULL,
 --   email text NOT NULL,
---   program text DEFAULT 'sponsoring' -- 'sponsoring' | 'mooc' | 'fnpi'
+--   program text DEFAULT 'sponsoring', -- 'sponsoring' | 'mooc' | 'fnpi'
+--   treated boolean NOT NULL DEFAULT false,
+--   treated_at timestamptz,
+--   treated_by text
 -- );
 -- CREATE TABLE sponsor_formations (
 --   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -186,7 +191,7 @@ export async function createSponsor(
     .json({ success: true, message: "Demande de sponsoring enregistree avec succes" });
 }
 
-export async function listSponsors(
+export async function listAdminSponsors(
   req: Request,
   res: Response<SponsorListResponse>,
 ) {
@@ -213,12 +218,14 @@ export async function listSponsors(
   const limit = Number.isFinite(rawLimit)
     ? Math.min(Math.max(rawLimit, 1), 1000)
     : 200;
+  const status = req.query.status === "treated" ? "treated" : "new";
 
   const { data, error } = await supabase
     .from("sponsors")
     .select(
-      "id, created_at, nom, prenom, entreprise, role, telephone, email, program, sponsor_formations(formation_slug, formation_name)",
+      "id, created_at, nom, prenom, entreprise, role, telephone, email, program, treated, treated_at, treated_by, sponsor_formations(formation_slug, formation_name)",
     )
+    .eq("treated", status === "treated")
     .order("created_at", { ascending: false })
     .limit(limit);
 
@@ -244,6 +251,9 @@ export async function listSponsors(
     telephone: string;
     email: string;
     program: string | null;
+    treated: boolean;
+    treated_at: string | null;
+    treated_by: string | null;
     sponsor_formations: Array<{
       formation_slug: string | null;
       formation_name: string;
@@ -267,8 +277,80 @@ export async function listSponsors(
     )
       ? (item.program as SponsorRecord["program"])
       : null,
+    treated: item.treated,
+    treatedAt: item.treated_at,
+    treatedBy: item.treated_by,
     createdAt: item.created_at,
   }));
 
   return res.status(200).json({ success: true, data: responseData });
+}
+
+export async function updateSponsorTreated(
+  req: Request,
+  res: Response<UpdateSponsorTreatedResponse>,
+) {
+  const token = getBearerToken(req.header("authorization"));
+  const access = await validateAdminAccessToken(token);
+
+  if (!access.ok) {
+    if (access.reason === "not_admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acces refuse: compte non admin.",
+      });
+    }
+
+    return res.status(401).json({
+      success: false,
+      message: "Session admin invalide ou expiree.",
+    });
+  }
+
+  const id = String(req.params.id ?? "").trim();
+  if (!id) {
+    return res.status(400).json({ success: false, message: "id is required" });
+  }
+
+  const treated = (req.body as Partial<UpdateSponsorTreatedPayload>)?.treated;
+  if (typeof treated !== "boolean") {
+    return res
+      .status(400)
+      .json({ success: false, message: "treated (boolean) is required" });
+  }
+
+  const { data, error } = await supabase
+    .from("sponsors")
+    .update(
+      treated
+        ? {
+            treated: true,
+            treated_at: new Date().toISOString(),
+            treated_by: access.email,
+          }
+        : { treated: false, treated_at: null, treated_by: null },
+    )
+    .eq("id", id)
+    .select("id")
+    .single();
+
+  if (error || !data) {
+    console.error("Supabase update error (sponsors):", error);
+    return res.status(404).json({ success: false, message: "Sponsor introuvable" });
+  }
+
+  const { error: logError } = await supabase.from("admin_activity_log").insert({
+    entity_type: "sponsor",
+    entity_id: id,
+    event_type: treated ? "treated" : "untreated",
+    actor_email: access.email,
+  });
+
+  if (logError) {
+    console.error("Supabase insert error (admin_activity_log):", logError);
+  }
+
+  return res
+    .status(200)
+    .json({ success: true, message: "Statut mis a jour" });
 }

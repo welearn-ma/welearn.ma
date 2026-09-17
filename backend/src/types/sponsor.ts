@@ -37,6 +37,9 @@ export type SponsorRecord = {
   formations: SponsorFormation[];
   /** Page d'origine de la demande ; null uniquement pour une ligne legacy. */
   program: SponsorProgram | null;
+  treated: boolean;
+  treatedAt: string | null;
+  treatedBy: string | null;
   createdAt: string;
 };
 
@@ -44,4 +47,13 @@ export type SponsorListResponse = {
   success: boolean;
   data: SponsorRecord[];
   message?: string;
+};
+
+export type UpdateSponsorTreatedPayload = {
+  treated: boolean;
+};
+
+export type UpdateSponsorTreatedResponse = {
+  success: boolean;
+  message: string;
 };

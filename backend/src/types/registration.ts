@@ -24,6 +24,9 @@ export type RegistrationRecord = {
   message?: string | null;
   formationSlug: string;
   formationTitle: string;
+  treated: boolean;
+  treatedAt: string | null;
+  treatedBy: string | null;
   createdAt: string;
 };
 
@@ -31,4 +34,13 @@ export type RegistrationListResponse = {
   success: boolean;
   data: RegistrationRecord[];
   message?: string;
+};
+
+export type UpdateTreatedPayload = {
+  treated: boolean;
+};
+
+export type UpdateTreatedResponse = {
+  success: boolean;
+  message: string;
 };

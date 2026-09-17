@@ -6,6 +6,8 @@ import type {
   RegistrationListResponse,
   RegistrationRecord,
   RegistrationResponse,
+  UpdateTreatedPayload,
+  UpdateTreatedResponse,
 } from "../types/registration";
 
 /*
@@ -19,6 +21,9 @@ import type {
 --   message text,
 --   formation_slug text NOT NULL,
 --   formation_title text NOT NULL,
+--   treated boolean NOT NULL DEFAULT false,
+--   treated_at timestamptz,
+--   treated_by text,
 --   created_at timestamptz DEFAULT now()
 -- );
 -- ALTER TABLE registration_requests ENABLE ROW LEVEL SECURITY;
@@ -104,7 +109,7 @@ export async function createRegistration(
     .json({ success: true, message: "Demande enregistree avec succes" });
 }
 
-export async function listRegistrations(
+export async function listAdminRegistrations(
   req: Request,
   res: Response<RegistrationListResponse>,
 ) {
@@ -132,12 +137,14 @@ export async function listRegistrations(
     ? Math.min(Math.max(rawLimit, 1), 1000)
     : 200;
   const formationSlug = String(req.query.formationSlug ?? "").trim();
+  const status = req.query.status === "treated" ? "treated" : "new";
 
   let query = supabase
     .from("registration_requests")
     .select(
-      "id, full_name, email, phone, company, position, message, formation_slug, formation_title, created_at",
+      "id, full_name, email, phone, company, position, message, formation_slug, formation_title, treated, treated_at, treated_by, created_at",
     )
+    .eq("treated", status === "treated")
     .order("created_at", { ascending: false })
     .limit(limit);
 
@@ -166,6 +173,9 @@ export async function listRegistrations(
     message: string | null;
     formation_slug: string;
     formation_title: string;
+    treated: boolean;
+    treated_at: string | null;
+    treated_by: string | null;
     created_at: string;
   }>;
 
@@ -179,6 +189,9 @@ export async function listRegistrations(
     message: item.message,
     formationSlug: item.formation_slug,
     formationTitle: item.formation_title,
+    treated: item.treated,
+    treatedAt: item.treated_at,
+    treatedBy: item.treated_by,
     createdAt: item.created_at,
   }));
 
@@ -186,4 +199,75 @@ export async function listRegistrations(
     success: true,
     data: responseData,
   });
+}
+
+export async function updateRegistrationTreated(
+  req: Request,
+  res: Response<UpdateTreatedResponse>,
+) {
+  const token = getBearerToken(req.header("authorization"));
+  const access = await validateAdminAccessToken(token);
+
+  if (!access.ok) {
+    if (access.reason === "not_admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Acces refuse: compte non admin.",
+      });
+    }
+
+    return res.status(401).json({
+      success: false,
+      message: "Session admin invalide ou expiree.",
+    });
+  }
+
+  const id = String(req.params.id ?? "").trim();
+  if (!id) {
+    return res.status(400).json({ success: false, message: "id is required" });
+  }
+
+  const treated = (req.body as Partial<UpdateTreatedPayload>)?.treated;
+  if (typeof treated !== "boolean") {
+    return res
+      .status(400)
+      .json({ success: false, message: "treated (boolean) is required" });
+  }
+
+  const { data, error } = await supabase
+    .from("registration_requests")
+    .update(
+      treated
+        ? {
+            treated: true,
+            treated_at: new Date().toISOString(),
+            treated_by: access.email,
+          }
+        : { treated: false, treated_at: null, treated_by: null },
+    )
+    .eq("id", id)
+    .select("id")
+    .single();
+
+  if (error || !data) {
+    console.error("Supabase update error (registration_requests):", error);
+    return res
+      .status(404)
+      .json({ success: false, message: "Demande introuvable" });
+  }
+
+  const { error: logError } = await supabase.from("admin_activity_log").insert({
+    entity_type: "student",
+    entity_id: id,
+    event_type: treated ? "treated" : "untreated",
+    actor_email: access.email,
+  });
+
+  if (logError) {
+    console.error("Supabase insert error (admin_activity_log):", logError);
+  }
+
+  return res
+    .status(200)
+    .json({ success: true, message: "Statut mis a jour" });
 }
