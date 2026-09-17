@@ -3,19 +3,26 @@ import { Button } from "@/components/ui/button";
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
 import { DashboardInscriptionsTable } from "./dashboard-inscriptions-table";
 import { neutralActionButtonClass } from "./dashboard-utils";
+import type { RequestStatus } from "./dashboard-types";
 
 export function DashboardFormationCandidatesModal({
   formationTitle,
   rows,
+  status,
   onClose,
   onView,
   onContact,
+  onMarkTreated,
+  onUnmarkTreated,
 }: {
   formationTitle: string;
   rows: AdminRegistrationRecord[];
+  status: RequestStatus;
   onClose: () => void;
   onView: (record: AdminRegistrationRecord) => void;
   onContact: (email: string) => void;
+  onMarkTreated: (id: string) => void;
+  onUnmarkTreated: (id: string) => void;
 }) {
   return (
     <div
@@ -58,8 +65,11 @@ export function DashboardFormationCandidatesModal({
         <div className="p-5">
           <DashboardInscriptionsTable
             rows={rows}
+            status={status}
             onView={onView}
             onContact={onContact}
+            onMarkTreated={onMarkTreated}
+            onUnmarkTreated={onUnmarkTreated}
           />
         </div>
 

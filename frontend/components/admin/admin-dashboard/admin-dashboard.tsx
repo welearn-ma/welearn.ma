@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardActivityList } from "../dashboard/dashboard-activity-list";
+import { DashboardActivityView } from "../dashboard/dashboard-activity-view";
 import { DashboardFormationCandidatesModal } from "../dashboard/dashboard-formation-candidates-modal";
 import { DashboardFormationsGrid } from "../dashboard/dashboard-formations-grid";
 import { DashboardInscriptionsTable } from "../dashboard/dashboard-inscriptions-table";
@@ -9,6 +9,7 @@ import { DashboardSessionHeader } from "../dashboard/dashboard-session-header";
 import { DashboardSidebar } from "../dashboard/dashboard-sidebar";
 import { DashboardSponsorModal } from "../dashboard/dashboard-sponsor-modal";
 import { DashboardSponsorsView } from "../dashboard/dashboard-sponsors-view";
+import { DashboardStatusTabs } from "../dashboard/dashboard-status-tabs";
 import { DashboardViewShell } from "../dashboard/dashboard-view-shell";
 import { exportCsv, exportSponsorsCsv } from "../dashboard/dashboard-utils";
 import { useAdminDashboardController } from "./use-admin-dashboard-controller";
@@ -58,10 +59,19 @@ export function AdminDashboard({
               onRefresh={() => void controller.refreshData()}
               onExport={() => exportCsv(controller.filteredRows)}
             >
+              <div className="mb-4">
+                <DashboardStatusTabs
+                  status={controller.registrationStatus}
+                  onStatusChange={controller.setRegistrationStatus}
+                />
+              </div>
               <DashboardInscriptionsTable
                 rows={controller.filteredRows}
+                status={controller.registrationStatus}
                 onView={controller.handleViewRequest}
                 onContact={controller.handleContact}
+                onMarkTreated={controller.handleMarkTreated}
+                onUnmarkTreated={controller.handleUnmarkTreated}
               />
             </DashboardViewShell>
           ) : null}
@@ -88,27 +98,20 @@ export function AdminDashboard({
           ) : null}
 
           {controller.view === "activite" ? (
-            <DashboardViewShell
-              title="Flux d'activite"
-              subtitle="Chronologie des demandes et signaux commerciaux"
-              search={controller.search}
-              onSearch={controller.setSearch}
-              dateFilter={controller.dateFilter}
-              onDateFilter={controller.setDateFilter}
-              formationFilter={controller.formationFilter}
-              onFormationFilter={controller.setFormationFilter}
-              formationOptions={controller.formationOptions}
-              onRefresh={() => void controller.refreshData()}
-              onExport={() => exportCsv(controller.filteredRows)}
-            >
-              <DashboardActivityList items={controller.activityItems} />
-            </DashboardViewShell>
+            <DashboardActivityView
+              items={controller.activityRows}
+              actorEmailFilter={controller.activityActorEmailFilter}
+              onActorEmailFilter={controller.setActivityActorEmailFilter}
+              onRefresh={() => void controller.refreshActivity()}
+            />
           ) : null}
 
           {controller.view === "sponsors" ? (
             <DashboardSponsorsView
               rows={controller.filteredSponsors}
               totals={controller.sponsorTotals}
+              status={controller.sponsorStatus}
+              onStatusChange={controller.setSponsorStatus}
               search={controller.sponsorSearch}
               onSearch={controller.setSponsorSearch}
               programFilter={controller.sponsorProgramFilter}
@@ -128,6 +131,8 @@ export function AdminDashboard({
               onExport={() => exportSponsorsCsv(controller.filteredSponsors)}
               onView={controller.setSelectedSponsor}
               onContact={controller.handleContact}
+              onMarkTreated={controller.handleMarkSponsorTreated}
+              onUnmarkTreated={controller.handleUnmarkSponsorTreated}
             />
           ) : null}
 
@@ -157,9 +162,12 @@ export function AdminDashboard({
             <DashboardFormationCandidatesModal
               formationTitle={controller.selectedFormationTitle}
               rows={controller.selectedFormationRows}
+              status={controller.registrationStatus}
               onClose={controller.closeFormationModal}
               onView={controller.handleViewRequest}
               onContact={controller.handleContact}
+              onMarkTreated={controller.handleMarkTreated}
+              onUnmarkTreated={controller.handleUnmarkTreated}
             />
           ) : null}
         </div>

@@ -1,5 +1,6 @@
 import {
   CalendarDays,
+  CheckCircle2,
   Clock,
   Download,
   Eye,
@@ -9,6 +10,7 @@ import {
   RefreshCw,
   RotateCcw,
   Search,
+  Undo2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,6 +21,8 @@ import {
   neutralActionButtonClass,
   sponsorProgramLabel,
 } from "./dashboard-utils";
+import { DashboardStatusTabs } from "./dashboard-status-tabs";
+import type { RequestStatus } from "./dashboard-types";
 
 function StatTile({
   label,
@@ -47,6 +51,8 @@ function StatTile({
 export function DashboardSponsorsView({
   rows,
   totals,
+  status,
+  onStatusChange,
   search,
   onSearch,
   programFilter,
@@ -66,9 +72,13 @@ export function DashboardSponsorsView({
   onExport,
   onView,
   onContact,
+  onMarkTreated,
+  onUnmarkTreated,
 }: {
   rows: AdminSponsorRecord[];
   totals: { sponsors: number; formations: number; entreprises: number };
+  status: RequestStatus;
+  onStatusChange: (status: RequestStatus) => void;
   search: string;
   onSearch: (value: string) => void;
   programFilter: string;
@@ -88,6 +98,8 @@ export function DashboardSponsorsView({
   onExport: () => void;
   onView: (sponsor: AdminSponsorRecord) => void;
   onContact: (email: string) => void;
+  onMarkTreated: (id: string) => void;
+  onUnmarkTreated: (id: string) => void;
 }) {
   const totalFormations = rows.reduce(
     (sum, item) => sum + item.formations.length,
@@ -106,6 +118,9 @@ export function DashboardSponsorsView({
             <p className="mt-1 text-sm text-wl-text-secondary">
               Organisations souhaitant parrainer une ou plusieurs formations
             </p>
+            <div className="mt-3">
+              <DashboardStatusTabs status={status} onStatusChange={onStatusChange} />
+            </div>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button
@@ -265,6 +280,11 @@ export function DashboardSponsorsView({
                     <p className="text-xs text-wl-text-secondary">
                       {item.entreprise}
                     </p>
+                    {status === "treated" && item.treatedBy ? (
+                      <p className="mt-1 text-xs text-wl-text-tertiary">
+                        Traite par {item.treatedBy}
+                      </p>
+                    ) : null}
                   </td>
                   <td className="py-3 pr-4 text-wl-text-secondary">
                     {item.role || "—"}
@@ -324,6 +344,26 @@ export function DashboardSponsorsView({
                         <Mail className="h-4 w-4" />
                         Email
                       </Button>
+                      {status === "new" ? (
+                        <Button
+                          size="sm"
+                          className="bg-wl-blue text-white hover:bg-wl-blue-dark"
+                          onClick={() => onMarkTreated(item.id)}
+                        >
+                          <CheckCircle2 className="h-4 w-4" />
+                          Marquer comme traité
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className={neutralActionButtonClass}
+                          onClick={() => onUnmarkTreated(item.id)}
+                        >
+                          <Undo2 className="h-4 w-4" />
+                          Annuler
+                        </Button>
+                      )}
                     </div>
                   </td>
                 </tr>
