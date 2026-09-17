@@ -138,6 +138,21 @@ export function useAdminDashboardController(accessToken: string) {
     [rows],
   );
 
+  // Totaux non filtres (independants de search/dateFilter/formationFilter),
+  // affiches dans les cartes stats au-dessus de la vue Inscriptions.
+  const inscriptionsTotals = useMemo(
+    () => ({
+      inscriptions: rows.length,
+      formations: new Set(rows.map((item) => item.formationTitle)).size,
+      entreprises: new Set(
+        rows
+          .filter((item) => item.company)
+          .map((item) => item.company!.trim().toLowerCase()),
+      ).size,
+    }),
+    [rows],
+  );
+
   const filteredRows = useMemo(() => {
     const now = Date.now();
 
@@ -458,6 +473,7 @@ export function useAdminDashboardController(accessToken: string) {
     setRegistrationStatus,
     inscriptionsDisplayMode,
     setInscriptionsDisplayMode,
+    inscriptionsTotals,
     formationOptions,
     filteredRows,
     filteredSponsors,
