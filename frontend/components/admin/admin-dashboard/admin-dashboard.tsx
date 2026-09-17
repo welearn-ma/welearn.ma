@@ -145,6 +145,8 @@ export function AdminDashboard({
               selectedRequest={controller.selectedRequest}
               onClose={() => controller.setSelectedRequest(null)}
               onContact={controller.handleContact}
+              onMarkTreated={controller.handleMarkTreated}
+              onUnmarkTreated={controller.handleUnmarkTreated}
             />
           ) : null}
 
@@ -153,6 +155,8 @@ export function AdminDashboard({
               selectedSponsor={controller.selectedSponsor}
               onClose={() => controller.setSelectedSponsor(null)}
               onContact={controller.handleContact}
+              onMarkTreated={controller.handleMarkSponsorTreated}
+              onUnmarkTreated={controller.handleUnmarkSponsorTreated}
             />
           ) : null}
 
