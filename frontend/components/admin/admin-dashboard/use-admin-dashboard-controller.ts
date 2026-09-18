@@ -419,12 +419,16 @@ export function useAdminDashboardController(accessToken: string) {
     setSelectedFormationTitle(formationTitle);
   };
 
-  const setRegistrationTreated = async (id: string, treated: boolean) => {
+  const setRegistrationTreated = async (
+    id: string,
+    treated: boolean,
+    note?: string,
+  ) => {
     const previousRows = rows;
     setRows((current) => current.filter((item) => item.id !== id));
 
     try {
-      await updateRegistrationTreated(accessToken, id, treated);
+      await updateRegistrationTreated(accessToken, id, treated, note);
     } catch (error) {
       setRows(previousRows);
       const message = error instanceof Error ? error.message : "";
@@ -438,15 +442,18 @@ export function useAdminDashboardController(accessToken: string) {
     }
   };
 
-  const handleMarkTreated = (id: string) => setRegistrationTreated(id, true);
   const handleUnmarkTreated = (id: string) => setRegistrationTreated(id, false);
 
-  const setSponsorTreated = async (id: string, treated: boolean) => {
+  const setSponsorTreated = async (
+    id: string,
+    treated: boolean,
+    note?: string,
+  ) => {
     const previousRows = sponsorRows;
     setSponsorRows((current) => current.filter((item) => item.id !== id));
 
     try {
-      await updateSponsorTreated(accessToken, id, treated);
+      await updateSponsorTreated(accessToken, id, treated, note);
     } catch (error) {
       setSponsorRows(previousRows);
       const message = error instanceof Error ? error.message : "";
@@ -458,9 +465,37 @@ export function useAdminDashboardController(accessToken: string) {
     }
   };
 
-  const handleMarkSponsorTreated = (id: string) => setSponsorTreated(id, true);
   const handleUnmarkSponsorTreated = (id: string) =>
     setSponsorTreated(id, false);
+
+  // "Marquer comme traite" ouvre une modale de note obligatoire au lieu
+  // d'agir immediatement ; l'action reelle n'a lieu qu'a la confirmation.
+  const [pendingTreat, setPendingTreat] = useState<{
+    kind: "registration" | "sponsor";
+    id: string;
+  } | null>(null);
+
+  const handleMarkTreated = (id: string) =>
+    setPendingTreat({ kind: "registration", id });
+  const handleMarkSponsorTreated = (id: string) =>
+    setPendingTreat({ kind: "sponsor", id });
+
+  const cancelPendingTreat = () => setPendingTreat(null);
+
+  const confirmPendingTreat = async (note: string) => {
+    if (!pendingTreat) {
+      return;
+    }
+
+    const { kind, id } = pendingTreat;
+    setPendingTreat(null);
+
+    if (kind === "registration") {
+      await setRegistrationTreated(id, true, note);
+    } else {
+      await setSponsorTreated(id, true, note);
+    }
+  };
 
   return {
     view,
@@ -522,6 +557,9 @@ export function useAdminDashboardController(accessToken: string) {
     handleUnmarkTreated,
     handleMarkSponsorTreated,
     handleUnmarkSponsorTreated,
+    pendingTreat,
+    confirmPendingTreat,
+    cancelPendingTreat,
     closeFormationModal: () => setSelectedFormationTitle(null),
   };
 }

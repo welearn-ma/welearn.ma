@@ -90,6 +90,11 @@ export function DashboardActivityList({
               <p className="mt-2 text-sm text-wl-text">
                 <strong>{describeEntity(item)}</strong> — {describeAction(item)}
               </p>
+              {item.note ? (
+                <p className="mt-2 rounded-lg bg-wl-gray-light px-3 py-2 text-sm text-wl-text-secondary">
+                  {item.note}
+                </p>
+              ) : null}
             </li>
           );
         })}

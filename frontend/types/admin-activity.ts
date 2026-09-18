@@ -19,6 +19,7 @@ export type AdminActivityRecord = {
   entityId: string;
   eventType: AdminActivityEventType;
   actorEmail: string | null;
+  note: string | null;
   createdAt: string;
   student: AdminActivityStudentInfo | null;
   sponsor: AdminActivitySponsorInfo | null;

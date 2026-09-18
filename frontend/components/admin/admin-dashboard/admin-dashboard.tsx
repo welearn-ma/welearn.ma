@@ -8,6 +8,7 @@ import { DashboardSessionHeader } from "../dashboard/dashboard-session-header";
 import { DashboardSidebar } from "../dashboard/dashboard-sidebar";
 import { DashboardSponsorModal } from "../dashboard/dashboard-sponsor-modal";
 import { DashboardSponsorsView } from "../dashboard/dashboard-sponsors-view";
+import { DashboardTreatNoteModal } from "../dashboard/dashboard-treat-note-modal";
 import { exportCsv, exportSponsorsCsv } from "../dashboard/dashboard-utils";
 import { useAdminDashboardController } from "./use-admin-dashboard-controller";
 
@@ -143,6 +144,13 @@ export function AdminDashboard({
               onContact={controller.handleContact}
               onMarkTreated={controller.handleMarkTreated}
               onUnmarkTreated={controller.handleUnmarkTreated}
+            />
+          ) : null}
+
+          {controller.pendingTreat ? (
+            <DashboardTreatNoteModal
+              onClose={controller.cancelPendingTreat}
+              onConfirm={(note) => void controller.confirmPendingTreat(note)}
             />
           ) : null}
         </div>

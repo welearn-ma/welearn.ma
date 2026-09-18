@@ -58,6 +58,7 @@ export async function updateRegistrationTreated(
   accessToken: string,
   id: string,
   treated: boolean,
+  note?: string,
 ): Promise<void> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
 
@@ -80,7 +81,7 @@ export async function updateRegistrationTreated(
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ treated }),
+        body: JSON.stringify(treated ? { treated, note } : { treated }),
       },
     );
   } catch {
