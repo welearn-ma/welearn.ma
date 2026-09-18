@@ -5,6 +5,7 @@ import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PhoneInput } from "@/components/ui/phone-input";
 import { Textarea } from "@/components/ui/textarea";
 import { submitRegistration } from "@/lib/api/registrations";
 import type { RegistrationPayload } from "@/types/registration";
@@ -177,13 +178,12 @@ export function RegistrationForm({
             <Label htmlFor="phone" className="text-sm font-medium text-wl-text">
               Téléphone
             </Label>
-            <Input
+            <PhoneInput
               id="phone"
-              type="tel"
               value={values.phone}
-              onChange={(e) => handleChange("phone", e.target.value)}
+              onChange={(value) => handleChange("phone", value)}
               required
-              className="mt-1 h-11 border-wl-border text-wl-text placeholder:text-wl-text-tertiary focus-visible:border-wl-blue focus-visible:ring-wl-blue/25"
+              className="mt-1"
             />
             {errors.phone && (
               <p className="mt-1 text-xs text-red-600">{errors.phone}</p>
