@@ -257,6 +257,11 @@ export function DashboardSponsorsView({
                           Traite par {item.treatedBy}
                         </p>
                       ) : null}
+                      {status === "treated" && item.treatedNote ? (
+                        <p className="mt-1 text-xs text-wl-text-secondary">
+                          {item.treatedNote}
+                        </p>
+                      ) : null}
                     </td>
                     <td className="py-3 pr-4 text-wl-text-secondary">
                       {item.role || "—"}

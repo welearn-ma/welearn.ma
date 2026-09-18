@@ -115,6 +115,19 @@ export function DashboardRequestModal({
               {selectedRequest.message || "Aucun message saisi."}
             </p>
           </div>
+          {selectedRequest.treated && selectedRequest.treatedNote ? (
+            <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3 md:col-span-2">
+              <p className="text-xs text-wl-text-tertiary">
+                Note de traitement
+                {selectedRequest.treatedBy
+                  ? ` — ${selectedRequest.treatedBy}`
+                  : ""}
+              </p>
+              <p className="mt-1 whitespace-pre-wrap text-sm text-wl-text">
+                {selectedRequest.treatedNote}
+              </p>
+            </div>
+          ) : null}
         </div>
 
         <div className="flex items-center justify-end gap-2 border-t border-wl-border p-5">

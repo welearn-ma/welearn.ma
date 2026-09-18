@@ -11,6 +11,7 @@ export type AdminRegistrationRecord = {
   treated: boolean;
   treatedAt: string | null;
   treatedBy: string | null;
+  treatedNote: string | null;
   createdAt: string;
 };
 

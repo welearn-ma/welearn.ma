@@ -140,6 +140,19 @@ export function DashboardSponsorModal({
               {formatDate(selectedSponsor.createdAt)}
             </p>
           </div>
+          {selectedSponsor.treated && selectedSponsor.treatedNote ? (
+            <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3 md:col-span-2">
+              <p className="text-xs text-wl-text-tertiary">
+                Note de traitement
+                {selectedSponsor.treatedBy
+                  ? ` — ${selectedSponsor.treatedBy}`
+                  : ""}
+              </p>
+              <p className="mt-1 whitespace-pre-wrap text-sm text-wl-text">
+                {selectedSponsor.treatedNote}
+              </p>
+            </div>
+          ) : null}
         </div>
 
         <div className="flex items-center justify-end gap-2 border-t border-wl-border p-5">
