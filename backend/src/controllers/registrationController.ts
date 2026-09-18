@@ -24,6 +24,7 @@ import type {
 --   treated boolean NOT NULL DEFAULT false,
 --   treated_at timestamptz,
 --   treated_by text,
+--   treated_note text,
 --   created_at timestamptz DEFAULT now()
 -- );
 -- ALTER TABLE registration_requests ENABLE ROW LEVEL SECURITY;
@@ -142,7 +143,7 @@ export async function listAdminRegistrations(
   let query = supabase
     .from("registration_requests")
     .select(
-      "id, full_name, email, phone, company, position, message, formation_slug, formation_title, treated, treated_at, treated_by, created_at",
+      "id, full_name, email, phone, company, position, message, formation_slug, formation_title, treated, treated_at, treated_by, treated_note, created_at",
     )
     .eq("treated", status === "treated")
     .order("created_at", { ascending: false })
@@ -176,6 +177,7 @@ export async function listAdminRegistrations(
     treated: boolean;
     treated_at: string | null;
     treated_by: string | null;
+    treated_note: string | null;
     created_at: string;
   }>;
 
@@ -192,6 +194,7 @@ export async function listAdminRegistrations(
     treated: item.treated,
     treatedAt: item.treated_at,
     treatedBy: item.treated_by,
+    treatedNote: item.treated_note,
     createdAt: item.created_at,
   }));
 
@@ -250,8 +253,14 @@ export async function updateRegistrationTreated(
             treated: true,
             treated_at: new Date().toISOString(),
             treated_by: access.email,
+            treated_note: note,
           }
-        : { treated: false, treated_at: null, treated_by: null },
+        : {
+            treated: false,
+            treated_at: null,
+            treated_by: null,
+            treated_note: null,
+          },
     )
     .eq("id", id)
     .select("id")

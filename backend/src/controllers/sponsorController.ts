@@ -28,7 +28,8 @@ import type {
 --   program text DEFAULT 'sponsoring', -- 'sponsoring' | 'mooc' | 'fnpi'
 --   treated boolean NOT NULL DEFAULT false,
 --   treated_at timestamptz,
---   treated_by text
+--   treated_by text,
+--   treated_note text
 -- );
 -- CREATE TABLE sponsor_formations (
 --   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -223,7 +224,7 @@ export async function listAdminSponsors(
   const { data, error } = await supabase
     .from("sponsors")
     .select(
-      "id, created_at, nom, prenom, entreprise, role, telephone, email, program, treated, treated_at, treated_by, sponsor_formations(formation_slug, formation_name)",
+      "id, created_at, nom, prenom, entreprise, role, telephone, email, program, treated, treated_at, treated_by, treated_note, sponsor_formations(formation_slug, formation_name)",
     )
     .eq("treated", status === "treated")
     .order("created_at", { ascending: false })
@@ -254,6 +255,7 @@ export async function listAdminSponsors(
     treated: boolean;
     treated_at: string | null;
     treated_by: string | null;
+    treated_note: string | null;
     sponsor_formations: Array<{
       formation_slug: string | null;
       formation_name: string;
@@ -280,6 +282,7 @@ export async function listAdminSponsors(
     treated: item.treated,
     treatedAt: item.treated_at,
     treatedBy: item.treated_by,
+    treatedNote: item.treated_note,
     createdAt: item.created_at,
   }));
 
@@ -335,8 +338,14 @@ export async function updateSponsorTreated(
             treated: true,
             treated_at: new Date().toISOString(),
             treated_by: access.email,
+            treated_note: note,
           }
-        : { treated: false, treated_at: null, treated_by: null },
+        : {
+            treated: false,
+            treated_at: null,
+            treated_by: null,
+            treated_note: null,
+          },
     )
     .eq("id", id)
     .select("id")

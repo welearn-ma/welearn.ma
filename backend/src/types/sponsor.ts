@@ -40,6 +40,7 @@ export type SponsorRecord = {
   treated: boolean;
   treatedAt: string | null;
   treatedBy: string | null;
+  treatedNote: string | null;
   createdAt: string;
 };
 
