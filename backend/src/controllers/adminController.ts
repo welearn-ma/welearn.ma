@@ -94,7 +94,9 @@ export async function getAdminActivity(
 
   let query = supabase
     .from("admin_activity_log")
-    .select("id, entity_type, entity_id, event_type, actor_email, created_at")
+    .select(
+      "id, entity_type, entity_id, event_type, actor_email, note, created_at",
+    )
     .order("created_at", { ascending: false })
     .limit(limit);
 
@@ -119,6 +121,7 @@ export async function getAdminActivity(
     entity_id: string;
     event_type: "new_request" | "treated" | "untreated";
     actor_email: string | null;
+    note: string | null;
     created_at: string;
   }>;
 
@@ -180,6 +183,7 @@ export async function getAdminActivity(
       entityId: row.entity_id,
       eventType: row.event_type,
       actorEmail: row.actor_email,
+      note: row.note,
       createdAt: row.created_at,
       student: student
         ? {

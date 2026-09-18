@@ -51,6 +51,8 @@ export type SponsorListResponse = {
 
 export type UpdateSponsorTreatedPayload = {
   treated: boolean;
+  /** Requis quand treated=true ; ignore quand treated=false. */
+  note?: string;
 };
 
 export type UpdateSponsorTreatedResponse = {

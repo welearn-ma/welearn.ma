@@ -38,6 +38,8 @@ export type RegistrationListResponse = {
 
 export type UpdateTreatedPayload = {
   treated: boolean;
+  /** Requis quand treated=true ; ignore quand treated=false. */
+  note?: string;
 };
 
 export type UpdateTreatedResponse = {

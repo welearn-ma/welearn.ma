@@ -19,6 +19,7 @@ export type AdminActivityRecord = {
   entityId: string;
   eventType: AdminActivityEventType;
   actorEmail: string | null;
+  note: string | null;
   createdAt: string;
   /** Populated when entityType is "student"; null if the source row is gone. */
   student: AdminActivityStudentInfo | null;

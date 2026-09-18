@@ -312,11 +312,19 @@ export async function updateSponsorTreated(
     return res.status(400).json({ success: false, message: "id is required" });
   }
 
-  const treated = (req.body as Partial<UpdateSponsorTreatedPayload>)?.treated;
+  const body = req.body as Partial<UpdateSponsorTreatedPayload>;
+  const treated = body?.treated;
   if (typeof treated !== "boolean") {
     return res
       .status(400)
       .json({ success: false, message: "treated (boolean) is required" });
+  }
+
+  const note = treated ? String(body?.note ?? "").trim() : null;
+  if (treated && !note) {
+    return res
+      .status(400)
+      .json({ success: false, message: "note is required" });
   }
 
   const { data, error } = await supabase
@@ -344,6 +352,7 @@ export async function updateSponsorTreated(
     entity_id: id,
     event_type: treated ? "treated" : "untreated",
     actor_email: access.email,
+    note,
   });
 
   if (logError) {
