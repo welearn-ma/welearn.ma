@@ -1,33 +1,27 @@
 "use client";
 
 import * as React from "react";
+import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-export type PhoneCountry = {
-  code: string;
-  name: string;
-  dialCode: string;
-  flag: string;
-};
-
-export const PHONE_COUNTRIES: PhoneCountry[] = [
-  { code: "MA", name: "Maroc", dialCode: "+212", flag: "🇲🇦" },
-  { code: "FR", name: "France", dialCode: "+33", flag: "🇫🇷" },
-  { code: "DZ", name: "Algérie", dialCode: "+213", flag: "🇩🇿" },
-  { code: "TN", name: "Tunisie", dialCode: "+216", flag: "🇹🇳" },
-  { code: "ES", name: "Espagne", dialCode: "+34", flag: "🇪🇸" },
-  { code: "BE", name: "Belgique", dialCode: "+32", flag: "🇧🇪" },
-  { code: "CH", name: "Suisse", dialCode: "+41", flag: "🇨🇭" },
-  { code: "CA", name: "Canada", dialCode: "+1", flag: "🇨🇦" },
-  { code: "CI", name: "Côte d'Ivoire", dialCode: "+225", flag: "🇨🇮" },
-  { code: "SN", name: "Sénégal", dialCode: "+221", flag: "🇸🇳" },
-  { code: "AE", name: "Émirats arabes unis", dialCode: "+971", flag: "🇦🇪" },
-  { code: "SA", name: "Arabie saoudite", dialCode: "+966", flag: "🇸🇦" },
-  { code: "GB", name: "Royaume-Uni", dialCode: "+44", flag: "🇬🇧" },
-  { code: "US", name: "États-Unis", dialCode: "+1", flag: "🇺🇸" },
-];
-
-const DEFAULT_COUNTRY = PHONE_COUNTRIES[0];
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  DEFAULT_PHONE_COUNTRY,
+  flagUrl,
+  PHONE_COUNTRIES,
+  type PhoneCountry,
+} from "@/lib/phone-countries";
 
 const SORTED_BY_DIAL_CODE_LENGTH = [...PHONE_COUNTRIES].sort(
   (a, b) => b.dialCode.length - a.dialCode.length,
@@ -48,7 +42,45 @@ function splitValue(value: string): {
     }
   }
 
-  return { country: DEFAULT_COUNTRY, national: trimmed.replace(/^\+/, "") };
+  return {
+    country: DEFAULT_PHONE_COUNTRY,
+    national: trimmed.replace(/^\+/, ""),
+  };
+}
+
+function FlagIcon({
+  code,
+  className,
+}: {
+  code: string;
+  className?: string;
+}) {
+  const [errored, setErrored] = React.useState(false);
+
+  if (errored) {
+    return (
+      <span
+        className={cn(
+          "inline-flex h-3.5 w-5 shrink-0 items-center justify-center rounded-[2px] bg-wl-gray-light text-[8px] font-semibold text-wl-text-tertiary",
+          className,
+        )}
+      >
+        {code}
+      </span>
+    );
+  }
+
+  return (
+    <img
+      src={flagUrl(code)}
+      alt=""
+      width={20}
+      height={14}
+      loading="lazy"
+      onError={() => setErrored(true)}
+      className={cn("h-3.5 w-5 shrink-0 rounded-[2px] object-cover", className)}
+    />
+  );
 }
 
 type PhoneInputProps = {
@@ -68,13 +100,12 @@ export function PhoneInput({
   className,
   ...rest
 }: PhoneInputProps) {
+  const [open, setOpen] = React.useState(false);
   const { country, national } = splitValue(value);
 
-  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const next =
-      PHONE_COUNTRIES.find((item) => item.code === event.target.value) ??
-      DEFAULT_COUNTRY;
+  const selectCountry = (next: PhoneCountry) => {
     onChange(national ? `${next.dialCode} ${national}` : next.dialCode);
+    setOpen(false);
   };
 
   const handleNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,18 +115,54 @@ export function PhoneInput({
 
   return (
     <div className={cn("flex gap-2", className)}>
-      <select
-        aria-label="Indicatif pays"
-        value={country.code}
-        onChange={handleCountryChange}
-        className="h-11 shrink-0 rounded-md border border-wl-border bg-transparent px-2 text-sm text-wl-text shadow-xs outline-none focus-visible:border-wl-blue focus-visible:ring-[3px] focus-visible:ring-wl-blue/25"
-      >
-        {PHONE_COUNTRIES.map((item) => (
-          <option key={item.code} value={item.code}>
-            {item.flag} {item.dialCode}
-          </option>
-        ))}
-      </select>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            aria-label="Indicatif pays"
+            className="flex h-11 shrink-0 items-center gap-1.5 rounded-md border border-wl-border bg-transparent px-2.5 text-sm text-wl-text shadow-xs outline-none focus-visible:border-wl-blue focus-visible:ring-[3px] focus-visible:ring-wl-blue/25"
+          >
+            <FlagIcon code={country.code} />
+            <span className="tabular-nums">{country.dialCode}</span>
+            <ChevronDown className="h-3.5 w-3.5 text-wl-text-tertiary" />
+          </button>
+        </PopoverTrigger>
+        <PopoverContent className="w-72 p-0">
+          <Command
+            filter={(itemValue, search) =>
+              itemValue.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
+            }
+          >
+            <CommandInput placeholder="Rechercher un pays..." />
+            <CommandList>
+              <CommandEmpty>Aucun pays trouvé.</CommandEmpty>
+              <CommandGroup>
+                {PHONE_COUNTRIES.map((item) => (
+                  <CommandItem
+                    key={item.code}
+                    value={`${item.name} ${item.dialCode} ${item.code}`}
+                    onSelect={() => selectCountry(item)}
+                  >
+                    <FlagIcon code={item.code} />
+                    <span className="flex-1 truncate">{item.name}</span>
+                    <span className="text-wl-text-tertiary tabular-nums">
+                      {item.dialCode}
+                    </span>
+                    <Check
+                      className={cn(
+                        "h-4 w-4 shrink-0",
+                        item.code === country.code
+                          ? "opacity-100"
+                          : "opacity-0",
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
       <input
         id={id}
         type="tel"
