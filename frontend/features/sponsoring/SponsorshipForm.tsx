@@ -5,6 +5,7 @@ import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PhoneInput } from "@/components/ui/phone-input";
 import { submitSponsor } from "@/lib/api/sponsors";
 import {
   FORMATION_SLUGS,
@@ -267,13 +268,12 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
             >
               <span className="text-wl-orange">*</span> Téléphone
             </Label>
-            <Input
+            <PhoneInput
               id="telephone"
-              type="tel"
               value={values.telephone}
-              onChange={(e) => handleChange("telephone", e.target.value)}
+              onChange={(value) => handleChange("telephone", value)}
               required
-              className={inputClassName}
+              className="mt-1"
             />
             {errors.telephone && (
               <p className="mt-1 text-xs text-red-600">{errors.telephone}</p>

@@ -1,4 +1,4 @@
-import { Mail, X } from "lucide-react";
+import { CheckCircle2, Mail, Undo2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
 import { formatDate, neutralActionButtonClass } from "./dashboard-utils";
@@ -7,10 +7,14 @@ export function DashboardRequestModal({
   selectedRequest,
   onClose,
   onContact,
+  onMarkTreated,
+  onUnmarkTreated,
 }: {
   selectedRequest: AdminRegistrationRecord;
   onClose: () => void;
   onContact: (email: string) => void;
+  onMarkTreated: (id: string) => void;
+  onUnmarkTreated: (id: string) => void;
 }) {
   return (
     <div
@@ -33,14 +37,43 @@ export function DashboardRequestModal({
               {selectedRequest.fullName}
             </h3>
           </div>
-          <button
-            type="button"
-            className="rounded-lg p-2 text-wl-text-secondary transition-colors hover:bg-wl-gray-light"
-            onClick={onClose}
-            aria-label="Fermer"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <div className="flex items-center gap-1">
+            {selectedRequest.treated ? (
+              <button
+                type="button"
+                className="rounded-lg p-2 text-wl-text-secondary transition-colors hover:bg-wl-gray-light"
+                onClick={() => {
+                  onUnmarkTreated(selectedRequest.id);
+                  onClose();
+                }}
+                aria-label="Annuler le statut traite"
+                title="Annuler le statut traite"
+              >
+                <Undo2 className="h-5 w-5" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="rounded-lg p-2 text-wl-blue transition-colors hover:bg-wl-blue-tint"
+                onClick={() => {
+                  onMarkTreated(selectedRequest.id);
+                  onClose();
+                }}
+                aria-label="Marquer comme traite"
+                title="Marquer comme traite"
+              >
+                <CheckCircle2 className="h-5 w-5" />
+              </button>
+            )}
+            <button
+              type="button"
+              className="rounded-lg p-2 text-wl-text-secondary transition-colors hover:bg-wl-gray-light"
+              onClick={onClose}
+              aria-label="Fermer"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
         </div>
 
         <div className="grid gap-4 p-5 md:grid-cols-2">
@@ -82,6 +115,19 @@ export function DashboardRequestModal({
               {selectedRequest.message || "Aucun message saisi."}
             </p>
           </div>
+          {selectedRequest.treated && selectedRequest.treatedNote ? (
+            <div className="rounded-xl border border-wl-border bg-wl-gray-light p-3 md:col-span-2">
+              <p className="text-xs text-wl-text-tertiary">
+                Note de traitement
+                {selectedRequest.treatedBy
+                  ? ` — ${selectedRequest.treatedBy}`
+                  : ""}
+              </p>
+              <p className="mt-1 whitespace-pre-wrap text-sm text-wl-text">
+                {selectedRequest.treatedNote}
+              </p>
+            </div>
+          ) : null}
         </div>
 
         <div className="flex items-center justify-end gap-2 border-t border-wl-border p-5">

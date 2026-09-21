@@ -1,12 +1,11 @@
-import type { AdminRegistrationRecord } from "@/types/admin-registration";
-import type { AdminSponsorRecord } from "@/types/sponsor";
-
-export type AdminView =
-  | "inscriptions"
-  | "formations"
-  | "activite"
-  | "sponsors";
+export type AdminView = "inscriptions" | "activite" | "sponsors";
 export type DateFilter = "all" | "7d" | "30d" | "90d";
+
+/** Onglet Nouveaux/Traités partagé par les vues Inscriptions et Sponsors. */
+export type RequestStatus = "new" | "treated";
+
+/** Mode d'affichage de la vue Inscriptions : liste des étudiants ou cartes par formation. */
+export type InscriptionsDisplayMode = "students" | "formations";
 
 export type FormationSummary = {
   title: string;
@@ -14,12 +13,3 @@ export type FormationSummary = {
   latest: string;
   companiesCount: number;
 };
-
-/**
- * Evenement du flux d'activite. Agregation de tables sources (pas de table
- * d'evenements dediee) : registration_requests -> inscription,
- * sponsors -> sponsor.
- */
-export type ActivityItem =
-  | { kind: "inscription"; createdAt: string; record: AdminRegistrationRecord }
-  | { kind: "sponsor"; createdAt: string; record: AdminSponsorRecord };

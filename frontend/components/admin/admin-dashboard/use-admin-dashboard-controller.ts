@@ -2,33 +2,47 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getAdminRegistrations } from "@/lib/api/admin-registrations";
-import { getAdminSponsors } from "@/lib/api/admin-sponsors";
+import {
+  getAdminRegistrations,
+  updateRegistrationTreated,
+} from "@/lib/api/admin-registrations";
+import {
+  getAdminSponsors,
+  updateSponsorTreated,
+} from "@/lib/api/admin-sponsors";
+import { getAdminActivity } from "@/lib/api/admin-activity";
 import { clearAdminSessionStorage } from "@/lib/admin-session-storage";
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
 import type { AdminSponsorRecord } from "@/types/sponsor";
+import type { AdminActivityRecord } from "@/types/admin-activity";
 import type {
-  ActivityItem,
   AdminView,
   DateFilter,
   FormationSummary,
+  InscriptionsDisplayMode,
+  RequestStatus,
 } from "../dashboard/dashboard-types";
 import { sponsorProgramLabel } from "../dashboard/dashboard-utils";
 
 export function useAdminDashboardController(accessToken: string) {
   const router = useRouter();
-  const [view, setView] = useState<AdminView>("inscriptions");
+  const [view, setView] = useState<AdminView>("activite");
   const [search, setSearch] = useState("");
-  const [dateFilter, setDateFilter] = useState<DateFilter>("30d");
+  const [dateFilter, setDateFilter] = useState<DateFilter>("all");
   const [formationFilter, setFormationFilter] = useState("all");
   const [selectedFormationTitle, setSelectedFormationTitle] = useState<
     string | null
   >(null);
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [registrationStatus, setRegistrationStatus] =
+    useState<RequestStatus>("new");
+  const [inscriptionsDisplayMode, setInscriptionsDisplayMode] =
+    useState<InscriptionsDisplayMode>("students");
   const [rows, setRows] = useState<AdminRegistrationRecord[]>([]);
   const [selectedRequest, setSelectedRequest] =
     useState<AdminRegistrationRecord | null>(null);
+  const [sponsorStatus, setSponsorStatus] = useState<RequestStatus>("new");
   const [sponsorRows, setSponsorRows] = useState<AdminSponsorRecord[]>([]);
   const [sponsorSearch, setSponsorSearch] = useState("");
   const [sponsorProgramFilter, setSponsorProgramFilter] = useState("all");
@@ -38,22 +52,33 @@ export function useAdminDashboardController(accessToken: string) {
   const [sponsorLast24h, setSponsorLast24h] = useState(false);
   const [selectedSponsor, setSelectedSponsor] =
     useState<AdminSponsorRecord | null>(null);
+  const [activityRows, setActivityRows] = useState<AdminActivityRecord[]>([]);
+  const [activityActorEmailFilter, setActivityActorEmailFilter] =
+    useState("");
+
+  const handleUnauthorized = useCallback(() => {
+    clearAdminSessionStorage();
+    router.replace("/admin/login");
+  }, [router]);
 
   const refreshData = useCallback(async () => {
     setLoading(true);
     setNotice(null);
     try {
-      const data = await getAdminRegistrations(accessToken);
+      const data = await getAdminRegistrations(accessToken, registrationStatus);
       setRows(data);
       if (!data.length) {
-        setNotice("Aucune inscription pour le moment.");
+        setNotice(
+          registrationStatus === "new"
+            ? "Aucune inscription pour le moment."
+            : "Aucune inscription traitee pour le moment.",
+        );
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : "";
 
       if (message === "ADMIN_UNAUTHORIZED") {
-        clearAdminSessionStorage();
-        router.replace("/admin/login");
+        handleUnauthorized();
         return;
       }
 
@@ -62,32 +87,69 @@ export function useAdminDashboardController(accessToken: string) {
     } finally {
       setLoading(false);
     }
-  }, [accessToken, router]);
+  }, [accessToken, registrationStatus, handleUnauthorized]);
 
   const refreshSponsors = useCallback(async () => {
     try {
-      const data = await getAdminSponsors(accessToken);
+      const data = await getAdminSponsors(accessToken, sponsorStatus);
       setSponsorRows(data);
     } catch (error) {
       const message = error instanceof Error ? error.message : "";
 
       if (message === "ADMIN_UNAUTHORIZED") {
-        clearAdminSessionStorage();
-        router.replace("/admin/login");
+        handleUnauthorized();
         return;
       }
 
       setSponsorRows([]);
     }
-  }, [accessToken, router]);
+  }, [accessToken, sponsorStatus, handleUnauthorized]);
+
+  const refreshActivity = useCallback(async () => {
+    try {
+      const data = await getAdminActivity(accessToken, activityActorEmailFilter);
+      setActivityRows(data);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "";
+
+      if (message === "ADMIN_UNAUTHORIZED") {
+        handleUnauthorized();
+        return;
+      }
+
+      setActivityRows([]);
+    }
+  }, [accessToken, activityActorEmailFilter, handleUnauthorized]);
 
   useEffect(() => {
     void refreshData();
+  }, [refreshData]);
+
+  useEffect(() => {
     void refreshSponsors();
-  }, [refreshData, refreshSponsors]);
+  }, [refreshSponsors]);
+
+  useEffect(() => {
+    void refreshActivity();
+  }, [refreshActivity]);
 
   const formationOptions = useMemo(
     () => Array.from(new Set(rows.map((item) => item.formationTitle))).sort(),
+    [rows],
+  );
+
+  // Totaux non filtres (independants de search/dateFilter/formationFilter),
+  // affiches dans les cartes stats au-dessus de la vue Inscriptions.
+  const inscriptionsTotals = useMemo(
+    () => ({
+      inscriptions: rows.length,
+      formations: new Set(rows.map((item) => item.formationTitle)).size,
+      entreprises: new Set(
+        rows
+          .filter((item) => item.company)
+          .map((item) => item.company!.trim().toLowerCase()),
+      ).size,
+    }),
     [rows],
   );
 
@@ -296,76 +358,11 @@ export function useAdminDashboardController(accessToken: string) {
     [sponsorRows],
   );
 
-  // Flux d'activite : agregation des tables sources (registration_requests
-  // + sponsors) — il n'existe pas de table d'evenements dediee. Les
-  // evenements sponsor respectent les memes filtres date/recherche/formation
-  // que les inscriptions.
-  const activityItems = useMemo<ActivityItem[]>(() => {
-    const now = Date.now();
-    const needle = search.trim().toLowerCase();
-    const maxAgeMs =
-      dateFilter === "all"
-        ? null
-        : dateFilter === "7d"
-          ? 7 * 24 * 60 * 60 * 1000
-          : dateFilter === "30d"
-            ? 30 * 24 * 60 * 60 * 1000
-            : 90 * 24 * 60 * 60 * 1000;
-
-    const sponsorEvents: ActivityItem[] = sponsorRows
-      .filter((item) => {
-        if (
-          formationFilter !== "all" &&
-          !item.formations.some(
-            (formation) => formation.name === formationFilter,
-          )
-        ) {
-          return false;
-        }
-
-        if (
-          maxAgeMs !== null &&
-          now - new Date(item.createdAt).getTime() > maxAgeMs
-        ) {
-          return false;
-        }
-
-        if (!needle) {
-          return true;
-        }
-
-        return (
-          `${item.prenom} ${item.nom}`.toLowerCase().includes(needle) ||
-          item.entreprise.toLowerCase().includes(needle) ||
-          item.email.toLowerCase().includes(needle) ||
-          item.formations.some((formation) =>
-            formation.name.toLowerCase().includes(needle),
-          )
-        );
-      })
-      .map((record) => ({
-        kind: "sponsor" as const,
-        createdAt: record.createdAt,
-        record,
-      }));
-
-    const registrationEvents: ActivityItem[] = filteredRows.map((record) => ({
-      kind: "inscription" as const,
-      createdAt: record.createdAt,
-      record,
-    }));
-
-    return [...registrationEvents, ...sponsorEvents].sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    );
-  }, [filteredRows, sponsorRows, search, dateFilter, formationFilter]);
-
   const activeRows: Array<{ createdAt: string }> =
     view === "sponsors"
       ? filteredSponsors
       : view === "activite"
-        ? activityItems
+        ? activityRows
         : filteredRows;
   const totalRows = activeRows.length;
   const last24h = activeRows.filter(
@@ -401,12 +398,16 @@ export function useAdminDashboardController(accessToken: string) {
   const handleViewChange = (nextView: AdminView) => {
     setView(nextView);
     setSearch("");
-    setDateFilter("30d");
+    setDateFilter("all");
     setFormationFilter("all");
     setSelectedFormationTitle(null);
     setSelectedRequest(null);
+    setRegistrationStatus("new");
+    setInscriptionsDisplayMode("students");
     resetSponsorFilters();
     setSelectedSponsor(null);
+    setSponsorStatus("new");
+    setActivityActorEmailFilter("");
   };
 
   const handleViewRequest = (record: AdminRegistrationRecord) => {
@@ -418,6 +419,84 @@ export function useAdminDashboardController(accessToken: string) {
     setSelectedFormationTitle(formationTitle);
   };
 
+  const setRegistrationTreated = async (
+    id: string,
+    treated: boolean,
+    note?: string,
+  ) => {
+    const previousRows = rows;
+    setRows((current) => current.filter((item) => item.id !== id));
+
+    try {
+      await updateRegistrationTreated(accessToken, id, treated, note);
+    } catch (error) {
+      setRows(previousRows);
+      const message = error instanceof Error ? error.message : "";
+
+      if (message === "ADMIN_UNAUTHORIZED") {
+        handleUnauthorized();
+        return;
+      }
+
+      setNotice(message || "Impossible de mettre a jour le statut.");
+    }
+  };
+
+  const handleUnmarkTreated = (id: string) => setRegistrationTreated(id, false);
+
+  const setSponsorTreated = async (
+    id: string,
+    treated: boolean,
+    note?: string,
+  ) => {
+    const previousRows = sponsorRows;
+    setSponsorRows((current) => current.filter((item) => item.id !== id));
+
+    try {
+      await updateSponsorTreated(accessToken, id, treated, note);
+    } catch (error) {
+      setSponsorRows(previousRows);
+      const message = error instanceof Error ? error.message : "";
+
+      if (message === "ADMIN_UNAUTHORIZED") {
+        handleUnauthorized();
+        return;
+      }
+    }
+  };
+
+  const handleUnmarkSponsorTreated = (id: string) =>
+    setSponsorTreated(id, false);
+
+  // "Marquer comme traite" ouvre une modale de note obligatoire au lieu
+  // d'agir immediatement ; l'action reelle n'a lieu qu'a la confirmation.
+  const [pendingTreat, setPendingTreat] = useState<{
+    kind: "registration" | "sponsor";
+    id: string;
+  } | null>(null);
+
+  const handleMarkTreated = (id: string) =>
+    setPendingTreat({ kind: "registration", id });
+  const handleMarkSponsorTreated = (id: string) =>
+    setPendingTreat({ kind: "sponsor", id });
+
+  const cancelPendingTreat = () => setPendingTreat(null);
+
+  const confirmPendingTreat = async (note: string) => {
+    if (!pendingTreat) {
+      return;
+    }
+
+    const { kind, id } = pendingTreat;
+    setPendingTreat(null);
+
+    if (kind === "registration") {
+      await setRegistrationTreated(id, true, note);
+    } else {
+      await setSponsorTreated(id, true, note);
+    }
+  };
+
   return {
     view,
     search,
@@ -425,9 +504,16 @@ export function useAdminDashboardController(accessToken: string) {
     formationFilter,
     loading,
     notice,
+    registrationStatus,
+    setRegistrationStatus,
+    inscriptionsDisplayMode,
+    setInscriptionsDisplayMode,
+    inscriptionsTotals,
     formationOptions,
     filteredRows,
     filteredSponsors,
+    sponsorStatus,
+    setSponsorStatus,
     sponsorSearch,
     setSponsorSearch,
     sponsorProgramFilter,
@@ -444,7 +530,10 @@ export function useAdminDashboardController(accessToken: string) {
     setSponsorLast24h,
     resetSponsorFilters,
     sponsorTotals,
-    activityItems,
+    activityRows,
+    activityActorEmailFilter,
+    setActivityActorEmailFilter,
+    refreshActivity,
     selectedSponsor,
     setSelectedSponsor,
     refreshSponsors,
@@ -464,6 +553,13 @@ export function useAdminDashboardController(accessToken: string) {
     handleViewChange,
     handleViewRequest,
     handleSelectFormation,
+    handleMarkTreated,
+    handleUnmarkTreated,
+    handleMarkSponsorTreated,
+    handleUnmarkSponsorTreated,
+    pendingTreat,
+    confirmPendingTreat,
+    cancelPendingTreat,
     closeFormationModal: () => setSelectedFormationTitle(null),
   };
 }

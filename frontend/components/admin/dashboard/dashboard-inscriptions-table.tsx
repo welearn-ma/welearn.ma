@@ -1,17 +1,24 @@
-import { Eye, Mail } from "lucide-react";
+import { CheckCircle2, Eye, Mail, Undo2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
 import { formatDate, neutralActionButtonClass } from "./dashboard-utils";
+import type { RequestStatus } from "./dashboard-types";
 
 export function DashboardInscriptionsTable({
   rows,
+  status,
   onView,
   onContact,
+  onMarkTreated,
+  onUnmarkTreated,
 }: {
   rows: AdminRegistrationRecord[];
+  status: RequestStatus;
   onView: (record: AdminRegistrationRecord) => void;
   onContact: (email: string) => void;
+  onMarkTreated: (id: string) => void;
+  onUnmarkTreated: (id: string) => void;
 }) {
   return (
     <>
@@ -34,6 +41,16 @@ export function DashboardInscriptionsTable({
                   <p className="text-xs text-wl-text-secondary">
                     {item.company || "Entreprise non renseignee"}
                   </p>
+                  {status === "treated" && item.treatedBy ? (
+                    <p className="mt-1 text-xs text-wl-text-tertiary">
+                      Traite par {item.treatedBy}
+                    </p>
+                  ) : null}
+                  {status === "treated" && item.treatedNote ? (
+                    <p className="mt-1 text-xs text-wl-text-secondary">
+                      {item.treatedNote}
+                    </p>
+                  ) : null}
                 </td>
                 <td className="py-3 pr-4">
                   <Badge
@@ -69,6 +86,26 @@ export function DashboardInscriptionsTable({
                       <Mail className="h-4 w-4" />
                       Email
                     </Button>
+                    {status === "new" ? (
+                      <Button
+                        size="sm"
+                        className="bg-wl-blue text-white hover:bg-wl-blue-dark"
+                        onClick={() => onMarkTreated(item.id)}
+                      >
+                        <CheckCircle2 className="h-4 w-4" />
+                        Marquer comme traité
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className={neutralActionButtonClass}
+                        onClick={() => onUnmarkTreated(item.id)}
+                      >
+                        <Undo2 className="h-4 w-4" />
+                        Annuler
+                      </Button>
+                    )}
                   </div>
                 </td>
               </tr>
