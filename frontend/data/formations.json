@@ -529,27 +529,6 @@
       "tags": ["Executive", "Expert"]
     },
     {
-      "id": 25,
-      "slug": "mastere-management-projets-btp",
-      "title": "Executive Master Management de Projet – Expert BIM",
-      "type": "Diplomante",
-      "badge": "Executive Masters",
-      "domain": "BIM",
-      "provider": "Welearn / ESLSCA",
-      "issuer": "ESLSCA",
-      "format": ["Présentiel"],
-      "duration": "12 mois",
-      "level": "Avancé",
-      "target": ["Managers de projet", "Chefs de chantier", "BIM Managers"],
-      "summary": "Combinez management de projet certifié PMP® et expertise BIM pour diriger des chantiers complexes, en partenariat avec l'ESLSCA.",
-      "objectives": [],
-      "modules": [],
-      "accreditation": "PMP® · BIM",
-      "contact": null,
-      "featured": false,
-      "tags": ["PMP®", "BIM"]
-    },
-    {
       "id": 28,
       "slug": "commercialisation-immobiliere",
       "title": "Commercialisation Immobilière",
