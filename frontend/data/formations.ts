@@ -38,6 +38,7 @@ export const formations: Record<string, FormationPageData> = {
       "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1600&q=80",
     ctaPrimary: "Déposer ma candidature",
     ctaSecondary: "Télécharger la brochure",
+    hasBrochure: true,
     profiles: [
       "Architectes",
       "Ingénieurs Géomètres-Topographes",
@@ -234,6 +235,7 @@ export const formations: Record<string, FormationPageData> = {
       "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80",
     ctaPrimary: "Déposer ma candidature",
     ctaSecondary: "Télécharger la brochure",
+    hasBrochure: true,
     profiles: [
       "Ingénieurs",
       "Architectes",
@@ -431,7 +433,7 @@ export const formations: Record<string, FormationPageData> = {
         value: "Part-time, 1 week-end toutes les 3 semaines",
         label: "Rythme",
       },
-      { icon: CalendarDays, value: "Novembre 2026", label: "Rentrée" },
+      { icon: CalendarDays, value: "Nous contacter", label: "Rentrée" },
       {
         icon: MapPin,
         value: "Campus École Centrale Casablanca",
@@ -443,6 +445,7 @@ export const formations: Record<string, FormationPageData> = {
       "https://images.unsplash.com/photo-1581092921461-eab10380f308?w=1600&q=80",
     ctaPrimary: "Déposer ma candidature",
     ctaSecondary: "Télécharger la brochure",
+    hasBrochure: true,
     profiles: [
       "Chefs de projet & chefs de programme",
       "Maîtrise d'œuvre & AMO",
@@ -560,7 +563,7 @@ export const formations: Record<string, FormationPageData> = {
         description: "Confirmation de l'admission et inscription définitive.",
       },
     ],
-    session: "Novembre 2026",
+    session: "",
     ctaInscription: "Déposer ma candidature",
     testimonials: [],
     seo: {
@@ -599,6 +602,7 @@ export const formations: Record<string, FormationPageData> = {
       "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1600&q=80",
     ctaPrimary: "Déposer ma candidature",
     ctaSecondary: "Télécharger la brochure",
+    hasBrochure: true,
     profiles: [
       "Bâtiment & Génie Civil",
       "Architecture & Design",
