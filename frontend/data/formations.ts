@@ -560,7 +560,7 @@ export const formations: Record<string, FormationPageData> = {
         description: "Confirmation de l'admission et inscription définitive.",
       },
     ],
-    session: "<<RENTREE_ECC>>",
+    session: "Novembre 2026",
     ctaInscription: "Déposer ma candidature",
     testimonials: [],
     seo: {
