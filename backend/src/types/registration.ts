@@ -14,8 +14,12 @@ export type RegistrationResponse = {
   message: string;
 };
 
+/** Origine d'une demande (colonne registration_requests.source). */
+export type RegistrationSource = "inscription" | "brochure";
+
 export type RegistrationRecord = {
   id: string;
+  source: RegistrationSource;
   fullName: string;
   email: string;
   phone: string;

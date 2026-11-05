@@ -1,7 +1,11 @@
 import { CheckCircle2, Mail, Undo2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
-import { formatDate, neutralActionButtonClass } from "./dashboard-utils";
+import {
+  formatDate,
+  neutralActionButtonClass,
+  registrationSource,
+} from "./dashboard-utils";
 
 export function DashboardRequestModal({
   selectedRequest,
@@ -30,9 +34,16 @@ export function DashboardRequestModal({
       >
         <div className="flex items-center justify-between border-b border-wl-border p-5">
           <div>
-            <p className="text-xs uppercase tracking-wide text-wl-text-tertiary">
-              Demande d'inscription
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-xs uppercase tracking-wide text-wl-text-tertiary">
+                Demande d'inscription
+              </p>
+              {registrationSource(selectedRequest) === "brochure" ? (
+                <span className="rounded-full border border-wl-orange/30 bg-wl-orange-tint px-2 py-0.5 text-[11px] font-semibold text-wl-orange-dark">
+                  Brochure
+                </span>
+              ) : null}
+            </div>
             <h3 className="mt-1 text-lg font-semibold text-wl-text">
               {selectedRequest.fullName}
             </h3>

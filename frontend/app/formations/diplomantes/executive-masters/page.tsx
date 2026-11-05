@@ -3,7 +3,7 @@ import { Breadcrumb } from "@/components/breadcrumb";
 import { PageHero } from "@/components/page-hero";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Clock,
   Users,
@@ -13,6 +13,15 @@ import {
   GraduationCap,
   Download,
 } from "lucide-react";
+import { getFormationBySlug } from "@/data/formations";
+import { BrochureCta } from "@/features/formations/brochure/BrochureCta";
+import { cn } from "@/lib/utils";
+
+/** Formation avec brochure correspondant a une carte ; undefined sinon. */
+function brochureFormation(formationSlug?: string) {
+  const formation = formationSlug ? getFormationBySlug(formationSlug) : undefined;
+  return formation?.hasBrochure ? formation : undefined;
+}
 
 export const metadata: Metadata = {
   title: "Executive Masters | Formations Diplômantes | Welearn",
@@ -22,6 +31,8 @@ export const metadata: Metadata = {
 
 type Master = {
   id: string;
+  /** Slug formations.ts : active le bouton brochure si `hasBrochure`. */
+  formationSlug?: string;
   href?: string;
   title: string;
   partner: string;
@@ -37,6 +48,7 @@ type Master = {
 const masters: Master[] = [
   {
     id: "ms-bim",
+    formationSlug: "mastere-bim",
     title: "Mastère Spécialisé® BIM & ses Applications",
     partner: "EHTP (École Hassania des Travaux Publics)",
     duration: "18 mois",
@@ -63,6 +75,7 @@ const masters: Master[] = [
   },
   {
     id: "em-immo",
+    formationSlug: "master-immobilier",
     title: "Executive Master Ingénierie Immobilière",
     partner: "EHTP (École Hassania des Travaux Publics)",
     duration: "18 mois",
@@ -90,6 +103,8 @@ const masters: Master[] = [
   },
   {
     id: "executive-master-direction-transformation-projets-construction",
+    formationSlug:
+      "executive-master-direction-transformation-projets-construction",
     href: "/formations/executive-master-direction-transformation-projets-construction",
     title:
       "Executive Master Direction & Transformation des Projets de Construction",
@@ -247,16 +262,22 @@ export default function ExecutiveMastersPage() {
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
-                      <Button
-                        asChild
-                        variant="outline"
-                        className="w-full border-primary text-primary bg-transparent"
-                      >
-                        <Link href="#">
-                          <Download className="mr-2 h-4 w-4" />
-                          Télécharger la brochure
-                        </Link>
-                      </Button>
+                      {(() => {
+                        const brochure = brochureFormation(
+                          program.formationSlug,
+                        );
+                        return brochure ? (
+                          <BrochureCta
+                            formationSlug={brochure.slug}
+                            formationTitle={brochure.title}
+                            icon={<Download className="mr-2 h-4 w-4" />}
+                            className={cn(
+                              buttonVariants({ variant: "outline" }),
+                              "w-full border-primary text-primary bg-transparent",
+                            )}
+                          />
+                        ) : null;
+                      })()}
                     </div>
                   </div>
                 </div>

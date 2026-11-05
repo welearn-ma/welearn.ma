@@ -60,6 +60,11 @@ export type FormationPageData = {
   heroImage: string;
   ctaPrimary: string;
   ctaSecondary: string;
+  /**
+   * Brochure PDF disponible (bucket Supabase prive `brochures`). Doit rester
+   * aligne avec l'allowlist backend/src/config/brochures.ts.
+   */
+  hasBrochure?: boolean;
   profiles: string[];
   prerequisites: string[];
   pourquoi: string;

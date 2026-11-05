@@ -49,6 +49,8 @@ export default async function FormationDetailPage({ params }: PageProps) {
   return (
     <>
       <FormationDetailHero
+        formationSlug={formation.slug}
+        hasBrochure={formation.hasBrochure}
         badges={formation.badges}
         title={formation.title}
         subtitle={formation.subtitle}

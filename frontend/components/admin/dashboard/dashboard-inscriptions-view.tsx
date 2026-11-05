@@ -11,11 +11,13 @@ import type {
   FormationSummary,
   InscriptionsDisplayMode,
   RequestStatus,
+  SourceFilter,
 } from "./dashboard-types";
 import {
   INSCRIPTIONS_DISPLAY_MODE_OPTIONS,
   neutralActionButtonClass,
   REQUEST_STATUS_OPTIONS,
+  SOURCE_FILTER_OPTIONS,
 } from "./dashboard-utils";
 
 export function DashboardInscriptionsView({
@@ -23,6 +25,8 @@ export function DashboardInscriptionsView({
   totals,
   status,
   onStatusChange,
+  sourceFilter,
+  onSourceFilterChange,
   displayMode,
   onDisplayModeChange,
   groupedByFormation,
@@ -45,6 +49,8 @@ export function DashboardInscriptionsView({
   totals: { inscriptions: number; formations: number; entreprises: number };
   status: RequestStatus;
   onStatusChange: (status: RequestStatus) => void;
+  sourceFilter: SourceFilter;
+  onSourceFilterChange: (value: SourceFilter) => void;
   displayMode: InscriptionsDisplayMode;
   onDisplayModeChange: (mode: InscriptionsDisplayMode) => void;
   groupedByFormation: FormationSummary[];
@@ -86,6 +92,11 @@ export function DashboardInscriptionsView({
                   value={status}
                   options={REQUEST_STATUS_OPTIONS}
                   onChange={onStatusChange}
+                />
+                <DashboardSegmentedToggle
+                  value={sourceFilter}
+                  options={SOURCE_FILTER_OPTIONS}
+                  onChange={onSourceFilterChange}
                 />
                 <DashboardSegmentedToggle
                   value={displayMode}

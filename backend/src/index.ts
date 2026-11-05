@@ -6,6 +6,7 @@ import adminRouter from "./routes/admin";
 import registrationRouter from "./routes/registrations";
 import contactRouter from "./routes/contact";
 import sponsorRouter from "./routes/sponsors";
+import brochureRouter from "./routes/brochures";
 
 const app = express();
 const port = Number(process.env.PORT || 4000);
@@ -100,6 +101,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/registrations", registrationRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/sponsors", sponsorRouter);
+app.use("/api/brochures", brochureRouter);
 
 app.listen(port, () => {
   console.log(`Backend running on port ${port}`);

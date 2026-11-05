@@ -2,7 +2,11 @@ import { CheckCircle2, Eye, Mail, Undo2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { AdminRegistrationRecord } from "@/types/admin-registration";
-import { formatDate, neutralActionButtonClass } from "./dashboard-utils";
+import {
+  formatDate,
+  neutralActionButtonClass,
+  registrationSource,
+} from "./dashboard-utils";
 import type { RequestStatus } from "./dashboard-types";
 
 export function DashboardInscriptionsTable({
@@ -59,6 +63,14 @@ export function DashboardInscriptionsTable({
                   >
                     {item.formationTitle}
                   </Badge>
+                  {registrationSource(item) === "brochure" ? (
+                    <Badge
+                      variant="outline"
+                      className="mt-1 block w-fit border-wl-orange/30 bg-wl-orange-tint text-wl-orange-dark"
+                    >
+                      Brochure
+                    </Badge>
+                  ) : null}
                 </td>
                 <td className="py-3 pr-4 text-wl-text-secondary">
                   <p>{item.email}</p>

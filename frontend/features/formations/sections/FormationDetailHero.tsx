@@ -1,8 +1,16 @@
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import type { InfoBannerItem } from "@/types/formation-page";
+import { BrochureCta } from "@/features/formations/brochure/BrochureCta";
+
+const BROCHURE_CTA_LABEL = "Télécharger la brochure";
+
+const secondaryCtaClass =
+  "inline-flex items-center rounded-lg border border-white/40 bg-transparent px-6 py-3 font-semibold text-white hover:bg-white/10 transition-colors";
 
 type Props = {
+  formationSlug?: string;
+  hasBrochure?: boolean;
   badges: string[];
   title: string;
   subtitle: string;
@@ -14,6 +22,8 @@ type Props = {
 };
 
 export function FormationDetailHero({
+  formationSlug,
+  hasBrochure,
   badges,
   title,
   subtitle,
@@ -68,12 +78,18 @@ export function FormationDetailHero({
             {ctaPrimary}
             <ChevronRight className="ml-1 h-4 w-4" />
           </a>
-          <a
-            href="#contact"
-            className="inline-flex items-center rounded-lg border border-white/40 bg-transparent px-6 py-3 font-semibold text-white hover:bg-white/10 transition-colors"
-          >
-            {ctaSecondary}
-          </a>
+          {hasBrochure && formationSlug ? (
+            <BrochureCta
+              formationSlug={formationSlug}
+              formationTitle={title}
+              label={ctaSecondary}
+              className={secondaryCtaClass}
+            />
+          ) : ctaSecondary === BROCHURE_CTA_LABEL ? null : (
+            <a href="#registration-form" className={secondaryCtaClass}>
+              {ctaSecondary}
+            </a>
+          )}
         </div>
       </div>
     </section>

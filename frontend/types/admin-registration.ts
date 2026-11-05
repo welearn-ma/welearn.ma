@@ -1,5 +1,10 @@
+/** Origine d'une demande (colonne registration_requests.source). */
+export type RegistrationSource = "inscription" | "brochure";
+
 export type AdminRegistrationRecord = {
   id: string;
+  /** Absent si le backend n'expose pas encore la colonne : traiter comme "inscription". */
+  source?: RegistrationSource;
   fullName: string;
   email: string;
   phone: string;

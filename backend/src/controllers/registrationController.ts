@@ -6,6 +6,7 @@ import type {
   RegistrationListResponse,
   RegistrationRecord,
   RegistrationResponse,
+  RegistrationSource,
   UpdateTreatedPayload,
   UpdateTreatedResponse,
 } from "../types/registration";
@@ -139,11 +140,15 @@ export async function listAdminRegistrations(
     : 200;
   const formationSlug = String(req.query.formationSlug ?? "").trim();
   const status = req.query.status === "treated" ? "treated" : "new";
+  // Filtre optionnel par origine ; valeur absente ou inconnue = toutes.
+  const rawSource = String(req.query.source ?? "").trim();
+  const source: RegistrationSource | null =
+    rawSource === "inscription" || rawSource === "brochure" ? rawSource : null;
 
   let query = supabase
     .from("registration_requests")
     .select(
-      "id, full_name, email, phone, company, position, message, formation_slug, formation_title, treated, treated_at, treated_by, treated_note, created_at",
+      "id, source, full_name, email, phone, company, position, message, formation_slug, formation_title, treated, treated_at, treated_by, treated_note, created_at",
     )
     .eq("treated", status === "treated")
     .order("created_at", { ascending: false })
@@ -151,6 +156,10 @@ export async function listAdminRegistrations(
 
   if (formationSlug) {
     query = query.eq("formation_slug", formationSlug);
+  }
+
+  if (source) {
+    query = query.eq("source", source);
   }
 
   const { data, error } = await query;
@@ -166,6 +175,7 @@ export async function listAdminRegistrations(
 
   const rows = (data ?? []) as Array<{
     id: string;
+    source: RegistrationSource;
     full_name: string;
     email: string;
     phone: string;
@@ -183,6 +193,7 @@ export async function listAdminRegistrations(
 
   const responseData: RegistrationRecord[] = rows.map((item) => ({
     id: item.id,
+    source: item.source,
     fullName: item.full_name,
     email: item.email,
     phone: item.phone,

@@ -1,7 +1,14 @@
 import { FolderKanban, Users } from "lucide-react";
-import type { AdminRegistrationRecord } from "@/types/admin-registration";
+import type {
+  AdminRegistrationRecord,
+  RegistrationSource,
+} from "@/types/admin-registration";
 import type { AdminSponsorRecord, SponsorProgram } from "@/types/sponsor";
-import type { InscriptionsDisplayMode, RequestStatus } from "./dashboard-types";
+import type {
+  InscriptionsDisplayMode,
+  RequestStatus,
+  SourceFilter,
+} from "./dashboard-types";
 import type { SegmentedToggleOption } from "./dashboard-segmented-toggle";
 
 export const neutralActionButtonClass =
@@ -18,6 +25,19 @@ export const INSCRIPTIONS_DISPLAY_MODE_OPTIONS: Array<
   { id: "students", label: "Étudiants", icon: Users },
   { id: "formations", label: "Formations", icon: FolderKanban },
 ];
+
+export const SOURCE_FILTER_OPTIONS: Array<SegmentedToggleOption<SourceFilter>> = [
+  { id: "inscription", label: "Inscriptions" },
+  { id: "brochure", label: "Brochures" },
+  { id: "all", label: "Tous" },
+];
+
+/** Origine d'une demande ; une ligne sans `source` (backend anterieur) est une inscription. */
+export function registrationSource(
+  item: AdminRegistrationRecord,
+): RegistrationSource {
+  return item.source ?? "inscription";
+}
 
 /**
  * Libelles d'affichage des programmes de sponsoring (valeurs de
@@ -51,6 +71,7 @@ function toCsv(rows: AdminRegistrationRecord[]) {
     "position",
     "formationSlug",
     "formationTitle",
+    "source",
     "createdAt",
   ];
 
@@ -64,6 +85,7 @@ function toCsv(rows: AdminRegistrationRecord[]) {
       item.position || "",
       item.formationSlug,
       item.formationTitle,
+      registrationSource(item),
       item.createdAt,
     ]
       .map((field) => `"${String(field).replaceAll('"', '""')}"`)

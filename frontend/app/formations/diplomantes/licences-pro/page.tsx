@@ -3,7 +3,7 @@ import { Breadcrumb } from "@/components/breadcrumb";
 import { PageHero } from "@/components/page-hero";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Clock,
   Users,
@@ -12,6 +12,15 @@ import {
   ArrowRight,
   Download,
 } from "lucide-react";
+import { getFormationBySlug } from "@/data/formations";
+import { BrochureCta } from "@/features/formations/brochure/BrochureCta";
+import { cn } from "@/lib/utils";
+
+/** Formation avec brochure correspondant a une carte ; undefined sinon. */
+function brochureFormation(formationSlug?: string) {
+  const formation = formationSlug ? getFormationBySlug(formationSlug) : undefined;
+  return formation?.hasBrochure ? formation : undefined;
+}
 
 export const metadata: Metadata = {
   title: "Licences Professionnelles | Formations Diplômantes | Welearn",
@@ -21,6 +30,8 @@ export const metadata: Metadata = {
 
 type Licence = {
   id: string;
+  /** Slug formations.ts : active le bouton brochure si `hasBrochure`. */
+  formationSlug?: string;
   href?: string;
   title: string;
   partner: string;
@@ -36,6 +47,7 @@ type Licence = {
 const licences: Licence[] = [
   {
     id: "licence-executive-bim-modeler",
+    formationSlug: "licence-executive-bim-modeler",
     href: "/formations/licence-executive-bim-modeler",
     title: "Licence Executive BIM Modeler",
     partner: "Université Internationale de Casablanca (UIC)",
@@ -230,16 +242,22 @@ export default function LicencesProPage() {
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
-                      <Button
-                        asChild
-                        variant="outline"
-                        className="w-full border-primary text-primary bg-transparent"
-                      >
-                        <Link href="#">
-                          <Download className="mr-2 h-4 w-4" />
-                          Télécharger la brochure
-                        </Link>
-                      </Button>
+                      {(() => {
+                        const brochure = brochureFormation(
+                          program.formationSlug,
+                        );
+                        return brochure ? (
+                          <BrochureCta
+                            formationSlug={brochure.slug}
+                            formationTitle={brochure.title}
+                            icon={<Download className="mr-2 h-4 w-4" />}
+                            className={cn(
+                              buttonVariants({ variant: "outline" }),
+                              "w-full border-primary text-primary bg-transparent",
+                            )}
+                          />
+                        ) : null;
+                      })()}
                     </div>
                   </div>
                 </div>

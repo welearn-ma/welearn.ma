@@ -21,8 +21,12 @@ import type {
   FormationSummary,
   InscriptionsDisplayMode,
   RequestStatus,
+  SourceFilter,
 } from "../dashboard/dashboard-types";
-import { sponsorProgramLabel } from "../dashboard/dashboard-utils";
+import {
+  registrationSource,
+  sponsorProgramLabel,
+} from "../dashboard/dashboard-utils";
 
 export function useAdminDashboardController(accessToken: string) {
   const router = useRouter();
@@ -30,6 +34,9 @@ export function useAdminDashboardController(accessToken: string) {
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState<DateFilter>("all");
   const [formationFilter, setFormationFilter] = useState("all");
+  // Origine des demandes affichees ; "inscription" par defaut pour que les
+  // leads brochure ne gonflent pas la vue operationnelle des inscriptions.
+  const [sourceFilter, setSourceFilter] = useState<SourceFilter>("inscription");
   const [selectedFormationTitle, setSelectedFormationTitle] = useState<
     string | null
   >(null);
@@ -133,30 +140,42 @@ export function useAdminDashboardController(accessToken: string) {
     void refreshActivity();
   }, [refreshActivity]);
 
+  // Lignes de l'origine selectionnee : base de TOUTES les vues derivees
+  // (options, totaux, liste, regroupement par formation, modale candidats).
+  const sourceRows = useMemo(
+    () =>
+      sourceFilter === "all"
+        ? rows
+        : rows.filter((item) => registrationSource(item) === sourceFilter),
+    [rows, sourceFilter],
+  );
+
   const formationOptions = useMemo(
-    () => Array.from(new Set(rows.map((item) => item.formationTitle))).sort(),
-    [rows],
+    () =>
+      Array.from(new Set(sourceRows.map((item) => item.formationTitle))).sort(),
+    [sourceRows],
   );
 
   // Totaux non filtres (independants de search/dateFilter/formationFilter),
   // affiches dans les cartes stats au-dessus de la vue Inscriptions.
+  // Ils respectent en revanche le filtre d'origine.
   const inscriptionsTotals = useMemo(
     () => ({
-      inscriptions: rows.length,
-      formations: new Set(rows.map((item) => item.formationTitle)).size,
+      inscriptions: sourceRows.length,
+      formations: new Set(sourceRows.map((item) => item.formationTitle)).size,
       entreprises: new Set(
-        rows
+        sourceRows
           .filter((item) => item.company)
           .map((item) => item.company!.trim().toLowerCase()),
       ).size,
     }),
-    [rows],
+    [sourceRows],
   );
 
   const filteredRows = useMemo(() => {
     const now = Date.now();
 
-    return rows.filter((item) => {
+    return sourceRows.filter((item) => {
       if (
         formationFilter !== "all" &&
         item.formationTitle !== formationFilter
@@ -189,7 +208,7 @@ export function useAdminDashboardController(accessToken: string) {
         item.formationTitle.toLowerCase().includes(needle)
       );
     });
-  }, [rows, formationFilter, dateFilter, search]);
+  }, [sourceRows, formationFilter, dateFilter, search]);
 
   const groupedByFormation = useMemo<FormationSummary[]>(() => {
     const map = new Map<
@@ -233,10 +252,10 @@ export function useAdminDashboardController(accessToken: string) {
       return [];
     }
 
-    return rows.filter(
+    return sourceRows.filter(
       (item) => item.formationTitle === selectedFormationTitle,
     );
-  }, [rows, selectedFormationTitle]);
+  }, [sourceRows, selectedFormationTitle]);
 
   // Programmes reellement presents en donnees (sponsors.program) ; aucune
   // valeur codee en dur pour absorber les programmes futurs.
@@ -395,11 +414,20 @@ export function useAdminDashboardController(accessToken: string) {
     setSponsorFormationFilter("all");
   };
 
+  // Changer d'origine reinitialise la formation : ses options dependent de
+  // l'origine et la valeur courante peut ne plus exister.
+  const handleSourceFilter = (value: SourceFilter) => {
+    setSourceFilter(value);
+    setFormationFilter("all");
+    setSelectedFormationTitle(null);
+  };
+
   const handleViewChange = (nextView: AdminView) => {
     setView(nextView);
     setSearch("");
     setDateFilter("all");
     setFormationFilter("all");
+    setSourceFilter("inscription");
     setSelectedFormationTitle(null);
     setSelectedRequest(null);
     setRegistrationStatus("new");
@@ -502,6 +530,8 @@ export function useAdminDashboardController(accessToken: string) {
     search,
     dateFilter,
     formationFilter,
+    sourceFilter,
+    setSourceFilter: handleSourceFilter,
     loading,
     notice,
     registrationStatus,

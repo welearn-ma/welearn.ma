@@ -49,6 +49,8 @@ export function AdminDashboard({
               totals={controller.inscriptionsTotals}
               status={controller.registrationStatus}
               onStatusChange={controller.setRegistrationStatus}
+              sourceFilter={controller.sourceFilter}
+              onSourceFilterChange={controller.setSourceFilter}
               displayMode={controller.inscriptionsDisplayMode}
               onDisplayModeChange={controller.setInscriptionsDisplayMode}
               groupedByFormation={controller.groupedByFormation}
