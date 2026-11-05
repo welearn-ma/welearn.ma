@@ -12,7 +12,7 @@ export function FormationWhy({ text }: Props) {
         <h2 className="text-3xl font-bold tracking-tight text-wl-text mb-6">
           Pourquoi cette formation
         </h2>
-        <p className="text-base leading-relaxed text-wl-text-secondary">
+        <p className="whitespace-pre-line text-base leading-relaxed text-wl-text-secondary">
           {text}
         </p>
       </div>

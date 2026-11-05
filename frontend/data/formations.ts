@@ -431,7 +431,7 @@ export const formations: Record<string, FormationPageData> = {
         value: "Part-time, 1 week-end toutes les 3 semaines",
         label: "Rythme",
       },
-      { icon: CalendarDays, value: "<<RENTREE_ECC>>", label: "Rentrée" },
+      { icon: CalendarDays, value: "Novembre 2026", label: "Rentrée" },
       {
         icon: MapPin,
         value: "Campus École Centrale Casablanca",
@@ -478,7 +478,8 @@ export const formations: Record<string, FormationPageData> = {
       },
       {
         number: 3,
-        title: "Pilier 3 : L'Avenir — Digital, innovation & construction durable",
+        title:
+          "Pilier 3 : L'Avenir — Digital, innovation & construction durable",
         description:
           "Les fondamentaux du BIM (certification) · Adoption du BIM dans une organisation · Contech & innovation (panorama) · IA pour la construction, data, éthique & cybersécurité · Construction durable : performance énergétique, carbone & trajectoire de décarbonation · Certifications environnementales (LEED / BREEAM / HQE) & normes ISO · Financement vert & achats durables",
       },
