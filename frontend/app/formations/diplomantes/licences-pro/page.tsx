@@ -19,7 +19,47 @@ export const metadata: Metadata = {
     "Licences Professionnelles en BTP, BIM et Management de Projet Construction.",
 };
 
-const licences = [
+type Licence = {
+  id: string;
+  href?: string;
+  title: string;
+  partner: string;
+  duration: string;
+  format: string;
+  level: string;
+  badges: string[];
+  description: string;
+  objectives: string[];
+  prerequisites: string[];
+};
+
+const licences: Licence[] = [
+  {
+    id: "licence-executive-bim-modeler",
+    href: "/formations/licence-executive-bim-modeler",
+    title: "Licence Executive BIM Modeler",
+    partner: "Université Internationale de Casablanca (UIC)",
+    duration: "12 mois",
+    format: "Week-end",
+    level: "Bac+3",
+    badges: [
+      "Licence Executive",
+      "Diplôme Bac+3",
+      "Université reconnue par l'État",
+    ],
+    description:
+      "Une licence executive pour devenir un professionnel de la modélisation BIM. Donnez une nouvelle dimension à votre carrière dans le BTP.",
+    objectives: [
+      "Maîtriser la modélisation BIM et structurer les informations d'une maquette numérique.",
+      "Modéliser les éléments structurels et assurer leur articulation avec la maquette architecturale.",
+      "Modéliser les systèmes MEP : CVC, plomberie et électricité.",
+      "Fédérer et coordonner les différentes maquettes et identifier les conflits entre les lots.",
+    ],
+    prerequisites: [
+      "Bac+2 ou Bac+3 à dominante technique, scientifique ou liée aux métiers de la construction",
+      "Ou professionnel du BTP en activité souhaitant évoluer vers les métiers du BIM",
+    ],
+  },
   {
     id: "lp-bim",
     title: "Licence Professionnelle Conduite de Travaux BIM",
@@ -96,7 +136,13 @@ export default function LicencesProPage() {
                 <div className="grid lg:grid-cols-3 gap-8">
                   <div className="lg:col-span-2">
                     <h2 className="font-sans text-2xl lg:text-3xl font-bold text-foreground mb-2">
-                      {program.title}
+                      {program.href ? (
+                        <Link href={program.href} className="hover:text-primary">
+                          {program.title}
+                        </Link>
+                      ) : (
+                        program.title
+                      )}
                     </h2>
                     <p className="text-primary font-medium mb-4">
                       En partenariat avec {program.partner}
@@ -121,22 +167,24 @@ export default function LicencesProPage() {
                       </div>
                     </div>
 
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-3">
-                        Prérequis
-                      </h4>
-                      <ul className="space-y-1">
-                        {program.prerequisites.map((prereq, idx) => (
-                          <li
-                            key={idx}
-                            className="text-sm text-muted-foreground flex items-center gap-2"
-                          >
-                            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                            {prereq}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    {program.prerequisites.length > 0 && (
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-3">
+                          Prérequis
+                        </h4>
+                        <ul className="space-y-1">
+                          {program.prerequisites.map((prereq, idx) => (
+                            <li
+                              key={idx}
+                              className="text-sm text-muted-foreground flex items-center gap-2"
+                            >
+                              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                              {prereq}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
 
                   <div className="bg-white rounded-xl p-6 h-fit">
@@ -171,7 +219,13 @@ export default function LicencesProPage() {
                         asChild
                         className="w-full bg-primary hover:bg-primary/90 text-white"
                       >
-                        <Link href="/contact">
+                        <Link
+                          href={
+                            program.href
+                              ? `${program.href}#registration-form`
+                              : "/contact"
+                          }
+                        >
                           Candidater
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>

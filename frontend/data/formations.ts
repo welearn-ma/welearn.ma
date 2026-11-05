@@ -7,6 +7,8 @@ import {
   Briefcase,
   Users,
   GraduationCap,
+  Award,
+  Plane,
 } from "lucide-react";
 import type { FormationPageData } from "@/types/formation-page";
 
@@ -18,7 +20,7 @@ export const formations: Record<string, FormationPageData> = {
     slug: "mastere-bim",
     title: "Mastère Spécialisé® BIM & ses Applications",
     subtitle:
-      "Devenez BIM Manager. Maîtrisez la gestion des données d'un projet de construction, de la conception à l'exploitation, avec le programme de référence au Maroc.",
+      "Le Mastère Spécialisé® BIM & ses applications permet de maîtriser la gestion, à tout moment et en tout lieu, des données d'un projet et d'un chantier dans le secteur de la construction. Il permet aussi une parfaite gestion de l'ouvrage incluant tous ses paramètres.",
     partnerLine:
       "Partenaire académique : École Hassania des Travaux Publics (EHTP)",
     badges: [
@@ -29,7 +31,7 @@ export const formations: Record<string, FormationPageData> = {
     infoBanner: [
       { icon: Clock, value: "18 mois", label: "Durée" },
       { icon: Briefcase, value: "Temps partiel aménagé", label: "Format" },
-      { icon: CalendarDays, value: "Octobre 2026", label: "Rentrée" },
+      { icon: CalendarDays, value: "Novembre 2026", label: "Rentrée" },
       { icon: MapPin, value: "EHTP Casablanca", label: "Lieu" },
     ],
     heroImage:
@@ -38,30 +40,32 @@ export const formations: Record<string, FormationPageData> = {
     ctaSecondary: "Télécharger la brochure",
     profiles: [
       "Architectes",
-      "Ingénieurs (structures, fluides, électriques, géomètres-topographes)",
+      "Ingénieurs Géomètres-Topographes",
+      "Ingénieurs Structures",
+      "Ingénieurs Électriques & Fluides",
       "Directeurs de projets",
       "Facility Managers",
-      "Bureaux d'études",
-      "Bureaux de contrôle",
-      "Entreprises de travaux",
-      "Maîtres d'ouvrage",
-      "Promoteurs immobiliers",
-      "AMO",
-      "OPC",
+      "Bureaux d'Études",
+      "Bureaux de Contrôle",
+      "Entreprises de Travaux",
+      "Maîtres d'Ouvrage",
+      "Promoteurs Immobiliers",
+      "AMO - OPC",
     ],
     prerequisites: [
-      "Niveau ingénieur ou architecte",
-      "Professionnels spécialisés de niveau Bac+4 avec minimum 3 ans d'expérience",
-      "Dérogation possible pour parcours professionnel particulier",
+      "Niveau ingénieur ou architecte.",
+      "Professionnels spécialisés de niveau Bac+4 avec +3 ans d'expérience.",
+      "Dérogation spéciale pour parcours professionnel particulier.",
     ],
     pourquoi:
       "Le BIM transforme profondément la manière dont les projets de construction sont conçus, coordonnés et livrés. Les professionnels capables de piloter cette transformation sont rares — et très recherchés. Ce Mastère Spécialisé, co-construit par l'EHTP et Welearn, est le seul programme au Maroc à combiner l'accréditation de la Conférence des Grandes Écoles et la labellisation BIM Manager de buildingSMART Maroc. Il offre une flexibilité unique : les participants peuvent étudier par modules selon leurs intérêts, avec une personnalisation adaptée à leurs objectifs professionnels.",
     objectives: [
-      "Comprendre le rôle de chaque acteur dans le secteur de la construction et le périmètre d'action en environnement BIM au sein d'un projet.",
-      "Maîtriser les enjeux, les usages et la valeur ajoutée du BIM — de la conception à l'exploitation, en passant par les infrastructures et la gestion de patrimoine.",
-      "Identifier le processus de passage d'une organisation séquentielle à une conduite de projet sous BIM, y compris les aspects juridiques et réglementaires.",
-      "Utiliser les outils de modélisation et collaborer via les visionneuses IFC et les plateformes collaboratives.",
-      "Piloter la conduite du changement liée à l'adoption du BIM dans une organisation.",
+      "Comprendre le rôle de chaque acteur dans le secteur de la construction.",
+      "Comprendre le périmètre d'action en environnement BIM au sein d'un projet.",
+      "Identifier le processus de passage d'une organisation séquentielle à celle d'une conduite de projet sous BIM.",
+      "Comprendre et appréhender les enjeux, les usages et la valeur ajoutée du BIM.",
+      "Utiliser et manipuler les outils de modélisation de type Revit, Tekla, Cype…",
+      "Collaborer grâce aux visionneuses IFC et aux plateformes collaboratives.",
     ],
     modules: [
       {
@@ -90,13 +94,13 @@ export const formations: Record<string, FormationPageData> = {
       },
       {
         number: 5,
-        title: "Captation, collecte & intégration des attributs (Scan to BIM)",
+        title: "De la Réalité à la Maquette : L'ingénierie du Scan-to-BIM",
         description:
           "Technologies de captation 3D, traitement des nuages de points et intégration dans les maquettes numériques.",
       },
       {
         number: 6,
-        title: "Management des projets sous BIM (le BIM Collaboratif)",
+        title: "Management des projets sous BIM",
         description:
           "Mise en place des processus BIM : conventions BIM, plateformes collaboratives, coordination entre les disciplines.",
       },
@@ -114,15 +118,15 @@ export const formations: Record<string, FormationPageData> = {
       },
       {
         number: 9,
-        title: "BIM pour la gestion d'un patrimoine immobilier",
+        title: "BIM pour la Gestion, Exploitation et Maintenance (GEM)",
         description:
           "BIM et exploitation-maintenance : gestion des actifs, Facility Management, jumeau numérique.",
       },
       {
         number: 10,
-        title: "Conduite du changement",
-        description:
-          "Stratégies de déploiement du BIM dans une organisation. Management du changement et mesure de la maturité BIM.",
+        title: "Computational Design, IA en BIM et conduite du changement",
+        // TODO(contenu): description à fournir — module renommé/élargi (BIM8).
+        description: "",
       },
     ],
     finalBlocks: [
@@ -142,23 +146,27 @@ export const formations: Record<string, FormationPageData> = {
           "Experts internationaux certifiés",
           "Professeurs de l'EHTP",
           "Experts solutions et logiciels",
-          "Professionnels du BIM en activité",
+          "Professionnels du BIM",
         ],
       },
       {
         icon: GraduationCap,
-        title: "Approche pédagogique",
+        title: "Principe de la formation",
         items: [
+          "Programme en temps partiel aménagé",
+          "11 sessions de trois jours chacune",
           "Cours théoriques & ateliers pratiques",
-          "Études de cas réels",
-          "Supports e-learning",
+          "Études de cas et supports e-learning",
           "Thèse professionnelle encadrée",
         ],
       },
       {
         icon: MapPin,
         title: "Lieux",
-        text: "Cours théoriques en salle à l'EHTP. Cours pratiques en salles équipées à l'EHTP et aux locaux Welearn.",
+        items: [
+          "Cours théoriques en salle de formation aménagée à l'EHTP.",
+          "Cours pratiques en salles équipées en solutions BIM à l'EHTP et aux locaux Welearn.",
+        ],
       },
     ],
     steps: [
@@ -178,7 +186,7 @@ export const formations: Record<string, FormationPageData> = {
         description: "Passez un entretien avec la commission de sélection.",
       },
     ],
-    session: "Octobre 2026",
+    session: "Novembre 2026",
     ctaInscription: "Déposer ma candidature",
     testimonials: [
       {
@@ -398,6 +406,322 @@ export const formations: Record<string, FormationPageData> = {
         "Maîtrisez la chaîne de valeur immobilière avec l'Executive Master co-construit par l'EHTP et Welearn. Formation exécutive pour professionnels du secteur.",
       keywords:
         "formation immobilier Maroc, executive master immobilier, formation ingénierie immobilière Casablanca, master immobilier EHTP",
+    },
+  },
+
+  /* ──────────────────────────────────────────────────────────
+   * EXECUTIVE MASTER DIRECTION & TRANSFORMATION DES PROJETS DE CONSTRUCTION
+   * ────────────────────────────────────────────────────────── */
+  "executive-master-direction-transformation-projets-construction": {
+    slug: "executive-master-direction-transformation-projets-construction",
+    title:
+      "Executive Master Direction & Transformation des Projets de Construction",
+    subtitle:
+      "Piloter aujourd'hui, construire demain ! Stratégie · Performance · Durabilité · Digitalisation.",
+    partnerLine: "Partenaire académique : École Centrale Casablanca (ECC)",
+    badges: [
+      "Executive Master",
+      "École membre de la CGE",
+      "Certification BIM Foundations incluse",
+    ],
+    infoBanner: [
+      { icon: Clock, value: "18 mois", label: "Durée" },
+      {
+        icon: Briefcase,
+        value: "Part-time, 1 week-end toutes les 3 semaines",
+        label: "Rythme",
+      },
+      { icon: CalendarDays, value: "<<RENTREE_ECC>>", label: "Rentrée" },
+      {
+        icon: MapPin,
+        value: "Campus École Centrale Casablanca",
+        label: "Lieu",
+      },
+    ],
+    // TODO(contenu): image temporaire réutilisée (masterclass-chantier-ia) — à remplacer.
+    heroImage:
+      "https://images.unsplash.com/photo-1581092921461-eab10380f308?w=1600&q=80",
+    ctaPrimary: "Déposer ma candidature",
+    ctaSecondary: "Télécharger la brochure",
+    profiles: [
+      "Chefs de projet & chefs de programme",
+      "Maîtrise d'œuvre & AMO",
+      "Ingénieurs travaux & ingénieurs études",
+      "Directeurs techniques",
+    ],
+    prerequisites: [
+      "Être titulaire d'un Bac+5",
+      "Expérience professionnelle requise",
+    ],
+    pourquoi:
+      "L'École Centrale Casablanca et Welearn ont conçu cet Executive Master avec l'ambition de contribuer à l'émergence d'une nouvelle génération de directeurs de projets de construction, capables de porter les transformations du secteur au Maroc et à l'échelle internationale. L'objectif n'est pas simplement de former de meilleurs gestionnaires de projets, mais de faire émerger des dirigeants capables de penser, piloter et diriger les projets de construction de demain.\n\nAux enjeux traditionnels de coûts, de délais et de qualité s'ajoutent désormais des impératifs de transition environnementale, de digitalisation, d'innovation technologique et de création de valeur à long terme. Le programme fait évoluer la posture du participant : de spécialiste à décideur, de chef de projet à directeur, de gestionnaire à acteur de la transformation.",
+    objectives: [
+      "Prendre de la hauteur : passer d'une vision centrée sur l'exécution d'un projet à une approche intégrant les enjeux de stratégie, de programme et de portefeuille.",
+      "Piloter la performance : maîtriser les leviers de performance et prendre des décisions fondées sur la valeur, les coûts, les délais et les risques des projets.",
+      "Conduire la transformation digitale : évaluer et gouverner l'adoption des technologies (BIM, Contech, IA, Data) en intégrant les enjeux de gouvernance, d'éthique et de cybersécurité.",
+      "Intégrer la durabilité dans la décision : performance énergétique et carbone, décarbonation, certifications environnementales, économie circulaire et financement durable.",
+      "Incarner une posture de directeur : développer son leadership, mobiliser et faire évoluer les équipes, conduire le changement, négocier et décider dans des environnements complexes.",
+    ],
+    modules: [
+      {
+        number: 1,
+        title: "Pilier 1 : L'Homme — Leadership & posture du dirigeant",
+        description:
+          "Vision & leadership · Management d'équipe · Négociation · Prise de parole en public · Conduite du changement",
+      },
+      {
+        number: 2,
+        title:
+          "Pilier 2 : Le Process — Stratégie, management de projet, programme et portefeuille & excellence opérationnelle",
+        description:
+          "Stratégie, portefeuille, programmes & PMO · Fondamentaux du management de projet · Planification & maîtrise des délais en projet de construction · Estimation & maîtrise des coûts (Earned Value & Value Engineering) · Stratégie achats, approvisionnements & qualité projet · Management des risques en projet de construction · Lean Construction & excellence opérationnelle",
+      },
+      {
+        number: 3,
+        title: "Pilier 3 : L'Avenir — Digital, innovation & construction durable",
+        description:
+          "Les fondamentaux du BIM (certification) · Adoption du BIM dans une organisation · Contech & innovation (panorama) · IA pour la construction, data, éthique & cybersécurité · Construction durable : performance énergétique, carbone & trajectoire de décarbonation · Certifications environnementales (LEED / BREEAM / HQE) & normes ISO · Financement vert & achats durables",
+      },
+    ],
+    finalBlocks: [
+      {
+        badge: "Projet",
+        title: "Projet de fin d'études",
+        description: "",
+        variant: "orange",
+      },
+    ],
+    teaching: [
+      {
+        icon: CalendarDays,
+        title: "Format",
+        items: [
+          "32 jours de formation",
+          "3 blocs de compétences",
+          "19 modules & ateliers",
+          "1 week-end toutes les 3 semaines",
+        ],
+      },
+      {
+        icon: GraduationCap,
+        title: "Pédagogie par l'action",
+        items: [
+          "Études de cas — mises en situation de projets réels",
+          "Ateliers appliqués — Lean Construction, Value Engineering & planification collaborative",
+          "Projet de fin d'études",
+        ],
+      },
+      {
+        icon: Award,
+        title: "Atouts",
+        items: [
+          "Certification internationale BIM Foundations",
+          "Accès à l'écosystème et au réseau de l'École Centrale Casablanca",
+          "Accès au PMI Membership",
+        ],
+      },
+      {
+        icon: Plane,
+        title: "Learning Expedition China",
+        items: [
+          "Immersion de 5 jours entre Pékin, Shanghai et Suzhou",
+          "Grands projets, smart building et infrastructures durables",
+          "Rencontres avec des acteurs publics, privés et académiques",
+        ],
+      },
+      {
+        icon: MapPin,
+        title: "Lieu",
+        text: "Campus de l'École Centrale Casablanca",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Inscription en ligne",
+        description: "Dépôt électronique du dossier de candidature.",
+      },
+      {
+        number: 2,
+        title: "Étude du dossier",
+        description:
+          "Évaluation du parcours, de l'expérience et des prérequis.",
+      },
+      {
+        number: 3,
+        title: "Entretien de sélection",
+        description:
+          "Échange autour du projet professionnel et des motivations.",
+      },
+      {
+        number: 4,
+        title: "Confirmation",
+        description: "Confirmation de l'admission et inscription définitive.",
+      },
+    ],
+    session: "<<RENTREE_ECC>>",
+    ctaInscription: "Déposer ma candidature",
+    testimonials: [],
+    seo: {
+      title:
+        "Executive Master Direction & Transformation des Projets de Construction — École Centrale Casablanca & Welearn",
+      description:
+        "Executive Master co-construit par l'École Centrale Casablanca et Welearn pour former les directeurs de projets de construction : stratégie, performance, durabilité et digitalisation.",
+      keywords:
+        "executive master construction Maroc, direction de projets de construction, executive master École Centrale Casablanca, management de projet BTP Casablanca",
+    },
+  },
+
+  /* ──────────────────────────────────────────────────────────
+   * LICENCE EXECUTIVE BIM MODELER
+   * ────────────────────────────────────────────────────────── */
+  "licence-executive-bim-modeler": {
+    slug: "licence-executive-bim-modeler",
+    title: "Licence Executive BIM Modeler",
+    subtitle:
+      "Une licence executive pour devenir un professionnel de la modélisation BIM. Donnez une nouvelle dimension à votre carrière dans le BTP.",
+    partnerLine:
+      "Partenaire académique : Université Internationale de Casablanca (UIC)",
+    badges: [
+      "Licence Executive",
+      "Diplôme Bac+3",
+      "Université reconnue par l'État",
+    ],
+    infoBanner: [
+      { icon: Clock, value: "12 mois", label: "Durée" },
+      { icon: Briefcase, value: "Week-end", label: "Rythme" },
+      { icon: CalendarDays, value: "Novembre 2026", label: "Rentrée" },
+      { icon: MapPin, value: "Campus UIC", label: "Lieu" },
+    ],
+    // TODO(contenu): image temporaire réutilisée (bim-foundations) — à remplacer.
+    heroImage:
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1600&q=80",
+    ctaPrimary: "Déposer ma candidature",
+    ctaSecondary: "Télécharger la brochure",
+    profiles: [
+      "Bâtiment & Génie Civil",
+      "Architecture & Design",
+      "Topographie & Géomatique",
+      "Électricité & Électromécanique",
+      "Génie Climatique & CVC",
+      "Métiers industriels",
+      "Architectes & Projeteurs",
+      "Ingénieurs Génie Civil",
+      "Techniciens Génie Civil",
+      "Chefs de Projets Construction",
+      "Bureaux d'études & Ingénierie",
+      "Topographes & Géomètres",
+      "Conducteurs de Travaux",
+    ],
+    prerequisites: [
+      "Bac+2 ou Bac+3 à dominante technique, scientifique ou liée aux métiers de la construction",
+      "Ou professionnel du BTP en activité souhaitant évoluer vers les métiers du BIM",
+    ],
+    pourquoi:
+      "La Licence Executive BIM Modeler est conçue pour permettre aux participants d'acquérir une maîtrise opérationnelle de la modélisation numérique appliquée aux projets de construction. Le programme associe les fondamentaux du BIM, la modélisation, la gestion de l'information, la documentation technique, la collaboration entre disciplines et les principes de coordination des maquettes. À travers des cours pratiques, des exercices et des projets supervisés, les participants développent leur maîtrise des outils et méthodes BIM appliqués à l'architecture, la structure et les systèmes MEP. La formation intègre également les enjeux actuels de l'Open BIM, de l'interopérabilité, de la coordination numérique et de l'automatisation par l'IA.",
+    objectives: [
+      "Comprendre les fondamentaux du BIM et son rôle dans la transformation digitale du secteur de la construction.",
+      "Maîtriser la modélisation BIM et structurer les informations d'une maquette numérique.",
+      "Modéliser un projet architectural en 3D à partir de plans 2D, de projets et de données existants.",
+      "Modéliser les éléments structurels et assurer leur articulation avec la maquette architecturale.",
+      "Modéliser les systèmes MEP : CVC, plomberie et électricité.",
+      "Fédérer et coordonner les différentes maquettes et identifier les conflits entre les lots.",
+      "Travailler dans un environnement BIM collaboratif et utiliser les principes de l'Open BIM et de l'interopérabilité.",
+      "Contrôler la qualité des maquettes et produire des livrables conformes aux exigences BIM.",
+      "Exploiter l'automatisation pour optimiser les tâches de modélisation, de contrôle et d'exploitation des données.",
+      "Développer une approche projet et opérationnelle grâce à la réalisation de travaux pratiques et d'un bâtiment.",
+    ],
+    modules: [
+      {
+        number: 1,
+        title: "Les fondamentaux du BIM",
+        description:
+          "Situer le BIM dans la transformation digitale du secteur et le cycle de vie d'un ouvrage. Maîtriser le vocabulaire, les dimensions, les niveaux de maturité et de développement (LOD). Appréhender le cadre normatif du BIM. Comprendre les cas d'usage et les processus BIM. Appréhender les principes de l'open BIM. Appréhender les principes de l'adoption du BIM.",
+      },
+      {
+        number: 2,
+        title: "Initiation aux bases de données appliquées au BIM",
+        description:
+          "Comprendre la structuration d'une base de données et la nature d'une maquette numérique. Identifier et qualifier les objets BIM. Maîtriser les niveaux de détail, d'information et de documentation. Appliquer les conventions de nommage et les standards de classification.",
+      },
+      {
+        number: 3,
+        title: "L'environnement de la modélisation 3D",
+        description:
+          "Distinguer les méthodes d'acquisition et de reconstitution des données (levé, scan). Comparer les types et outils de modélisation (DAO, CAO, 3D). Interpréter et identifier les exigences des documents BIM (charte, cahier des charges, convention BIM, BEP).",
+      },
+      {
+        number: 4,
+        title: "Modélisation architecturale",
+        description:
+          "Modéliser le lot architectural (murs, dalles, toitures, ouvertures, espaces). Modélisation 3D d'un nouveau projet. Modélisation 3D d'un projet existant à partir de plans CAD. Modélisation 3D d'un projet existant à partir d'un scan 3D (nuage de points). Renseigner le niveau d'information requis. Contrôle qualité de la maquette. Produire les livrables architecturaux conformes aux exigences BIM.",
+      },
+      {
+        number: 5,
+        title: "Modélisation structure",
+        description:
+          "Modéliser le lot structure et l'articuler avec la maquette architecturale. Renseigner les attributs structurels et le niveau d'information requis. Contrôle qualité de la maquette. Produire les livrables structure (plans de coffrage, nomenclatures d'armatures/profilés, quantitatifs).",
+      },
+      {
+        number: 6,
+        title: "Modélisation MEP",
+        description:
+          "Modéliser les réseaux CVC, plomberie et électricité. Tracer et dimensionner les systèmes. Renseigner le niveau d'information requis. Contrôle qualité de la maquette. Gérer les réservations et les interfaces avec les lots ARC et STR. Produire les livrables MEP.",
+      },
+      {
+        number: 7,
+        title: "BIM collaboratif",
+        description:
+          "Mettre en œuvre les formats open BIM et les principes d'interopérabilité. Distinguer closed et open BIM. Fédérer les maquettes disciplinaires et détecter les conflits. Collaborer sur une maquette partagée dans un CDE.",
+      },
+      {
+        number: 8,
+        title: "Automatisation IA",
+        description:
+          "Identifier les cas d'usage de l'automatisation et de l'IA dans un processus BIM. Automatiser des tâches de modélisation et de contrôle. Extraire et exploiter automatiquement les données de la maquette. Réaliser un contrôle qualité automatisé. Déployer les plugins complémentaires.",
+      },
+    ],
+    finalBlocks: [],
+    teaching: [
+      {
+        icon: MapPin,
+        title: "Format",
+        text: "12 mois · Week-end · Campus UIC",
+      },
+    ],
+    steps: [
+      {
+        number: 1,
+        title: "Inscription en ligne",
+        description: "Dépôt électronique du dossier.",
+      },
+      {
+        number: 2,
+        title: "Étude du dossier",
+        description:
+          "Évaluation du parcours, de l'expérience et des prérequis.",
+      },
+      {
+        number: 3,
+        title: "Entretien de sélection",
+        description:
+          "Échange autour du projet professionnel et des motivations.",
+      },
+      {
+        number: 4,
+        title: "Confirmation",
+        description: "Confirmation de l'admission et inscription définitive.",
+      },
+    ],
+    session: "Novembre 2026",
+    ctaInscription: "Déposer ma candidature",
+    testimonials: [],
+    seo: {
+      title: "Licence Executive BIM Modeler — UIC & Welearn",
+      description:
+        "Une licence executive Bac+3 pour devenir un professionnel de la modélisation BIM, en partenariat avec l'Université Internationale de Casablanca (UIC).",
+      keywords:
+        "licence BIM Maroc, licence executive BIM Modeler, formation modélisation BIM Casablanca, BIM Modeler UIC",
     },
   },
 

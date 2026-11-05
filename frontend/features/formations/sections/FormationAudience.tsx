@@ -6,6 +6,8 @@ type Props = {
 };
 
 export function FormationAudience({ profiles, prerequisites }: Props) {
+  if (!profiles?.length && !prerequisites?.length) return null;
+
   return (
     <section className="bg-wl-gray-light py-20">
       <div className="mx-auto max-w-[1200px] px-6">

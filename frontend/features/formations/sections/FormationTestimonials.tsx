@@ -7,6 +7,8 @@ type Props = {
 
 // TODO: replace with real testimonials
 export function FormationTestimonials({ testimonials }: Props) {
+  if (!testimonials?.length) return null;
+
   return (
     <section className="bg-wl-gray-light py-20">
       <div className="mx-auto max-w-[1200px] px-6">

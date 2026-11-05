@@ -20,13 +20,27 @@ export const metadata: Metadata = {
     "Programmes Executive Master en BIM, Immobilier et Management de Projet Construction.",
 };
 
-const masters = [
+type Master = {
+  id: string;
+  href?: string;
+  title: string;
+  partner: string;
+  duration: string;
+  format: string;
+  badges: string[];
+  description: string;
+  objectives: string[];
+  prerequisites: string[];
+  highlights: string[];
+};
+
+const masters: Master[] = [
   {
     id: "ms-bim",
-    title: "Mastère Spécialisé BIM et ses Applications",
+    title: "Mastère Spécialisé® BIM & ses Applications",
     partner: "EHTP (École Hassania des Travaux Publics)",
-    duration: "12 mois",
-    format: "Modulaire",
+    duration: "18 mois",
+    format: "Temps partiel aménagé",
     badges: ["Accréditation CGE", "Label BIM Manager BuildingSmart"],
     description:
       "Formation d'excellence au Building Information Modeling avec double reconnaissance : accréditation de la Conférence des Grandes Écoles et label BIM Manager de BuildingSmart International.",
@@ -37,8 +51,7 @@ const masters = [
       "Développer une vision stratégique du BIM",
     ],
     prerequisites: [
-      "Bac+5 ou Bac+4 avec 3 ans d'expérience",
-      "Expérience dans le secteur BTP",
+      "Niveau ingénieur ou architecte, ou Bac+4 avec +3 ans d'expérience",
     ],
     highlights: [
       "Accréditation Conférence des Grandes Écoles",
@@ -76,27 +89,32 @@ const masters = [
     ],
   },
   {
-    id: "em-pm-bim",
-    title: "Executive Master Management de Projet de Construction – Expert BIM",
-    partner: "ESLSCA & Welearn",
-    duration: "12 mois",
-    format: "Hybride",
-    badges: ["PMP® Preparation", "BIM Foundations"],
-    description:
-      "Double expertise en management de projet et BIM. Préparez-vous aux certifications internationales PMP® et BIM Foundations avec une approche pratique et professionnelle.",
-    objectives: [
-      "Maîtriser le management de projet construction",
-      "Se préparer à la certification PMP®",
-      "Obtenir la certification BIM Foundations",
-      "Coordonner des projets BIM complexes",
+    id: "executive-master-direction-transformation-projets-construction",
+    href: "/formations/executive-master-direction-transformation-projets-construction",
+    title:
+      "Executive Master Direction & Transformation des Projets de Construction",
+    partner: "École Centrale Casablanca (ECC)",
+    duration: "18 mois",
+    format: "Part-time · 1 week-end / 3",
+    badges: [
+      "Executive Master",
+      "École membre de la CGE",
+      "Certification BIM Foundations incluse",
     ],
-    prerequisites: ["Bac+3 minimum", "Expérience en gestion de projet"],
+    description:
+      "Piloter aujourd'hui, construire demain ! Stratégie · Performance · Durabilité · Digitalisation.",
+    objectives: [
+      "Prendre de la hauteur",
+      "Piloter la performance",
+      "Conduire la transformation digitale",
+      "Intégrer la durabilité dans la décision",
+      "Incarner une posture de directeur",
+    ],
+    prerequisites: ["Bac+5 avec expérience professionnelle"],
     highlights: [
-      "Préparation certification PMP®",
-      "Préparation BIM Foundations BuildingSmart",
-      "Méthodologies agiles et traditionnelles",
-      "Outils de gestion de projet",
-      "Coordination BIM avancée",
+      "Certification internationale BIM Foundations",
+      "Accès à l'écosystème et au réseau de l'École Centrale Casablanca",
+      "Accès au PMI Membership",
     ],
   },
 ];
@@ -137,7 +155,13 @@ export default function ExecutiveMastersPage() {
                 <div className="grid lg:grid-cols-3 gap-8">
                   <div className="lg:col-span-2">
                     <h2 className="font-sans text-2xl lg:text-3xl font-bold text-foreground mb-2">
-                      {program.title}
+                      {program.href ? (
+                        <Link href={program.href} className="hover:text-primary">
+                          {program.title}
+                        </Link>
+                      ) : (
+                        program.title
+                      )}
                     </h2>
                     <p className="text-primary font-medium mb-4">
                       En partenariat avec {program.partner}
@@ -212,7 +236,13 @@ export default function ExecutiveMastersPage() {
                         asChild
                         className="w-full bg-primary hover:bg-primary/90 text-white"
                       >
-                        <Link href="/contact">
+                        <Link
+                          href={
+                            program.href
+                              ? `${program.href}#registration-form`
+                              : "/contact"
+                          }
+                        >
                           Candidater
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
