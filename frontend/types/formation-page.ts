@@ -17,7 +17,13 @@ export type FormationModule = {
 export type ExpeditionBlock = {
   eyebrow: string;
   title: string;
-  items: string[];
+  /** Repères courts affichés sous le titre (durée, villes…). */
+  highlights: string[];
+  image: string;
+  imageAlt: string;
+  sections: { heading: string; paragraphs: string[] }[];
+  benefitsTitle: string;
+  benefits: { icon: LucideIcon; title: string; text: string }[];
 };
 
 export type FinalBlock = {

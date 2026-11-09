@@ -8,6 +8,11 @@ import {
   Users,
   GraduationCap,
   Award,
+  Eye,
+  Signpost,
+  Lightbulb,
+  Network,
+  ClipboardList,
 } from "lucide-react";
 import type { FormationPageData } from "@/types/formation-page";
 
@@ -517,10 +522,54 @@ export const formations: Record<string, FormationPageData> = {
     expedition: {
       eyebrow: "Immersion internationale",
       title: "Learning Expedition China",
-      items: [
-        "Immersion de 5 jours entre Pékin, Shanghai et Suzhou",
-        "Grands projets, smart building et infrastructures durables",
-        "Rencontres avec des acteurs publics, privés et académiques",
+      highlights: ["5 jours", "Pékin", "Shanghai", "Suzhou"],
+      image:
+        "https://images.unsplash.com/photo-1474181487882-5abf3f0ba6c2?w=1600&q=80",
+      imageAlt: "Skyline de Pudong à Shanghai de nuit",
+      sections: [
+        {
+          heading:
+            "Un voyage pour comprendre la Chine des mégastructures, du smart building et des infrastructures durables",
+          paragraphs: [
+            "Dans le cadre de la formation, les participants bénéficient d'une immersion internationale au cœur de la Chine, l'un des écosystèmes les plus dynamiques au monde en matière de construction, d'infrastructures et de transformation urbaine.",
+            "De Pékin à Shanghai, jusqu'à Suzhou, cette Learning Expedition propose une lecture à différentes échelles de la ville de demain : du bâtiment emblématique aux grandes infrastructures, des technologies digitales aux nouveaux modèles urbains, jusqu'à l'aménagement de territoires industriels et circulaires.",
+          ],
+        },
+        {
+          heading:
+            "Une immersion opérationnelle dans une Chine qui imagine, digitalise, construit et fait vivre ses villes",
+          paragraphs: [
+            "La Learning Expedition China ne propose pas une simple succession de visites. Elle raconte une trajectoire : découvrir un campus d'excellence, visiter des bâtiments emblématiques, observer les technologies, comprendre l'ingénierie des grands projets, puis terminer par l'aménagement d'un territoire complet.",
+          ],
+        },
+      ],
+      benefitsTitle: "Revenir avec plus qu'un souvenir",
+      benefits: [
+        {
+          icon: Eye,
+          title: "Une vision",
+          text: "Découvrir les dynamiques urbaines, économiques et technologiques.",
+        },
+        {
+          icon: Signpost,
+          title: "Des repères",
+          text: "Se constituer des références concrètes pour mieux décider.",
+        },
+        {
+          icon: Lightbulb,
+          title: "Des idées",
+          text: "S'inspirer d'innovations et de pratiques réplicables dans vos contextes réels.",
+        },
+        {
+          icon: Network,
+          title: "Un réseau",
+          text: "Créer des relations avec des acteurs publics, privés et académiques.",
+        },
+        {
+          icon: ClipboardList,
+          title: "Un plan",
+          text: "Repartir avec des idées et des actions pour vos projets.",
+        },
       ],
     },
     teaching: [

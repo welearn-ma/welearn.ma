@@ -29,7 +29,7 @@ export function FormationProgram({
             {modules.map((mod) => (
               <div
                 key={mod.number}
-                className="rounded-xl border border-wl-border bg-white p-7 hover:shadow-md hover:-translate-y-0.5 transition-all"
+                className="rounded-xl border border-wl-border bg-white p-7"
               >
                 <div className="flex items-start gap-4">
                   <span className="shrink-0 rounded-lg bg-wl-blue-tint px-3 py-1 text-sm font-bold text-wl-blue">
@@ -42,7 +42,7 @@ export function FormationProgram({
                         {mod.items.map((item) => (
                           <li
                             key={item}
-                            className="rounded-full border border-wl-blue/20 bg-wl-blue-tint px-3.5 py-1.5 text-sm font-medium text-wl-blue transition-colors hover:border-wl-blue hover:bg-wl-blue hover:text-white"
+                            className="rounded-full bg-wl-blue px-3.5 py-1.5 text-sm font-medium text-white"
                           >
                             {item}
                           </li>
