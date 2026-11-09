@@ -451,6 +451,7 @@ export const formations: Record<string, FormationPageData> = {
       "Maîtrise d'œuvre & AMO",
       "Ingénieurs travaux & ingénieurs études",
       "Directeurs techniques",
+      "Directeurs de projets",
     ],
     prerequisites: [
       "Être titulaire d'un Bac+5",
@@ -521,7 +522,6 @@ export const formations: Record<string, FormationPageData> = {
         items: [
           "Certification internationale BIM Foundations",
           "Accès à l'écosystème et au réseau de l'École Centrale Casablanca",
-          "Accès au PMI Membership",
         ],
       },
       {
@@ -593,7 +593,11 @@ export const formations: Record<string, FormationPageData> = {
     ],
     infoBanner: [
       { icon: Clock, value: "12 mois", label: "Durée" },
-      { icon: Briefcase, value: "Week-end", label: "Rythme" },
+      {
+        icon: Briefcase,
+        value: "Part-time, 3 Samedis par mois",
+        label: "Rythme",
+      },
       { icon: CalendarDays, value: "Novembre 2026", label: "Rentrée" },
       { icon: MapPin, value: "Campus UIC", label: "Lieu" },
     ],
