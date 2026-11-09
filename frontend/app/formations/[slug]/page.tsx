@@ -6,6 +6,7 @@ import {
   FormationWhy,
   FormationObjectives,
   FormationProgram,
+  FormationExpedition,
   FormationTeaching,
   FormationInscription,
   FormationTestimonials,
@@ -67,10 +68,14 @@ export default async function FormationDetailPage({ params }: PageProps) {
       <FormationWhy text={formation.pourquoi} />
       <FormationObjectives objectives={formation.objectives} />
       <FormationProgram
+        moduleLabel={formation.moduleLabel}
         modules={formation.modules}
         finalBlocks={formation.finalBlocks}
         certification={formation.certification}
       />
+      {formation.expedition && (
+        <FormationExpedition expedition={formation.expedition} />
+      )}
       <FormationTeaching cards={formation.teaching} />
       <FormationInscription
         steps={formation.steps}

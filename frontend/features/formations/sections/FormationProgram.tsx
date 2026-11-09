@@ -2,12 +2,18 @@ import type { FormationModule, FinalBlock, CertificationBlock } from "@/types/fo
 import { Shield } from "lucide-react";
 
 type Props = {
+  moduleLabel?: string;
   modules: FormationModule[];
   finalBlocks: FinalBlock[];
   certification?: CertificationBlock;
 };
 
-export function FormationProgram({ modules, finalBlocks, certification }: Props) {
+export function FormationProgram({
+  moduleLabel = "Module",
+  modules,
+  finalBlocks,
+  certification,
+}: Props) {
   return (
     <>
       <section className="bg-white py-20">
@@ -27,13 +33,28 @@ export function FormationProgram({ modules, finalBlocks, certification }: Props)
               >
                 <div className="flex items-start gap-4">
                   <span className="shrink-0 rounded-lg bg-wl-blue-tint px-3 py-1 text-sm font-bold text-wl-blue">
-                    Module {mod.number}
+                    {moduleLabel} {mod.number}
                   </span>
                   <div>
                     <h3 className="font-semibold text-wl-text">{mod.title}</h3>
-                    <p className="mt-1 text-sm text-wl-text-secondary">
-                      {mod.description}
-                    </p>
+                    {mod.items && mod.items.length > 0 ? (
+                      <ul className="mt-4 flex flex-wrap gap-2">
+                        {mod.items.map((item) => (
+                          <li
+                            key={item}
+                            className="rounded-full border border-wl-blue/20 bg-wl-blue-tint px-3.5 py-1.5 text-sm font-medium text-wl-blue transition-colors hover:border-wl-blue hover:bg-wl-blue hover:text-white"
+                          >
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      mod.description && (
+                        <p className="mt-1 text-sm text-wl-text-secondary">
+                          {mod.description}
+                        </p>
+                      )
+                    )}
                   </div>
                 </div>
               </div>

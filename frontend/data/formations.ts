@@ -8,7 +8,6 @@ import {
   Users,
   GraduationCap,
   Award,
-  Plane,
 } from "lucide-react";
 import type { FormationPageData } from "@/types/formation-page";
 
@@ -466,26 +465,45 @@ export const formations: Record<string, FormationPageData> = {
       "Intégrer la durabilité dans la décision : performance énergétique et carbone, décarbonation, certifications environnementales, économie circulaire et financement durable.",
       "Incarner une posture de directeur : développer son leadership, mobiliser et faire évoluer les équipes, conduire le changement, négocier et décider dans des environnements complexes.",
     ],
+    moduleLabel: "Pilier",
     modules: [
       {
         number: 1,
-        title: "Pilier 1 : L'Homme — Leadership & posture du dirigeant",
-        description:
-          "Vision & leadership · Management d'équipe · Négociation · Prise de parole en public · Conduite du changement",
+        title: "L'Homme — Leadership & posture du dirigeant",
+        items: [
+          "Vision & leadership",
+          "Management d'équipe",
+          "Négociation",
+          "Prise de parole en public",
+          "Conduite du changement",
+        ],
       },
       {
         number: 2,
         title:
-          "Pilier 2 : Le Process — Stratégie, management de projet, programme et portefeuille & excellence opérationnelle",
-        description:
-          "Stratégie, portefeuille, programmes & PMO · Fondamentaux du management de projet · Planification & maîtrise des délais en projet de construction · Estimation & maîtrise des coûts (Earned Value & Value Engineering) · Stratégie achats, approvisionnements & qualité projet · Management des risques en projet de construction · Lean Construction & excellence opérationnelle",
+          "Le Process — Stratégie, management de projet, programme et portefeuille & excellence opérationnelle",
+        items: [
+          "Stratégie, portefeuille, programmes & PMO",
+          "Fondamentaux du management de projet",
+          "Planification & maîtrise des délais en projet de construction",
+          "Estimation & maîtrise des coûts (Earned Value & Value Engineering)",
+          "Stratégie achats, approvisionnements & qualité projet",
+          "Management des risques en projet de construction",
+          "Lean Construction & excellence opérationnelle",
+        ],
       },
       {
         number: 3,
-        title:
-          "Pilier 3 : L'Avenir — Digital, innovation & construction durable",
-        description:
-          "Les fondamentaux du BIM (certification) · Adoption du BIM dans une organisation · Contech & innovation (panorama) · IA pour la construction, data, éthique & cybersécurité · Construction durable : performance énergétique, carbone & trajectoire de décarbonation · Certifications environnementales (LEED / BREEAM / HQE) & normes ISO · Financement vert & achats durables",
+        title: "L'Avenir — Digital, innovation & construction durable",
+        items: [
+          "Les fondamentaux du BIM (certification)",
+          "Adoption du BIM dans une organisation",
+          "Contech & innovation (panorama)",
+          "IA pour la construction, data, éthique & cybersécurité",
+          "Construction durable : performance énergétique, carbone & trajectoire de décarbonation",
+          "Certifications environnementales (LEED / BREEAM / HQE) & normes ISO",
+          "Financement vert & achats durables",
+        ],
       },
     ],
     finalBlocks: [
@@ -496,6 +514,15 @@ export const formations: Record<string, FormationPageData> = {
         variant: "orange",
       },
     ],
+    expedition: {
+      eyebrow: "Immersion internationale",
+      title: "Learning Expedition China",
+      items: [
+        "Immersion de 5 jours entre Pékin, Shanghai et Suzhou",
+        "Grands projets, smart building et infrastructures durables",
+        "Rencontres avec des acteurs publics, privés et académiques",
+      ],
+    },
     teaching: [
       {
         icon: CalendarDays,
@@ -522,15 +549,6 @@ export const formations: Record<string, FormationPageData> = {
         items: [
           "Certification internationale BIM Foundations",
           "Accès à l'écosystème et au réseau de l'École Centrale Casablanca",
-        ],
-      },
-      {
-        icon: Plane,
-        title: "Learning Expedition China",
-        items: [
-          "Immersion de 5 jours entre Pékin, Shanghai et Suzhou",
-          "Grands projets, smart building et infrastructures durables",
-          "Rencontres avec des acteurs publics, privés et académiques",
         ],
       },
       {

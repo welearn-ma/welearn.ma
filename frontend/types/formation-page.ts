@@ -9,7 +9,15 @@ export type InfoBannerItem = {
 export type FormationModule = {
   number: number;
   title: string;
-  description: string;
+  description?: string;
+  /** Contenu affiché sous forme de tags (remplace `description` si présent). */
+  items?: string[];
+};
+
+export type ExpeditionBlock = {
+  eyebrow: string;
+  title: string;
+  items: string[];
 };
 
 export type FinalBlock = {
@@ -69,9 +77,13 @@ export type FormationPageData = {
   prerequisites: string[];
   pourquoi: string;
   objectives: string[];
+  /** Libellé du badge des modules du programme (défaut : "Module"). */
+  moduleLabel?: string;
   modules: FormationModule[];
   finalBlocks: FinalBlock[];
   certification?: CertificationBlock;
+  /** Section dédiée affichée sous le programme. */
+  expedition?: ExpeditionBlock;
   teaching: TeachingCard[];
   steps: InscriptionStep[];
   session: string;
