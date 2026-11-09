@@ -5,6 +5,7 @@ import {
 } from "../lib/adminAuth";
 import { supabase } from "../lib/supabaseClient";
 import type {
+  AdminActivityEventType,
   AdminActivityListResponse,
   AdminActivityRecord,
 } from "../types/admin-activity";
@@ -119,7 +120,7 @@ export async function getAdminActivity(
     id: string;
     entity_type: "student" | "sponsor";
     entity_id: string;
-    event_type: "new_request" | "treated" | "untreated";
+    event_type: AdminActivityEventType;
     actor_email: string | null;
     note: string | null;
     created_at: string;

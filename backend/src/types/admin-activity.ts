@@ -1,5 +1,10 @@
 export type AdminActivityEntityType = "student" | "sponsor";
-export type AdminActivityEventType = "new_request" | "treated" | "untreated";
+export type AdminActivityEventType =
+  | "new_request"
+  /** Demande de brochure (registration_requests.source = 'brochure'). */
+  | "brochure_request"
+  | "treated"
+  | "untreated";
 
 export type AdminActivityStudentInfo = {
   fullName: string;

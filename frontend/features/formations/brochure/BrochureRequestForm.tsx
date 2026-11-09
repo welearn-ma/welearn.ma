@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,8 +12,9 @@ import { requestBrochure } from "@/lib/api/brochures";
 /*
  * Copie VOLONTAIRE de features/formations/RegistrationForm.tsx (champs, ordre,
  * regex, classes, banniere d'erreur). Differences : ids prefixes `brochure-`
- * (pas de doublon avec le formulaire d'inscription de la page), honeypot
- * `website`, libelles brochure, et declenchement du telechargement au succes.
+ * (pas de doublon avec le formulaire d'inscription de la page), piege
+ * temporel anti-bot (`elapsedMs`), libelles brochure, et declenchement du
+ * telechargement au succes.
  * Toute evolution du formulaire d'inscription doit etre reportee ici.
  */
 
@@ -56,7 +57,9 @@ export function BrochureRequestForm({
     position: "",
     message: "",
   });
-  const [website, setWebsite] = useState("");
+  // Piege temporel anti-bot : le backend ignore les envois trop rapides.
+  // Le formulaire est remonte a chaque ouverture de la modale.
+  const mountedAt = useRef(Date.now());
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -103,7 +106,7 @@ export function BrochureRequestForm({
         position: values.position?.trim() || undefined,
         message: values.message?.trim() || undefined,
         formationSlug,
-        website: website || undefined,
+        elapsedMs: Math.round(Date.now() - mountedAt.current),
       });
       if (result.url) {
         setDownloadUrl(result.url);
@@ -166,23 +169,6 @@ export function BrochureRequestForm({
         )}
 
         <input type="hidden" name="formationSlug" value={formationSlug} />
-
-        {/* Honeypot anti-bot : invisible pour les humains, ignore par le clavier. */}
-        <div
-          aria-hidden="true"
-          className="absolute -left-[9999px] h-px w-px overflow-hidden"
-        >
-          <label htmlFor="brochure-website">Site web</label>
-          <input
-            id="brochure-website"
-            name="website"
-            type="text"
-            tabIndex={-1}
-            autoComplete="off"
-            value={website}
-            onChange={(e) => setWebsite(e.target.value)}
-          />
-        </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>

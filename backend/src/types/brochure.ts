@@ -6,8 +6,11 @@ export type BrochureRequestPayload = {
   position?: string;
   message?: string;
   formationSlug: string;
-  /** Honeypot anti-bot : doit rester vide. */
-  website?: string;
+  /**
+   * Piege temporel anti-bot : ms entre le montage du formulaire et l'envoi.
+   * Optionnel : absent chez les anciens frontends en cache.
+   */
+  elapsedMs?: number;
 };
 
 export type BrochureRequestResponse =

@@ -19,14 +19,26 @@ function isEmpty(value: unknown): value is undefined | null | "" {
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
 
+/** Envoi plus rapide que ce seuil apres l'ouverture du formulaire = bot. */
+const MIN_HUMAN_ELAPSED_MS = 3000;
+
 export async function requestBrochure(
   req: Request,
   res: Response<BrochureRequestResponse>,
 ) {
   const payload = (req.body ?? {}) as Partial<BrochureRequestPayload>;
 
-  // Honeypot rempli : on repond comme un succes, sans insertion ni URL.
-  if (!isEmpty(payload.website)) {
+  // Piege temporel : envoi trop rapide -> on repond comme un succes, sans
+  // insertion ni URL. `elapsedMs` absent ou non numerique (ancien frontend
+  // en cache) -> parcours normal.
+  const { elapsedMs } = payload as { elapsedMs?: unknown };
+  if (typeof elapsedMs === "number" && elapsedMs < MIN_HUMAN_ELAPSED_MS) {
+    // Une seule ligne, sans donnee personnelle.
+    console.warn(
+      `[brochures] time-trap triggered formationSlug=${JSON.stringify(
+        String(payload.formationSlug ?? "").slice(0, 100),
+      )} elapsedMs=${elapsedMs}`,
+    );
     return res.status(200).json({ ok: true });
   }
 

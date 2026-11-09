@@ -1,12 +1,29 @@
-import { CheckCircle2, HeartHandshake, Undo2, Users } from "lucide-react";
+import {
+  CheckCircle2,
+  FileDown,
+  HeartHandshake,
+  Undo2,
+  Users,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import type { AdminActivityRecord } from "@/types/admin-activity";
+import type {
+  AdminActivityEventType,
+  AdminActivityRecord,
+} from "@/types/admin-activity";
 import { formatDate } from "./dashboard-utils";
 
-const EVENT_BADGES = {
+const EVENT_BADGES: Record<
+  AdminActivityEventType,
+  { label: string; className: string }
+> = {
   new_request: {
     label: "Nouvelle demande",
     className: "border-wl-orange/30 bg-wl-orange-tint text-wl-orange",
+  },
+  brochure_request: {
+    label: "Brochure",
+    className:
+      "border-wl-accent-purple/30 bg-wl-purple-tint text-wl-accent-purple",
   },
   treated: {
     label: "Traité",
@@ -16,11 +33,19 @@ const EVENT_BADGES = {
     label: "Annulé",
     className: "border-wl-border bg-wl-gray-light text-wl-text-secondary",
   },
-} as const;
+};
+
+// Garde-fou : un event_type inconnu (base en avance sur le frontend) ne doit
+// pas faire planter la vue Activite.
+const FALLBACK_BADGE = {
+  label: "Evenement",
+  className: "border-wl-border bg-wl-gray-light text-wl-text-secondary",
+};
 
 function eventIcon(eventType: AdminActivityRecord["eventType"]) {
   if (eventType === "treated") return CheckCircle2;
   if (eventType === "untreated") return Undo2;
+  if (eventType === "brochure_request") return FileDown;
   return Users;
 }
 
@@ -45,6 +70,10 @@ function describeAction(item: AdminActivityRecord) {
       : "a soumis une demande de sponsoring.";
   }
 
+  if (item.eventType === "brochure_request") {
+    return "a téléchargé la brochure.";
+  }
+
   if (item.eventType === "treated") {
     return `a marque ${entityLabel} comme traite${item.actorEmail ? ` (${item.actorEmail})` : ""}.`;
   }
@@ -61,7 +90,7 @@ export function DashboardActivityList({
     <>
       <ul className="space-y-4">
         {items.map((item) => {
-          const badge = EVENT_BADGES[item.eventType];
+          const badge = EVENT_BADGES[item.eventType] ?? FALLBACK_BADGE;
           const Icon = eventIcon(item.eventType);
 
           return (
