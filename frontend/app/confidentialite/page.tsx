@@ -212,8 +212,8 @@ export default function ConfidentialitePage() {
             <p>Le site utilise deux catégories de cookies et traceurs :</p>
             <ul>
               <li>
-                <strong>des cookies et un stockage local nécessaires</strong>,
-                toujours actifs, indispensables au fonctionnement du site,
+                <strong>un stockage local strictement nécessaire</strong>,
+                toujours actif, indispensable au fonctionnement du site,
                 notamment pour mémoriser le choix que vous exprimez dans le
                 bandeau cookies ;
               </li>
