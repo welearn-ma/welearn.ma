@@ -9,6 +9,7 @@ import {
   Facebook,
   Twitter,
 } from "lucide-react";
+import { PaymentLogos } from "@/components/payment-logos";
 
 const footerLinks = {
   formations: [
@@ -37,13 +38,19 @@ const footerLinks = {
     { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
   ],
+  legal: [
+    { name: "Mentions légales", href: "/mentions-legales" },
+    { name: "Conditions générales", href: "/cgv" },
+    { name: "Politique de confidentialité", href: "/confidentialite" },
+    { name: "Politique de remboursement", href: "/remboursement" },
+  ],
 };
 
 export function Footer() {
   return (
     <footer className="bg-wl-text text-white">
       <div className="mx-auto max-w-7xl px-4 pt-16 pb-4 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-6">
           {/* Brand */}
           <div className="lg:col-span-2">
             <Image
@@ -67,7 +74,7 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-3 text-sm text-white/50">
                 <MapPin className="h-4 w-4 text-white/50 shrink-0" />
-                <span>300, Technopark Casablanca, Maroc</span>
+                <span>Bureau 300, Technopark, Route de Nouaceur, Casablanca</span>
               </div>
             </div>
           </div>
@@ -128,10 +135,30 @@ export function Footer() {
               ))}
             </ul>
           </div>
+
+          {/* Legal Links */}
+          <div>
+            <h3 className="font-sans font-semibold text-sm text-white mb-4">
+              Informations légales
+            </h3>
+            <ul className="space-y-2">
+              {footerLinks.legal.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-white/50 hover:text-white/80 transition-colors duration-200"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col lg:flex-row justify-between items-center gap-4">
+          <PaymentLogos variant="dark" size="sm" showSecureNote={true} />
           <p className="text-sm text-white/50">
             © {new Date().getFullYear()} Welearn. Tous droits réservés. Jeune
             Entreprise Innovante®
