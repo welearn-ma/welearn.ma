@@ -209,24 +209,38 @@ export default function ConfidentialitePage() {
             </p>
 
             <h2>7. Cookies et traceurs</h2>
-            <p>Le site utilise :</p>
+            <p>Le site utilise deux catégories de cookies et traceurs :</p>
             <ul>
               <li>
-                <strong>un stockage local strictement nécessaire</strong>,
-                enregistré dans votre navigateur, qui mémorise vos choix
-                exprimés dans le bandeau cookies ;
+                <strong>des cookies et un stockage local nécessaires</strong>,
+                toujours actifs, indispensables au fonctionnement du site,
+                notamment pour mémoriser le choix que vous exprimez dans le
+                bandeau cookies ;
               </li>
               <li>
-                <strong>des outils de mesure d’audience</strong> : Google
-                Analytics (qui dépose des cookies) et Vercel Analytics, afin de
-                mesurer la fréquentation du site.
+                <strong>des cookies et traceurs de mesure d’audience</strong>{" "}
+                (Google Analytics et Vercel Analytics), destinés à comprendre
+                l’utilisation du site. Ils ne sont chargés qu’après votre
+                consentement explicite, exprimé dans le bandeau cookies. Tant
+                que vous n’avez pas fait de choix, ou si vous les refusez,
+                aucun de ces traceurs n’est chargé ni aucun cookie de mesure
+                d’audience déposé.
               </li>
             </ul>
+            <p>Le site n’utilise aucun cookie publicitaire ou marketing.</p>
             <p>
-              Vous pouvez exprimer vos préférences via le bandeau cookies
-              affiché lors de votre première visite. Vous pouvez également, à
-              tout moment, configurer votre navigateur pour bloquer ou
-              supprimer les cookies.
+              La carte Google Maps de la page Contact n’est chargée que si vous
+              cliquez sur « Afficher la carte » ; Google peut alors déposer ses
+              propres cookies.
+            </p>
+            <p>
+              Votre choix est conservé pendant 13 mois, à l’issue desquels il
+              vous est de nouveau demandé. Vous pouvez le modifier ou retirer
+              votre consentement à tout moment via le lien « Gérer les
+              cookies » situé en pied de page ; en cas de retrait, les cookies
+              de mesure d’audience déjà déposés sont supprimés. Vous pouvez
+              également configurer votre navigateur pour bloquer ou supprimer
+              les cookies.
             </p>
 
             <h2>8. Vos droits</h2>

@@ -1,4 +1,5 @@
 import { Mail, Phone, MapPin } from "lucide-react";
+import { MapEmbed } from "@/components/contact/map-embed";
 
 export function ContactInfoSection() {
   return (
@@ -58,16 +59,7 @@ export function ContactInfoSection() {
 
       {/* Map */}
       <div className="h-64 overflow-hidden rounded-xl border border-wl-border bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15778.335901280869!2d-7.640232!3d33.542951!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda62db9d09e3653%3A0xa4a712af3cd8a7a3!2sWelearn!5e1!3m2!1sfr!2sus!4v1765470968412!5m2!1sfr!2sus"
-          width="100%"
-          height="100%"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Welearn Location"
-        />
+        <MapEmbed />
       </div>
     </div>
   );

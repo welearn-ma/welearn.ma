@@ -4,6 +4,11 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { X, Cookie, Shield } from "lucide-react";
 import Link from "next/link";
+import {
+  CONSENT_OPEN_EVENT,
+  readConsent,
+  saveConsent,
+} from "@/lib/cookie-consent";
 
 export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
@@ -11,49 +16,51 @@ export function CookieConsent() {
   const [preferences, setPreferences] = useState({
     necessary: true,
     analytics: false,
-    marketing: false,
   });
 
   useEffect(() => {
-    // Check if user has already made a choice
-    const consent = localStorage.getItem("cookieConsent");
-    if (!consent) {
-      // Show banner after a short delay
-      setTimeout(() => setIsVisible(true), 1000);
+    // Aucun choix valide (absent ou expiré après 13 mois) : afficher le bandeau.
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    if (!readConsent()) {
+      timer = setTimeout(() => setIsVisible(true), 1000);
     }
+
+    // Lien « Gérer les cookies » : rouvrir le bandeau avec le choix actuel.
+    const onOpen = () => {
+      if (timer) clearTimeout(timer);
+      setPreferences({
+        necessary: true,
+        analytics: readConsent()?.analytics === true,
+      });
+      setShowPreferences(false);
+      setIsVisible(true);
+    };
+    window.addEventListener(CONSENT_OPEN_EVENT, onOpen);
+
+    return () => {
+      if (timer) clearTimeout(timer);
+      window.removeEventListener(CONSENT_OPEN_EVENT, onOpen);
+    };
   }, []);
 
-  const acceptAll = () => {
-    const consent = {
-      necessary: true,
-      analytics: true,
-      marketing: true,
-      timestamp: new Date().toISOString(),
-    };
-    localStorage.setItem("cookieConsent", JSON.stringify(consent));
+  const close = () => {
     setIsVisible(false);
-    // Initialize analytics here if accepted
+    setShowPreferences(false);
   };
 
-  const acceptNecessary = () => {
-    const consent = {
-      necessary: true,
-      analytics: false,
-      marketing: false,
-      timestamp: new Date().toISOString(),
-    };
-    localStorage.setItem("cookieConsent", JSON.stringify(consent));
-    setIsVisible(false);
+  const acceptAll = () => {
+    saveConsent(true);
+    close();
+  };
+
+  const refuseAll = () => {
+    saveConsent(false);
+    close();
   };
 
   const savePreferences = () => {
-    const consent = {
-      ...preferences,
-      timestamp: new Date().toISOString(),
-    };
-    localStorage.setItem("cookieConsent", JSON.stringify(consent));
-    setIsVisible(false);
-    setShowPreferences(false);
+    saveConsent(preferences.analytics);
+    close();
   };
 
   if (!isVisible) return null;
@@ -70,8 +77,10 @@ export function CookieConsent() {
                   Nous utilisons des cookies
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Nous utilisons des cookies pour améliorer votre expérience,
-                  analyser notre trafic et personnaliser le contenu.{" "}
+                  Nous utilisons des cookies nécessaires au fonctionnement du
+                  site ainsi que des cookies de mesure d’audience destinés à
+                  comprendre son utilisation. Vous pouvez accepter ou refuser
+                  ces derniers à tout moment.{" "}
                   <Link
                     href="/confidentialite"
                     className="text-primary hover:underline"
@@ -91,12 +100,11 @@ export function CookieConsent() {
                 Personnaliser
               </Button>
               <Button
-                variant="outline"
                 size="sm"
-                onClick={acceptNecessary}
-                className="text-sm"
+                onClick={refuseAll}
+                className="bg-primary text-white hover:bg-primary/90"
               >
-                Nécessaires uniquement
+                Tout refuser
               </Button>
               <Button
                 size="sm"
@@ -117,6 +125,7 @@ export function CookieConsent() {
               <button
                 onClick={() => setShowPreferences(false)}
                 className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Fermer les préférences"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -138,6 +147,7 @@ export function CookieConsent() {
                     type="checkbox"
                     checked={preferences.necessary}
                     disabled
+                    aria-label="Cookies nécessaires (toujours actifs)"
                     className="h-5 w-5 rounded border-gray-300"
                   />
                 </div>
@@ -151,7 +161,7 @@ export function CookieConsent() {
                   </div>
                   <p className="text-xs text-muted-foreground">
                     Nous aident à comprendre comment vous utilisez notre site
-                    (Google Analytics).
+                    (Google Analytics, Vercel Analytics).
                   </p>
                 </div>
                 <div className="ml-4">
@@ -164,32 +174,7 @@ export function CookieConsent() {
                         analytics: e.target.checked,
                       })
                     }
-                    className="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary"
-                  />
-                </div>
-              </div>
-
-              {/* Marketing Cookies */}
-              <div className="flex items-start justify-between p-4 bg-secondary rounded-lg">
-                <div className="flex-1">
-                  <div className="font-medium text-sm text-foreground mb-1">
-                    Cookies marketing
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Utilisés pour afficher des contenus et publicités
-                    pertinents.
-                  </p>
-                </div>
-                <div className="ml-4">
-                  <input
-                    type="checkbox"
-                    checked={preferences.marketing}
-                    onChange={(e) =>
-                      setPreferences({
-                        ...preferences,
-                        marketing: e.target.checked,
-                      })
-                    }
+                    aria-label="Cookies analytiques"
                     className="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary"
                   />
                 </div>

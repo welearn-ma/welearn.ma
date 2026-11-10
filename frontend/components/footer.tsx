@@ -10,6 +10,7 @@ import {
   Twitter,
 } from "lucide-react";
 import { PaymentLogos } from "@/components/payment-logos";
+import { ManageCookiesButton } from "@/components/manage-cookies-button";
 
 const footerLinks = {
   formations: [
@@ -54,10 +55,11 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Image
-              src="/images/welearn-logo-white.png"
+              src="/images/welearn-logo-white-trimmed.png"
               alt="Welearn"
-              width={100}
-              height={100}
+              width={1778}
+              height={534}
+              className="mt-[5px] h-auto w-[85px]"
             />
             <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-sm mt-4">
               EdTech destinée au secteur de la Construction, reconnue comme
@@ -152,6 +154,9 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <ManageCookiesButton className="cursor-pointer text-left text-sm text-white/50 hover:text-white/80 transition-colors duration-200" />
+              </li>
             </ul>
           </div>
         </div>
