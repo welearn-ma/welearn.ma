@@ -166,11 +166,11 @@ export default function ConfidentialitePage() {
             </p>
             <p>
               Certains prestataires techniques de WeLearn sont établis hors du
-              Maroc : l'hébergement du site est assuré par Vercel Inc.
+              Maroc : l’hébergement du site est assuré par Vercel Inc.
               (États-Unis), la base de données est hébergée par Supabase dans
-              la région eu-west-1 (Irlande), et la mesure d'audience est
+              la région eu-west-1 (Irlande), et la mesure d’audience est
               assurée par Google. Ces traitements impliquent un transfert de
-              données à caractère personnel vers l'étranger, encadré par la loi
+              données à caractère personnel vers l’étranger, encadré par la loi
               n° 09-08. WeLearn veille à ce que ces prestataires présentent des
               garanties suffisantes en matière de sécurité et de
               confidentialité des données.
@@ -187,14 +187,14 @@ export default function ConfidentialitePage() {
                 du dernier contact.
               </li>
               <li>
-                Demandes d'inscription et demandes de brochure : 3 ans à
+                Demandes d’inscription et demandes de brochure : 3 ans à
                 compter du dernier contact.
               </li>
               <li>
                 Données relatives aux commandes et aux paiements : 10 ans,
                 conformément aux obligations légales de conservation comptable.
               </li>
-              <li>Données de mesure d'audience : 14 mois.</li>
+              <li>Données de mesure d’audience : 14 mois.</li>
             </ul>
 
             <h2>6. Sécurité</h2>
@@ -257,16 +257,11 @@ export default function ConfidentialitePage() {
               </a>{" "}
               ou par courrier à : {legalEntity.name}, {legalEntity.address}.
             </p>
-            <p>
-              Vous pouvez également introduire une réclamation auprès de la
-              Commission Nationale de contrôle de la protection des Données à
-              caractère Personnel (CNDP).
-            </p>
 
-            <h2>9. Réclamation auprès de l'autorité de contrôle</h2>
+            <h2>9. Réclamation auprès de l’autorité de contrôle</h2>
             <p>
               Si vous estimez que le traitement de vos données à caractère
-              personnel n'est pas conforme à la réglementation en vigueur, vous
+              personnel n’est pas conforme à la réglementation en vigueur, vous
               pouvez adresser une réclamation à la Commission Nationale de
               contrôle de la protection des Données à caractère Personnel
               (CNDP), autorité marocaine de contrôle en matière de protection

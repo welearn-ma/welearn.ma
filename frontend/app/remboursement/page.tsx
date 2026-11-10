@@ -40,16 +40,16 @@ export default function RemboursementPage() {
             <h2>1. Droit de rétractation légal</h2>
             <p>
               Conformément à la loi n° 31-08 édictant des mesures de protection
-              du consommateur, le client non professionnel bénéficie d'un droit
+              du consommateur, le client non professionnel bénéficie d’un droit
               de rétractation pour les contrats conclus à distance, dans les
               conditions, délais et sous réserve des exceptions prévues par la
-              loi. Les dispositions de la présente politique s'appliquent sans
+              loi. Les dispositions de la présente politique s’appliquent sans
               préjudice de ce droit légal.
             </p>
 
             <h2>2. Annulation avant le début de la formation</h2>
             <p>
-              Toute demande d'annulation adressée à WeLearn avant la date de
+              Toute demande d’annulation adressée à WeLearn avant la date de
               début de la formation donne lieu au remboursement intégral des
               sommes versées, sans frais de dossier ni retenue.
             </p>
@@ -58,12 +58,12 @@ export default function RemboursementPage() {
             <p>
               À compter de la date de début de la formation, la prestation est
               considérée comme engagée et aucun remboursement ne peut être
-              accordé. Cette règle s'applique quel que soit le niveau de
+              accordé. Cette règle s’applique quel que soit le niveau de
               participation effective du client aux sessions ou aux contenus
               mis à sa disposition.
             </p>
 
-            <h2>4. Annulation à l'initiative de WeLearn</h2>
+            <h2>4. Annulation à l’initiative de WeLearn</h2>
             <p>
               Si WeLearn annule une formation, le client est intégralement
               remboursé des sommes versées. Si WeLearn reporte une formation, le
@@ -73,10 +73,10 @@ export default function RemboursementPage() {
             </p>
 
             <h2>5. Cas de non-remboursement</h2>
-            <p>Aucun remboursement n'est accordé dans les cas suivants :</p>
+            <p>Aucun remboursement n’est accordé dans les cas suivants :</p>
             <ul>
               <li>
-                Demande d'annulation formulée après la date de début de la
+                Demande d’annulation formulée après la date de début de la
                 formation.
               </li>
               <li>
@@ -85,7 +85,7 @@ export default function RemboursementPage() {
               </li>
               <li>
                 Informations inexactes ou frauduleuses communiquées lors de
-                l'inscription.
+                l’inscription.
               </li>
               <li>
                 Absence ou abandon du client en cours de formation, pour quelque
@@ -100,7 +100,7 @@ export default function RemboursementPage() {
               <a href="mailto:contact@welearn.ma" className={linkClass}>
                 contact@welearn.ma
               </a>
-              , depuis l'adresse électronique utilisée lors de l'inscription, et
+              , depuis l’adresse électronique utilisée lors de l’inscription, et
               comporter les éléments suivants : nom et prénom du participant,
               intitulé de la formation concernée, date de la commande et
               référence de la transaction. Les demandes formulées par téléphone
@@ -132,7 +132,7 @@ export default function RemboursementPage() {
                 +212 661 499 479
               </a>
               <br />
-              Toute réclamation fait l'objet d'un accusé de réception et est
+              Toute réclamation fait l’objet d’un accusé de réception et est
               traitée dans un délai de 7 jours ouvrables.
             </p>
           </div>
