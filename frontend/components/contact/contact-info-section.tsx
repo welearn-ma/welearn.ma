@@ -50,7 +50,7 @@ export function ContactInfoSection() {
           <div>
             <h3 className="font-semibold text-wl-text mb-1">Adresse</h3>
             <p className="text-wl-text-secondary">
-              300, Technopark Casablanca, Maroc
+              Bureau 300, Technopark, Route de Nouaceur, Casablanca
             </p>
           </div>
         </div>

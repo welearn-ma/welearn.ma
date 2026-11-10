@@ -154,7 +154,9 @@ export default function ConditionsGeneralesPage() {
               formations en présentiel.
             </p>
             <p>
-              Délai d’accès : [À COMPLÉTER].
+              L'accès à la formation ou à la plateforme d'apprentissage est
+              ouvert sous 24 heures ouvrées à compter de la confirmation du
+              paiement.
             </p>
             <p>
               Pour les formations organisées par sessions, la formation débute
@@ -217,7 +219,10 @@ export default function ConditionsGeneralesPage() {
               </li>
               <li>par courrier à : {legalEntity.address}.</li>
             </ul>
-            <p>Délai de traitement des réclamations : [À COMPLÉTER].</p>
+            <p>
+              Toute réclamation fait l'objet d'un accusé de réception et est
+              traitée dans un délai de 7 jours ouvrables.
+            </p>
 
             <h2>11. Données personnelles</h2>
             <p>

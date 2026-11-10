@@ -165,8 +165,15 @@ export default function ConfidentialitePage() {
               cédées à des tiers à des fins commerciales.
             </p>
             <p>
-              Certains de ces prestataires sont établis ou hébergent des données
-              hors du Maroc. Autorisation de transfert CNDP : [À COMPLÉTER].
+              Certains prestataires techniques de WeLearn sont établis hors du
+              Maroc : l'hébergement du site est assuré par Vercel Inc.
+              (États-Unis), la base de données est hébergée par Supabase dans
+              la région eu-west-1 (Irlande), et la mesure d'audience est
+              assurée par Google. Ces traitements impliquent un transfert de
+              données à caractère personnel vers l'étranger, encadré par la loi
+              n° 09-08. WeLearn veille à ce que ces prestataires présentent des
+              garanties suffisantes en matière de sécurité et de
+              confidentialité des données.
             </p>
 
             <h2>5. Durée de conservation</h2>
@@ -175,12 +182,19 @@ export default function ConfidentialitePage() {
               aux finalités pour lesquelles elles ont été collectées :
             </p>
             <ul>
-              <li>messages du formulaire de contact : [À COMPLÉTER] ;</li>
               <li>
-                demandes d’inscription et de brochure : [À COMPLÉTER] ;
+                Messages reçus via le formulaire de contact : 3 ans à compter
+                du dernier contact.
               </li>
-              <li>données liées aux commandes : [À COMPLÉTER] ;</li>
-              <li>données de mesure d’audience : [À COMPLÉTER].</li>
+              <li>
+                Demandes d'inscription et demandes de brochure : 3 ans à
+                compter du dernier contact.
+              </li>
+              <li>
+                Données relatives aux commandes et aux paiements : 10 ans,
+                conformément aux obligations légales de conservation comptable.
+              </li>
+              <li>Données de mesure d'audience : 14 mois.</li>
             </ul>
 
             <h2>6. Sécurité</h2>
@@ -249,10 +263,23 @@ export default function ConfidentialitePage() {
               caractère Personnel (CNDP).
             </p>
 
-            <h2>9. Déclaration auprès de la CNDP</h2>
+            <h2>9. Réclamation auprès de l'autorité de contrôle</h2>
             <p>
-              Numéro de récépissé de déclaration ou d’autorisation CNDP :
-              [À COMPLÉTER].
+              Si vous estimez que le traitement de vos données à caractère
+              personnel n'est pas conforme à la réglementation en vigueur, vous
+              pouvez adresser une réclamation à la Commission Nationale de
+              contrôle de la protection des Données à caractère Personnel
+              (CNDP), autorité marocaine de contrôle en matière de protection
+              des données personnelles :{" "}
+              <a
+                href="https://www.cndp.ma"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
+              >
+                www.cndp.ma
+              </a>
+              .
             </p>
 
             <h2>10. Modification de la présente politique</h2>
