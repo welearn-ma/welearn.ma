@@ -20,16 +20,16 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/images/icon-welearn-dark.png",
+        url: "/images/icon-welearn-black.png",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: "/images/icon-welearn-light.png",
+        url: "/images/icon-welearn-white.png",
         media: "(prefers-color-scheme: dark)",
       },
       {
         url: "/images/welearn-icon.png",
-        type: "image/svg+xml",
+        type: "image/png",
       },
     ],
   },
