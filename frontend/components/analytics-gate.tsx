@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/next";
 import {
   CONSENT_CHANGE_EVENT,
   GA_MEASUREMENT_ID,
@@ -12,7 +11,7 @@ import {
 } from "@/lib/cookie-consent";
 
 /**
- * Charge Google Analytics et Vercel Analytics uniquement après consentement
+ * Charge Google Analytics uniquement après consentement
  * explicite. Rendu serveur / premier rendu : rien (aucun script, aucun cookie).
  */
 export function AnalyticsGate() {
@@ -67,7 +66,6 @@ export function AnalyticsGate() {
           gtag('config', '${GA_MEASUREMENT_ID}');
         `}
       </Script>
-      <Analytics />
     </>
   );
 }

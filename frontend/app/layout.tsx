@@ -47,7 +47,7 @@ export default function RootLayout({
           <SiteChrome>{children}</SiteChrome>
         </AuthGuard>
         <CookieConsent />
-        {/* GA + Vercel Analytics : chargés uniquement après consentement explicite. */}
+        {/* Google Analytics : chargé uniquement après consentement explicite. */}
         <AnalyticsGate />
       </body>
     </html>
