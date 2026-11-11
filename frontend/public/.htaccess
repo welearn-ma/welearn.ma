@@ -1,0 +1,27 @@
+# welearn.ma — static export (Next.js output: "export", trailingSlash: true)
+# Copied to out/.htaccess by `next build`. Never add Passenger directives here
+# (they belong to the API app's own document root).
+
+Options -MultiViews
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Next 16 segment payloads: an export built on Windows writes them nested
+  # (__next.formations/$d$slug/__PAGE__.txt) while the client router requests
+  # flat names (__next.formations.$d$slug.__PAGE__.txt). Map flat -> nested.
+  # Guarded by !-f so it is a no-op when the flat file exists (Linux/macOS
+  # build, or a future Next.js fix). Longest pattern first.
+  # scripts/flatten-export.mjs already flattens at build time; this is a fallback.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*/)?__next\.([^./]+)\.([^./]+)\.([^./]+)\.([^./]+)\.([^./]+)\.txt$ $1__next.$2/$3/$4/$5/$6.txt [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*/)?__next\.([^./]+)\.([^./]+)\.([^./]+)\.([^./]+)\.txt$ $1__next.$2/$3/$4/$5.txt [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*/)?__next\.([^./]+)\.([^./]+)\.([^./]+)\.txt$ $1__next.$2/$3/$4.txt [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*/)?__next\.([^./]+)\.([^./]+)\.txt$ $1__next.$2/$3.txt [L]
+</IfModule>
