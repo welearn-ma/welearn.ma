@@ -144,8 +144,7 @@ export default function ConfidentialitePage() {
             </p>
             <ul>
               <li>
-                {legalHosts.site.name} (hébergement du site, mesure d’audience
-                Vercel Analytics) ;
+                {legalHosts.site.name} (hébergement du site) ;
               </li>
               <li>
                 {legalHosts.application.name} (hébergement des services de
@@ -219,7 +218,7 @@ export default function ConfidentialitePage() {
               </li>
               <li>
                 <strong>des cookies et traceurs de mesure d’audience</strong>{" "}
-                (Google Analytics et Vercel Analytics), destinés à comprendre
+                (Google Analytics), destinés à comprendre
                 l’utilisation du site. Ils ne sont chargés qu’après votre
                 consentement explicite, exprimé dans le bandeau cookies. Tant
                 que vous n’avez pas fait de choix, ou si vous les refusez,

@@ -192,7 +192,7 @@ export function CookieConsent() {
                   </div>
                   <p className="text-xs text-muted-foreground">
                     Nous aident à comprendre comment vous utilisez notre site
-                    (Google Analytics, Vercel Analytics).
+                    (Google Analytics).
                   </p>
                 </div>
                 <div className="ml-4">
