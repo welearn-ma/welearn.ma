@@ -12,7 +12,7 @@
 //
 // Exit 1 on: a flat file that already exists (never overwritten), any
 // requested page-data file missing, any __next.* directory left, or a
-// missing out/.htaccess.
+// missing out/web.config.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -143,6 +143,6 @@ if (missing.length) {
 }
 if (leftoverDirs.length) fail(`__next.* directories left in out/: ${leftoverDirs.join(", ")}`);
 if (verified === 0) fail("no page-data files verified");
-if (!fs.existsSync(path.join(outDir, ".htaccess"))) {
-  fail("out/.htaccess is missing (expected from public/.htaccess)");
+if (!fs.existsSync(path.join(outDir, "web.config"))) {
+  fail("out/web.config is missing (expected from public/web.config)");
 }
