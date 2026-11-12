@@ -65,6 +65,10 @@ export default function MentionsLegalesPage() {
               des formulaires) : {legalHosts.application.name}, sous le domaine{" "}
               {legalHosts.application.domain}.
             </p>
+            <p>
+              <strong>Hébergement de la base de données :</strong> Supabase,
+              région eu-west-1 (Irlande).
+            </p>
 
             <h2>4. Propriété intellectuelle</h2>
             <p>

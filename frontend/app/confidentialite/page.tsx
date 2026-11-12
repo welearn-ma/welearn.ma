@@ -165,10 +165,9 @@ export default function ConfidentialitePage() {
             </p>
             <p>
               Certains prestataires techniques de WeLearn sont établis hors du
-              Maroc : l’hébergement du site est assuré par Vercel Inc.
-              (États-Unis), la base de données est hébergée par Supabase dans
-              la région eu-west-1 (Irlande), et la mesure d’audience est
-              assurée par Google. Ces traitements impliquent un transfert de
+              Maroc : la base de données est hébergée par Supabase dans la
+              région eu-west-1 (Irlande), et la mesure d’audience est assurée
+              par Google (États-Unis). Ces traitements impliquent un transfert de
               données à caractère personnel vers l’étranger, encadré par la loi
               n° 09-08. WeLearn veille à ce que ces prestataires présentent des
               garanties suffisantes en matière de sécurité et de

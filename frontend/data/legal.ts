@@ -24,13 +24,17 @@ export const legalEntity = {
   publicationDirector: "Hassan JAI / Abdelghani KOUIDER",
 } as const;
 
+// Hébergeurs confirmés le 12/11/2026. Pays des serveurs : non confirmé.
 export const legalHosts = {
   site: {
-    name: "Vercel Inc.",
-    address: "440 N Barranca Ave #4133, Covina, CA 91723, USA",
+    name: "Arcanes Technologies (Heberjahiz)",
+    address: "Casablanca Technopark, RDC - Bureau 143bis, Casablanca 20153, Maroc",
+    phone: "0802 00 2800",
   },
   application: {
-    name: "Heberjahiz",
+    name: "Arcanes Technologies (Heberjahiz)",
+    address: "Casablanca Technopark, RDC - Bureau 143bis, Casablanca 20153, Maroc",
+    phone: "0802 00 2800",
     domain: "api.welearn.ma",
   },
 } as const;
