@@ -34,14 +34,16 @@ type PaymentSecurityLogosProps = {
   className?: string;
 };
 
+// Logo ≈ 28px (sm) / 36px (md) de haut : pastille 32px / 40px, padding vertical 2px.
 const boxSize: Record<Size, string> = {
-  sm: "h-8 min-w-12 px-2 py-1.5",
-  md: "h-10 min-w-14 px-2.5 py-2",
+  sm: "h-8 min-w-12 px-2 py-0.5",
+  md: "h-10 min-w-14 px-2.5 py-0.5",
 };
 
+// Assez large pour les logos les plus allongés (≈ 2,3:1) sans réduire leur hauteur.
 const logoMaxWidth: Record<Size, string> = {
-  sm: "max-w-16",
-  md: "max-w-20",
+  sm: "max-w-20",
+  md: "max-w-24",
 };
 
 /** Pastille blanche : garde les marques lisibles, y compris sur le fond sombre du footer. */
