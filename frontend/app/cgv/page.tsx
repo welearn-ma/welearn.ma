@@ -32,8 +32,9 @@ export default function ConditionsGeneralesPage() {
             Dernière mise à jour : {CGV_LAST_UPDATED}
           </p>
 
-          <div className="wl-prose">
-            <h2>1. Objet et champ d’application</h2>
+          {/* scroll-mt : les liens /cgv#article-N ne doivent pas arriver sous la navbar fixe. */}
+          <div className="wl-prose [&_h2]:scroll-mt-24">
+            <h2 id="article-1">1. Objet et champ d’application</h2>
             <p>
               Les présentes conditions constituent un contrat à distance qui
               définit les droits et obligations des parties dans le cadre de la
@@ -64,7 +65,7 @@ export default function ConditionsGeneralesPage() {
               à la date de la commande.
             </p>
 
-            <h2>2. Identification du vendeur</h2>
+            <h2 id="article-2">2. Identification du vendeur</h2>
             <p>Les formations sont vendues par :</p>
             <table>
               <tbody>
@@ -77,7 +78,7 @@ export default function ConditionsGeneralesPage() {
               </tbody>
             </table>
 
-            <h2>3. Description des formations</h2>
+            <h2 id="article-3">3. Description des formations</h2>
             <p>
               {legalEntity.name} propose des formations professionnelles dans
               les domaines de la construction, du BIM et de l’immobilier,
@@ -100,7 +101,7 @@ export default function ConditionsGeneralesPage() {
               contractuels.
             </p>
 
-            <h2>4. Processus de commande et d’inscription</h2>
+            <h2 id="article-4">4. Processus de commande et d’inscription</h2>
             <p>Pour s’inscrire à une formation, le Client :</p>
             <ol>
               <li>sélectionne la formation et, le cas échéant, la session ;</li>
@@ -126,13 +127,13 @@ export default function ConditionsGeneralesPage() {
               n’intervient qu’après acceptation de la candidature.
             </p>
 
-            <h2>5. Prix</h2>
+            <h2 id="article-5">5. Prix</h2>
             <p>
               Les prix sont indiqués en dirhams marocains (MAD). Le régime de
               TVA applicable est précisé sur chaque fiche de formation.
             </p>
 
-            <h2>6. Modalités de paiement</h2>
+            <h2 id="article-6">6. Modalités de paiement</h2>
             <p>
               Le paiement s’effectue en ligne par carte bancaire, via la
               plateforme de paiement sécurisée du CMI (Centre Monétique
@@ -175,7 +176,7 @@ export default function ConditionsGeneralesPage() {
               s’appliquent.
             </p>
 
-            <h2>7. Preuve des transactions</h2>
+            <h2 id="article-7">7. Preuve des transactions</h2>
             <p>
               Les données enregistrées par le CMI sur la plate-forme de paiement
               en ligne pour le compte de {legalEntity.name} constituent la
@@ -183,7 +184,7 @@ export default function ConditionsGeneralesPage() {
               {legalEntity.name}.
             </p>
 
-            <h2>8. Accès à la formation après paiement</h2>
+            <h2 id="article-8">8. Accès à la formation après paiement</h2>
             <p>
               Après confirmation du paiement, le Client reçoit par email les
               informations nécessaires pour suivre sa formation : identifiants
@@ -192,16 +193,22 @@ export default function ConditionsGeneralesPage() {
               formations en présentiel.
             </p>
             <p>
-              L’accès à la formation ou à la plateforme d’apprentissage est
-              ouvert sous 24 heures ouvrées à compter de la confirmation du
-              paiement.
+              Pour les formations à distance, le Client choisit expressément,
+              lors de la commande, entre : (a) l’ouverture immédiate de l’accès,
+              sous 24 heures ouvrées à compter de la confirmation du paiement,
+              en contrepartie de laquelle il reconnaît renoncer à son droit de
+              rétractation dès l’ouverture effective de l’accès ; ou (b)
+              l’ouverture de l’accès à l’expiration du délai légal de
+              rétractation de sept (7) jours, son droit de rétractation étant
+              alors intégralement préservé. Ce choix est recueilli par une case
+              à cocher distincte et non pré-cochée.
             </p>
             <p>
               Pour les formations organisées par sessions, la formation débute
               à la date de session indiquée lors de la commande.
             </p>
 
-            <h2>9. Obligations de l’utilisateur</h2>
+            <h2 id="article-9">9. Obligations de l’utilisateur</h2>
             <p>L’Utilisateur et le Client s’engagent à :</p>
             <ul>
               <li>
@@ -227,7 +234,7 @@ export default function ConditionsGeneralesPage() {
               </li>
             </ul>
 
-            <h2>10. Annulation et remboursement</h2>
+            <h2 id="article-10">10. Annulation et remboursement</h2>
             <p>
               Les conditions d’annulation et de remboursement sont définies
               dans notre{" "}
@@ -237,7 +244,7 @@ export default function ConditionsGeneralesPage() {
               , qui fait partie intégrante des présentes Conditions.
             </p>
 
-            <h2>11. Réclamations</h2>
+            <h2 id="article-11">11. Réclamations</h2>
             <p>Toute réclamation peut être adressée à {legalEntity.name} :</p>
             <ul>
               <li>
@@ -262,7 +269,7 @@ export default function ConditionsGeneralesPage() {
               traitée dans un délai de 7 jours ouvrables.
             </p>
 
-            <h2>12. Données personnelles</h2>
+            <h2 id="article-12">12. Données personnelles</h2>
             <p>
               Les données personnelles du Client sont traitées conformément à
               la loi n° 09-08 relative à la protection des personnes physiques à
@@ -274,7 +281,9 @@ export default function ConditionsGeneralesPage() {
               .
             </p>
 
-            <h2>13. Propriété intellectuelle des contenus pédagogiques</h2>
+            <h2 id="article-13">
+              13. Propriété intellectuelle des contenus pédagogiques
+            </h2>
             <p>
               Les contenus pédagogiques (supports de cours, modules e-learning,
               vidéos, exercices, études de cas, brochures et tout autre
@@ -292,7 +301,7 @@ export default function ConditionsGeneralesPage() {
               des identifiants d’accès.
             </p>
 
-            <h2>14. Force majeure</h2>
+            <h2 id="article-14">14. Force majeure</h2>
             <p>
               {legalEntity.name} ne pourra être tenue responsable de
               l’inexécution ou du retard d’exécution de ses obligations
@@ -304,7 +313,9 @@ export default function ConditionsGeneralesPage() {
               notamment le report de la formation.
             </p>
 
-            <h2>15. Droit applicable et juridiction compétente</h2>
+            <h2 id="article-15">
+              15. Droit applicable et juridiction compétente
+            </h2>
             <p>
               Les présentes Conditions sont soumises au droit marocain. En cas
               de litige, les parties rechercheront en priorité une solution

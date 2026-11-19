@@ -107,10 +107,14 @@ export default function MentionsLegalesPage() {
               .
             </p>
             <p>
-              {legalEntity.name} ne saurait être tenue responsable des
-              interruptions temporaires du site, des erreurs ou omissions
-              qu’il pourrait contenir, ni des dommages résultant de son
-              utilisation ou de l’impossibilité d’y accéder. Les liens vers des
+              {legalEntity.name} est tenue d’une obligation de moyens quant à
+              l’accessibilité et au bon fonctionnement du site. Sa
+              responsabilité ne peut être engagée qu’en cas de faute prouvée et
+              dans la limite du préjudice direct et prévisible. Les présentes
+              stipulations ne sauraient limiter la responsabilité de{" "}
+              {legalEntity.name} en cas de faute lourde ou dolosive, de dommage
+              corporel, ni porter atteinte aux droits que le Client consommateur
+              tient de la loi n° 31-08. Les liens vers des
               sites tiers sont fournis pour information ; {legalEntity.name}{" "}
               n’exerce aucun contrôle sur leur contenu et décline toute
               responsabilité à cet égard.

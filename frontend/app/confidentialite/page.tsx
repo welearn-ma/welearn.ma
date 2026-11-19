@@ -115,11 +115,12 @@ export default function ConfidentialitePage() {
 
             <h3>Données de navigation</h3>
             <p>
-              Lors de votre visite, des données techniques (pages consultées,
-              type d’appareil et de navigateur, provenance de la visite) sont
-              collectées par nos outils de mesure d’audience afin d’établir des
-              statistiques de fréquentation et d’améliorer le site. Voir
-              l’article 7 ci-dessous.
+              Lors de votre visite, et uniquement si vous y avez consenti via le
+              bandeau cookies, des données techniques (pages consultées, type
+              d’appareil et de navigateur, provenance de la visite) sont
+              collectées afin d’établir des statistiques de fréquentation et
+              d’améliorer le site. En l’absence de consentement, aucune de ces
+              données n’est collectée. Voir l’article 7 ci-dessous.
             </p>
 
             <h2>3. Base légale des traitements</h2>
