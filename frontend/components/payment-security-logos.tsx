@@ -3,24 +3,33 @@
 import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { paymentLive } from "@/config/site";
 
 /**
- * Moyens de paiement affichés. Le rendu dérive uniquement de ce tableau :
- * ajouter ou retirer une entrée suffit. Les fichiers vivent dans public/payment/.
+ * Logos de sécurité obligatoires du kit CMI. Le rendu dérive uniquement de ce
+ * tableau. Les fichiers vivent dans public/payment/ (copiés tels quels depuis
+ * la charte CMI, ne pas les remplacer par d'autres versions).
  */
-const PAYMENT_METHODS = [
-  { id: "visa", label: "Visa", src: "/payment/visa.jpg" },
-  { id: "mastercard", label: "Mastercard", src: "/payment/mastercard.webp" },
-  { id: "cmi", label: "CMI", src: "/payment/cmi.png" },
+const SECURITY_LOGOS = [
+  { id: "cmi", label: "CMI", src: "/payment/cmi-logo.png" },
+  {
+    id: "verified-by-visa",
+    label: "Verified by Visa",
+    src: "/payment/verified-by-visa.png",
+  },
+  {
+    id: "mastercard-securecode",
+    label: "Mastercard SecureCode",
+    src: "/payment/mastercard-securecode.png",
+  },
 ];
 
-type PaymentMethod = (typeof PAYMENT_METHODS)[number];
+type SecurityLogo = (typeof SECURITY_LOGOS)[number];
 type Size = "sm" | "md";
 type Variant = "light" | "dark";
 
-type PaymentLogosProps = {
+type PaymentSecurityLogosProps = {
   size?: Size;
-  showSecureNote?: boolean;
   variant?: Variant;
   className?: string;
 };
@@ -51,12 +60,12 @@ const noteText: Record<Variant, string> = {
   dark: "text-white/50",
 };
 
-function PaymentLogo({
-  method,
+function SecurityLogoItem({
+  logo,
   size,
   variant,
 }: {
-  method: PaymentMethod;
+  logo: SecurityLogo;
   size: Size;
   variant: Variant;
 }) {
@@ -79,7 +88,7 @@ function PaymentLogo({
           fallbackBox[variant],
         )}
       >
-        {method.label}
+        {logo.label}
       </span>
     );
   }
@@ -95,8 +104,8 @@ function PaymentLogo({
       {/* eslint-disable-next-line @next/next/no-img-element -- export statique, images non optimisées */}
       <img
         ref={imgRef}
-        src={method.src}
-        alt={method.label}
+        src={logo.src}
+        alt={logo.label}
         loading="lazy"
         onError={() => setFailed(true)}
         className={cn("h-full w-auto object-contain", logoMaxWidth[size])}
@@ -105,26 +114,25 @@ function PaymentLogo({
   );
 }
 
-export function PaymentLogos({
+export function PaymentSecurityLogos({
   size = "md",
-  showSecureNote = false,
   variant = "light",
   className,
-}: PaymentLogosProps) {
+}: PaymentSecurityLogosProps) {
   return (
     <div
       role="group"
-      aria-label="Moyens de paiement acceptés"
+      aria-label="Logos de sécurité du paiement"
       className={cn("flex flex-col items-center gap-2", className)}
     >
       <ul className="flex flex-wrap items-center justify-center gap-2">
-        {PAYMENT_METHODS.map((method) => (
-          <li key={method.id}>
-            <PaymentLogo method={method} size={size} variant={variant} />
+        {SECURITY_LOGOS.map((logo) => (
+          <li key={logo.id}>
+            <SecurityLogoItem logo={logo} size={size} variant={variant} />
           </li>
         ))}
       </ul>
-      {showSecureNote && (
+      {paymentLive && (
         <p
           className={cn(
             "flex items-center gap-1.5 text-xs",

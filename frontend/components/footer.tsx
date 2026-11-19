@@ -9,7 +9,7 @@ import {
   Facebook,
   Twitter,
 } from "lucide-react";
-import { PaymentLogos } from "@/components/payment-logos";
+import { PaymentSecurityLogos } from "@/components/payment-security-logos";
 import { ManageCookiesButton } from "@/components/manage-cookies-button";
 
 const footerLinks = {
@@ -163,7 +163,7 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col lg:flex-row justify-between items-center gap-4">
-          <PaymentLogos variant="dark" size="sm" showSecureNote={true} />
+          <PaymentSecurityLogos variant="dark" size="sm" />
           <p className="text-sm text-white/50">
             © {new Date().getFullYear()} Welearn. Tous droits réservés. Jeune
             Entreprise Innovante®

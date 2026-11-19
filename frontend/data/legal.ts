@@ -7,6 +7,8 @@
  */
 
 export const LEGAL_LAST_UPDATED = "10/11/2026";
+export const CGV_LAST_UPDATED = "19/11/2026";
+export const PRIVACY_LAST_UPDATED = "19/11/2026";
 
 export const legalEntity = {
   name: "WELEARN",

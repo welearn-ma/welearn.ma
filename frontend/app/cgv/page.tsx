@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
 import {
-  LEGAL_LAST_UPDATED,
+  CGV_LAST_UPDATED,
   legalEntity,
   legalIdentityRows,
 } from "@/data/legal";
@@ -29,11 +29,18 @@ export default function ConditionsGeneralesPage() {
       <article className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-3xl px-4 lg:px-8">
           <p className="text-sm text-wl-text-secondary mb-10">
-            Dernière mise à jour : {LEGAL_LAST_UPDATED}
+            Dernière mise à jour : {CGV_LAST_UPDATED}
           </p>
 
           <div className="wl-prose">
             <h2>1. Objet et champ d’application</h2>
+            <p>
+              Les présentes conditions constituent un contrat à distance qui
+              définit les droits et obligations des parties dans le cadre de la
+              vente des formations de {legalEntity.name} sur Internet, par
+              l’intermédiaire de la plate-forme sécurisée de paiement en ligne
+              du Centre Monétique Interbancaire (CMI).
+            </p>
             <p>
               Les présentes Conditions Générales (ci-après les « Conditions »)
               ont pour objet de définir, d’une part, les conditions
@@ -44,9 +51,10 @@ export default function ConditionsGeneralesPage() {
             </p>
             <p>
               Toute inscription ou commande passée sur le site implique
-              l’acceptation pleine et entière des Conditions en vigueur à la
-              date de la commande, que le Client reconnaît avoir lues avant de
-              valider celle-ci. Les conditions particulières éventuellement
+              l’acceptation inconditionnelle et irrévocable des Conditions en
+              vigueur à la date de la commande, que le Client reconnaît avoir
+              lues avant de valider celle-ci. Les conditions particulières
+              éventuellement
               convenues par écrit entre {legalEntity.name} et un Client
               prévalent sur les présentes.
             </p>
@@ -144,8 +152,38 @@ export default function ConditionsGeneralesPage() {
               En cas de refus d’autorisation de paiement, la commande n’est pas
               validée.
             </p>
+            <p>
+              La remise de la transaction pour débit de votre compte est
+              effectuée dans la journée qui suit la date de confirmation de la
+              commande.
+            </p>
+            <p>
+              Vos paiements en ligne sont sécurisés par le Centre Monétique
+              Interbancaire (CMI) qui offre un service de paiement entièrement
+              sécurisé.
+            </p>
+            <p>
+              Le client garantit à {legalEntity.name} qu’il dispose des
+              autorisations éventuellement nécessaires pour utiliser le mode de
+              paiement choisi lors de la validation de sa commande.
+            </p>
+            <p>
+              En cas de paiement par carte bancaire, les dispositions relatives
+              à l’utilisation frauduleuse du moyen de paiement prévues dans les
+              conventions conclues entre le client et l’émetteur de la carte, et
+              entre {legalEntity.name} et son établissement bancaire,
+              s’appliquent.
+            </p>
 
-            <h2>7. Accès à la formation après paiement</h2>
+            <h2>7. Preuve des transactions</h2>
+            <p>
+              Les données enregistrées par le CMI sur la plate-forme de paiement
+              en ligne pour le compte de {legalEntity.name} constituent la
+              preuve des transactions commerciales passées entre le client et{" "}
+              {legalEntity.name}.
+            </p>
+
+            <h2>8. Accès à la formation après paiement</h2>
             <p>
               Après confirmation du paiement, le Client reçoit par email les
               informations nécessaires pour suivre sa formation : identifiants
@@ -163,7 +201,7 @@ export default function ConditionsGeneralesPage() {
               à la date de session indiquée lors de la commande.
             </p>
 
-            <h2>8. Obligations de l’utilisateur</h2>
+            <h2>9. Obligations de l’utilisateur</h2>
             <p>L’Utilisateur et le Client s’engagent à :</p>
             <ul>
               <li>
@@ -189,7 +227,7 @@ export default function ConditionsGeneralesPage() {
               </li>
             </ul>
 
-            <h2>9. Annulation et remboursement</h2>
+            <h2>10. Annulation et remboursement</h2>
             <p>
               Les conditions d’annulation et de remboursement sont définies
               dans notre{" "}
@@ -199,7 +237,7 @@ export default function ConditionsGeneralesPage() {
               , qui fait partie intégrante des présentes Conditions.
             </p>
 
-            <h2>10. Réclamations</h2>
+            <h2>11. Réclamations</h2>
             <p>Toute réclamation peut être adressée à {legalEntity.name} :</p>
             <ul>
               <li>
@@ -224,7 +262,7 @@ export default function ConditionsGeneralesPage() {
               traitée dans un délai de 7 jours ouvrables.
             </p>
 
-            <h2>11. Données personnelles</h2>
+            <h2>12. Données personnelles</h2>
             <p>
               Les données personnelles du Client sont traitées conformément à
               la loi n° 09-08 relative à la protection des personnes physiques à
@@ -236,7 +274,7 @@ export default function ConditionsGeneralesPage() {
               .
             </p>
 
-            <h2>12. Propriété intellectuelle des contenus pédagogiques</h2>
+            <h2>13. Propriété intellectuelle des contenus pédagogiques</h2>
             <p>
               Les contenus pédagogiques (supports de cours, modules e-learning,
               vidéos, exercices, études de cas, brochures et tout autre
@@ -254,7 +292,7 @@ export default function ConditionsGeneralesPage() {
               des identifiants d’accès.
             </p>
 
-            <h2>13. Force majeure</h2>
+            <h2>14. Force majeure</h2>
             <p>
               {legalEntity.name} ne pourra être tenue responsable de
               l’inexécution ou du retard d’exécution de ses obligations
@@ -266,7 +304,7 @@ export default function ConditionsGeneralesPage() {
               notamment le report de la formation.
             </p>
 
-            <h2>14. Droit applicable et juridiction compétente</h2>
+            <h2>15. Droit applicable et juridiction compétente</h2>
             <p>
               Les présentes Conditions sont soumises au droit marocain. En cas
               de litige, les parties rechercheront en priorité une solution

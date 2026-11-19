@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
-import { LEGAL_LAST_UPDATED, legalEntity, legalHosts } from "@/data/legal";
+import { PRIVACY_LAST_UPDATED, legalEntity, legalHosts } from "@/data/legal";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -25,7 +25,7 @@ export default function ConfidentialitePage() {
       <article className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-3xl px-4 lg:px-8">
           <p className="text-sm text-wl-text-secondary mb-10">
-            Dernière mise à jour : {LEGAL_LAST_UPDATED}
+            Dernière mise à jour : {PRIVACY_LAST_UPDATED}
           </p>
 
           <div className="wl-prose">
@@ -104,6 +104,14 @@ export default function ConfidentialitePage() {
               {legalEntity.name} ne collecte ni ne stocke aucune donnée de carte
               bancaire.
             </p>
+            <p>
+              Pour le traitement des paiements en ligne, les informations
+              nécessaires à la transaction (nom, adresse e-mail, numéro de
+              téléphone et, le cas échéant, adresse de facturation) sont
+              transmises au Centre Monétique Interbancaire (CMI) et à son
+              partenaire Damane Cash, destinataires de ces données pour cette
+              seule finalité.
+            </p>
 
             <h3>Données de navigation</h3>
             <p>
@@ -156,7 +164,10 @@ export default function ConfidentialitePage() {
                 l’acheminement des messages du formulaire de contact ;
               </li>
               <li>Google (mesure d’audience Google Analytics) ;</li>
-              <li>le CMI, pour le traitement des paiements par carte.</li>
+              <li>
+                le Centre Monétique Interbancaire (CMI) et Damane Cash, pour le
+                traitement des paiements.
+              </li>
             </ul>
             <p>
               Vos données peuvent également être communiquées aux autorités
