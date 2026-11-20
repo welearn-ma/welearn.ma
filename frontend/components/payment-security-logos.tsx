@@ -32,6 +32,12 @@ type PaymentSecurityLogosProps = {
   size?: Size;
   variant?: Variant;
   className?: string;
+  /**
+   * Affiche la mention « Paiement 100% sécurisé par CMI — 3D Secure ».
+   * Par défaut : `paymentLive`. Forcé à `true` uniquement sur la page de test
+   * cachée /paiement/test/ (certification CMI) ; le footer ne le passe pas.
+   */
+  showSecureNote?: boolean;
 };
 
 // Logo ≈ 28px (sm) / 36px (md) de haut : pastille 32px / 40px, padding vertical 2px.
@@ -120,6 +126,7 @@ export function PaymentSecurityLogos({
   size = "md",
   variant = "light",
   className,
+  showSecureNote = paymentLive,
 }: PaymentSecurityLogosProps) {
   return (
     <div
@@ -134,7 +141,7 @@ export function PaymentSecurityLogos({
           </li>
         ))}
       </ul>
-      {paymentLive && (
+      {showSecureNote && (
         <p
           className={cn(
             "flex items-center gap-1.5 text-xs",
