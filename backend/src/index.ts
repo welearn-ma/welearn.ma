@@ -7,6 +7,7 @@ import registrationRouter from "./routes/registrations";
 import contactRouter from "./routes/contact";
 import sponsorRouter from "./routes/sponsors";
 import brochureRouter from "./routes/brochures";
+import paymentsRouter from "./routes/payments";
 
 const app = express();
 const port = Number(process.env.PORT || 4000);
@@ -16,6 +17,12 @@ app.use(
   "/.well-known",
   express.static(path.join(process.cwd(), ".well-known")),
 );
+
+// Paiement CMI : monte AVANT le cors() global et express.json(). Le retour
+// navigateur depuis la page CMI (okUrl/failUrl) arrive avec une Origin
+// etrangere que le cors() global rejetterait (500). Le routeur gere son
+// propre parsing (urlencoded) et le CORS de /order-status.
+app.use("/api/payments", paymentsRouter);
 
 function normalizeOrigin(value: string) {
   return value.trim().replace(/\/+$/, "").toLowerCase();
