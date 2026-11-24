@@ -296,8 +296,10 @@ export class MemoryPaymentStore implements PaymentStore, StudentProofStore, Admi
   }
 
   async listCodes(kind: CodeKind | null): Promise<CodeRecord[]> {
+    // Plus recents d'abord, comme l'implementation Supabase.
     return [...this.codes.values()]
       .filter((code) => !kind || code.kind === kind)
+      .sort((a, b) => b.created_at.localeCompare(a.created_at))
       .map((code) => ({ ...code }));
   }
 

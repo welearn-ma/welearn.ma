@@ -9,8 +9,12 @@ export type AdminActivityEventType =
   | "proof_submitted"
   | "proof_approved"
   | "proof_rejected"
+  /** « Renvoyer l'e-mail » du code d'un justificatif valide. */
+  | "proof_email_resent"
   | "code_created"
-  | "code_revoked";
+  | "code_revoked"
+  /** « Renvoyer l'e-mail » d'un code de reduction. */
+  | "code_email_resent";
 
 export type AdminActivityStudentProofInfo = {
   fullName: string;

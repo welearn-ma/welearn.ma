@@ -202,6 +202,88 @@ describe("student proofs", () => {
   });
 });
 
+describe("« Renvoyer l'e-mail » — existing code only", () => {
+  it("approved proof: re-sends the same student code, creates nothing", async () => {
+    const approved = await call("POST", `/student-proofs/${proofId}/approve`);
+    const code = approved.data.data.code;
+    mailer.sent.length = 0;
+
+    store.activity.length = 0;
+    const res = await call("POST", `/student-proofs/${proofId}/resend`);
+    expect(res.status).toBe(200);
+    expect(res.data).toEqual({ success: true, data: { emailSent: true } });
+    expect(store.codes.size).toBe(1);
+    expect(store.activity).toEqual([
+      { entity_type: "student_proof", entity_id: proofId, event_type: "proof_email_resent", actor_email: ADMIN, note: null },
+    ]);
+    expect(mailer.sent).toHaveLength(1);
+    expect(mailer.sent[0].to).toBe(STUDENT_EMAIL);
+    expect(mailer.sent[0].text).toContain(`Votre code personnel : ${code}, valable jusqu'au 24/12/2026`);
+  });
+
+  it("refuses a pending or rejected proof (no code)", async () => {
+    expect((await call("POST", `/student-proofs/${proofId}/resend`)).status).toBe(409);
+    await call("POST", `/student-proofs/${proofId}/reject`, { reason: "Illisible" });
+    expect((await call("POST", `/student-proofs/${proofId}/resend`)).status).toBe(409);
+  });
+
+  it.each([
+    ["revoked", { revoked_at: "2026-11-24T09:00:00.000Z" }, "Ce code a été révoqué : il ne peut pas être renvoyé."],
+    ["used", { used_count: 1 }, "Ce code a déjà été utilisé : il ne peut pas être renvoyé."],
+    ["expired", { expires_at: "2026-11-24T09:00:00.000Z" }, "Ce code a expiré : il ne peut pas être renvoyé."],
+  ])("refuses to re-send a %s student code", async (_label, change, message) => {
+    const approved = await call("POST", `/student-proofs/${proofId}/approve`);
+    Object.assign(store.codeByValue(approved.data.data.code)!, change);
+    mailer.sent.length = 0;
+    const res = await call("POST", `/student-proofs/${proofId}/resend`);
+    expect(res.status).toBe(409);
+    expect(res.data.message).toBe(message);
+    expect(mailer.sent).toHaveLength(0);
+  });
+
+  it("SMTP failure → 502 with a clear message", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    await call("POST", `/student-proofs/${proofId}/approve`);
+    mailer.failing = true;
+    store.activity.length = 0;
+    const res = await call("POST", `/student-proofs/${proofId}/resend`);
+    expect(res.status).toBe(502);
+    expect(res.data.message).toBe("L'e-mail n'a pas pu être envoyé. Merci de réessayer.");
+    expect(store.activity).toEqual([]);
+  });
+
+  it("active discount code: re-sends the same code", async () => {
+    const created = await call("POST", "/codes", { email: "client@example.test" });
+    store.activity.length = 0;
+    const res = await call("POST", `/codes/${created.data.data.id}/resend`);
+    expect(res.status).toBe(200);
+    expect(store.codes.size).toBe(1);
+    expect(store.activity).toEqual([
+      { entity_type: "code", entity_id: created.data.data.id, event_type: "code_email_resent", actor_email: ADMIN, note: null },
+    ]);
+    expect(mailer.sent).toHaveLength(1);
+    expect(mailer.sent[0].text).toContain(created.data.data.code);
+    expect(mailer.sent[0].text).toContain(`${SITE}/paiement/?produit=bim-foundations-pro`);
+  });
+
+  it("discount resend refuses revoked codes and student codes", async () => {
+    const created = await call("POST", "/codes", { email: "client@example.test" });
+    await call("POST", `/codes/${created.data.data.id}/revoke`);
+    expect((await call("POST", `/codes/${created.data.data.id}/resend`)).status).toBe(409);
+
+    const approved = await call("POST", `/student-proofs/${proofId}/approve`);
+    const studentId = store.codeByValue(approved.data.data.code)!.id;
+    const res = await call("POST", `/codes/${studentId}/resend`);
+    expect(res.status).toBe(409);
+    expect(res.data.message).toBe("Un code étudiant se renvoie depuis « Justificatifs étudiants ».");
+  });
+
+  it("requires admin auth", async () => {
+    expect((await call("POST", `/student-proofs/${proofId}/resend`, {}, {})).status).toBe(401);
+    expect((await call("POST", "/codes/00000000-0000-4000-8000-000000000000/resend", {}, {})).status).toBe(401);
+  });
+});
+
 describe("codes", () => {
   it("creates a 5 % discount code (default +30 days) and optionally emails it", async () => {
     const res = await call("POST", "/codes", { email: " Client@Example.TEST ", sendEmail: true });

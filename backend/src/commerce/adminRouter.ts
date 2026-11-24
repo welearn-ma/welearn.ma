@@ -34,9 +34,11 @@ import type {
  *   GET  /student-proofs/:id/file        URL signee 60 s
  *   POST /student-proofs/:id/approve     code etudiant (30 j) + e-mail
  *   POST /student-proofs/:id/reject      { reason } + e-mail
+ *   POST /student-proofs/:id/resend      renvoie le code EXISTANT (jamais de nouveau code)
  *   GET  /codes?kind=student|discount
  *   POST /codes                          { email, expiresAt?, sendEmail? } -> code 5 %
  *   POST /codes/:id/revoke
+ *   POST /codes/:id/resend               code de reduction actif : renvoie l'e-mail
  * Reponses : { success: true, data } | { success: false, message }.
  */
 
@@ -92,6 +94,14 @@ export function codeStatus(code: CodeRecord, now: Date): CodeStatus {
   if (new Date(code.expires_at).getTime() <= now.getTime()) return "expired";
   return "active";
 }
+
+const UNUSABLE_CODE_MESSAGES: Record<Exclude<CodeStatus, "active">, string> = {
+  revoked: "Ce code a été révoqué : il ne peut pas être renvoyé.",
+  used: "Ce code a déjà été utilisé : il ne peut pas être renvoyé.",
+  expired: "Ce code a expiré : il ne peut pas être renvoyé.",
+};
+
+const RESEND_FAILED = "L'e-mail n'a pas pu être envoyé. Merci de réessayer.";
 
 function toCodeView(code: CodeRecord, now: Date, labels: Map<string, string>) {
   return {
@@ -368,12 +378,110 @@ export function createAdminCommerceRouters({
     }
   });
 
+  studentProofs.post("/:id/resend", async (req, res) => {
+    const id = validId(req, res);
+    if (!id) return;
+
+    try {
+      const proof = await store.findStudentProof(id);
+      if (!proof) {
+        return sendError(res, 404, "Justificatif introuvable.");
+      }
+      const code = proof.status === "APPROVED" && proof.code_id
+        ? await store.findCodeById(proof.code_id)
+        : null;
+      if (!code) {
+        return sendError(res, 409, "Aucun code n'est associé à ce justificatif.");
+      }
+      const status = codeStatus(code, now());
+      if (status !== "active") {
+        return sendError(res, 409, UNUSABLE_CODE_MESSAGES[status]);
+      }
+
+      const sent = await trySend(
+        mailer,
+        "student code (resend)",
+        proofApprovedEmail({
+          to: proof.email,
+          fullName: proof.full_name,
+          code: code.code,
+          expiresAt: code.expires_at,
+          paymentUrl: checkoutUrl(siteUrl, code.product_slug ?? ""),
+          replyTo,
+        }),
+      );
+      if (!sent) {
+        return sendError(res, 502, RESEND_FAILED);
+      }
+      await store.logActivity({
+        entity_type: "student_proof",
+        entity_id: id,
+        event_type: "proof_email_resent",
+        actor_email: adminEmail(res),
+        note: null,
+      });
+      res.json({ success: true, data: { emailSent: true } });
+    } catch (error) {
+      console.error(`[admin] student code resend failed id=${id}: ${describe(error)}`);
+      sendError(res, 500, RESEND_FAILED);
+    }
+  });
+
   // -------------------------------------------------------------------------
   // Codes
   // -------------------------------------------------------------------------
 
   const codes = Router();
   codes.use(requireAdmin);
+
+  codes.post("/:id/resend", async (req, res) => {
+    const id = validId(req, res);
+    if (!id) return;
+
+    try {
+      const code = await store.findCodeById(id);
+      if (!code) {
+        return sendError(res, 404, "Code introuvable.");
+      }
+      if (code.kind !== "discount") {
+        return sendError(
+          res,
+          409,
+          "Un code étudiant se renvoie depuis « Justificatifs étudiants ».",
+        );
+      }
+      const status = codeStatus(code, now());
+      if (status !== "active") {
+        return sendError(res, 409, UNUSABLE_CODE_MESSAGES[status]);
+      }
+
+      const sent = await trySend(
+        mailer,
+        "discount code (resend)",
+        discountCodeEmail({
+          to: code.customer_email,
+          code: code.code,
+          expiresAt: code.expires_at,
+          paymentUrl: checkoutUrl(siteUrl, code.product_slug ?? DISCOUNT_EMAIL_PRODUCT_SLUG),
+          replyTo,
+        }),
+      );
+      if (!sent) {
+        return sendError(res, 502, RESEND_FAILED);
+      }
+      await store.logActivity({
+        entity_type: "code",
+        entity_id: id,
+        event_type: "code_email_resent",
+        actor_email: adminEmail(res),
+        note: null,
+      });
+      res.json({ success: true, data: { emailSent: true } });
+    } catch (error) {
+      console.error(`[admin] discount code resend failed id=${id}: ${describe(error)}`);
+      sendError(res, 500, RESEND_FAILED);
+    }
+  });
 
   codes.get("/", async (req, res) => {
     const rawKind = typeof req.query.kind === "string" ? req.query.kind.trim() : "";

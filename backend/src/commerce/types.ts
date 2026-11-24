@@ -80,8 +80,10 @@ export type ActivityEntityType = "student_proof" | "code";
 export type ActivityEventType =
   | "proof_approved"
   | "proof_rejected"
+  | "proof_email_resent"
   | "code_created"
-  | "code_revoked";
+  | "code_revoked"
+  | "code_email_resent";
 
 export interface NewActivityEntry {
   entity_type: ActivityEntityType;
