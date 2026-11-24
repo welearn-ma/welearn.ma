@@ -32,16 +32,77 @@ const CONFIG = {
 };
 
 // --- Store en memoire (meme contrat que src/payments/store.ts) -------------
+const CLIENT_EMAIL = "client@example.test";
+
 function createMemoryStore() {
-  const prices = new Map([["test-paiement-cmi", { amount: 10, active: true }]]);
+  const product = (slug, label, amount_mad, extra = {}) => [
+    slug,
+    { slug, label, amount_mad, active: true, page_slug: null, requires_student_code: false, ...extra },
+  ];
+  const products = new Map([
+    product("test-paiement-cmi", "Test paiement CMI", 10),
+    product("bim-foundations-pro", "BIM Foundations Professional — Pack Professionnels", 8500, {
+      page_slug: "bim-foundations-professional",
+    }),
+    product("bim-foundations-etudiant", "BIM Foundations Professional — Pack Étudiants", 5000, {
+      page_slug: "bim-foundations-professional",
+      requires_student_code: true,
+    }),
+  ]);
+  const code = (id, value, kind, extra = {}) => [
+    id,
+    {
+      id,
+      code: value,
+      kind,
+      percent_off: kind === "discount" ? 5 : null,
+      product_slug: null,
+      customer_email: CLIENT_EMAIL,
+      max_uses: 1,
+      used_count: 0,
+      expires_at: "2099-01-01T00:00:00.000Z",
+      revoked_at: null,
+      created_by: "smoke@example.test",
+      student_proof_id: null,
+      created_at: "2026-11-24T00:00:00.000Z",
+      ...extra,
+    },
+  ];
+  const codes = new Map([
+    code("11111111-1111-4111-8111-111111111111", "WL-DSCT-AAAA", "discount"),
+    code("22222222-2222-4222-8222-222222222222", "WL-STUD-BBBB", "student", {
+      product_slug: "bim-foundations-etudiant",
+    }),
+  ]);
   const orders = new Map();
   const events = [];
   return {
     orders,
     events,
-    async getActivePrice(slug) {
-      const price = prices.get(slug);
-      return price?.active ? price.amount : null;
+    codes,
+    async getProduct(slug) {
+      const found = products.get(slug);
+      return found ? { ...found } : null;
+    },
+    async findCodeByCode(value) {
+      const found = [...codes.values()].find((c) => c.code === value);
+      return found ? { ...found } : null;
+    },
+    async consumeCode(id) {
+      const c = codes.get(id);
+      if (!c || c.used_count >= c.max_uses) return false;
+      c.used_count += 1;
+      return true;
+    },
+    async expirePendingOrders(cutoff, now) {
+      let count = 0;
+      for (const o of orders.values()) {
+        if (o.status === "PENDING" && o.created_at < cutoff) {
+          Object.assign(o, { status: "FAILED", updated_at: now });
+          count += 1;
+        }
+      }
+      return count;
     },
     async insertOrder(order) {
       if (orders.has(order.oid)) return "duplicate_oid";
@@ -53,6 +114,7 @@ function createMemoryStore() {
         cmi_auth_code: null,
         cmi_proc_return_code: null,
         paid_at: null,
+        created_at: order.cgv_accepted_at,
       });
       return "inserted";
     },
@@ -67,6 +129,7 @@ function createMemoryStore() {
             access_choice: o.access_choice,
             paid_at: o.paid_at,
             cmi_trans_id: o.cmi_trans_id,
+            code_id: o.code_id,
           }
         : null;
     },
@@ -103,9 +166,15 @@ const server = app.listen(0, "127.0.0.1");
 await once(server, "listening");
 const { port } = server.address();
 
-function request(method, path, { form, headers = {} } = {}) {
-  const body = form ? new URLSearchParams(form).toString() : undefined;
-  if (body) headers["content-type"] = "application/x-www-form-urlencoded";
+function request(method, path, { form, json, headers = {} } = {}) {
+  let body;
+  if (form) {
+    body = new URLSearchParams(form).toString();
+    headers["content-type"] = "application/x-www-form-urlencoded";
+  } else if (json !== undefined) {
+    body = JSON.stringify(json);
+    headers["content-type"] = "application/json";
+  }
   return new Promise((resolve, reject) => {
     const r = http.request({ host: "127.0.0.1", port, method, path, headers }, (res) => {
       let text = "";
@@ -133,8 +202,11 @@ const CHECKOUT = {
   access_choice: "immediate",
 };
 
-async function init() {
-  const res = await request("POST", "/api/payments/cmi/init", { form: CHECKOUT, headers: { origin: SITE } });
+async function init(overrides = {}) {
+  const res = await request("POST", "/api/payments/cmi/init", {
+    form: { ...CHECKOUT, ...overrides },
+    headers: { origin: SITE },
+  });
   const action = decodeHtmlEntities(/<form[^>]*\saction="([^"]*)"/.exec(res.text)?.[1] ?? "");
   const fields = [...res.text.matchAll(/<input type="hidden" name="([^"]*)" value="([^"]*)">/g)].map((m) => [
     decodeHtmlEntities(m[1]),
@@ -230,9 +302,44 @@ try {
     st.text);
   check("order-status CORS for SITE_URL", st.headers["access-control-allow-origin"] === SITE);
 
-  // 8. Journal + isolation
+  // 8. Journal
   check("every CMI request logged in payment_events (hash_valid + reply set)",
     store.events.length === 10 && store.events.every((e) => e.reply && e.hash_valid !== undefined), String(store.events.length));
+
+  // 9. Paiement avec code de reduction 5 % (Pack Professionnels)
+  const PRO = { formation_slug: "bim-foundations-pro", customer_email: CLIENT_EMAIL };
+  const check1 = await request("POST", "/api/payments/codes/check", {
+    json: { product: "bim-foundations-pro", code: "wl-dsct-aaaa", email: CLIENT_EMAIL },
+    headers: { origin: SITE },
+  });
+  check("codes/check -> 8075 / 8500 / 425",
+    check1.text === '{"valid":true,"amount_mad":8075,"list_amount_mad":8500,"discount_mad":425}', check1.text);
+  const d = await init({ ...PRO, code: "WL-DSCT-AAAA" });
+  check("discount init -> amount 8075.00 sent to CMI", d.posted.amount === "8075.00", d.posted.amount);
+  check("discount order stores list 8500, discount 425, code_id",
+    JSON.stringify((({ amount_mad, list_amount_mad, discount_mad, code_id }) => ({ amount_mad, list_amount_mad, discount_mad, code_id }))(store.orders.get(d.posted.oid))) ===
+      JSON.stringify({ amount_mad: 8075, list_amount_mad: 8500, discount_mad: 425, code_id: "11111111-1111-4111-8111-111111111111" }));
+  check("discount code not consumed at init", store.codes.get("11111111-1111-4111-8111-111111111111").used_count === 0);
+  const dPaid = await callback(cmiSigned(d.posted, { ...APPROVED, TransId: "SMOKE-TRANS-D" }));
+  check("discount callback 00 -> POSTAUTH, PAID, code consumed",
+    dPaid.text === "ACTION=POSTAUTH" && store.orders.get(d.posted.oid).status === "PAID" &&
+      store.codes.get("11111111-1111-4111-8111-111111111111").used_count === 1, dPaid.text);
+  const dAgain = await request("POST", "/api/payments/cmi/init", { form: { ...CHECKOUT, ...PRO, code: "WL-DSCT-AAAA" } });
+  check("used discount code -> echec/?reason=code_invalid", dAgain.headers.location === `${SITE}/paiement/echec/?reason=code_invalid`, dAgain.headers.location);
+
+  // 10. Paiement Pack Etudiants avec code etudiant
+  const STU = { formation_slug: "bim-foundations-etudiant", customer_email: CLIENT_EMAIL };
+  const noCode = await request("POST", "/api/payments/cmi/init", { form: { ...CHECKOUT, ...STU } });
+  check("student pack without code -> echec/?reason=code_required", noCode.headers.location === `${SITE}/paiement/echec/?reason=code_required`, noCode.headers.location);
+  const s = await init({ ...STU, code: "WL-STUD-BBBB" });
+  check("student init -> amount 5000.00, no discount",
+    s.posted.amount === "5000.00" && store.orders.get(s.posted.oid).discount_mad === 0, s.posted.amount);
+  const sPaid = await callback(cmiSigned(s.posted, { ...APPROVED, TransId: "SMOKE-TRANS-S" }));
+  check("student callback 00 -> POSTAUTH, PAID, code consumed",
+    sPaid.text === "ACTION=POSTAUTH" && store.orders.get(s.posted.oid).status === "PAID" &&
+      store.codes.get("22222222-2222-4222-8222-222222222222").used_count === 1, sPaid.text);
+
+  // 11. Isolation
   check("Supabase client never loaded", !Object.keys(require.cache).some((k) => k.includes("supabaseClient")));
 } finally {
   console.warn = originalWarn;

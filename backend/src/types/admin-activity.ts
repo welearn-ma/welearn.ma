@@ -1,10 +1,28 @@
-export type AdminActivityEntityType = "student" | "sponsor";
+export type AdminActivityEntityType = "student" | "sponsor" | "student_proof" | "code";
 export type AdminActivityEventType =
   | "new_request"
   /** Demande de brochure (registration_requests.source = 'brochure'). */
   | "brochure_request"
   | "treated"
-  | "untreated";
+  | "untreated"
+  /** Justificatif etudiant depose (trigger sur student_proofs). */
+  | "proof_submitted"
+  | "proof_approved"
+  | "proof_rejected"
+  | "code_created"
+  | "code_revoked";
+
+export type AdminActivityStudentProofInfo = {
+  fullName: string;
+  email: string;
+  pageSlug: string;
+};
+
+export type AdminActivityCodeInfo = {
+  code: string;
+  kind: "student" | "discount";
+  email: string;
+};
 
 export type AdminActivityStudentInfo = {
   fullName: string;
@@ -30,6 +48,10 @@ export type AdminActivityRecord = {
   student: AdminActivityStudentInfo | null;
   /** Populated when entityType is "sponsor"; null if the source row is gone. */
   sponsor: AdminActivitySponsorInfo | null;
+  /** Populated when entityType is "student_proof"; null otherwise. */
+  studentProof: AdminActivityStudentProofInfo | null;
+  /** Populated when entityType is "code"; null otherwise. */
+  code: AdminActivityCodeInfo | null;
 };
 
 export type AdminActivityListResponse = {

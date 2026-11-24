@@ -1,8 +1,10 @@
 /**
  * Acces base de donnees du paiement CMI (tables formation_prices, orders,
- * payment_events). Interface separee de son implementation Supabase pour
- * que les endpoints puissent etre testes sans toucher a la base.
+ * payment_events, codes). Interface separee de son implementation Supabase
+ * pour que les endpoints puissent etre testes sans toucher a la base.
  */
+
+import type { CodeRecord, ProductRecord } from "../commerce/types";
 
 export type OrderStatus = "PENDING" | "PAID" | "FAILED" | "CANCELLED";
 export type AccessChoice = "immediate" | "after_withdrawal";
@@ -11,7 +13,12 @@ export type PaymentEventSource = "callback" | "return";
 export interface NewOrder {
   oid: string;
   formation_slug: string;
+  /** Montant reellement debite (= list_amount_mad - discount_mad). */
   amount_mad: number;
+  list_amount_mad: number;
+  discount_mad: number;
+  /** Code utilise (consomme seulement au passage en PAID). */
+  code_id: string | null;
   currency: string;
   customer_name: string;
   customer_email: string;
@@ -31,6 +38,7 @@ export interface OrderRecord {
   paid_at: string | null;
   /** TransId CMI du paiement capture (detection des doubles approbations). */
   cmi_trans_id: string | null;
+  code_id: string | null;
 }
 
 export interface PaidUpdate {
@@ -56,8 +64,20 @@ export interface PaymentEventOutcome {
 }
 
 export interface PaymentStore {
-  /** Prix actif en MAD, ou null si le slug est inconnu ou inactif. */
-  getActivePrice(formationSlug: string): Promise<number | null>;
+  /** Produit (actif ou non), ou null si le slug est inconnu. */
+  getProduct(formationSlug: string): Promise<ProductRecord | null>;
+  /** Code par sa valeur canonique "WL-XXXX-XXXX", ou null. */
+  findCodeByCode(code: string): Promise<CodeRecord | null>;
+  /**
+   * used_count + 1 si used_count < max_uses (mise a jour conditionnelle).
+   * Retourne false si le code est deja epuise (ou introuvable).
+   */
+  consumeCode(codeId: string): Promise<boolean>;
+  /**
+   * PENDING cree avant `cutoff` -> FAILED (updated_at = `now`).
+   * Retourne le nombre de commandes expirees.
+   */
+  expirePendingOrders(cutoff: string, now: string): Promise<number>;
   /** "duplicate_oid" si l'oid existe deja (violation UNIQUE). */
   insertOrder(order: NewOrder): Promise<"inserted" | "duplicate_oid">;
   findOrderByOid(oid: string): Promise<OrderRecord | null>;

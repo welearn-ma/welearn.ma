@@ -8,6 +8,7 @@ import contactRouter from "./routes/contact";
 import sponsorRouter from "./routes/sponsors";
 import brochureRouter from "./routes/brochures";
 import paymentsRouter from "./routes/payments";
+import studentsRouter from "./routes/students";
 
 const app = express();
 const port = Number(process.env.PORT || 4000);
@@ -109,6 +110,8 @@ app.use("/api/registrations", registrationRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/sponsors", sponsorRouter);
 app.use("/api/brochures", brochureRouter);
+// Justificatifs etudiants (multipart, parse par multer dans le routeur).
+app.use("/api/students", studentsRouter);
 
 app.listen(port, () => {
   console.log(`Backend running on port ${port}`);

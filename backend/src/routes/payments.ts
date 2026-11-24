@@ -1,4 +1,5 @@
 import { readCmiConfig } from "../config/cmi";
+import { startPendingExpiryTimer } from "../payments/expiry";
 import { createPaymentsRouter } from "../payments/router";
 import { supabasePaymentStore } from "../payments/supabaseStore";
 
@@ -9,6 +10,8 @@ if (cmi.enabled) {
   console.log(
     `[payments] CMI payments enabled (gateway host: ${new URL(cmi.config.gatewayUrl).host})`,
   );
+  // Expiration des PENDING > 45 min : best effort (source de verite : /cmi/init).
+  startPendingExpiryTimer(supabasePaymentStore);
 } else {
   console.error(
     `[payments] *** CMI PAYMENTS DISABLED *** missing or invalid env vars: ${cmi.problems.join(", ")}. ` +

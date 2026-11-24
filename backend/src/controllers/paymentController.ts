@@ -1,6 +1,9 @@
 import type { Request, Response } from "express";
+import { codeRejection, normalizeCode, priceOrder, type OrderPricing } from "../commerce/codes";
+import type { CodeRecord, ProductRecord } from "../commerce/types";
 import type { CmiConfig } from "../config/cmi";
 import { CGV_VERSION } from "../config/legal";
+import { expireStalePendingOrders } from "../payments/expiry";
 import {
   amountToCents,
   buildSignedFields,
@@ -26,6 +29,8 @@ import {
  *
  *   POST /cmi/init      formulaire welearn.ma -> commande PENDING -> page qui
  *                       poste le formulaire signe vers la passerelle CMI.
+ *                       Champ facultatif `code` (etudiant ou reduction) : verifie
+ *                       ici, consomme seulement au passage en PAID.
  *   POST /cmi/callback  serveur-a-serveur CMI -> 200 text/plain
  *                       ACTION=POSTAUTH | APPROVED | FAILURE.
  *   POST /cmi/return    navigateur (okUrl + failUrl) -> 302 vers /paiement/...
@@ -39,6 +44,8 @@ export type PaymentFailureReason =
   | "invalid"
   | "document"
   | "name_latin"
+  | "code_required"
+  | "code_invalid"
   | "error"
   | "unavailable";
 
@@ -132,6 +139,8 @@ interface CheckoutInput {
   email: string;
   phone: string | null;
   accessChoice: AccessChoice;
+  /** Code saisi, forme canonique "WL-XXXX-XXXX" ; null si aucun. */
+  code: string | null;
 }
 
 /** Valide le formulaire de commande ; retourne la raison d'echec sinon. */
@@ -197,6 +206,21 @@ export function parseCheckoutForm(
     return "document";
   }
 
+  // Champ facultatif (absent sur /paiement/test/). Non-chaine -> invalide ;
+  // vide -> aucun code ; format impossible -> code invalide.
+  const rawCode = formValue(form, "code");
+  if (rawCode === null) {
+    return "invalid";
+  }
+  const codeInput = (rawCode ?? "").trim();
+  let code: string | null = null;
+  if (codeInput) {
+    code = normalizeCode(codeInput);
+    if (!code) {
+      return "code_invalid";
+    }
+  }
+
   return {
     formationSlug,
     customerName,
@@ -204,6 +228,7 @@ export function parseCheckoutForm(
     email,
     phone: phone || null,
     accessChoice,
+    code,
   };
 }
 
@@ -229,7 +254,8 @@ export function createPaymentHandlers({
   /** Insere la commande ; un seul nouvel essai si l'oid existe deja. */
   async function createPendingOrder(
     input: CheckoutInput,
-    amountMad: number,
+    pricing: OrderPricing,
+    codeId: string | null,
     createdAt: Date,
   ): Promise<string | null> {
     for (let attempt = 0; attempt < 2; attempt += 1) {
@@ -237,7 +263,10 @@ export function createPaymentHandlers({
       const outcome = await store.insertOrder({
         oid,
         formation_slug: input.formationSlug,
-        amount_mad: amountMad,
+        amount_mad: pricing.amount_mad,
+        list_amount_mad: pricing.list_amount_mad,
+        discount_mad: pricing.discount_mad,
+        code_id: codeId,
         currency: CURRENCY_MAD,
         customer_name: input.customerName,
         customer_email: input.email,
@@ -254,6 +283,30 @@ export function createPaymentHandlers({
     return null;
   }
 
+  /**
+   * Code saisi -> enregistrement valide pour ce produit et cet e-mail, ou la
+   * raison d'echec. Le motif precis n'est que journalise (jamais le code ni
+   * l'e-mail).
+   */
+  async function resolveCode(
+    input: CheckoutInput,
+    product: ProductRecord,
+    at: Date,
+  ): Promise<CodeRecord | null | "code_invalid"> {
+    if (!input.code) {
+      return null;
+    }
+    const code = await store.findCodeByCode(input.code);
+    const rejection = code
+      ? codeRejection(code, { product, email: input.email, now: at })
+      : "unknown";
+    if (!code || rejection) {
+      console.warn(`[payments] init: code refused (${rejection})`);
+      return "code_invalid";
+    }
+    return code;
+  }
+
   async function init(req: Request, res: Response): Promise<void> {
     try {
       const input = parseCheckoutForm(req.body);
@@ -262,14 +315,31 @@ export function createPaymentHandlers({
         return;
       }
 
-      // Montant TOUJOURS lu en base, jamais dans la requete.
-      const amountMad = await store.getActivePrice(input.formationSlug);
-      if (amountMad === null) {
+      const at = now();
+      // Expiration paresseuse des PENDING > 45 min (source de verite).
+      await expireStalePendingOrders(store, at);
+
+      // Produit et montant TOUJOURS lus en base, jamais dans la requete.
+      const product = await store.getProduct(input.formationSlug);
+      if (!product || !product.active) {
         redirectToFailure(res, config.siteUrl, "invalid");
         return;
       }
 
-      const oid = await createPendingOrder(input, amountMad, now());
+      const code = await resolveCode(input, product, at);
+      if (code === "code_invalid") {
+        redirectToFailure(res, config.siteUrl, "code_invalid");
+        return;
+      }
+      if (product.requires_student_code && code?.kind !== "student") {
+        redirectToFailure(res, config.siteUrl, "code_required");
+        return;
+      }
+
+      // Remise calculee cote serveur, en centimes ; un code etudiant n'en
+      // donne pas. Le code n'est PAS consomme ici.
+      const pricing = priceOrder(product.amount_mad, code);
+      const oid = await createPendingOrder(input, pricing, code?.id ?? null, at);
       if (!oid) {
         redirectToFailure(res, config.siteUrl, "error");
         return;
@@ -279,7 +349,7 @@ export function createPaymentHandlers({
         ["clientid", config.clientId],
         ["storetype", "3D_PAY_HOSTING"],
         ["trantype", "PreAuth"],
-        ["amount", formatAmount(amountMad)],
+        ["amount", formatAmount(pricing.amount_mad)],
         ["currency", CURRENCY_MAD],
         ["oid", oid],
         ["okUrl", returnUrl],
@@ -364,6 +434,25 @@ export function createPaymentHandlers({
     return "APPROVED";
   }
 
+  /**
+   * Consommation du code au passage PENDING -> PAID. L'argent est pris : la
+   * commande reste PAID quoi qu'il arrive. Si le code est deja epuise
+   * (course entre deux commandes), alerte CODE_OVERUSE. Ne leve jamais.
+   */
+  async function consumeOrderCode(codeId: string, oid: string): Promise<void> {
+    const printable = (value: string) => value.replace(/[^\x21-\x7E]/g, "?");
+    try {
+      const consumed = await store.consumeCode(codeId);
+      if (!consumed) {
+        console.warn(
+          `[payments] CODE_OVERUSE code_id=${printable(codeId)} oid=${printable(oid)}`,
+        );
+      }
+    } catch (error) {
+      logPaymentError(`code consumption code_id=${printable(codeId)} oid=${printable(oid)}`, error);
+    }
+  }
+
   function amountMatches(received: string | null, order: OrderRecord): boolean {
     if (received === null) {
       return false;
@@ -417,6 +506,9 @@ export function createPaymentHandlers({
       cmi_proc_return_code: PROC_RETURN_CODE_APPROVED,
     });
     if (updated) {
+      if (order.code_id) {
+        await consumeOrderCode(order.code_id, oid);
+      }
       return "ACTION=POSTAUTH";
     }
 

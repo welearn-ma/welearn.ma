@@ -164,8 +164,8 @@ function failureLocation(reason?: string): string {
 
 beforeEach(async () => {
   store = new MemoryPaymentStore();
-  store.prices.set("test-paiement-cmi", { amount: 10, active: true });
-  store.prices.set("inactive-formation", { amount: 50, active: false });
+  store.addProduct({ slug: "test-paiement-cmi", label: "Test paiement CMI", amount_mad: 10 });
+  store.addProduct({ slug: "inactive-formation", amount_mad: 50, active: false });
   clock = CREATED_AT;
   await startServer(
     createPaymentsRouter({ cmi: { enabled: true, config: CONFIG }, store, now: () => clock }),
@@ -320,7 +320,7 @@ describe("POST /api/payments/cmi/init", () => {
 
   it("database error → reason=error", async () => {
     vi.spyOn(console, "error").mockImplementation(() => undefined);
-    store.fail.getActivePrice = true;
+    store.fail.getProduct = true;
     const res = await request("POST", "/api/payments/cmi/init", { form: CHECKOUT });
     expect(res.headers.location).toBe(failureLocation("error"));
   });

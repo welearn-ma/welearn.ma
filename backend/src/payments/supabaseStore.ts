@@ -1,3 +1,4 @@
+import { CODE_COLUMNS, PRODUCT_COLUMNS, toCode, toProduct } from "../commerce/rows";
 import { supabase } from "../lib/supabaseClient";
 import {
   PaymentStoreError,
@@ -8,7 +9,10 @@ import {
 type DbError = { code?: string; message?: string };
 
 const ORDER_COLUMNS =
-  "oid, formation_slug, amount_mad, status, access_choice, paid_at, cmi_trans_id";
+  "oid, formation_slug, amount_mad, status, access_choice, paid_at, cmi_trans_id, code_id";
+
+/** Essais de la mise a jour optimiste de used_count (concurrence). */
+const CONSUME_ATTEMPTS = 3;
 
 function fail(operation: string, error: DbError): never {
   throw new PaymentStoreError(operation, error.code, error.message);
@@ -21,12 +25,11 @@ function logDbError(operation: string, error: unknown): void {
 }
 
 export const supabasePaymentStore: PaymentStore = {
-  async getActivePrice(formationSlug) {
+  async getProduct(formationSlug) {
     const { data, error } = await supabase
       .from("formation_prices")
-      .select("amount_mad")
+      .select(PRODUCT_COLUMNS)
       .eq("formation_slug", formationSlug)
-      .eq("active", true)
       .maybeSingle();
 
     if (error) {
@@ -36,8 +39,70 @@ export const supabasePaymentStore: PaymentStore = {
       return null;
     }
 
-    const amount = Number(data.amount_mad);
-    return Number.isFinite(amount) && amount > 0 ? amount : null;
+    const product = toProduct(data);
+    return Number.isFinite(product.amount_mad) && product.amount_mad > 0 ? product : null;
+  },
+
+  async findCodeByCode(code) {
+    const { data, error } = await supabase
+      .from("codes")
+      .select(CODE_COLUMNS)
+      .eq("code", code)
+      .maybeSingle();
+
+    if (error) {
+      fail("codes.select", error);
+    }
+    return data ? toCode(data) : null;
+  },
+
+  // PostgREST ne sait pas faire "used_count = used_count + 1" : mise a jour
+  // optimiste (WHERE used_count = valeur lue), reessayee en cas de course.
+  async consumeCode(codeId) {
+    for (let attempt = 0; attempt < CONSUME_ATTEMPTS; attempt += 1) {
+      const { data: current, error: readError } = await supabase
+        .from("codes")
+        .select("used_count, max_uses")
+        .eq("id", codeId)
+        .maybeSingle();
+
+      if (readError) {
+        fail("codes.select", readError);
+      }
+      if (!current || Number(current.used_count) >= Number(current.max_uses)) {
+        return false;
+      }
+
+      const usedCount = Number(current.used_count);
+      const { data: updated, error: updateError } = await supabase
+        .from("codes")
+        .update({ used_count: usedCount + 1 })
+        .eq("id", codeId)
+        .eq("used_count", usedCount)
+        .select("id");
+
+      if (updateError) {
+        fail("codes.update", updateError);
+      }
+      if ((updated?.length ?? 0) > 0) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  async expirePendingOrders(cutoff, now) {
+    const { data, error } = await supabase
+      .from("orders")
+      .update({ status: "FAILED", updated_at: now })
+      .eq("status", "PENDING")
+      .lt("created_at", cutoff)
+      .select("oid");
+
+    if (error) {
+      fail("orders.expire", error);
+    }
+    return data?.length ?? 0;
   },
 
   async insertOrder(order) {

@@ -5,6 +5,7 @@ import {
 } from "../lib/adminAuth";
 import { supabase } from "../lib/supabaseClient";
 import type {
+  AdminActivityEntityType,
   AdminActivityEventType,
   AdminActivityListResponse,
   AdminActivityRecord,
@@ -60,6 +61,20 @@ type SponsorInfoRow = {
   prenom: string;
   entreprise: string;
   email: string;
+};
+
+type StudentProofInfoRow = {
+  id: string;
+  full_name: string;
+  email: string;
+  page_slug: string;
+};
+
+type CodeInfoRow = {
+  id: string;
+  code: string;
+  kind: "student" | "discount";
+  customer_email: string;
 };
 
 export async function getAdminActivity(
@@ -118,7 +133,7 @@ export async function getAdminActivity(
 
   const rows = (data ?? []) as Array<{
     id: string;
-    entity_type: "student" | "sponsor";
+    entity_type: AdminActivityEntityType;
     entity_id: string;
     event_type: AdminActivityEventType;
     actor_email: string | null;
@@ -132,6 +147,41 @@ export async function getAdminActivity(
   const sponsorIds = rows
     .filter((row) => row.entity_type === "sponsor")
     .map((row) => row.entity_id);
+  const proofIds = rows
+    .filter((row) => row.entity_type === "student_proof")
+    .map((row) => row.entity_id);
+  const codeIds = rows
+    .filter((row) => row.entity_type === "code")
+    .map((row) => row.entity_id);
+
+  const [proofsResult, codesResult] = await Promise.all([
+    proofIds.length
+      ? supabase
+          .from("student_proofs")
+          .select("id, full_name, email, page_slug")
+          .in("id", proofIds)
+      : Promise.resolve({ data: [] as StudentProofInfoRow[], error: null }),
+    codeIds.length
+      ? supabase
+          .from("codes")
+          .select("id, code, kind, customer_email")
+          .in("id", codeIds)
+      : Promise.resolve({ data: [] as CodeInfoRow[], error: null }),
+  ]);
+
+  if (proofsResult.error || codesResult.error) {
+    console.error(
+      "Supabase select error (activity proof/code join):",
+      proofsResult.error ?? codesResult.error,
+    );
+  }
+
+  const proofById = new Map(
+    ((proofsResult.data ?? []) as StudentProofInfoRow[]).map((item) => [item.id, item]),
+  );
+  const codeById = new Map(
+    ((codesResult.data ?? []) as CodeInfoRow[]).map((item) => [item.id, item]),
+  );
 
   const [studentsResult, sponsorsResult] = await Promise.all([
     studentIds.length
@@ -177,6 +227,12 @@ export async function getAdminActivity(
       row.entity_type === "sponsor"
         ? sponsorById.get(row.entity_id)
         : undefined;
+    const proof =
+      row.entity_type === "student_proof"
+        ? proofById.get(row.entity_id)
+        : undefined;
+    const code =
+      row.entity_type === "code" ? codeById.get(row.entity_id) : undefined;
 
     return {
       id: row.id,
@@ -199,6 +255,12 @@ export async function getAdminActivity(
             email: sponsor.email,
             entreprise: sponsor.entreprise,
           }
+        : null,
+      studentProof: proof
+        ? { fullName: proof.full_name, email: proof.email, pageSlug: proof.page_slug }
+        : null,
+      code: code
+        ? { code: code.code, kind: code.kind, email: code.customer_email }
         : null,
     };
   });
