@@ -127,9 +127,9 @@ export default function ConditionsGeneralesPage() {
             <p>
               Les prix sont exprimés en dirhams marocains (MAD), toutes taxes
               comprises (TTC), TVA en vigueur incluse. Chaque offre est valable
-              tant qu'elle est affichée sur le site ; le prix applicable est
+              tant qu’elle est affichée sur le site ; le prix applicable est
               celui affiché au jour de la commande. Les codes de réduction
-              éventuels s'appliquent sur le prix TTC affiché, dans les
+              éventuels s’appliquent sur le prix TTC affiché, dans les
               conditions communiquées avec le code, et ne sont pas cumulables.
             </p>
 

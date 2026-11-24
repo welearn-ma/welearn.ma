@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
-import { LEGAL_LAST_UPDATED, legalEntity } from "@/data/legal";
+import { REFUND_LAST_UPDATED, legalEntity } from "@/data/legal";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -25,7 +25,7 @@ export default function RemboursementPage() {
       <article className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-3xl px-4 lg:px-8">
           <p className="text-sm text-wl-text-secondary mb-10">
-            Dernière mise à jour : {LEGAL_LAST_UPDATED}
+            Dernière mise à jour : {REFUND_LAST_UPDATED}
           </p>
 
           <div className="wl-prose">
