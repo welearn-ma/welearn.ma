@@ -48,6 +48,15 @@ export default function RemboursementPage() {
               <a href={`mailto:${legalEntity.email}`} className={linkClass}>
                 {legalEntity.email}
               </a>
+              . Un formulaire type de rétractation est{" "}
+              <a
+                href="/documents/formulaire-retractation-welearn.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
+              >
+                téléchargeable ici
+              </a>
               . {legalEntity.name} rembourse les sommes versées dans un délai
               maximal de quinze (15) jours à compter de la rétractation. Ce
               droit ne s’applique pas lorsque l’exécution de la prestation a

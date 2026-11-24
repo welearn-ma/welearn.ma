@@ -25,3 +25,6 @@ build/
 
 # OS files
 .DS_Store
+
+# Source Word du formulaire de retractation : seul le PDF est publie.
+frontend/public/documents/formulaire-retractation-welearn.docx
