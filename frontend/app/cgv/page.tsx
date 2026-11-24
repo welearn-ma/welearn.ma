@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
-import {
-  CGV_LAST_UPDATED,
-  legalEntity,
-  legalIdentityRows,
-} from "@/data/legal";
+import { CGV_LAST_UPDATED, legalEntity, legalIdentityRows } from "@/data/legal";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -15,7 +11,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const linkClass = "text-wl-blue underline underline-offset-2 hover:no-underline";
+const linkClass =
+  "text-wl-blue underline underline-offset-2 hover:no-underline";
 
 export default function ConditionsGeneralesPage() {
   return (
@@ -45,24 +42,23 @@ export default function ConditionsGeneralesPage() {
             <p>
               Les présentes Conditions Générales (ci-après les « Conditions »)
               ont pour objet de définir, d’une part, les conditions
-              d’utilisation du site Welearn par tout visiteur (ci-après
-              l’« Utilisateur ») et, d’autre part, les conditions dans
-              lesquelles {legalEntity.name} vend les formations proposées sur le
-              site à toute personne physique ou morale (ci-après le « Client »).
+              d’utilisation du site Welearn par tout visiteur (ci-après l’«
+              Utilisateur ») et, d’autre part, les conditions dans lesquelles{" "}
+              {legalEntity.name} vend les formations proposées sur le site à
+              toute personne physique ou morale (ci-après le « Client »).
             </p>
             <p>
               Toute inscription ou commande passée sur le site implique
               l’acceptation inconditionnelle et irrévocable des Conditions en
               vigueur à la date de la commande, que le Client reconnaît avoir
               lues avant de valider celle-ci. Les conditions particulières
-              éventuellement
-              convenues par écrit entre {legalEntity.name} et un Client
-              prévalent sur les présentes.
+              éventuellement convenues par écrit entre {legalEntity.name} et un
+              Client prévalent sur les présentes.
             </p>
             <p>
               {legalEntity.name} se réserve le droit de modifier les Conditions
-              à tout moment. Les Conditions applicables sont celles en vigueur
-              à la date de la commande.
+              à tout moment. Les Conditions applicables sont celles en vigueur à
+              la date de la commande.
             </p>
 
             <h2 id="article-2">2. Identification du vendeur</h2>
@@ -88,16 +84,16 @@ export default function ConditionsGeneralesPage() {
             <p>
               Les caractéristiques essentielles de chaque formation (objectifs,
               public visé, prérequis, programme, durée, modalités présentielles
-              ou à distance, dates de session) sont présentées sur sa fiche,
-              que le Client est invité à consulter avant toute commande.
-              Certaines formations, notamment diplômantes, sont soumises à des
-              conditions d’admission précisées sur leur fiche.
+              ou à distance, dates de session) sont présentées sur sa fiche, que
+              le Client est invité à consulter avant toute commande. Certaines
+              formations, notamment diplômantes, sont soumises à des conditions
+              d’admission précisées sur leur fiche.
             </p>
             <p>
               {legalEntity.name} peut adapter le contenu d’un programme ou
               remplacer un intervenant pour des raisons pédagogiques ou
-              d’organisation, sans que les objectifs de la formation n’en
-              soient modifiés. Les visuels présentés sur le site ne sont pas
+              d’organisation, sans que les objectifs de la formation n’en soient
+              modifiés. Les visuels présentés sur le site ne sont pas
               contractuels.
             </p>
 
@@ -121,16 +117,20 @@ export default function ConditionsGeneralesPage() {
               au Client à l’adresse email qu’il a indiquée.
             </p>
             <p>
-              Pour les formations soumises à admission, la demande
-              d’inscription est d’abord étudiée par l’équipe{" "}
-              {legalEntity.name}, qui recontacte le candidat. Le paiement
-              n’intervient qu’après acceptation de la candidature.
+              Pour les formations soumises à admission, la demande d’inscription
+              est d’abord étudiée par l’équipe {legalEntity.name}, qui
+              recontacte le candidat. Le paiement n’intervient qu’après
+              acceptation de la candidature.
             </p>
 
             <h2 id="article-5">5. Prix</h2>
             <p>
-              Les prix sont indiqués en dirhams marocains (MAD). Le régime de
-              TVA applicable est précisé sur chaque fiche de formation.
+              Les prix sont exprimés en dirhams marocains (MAD), toutes taxes
+              comprises (TTC), TVA en vigueur incluse. Chaque offre est valable
+              tant qu'elle est affichée sur le site ; le prix applicable est
+              celui affiché au jour de la commande. Les codes de réduction
+              éventuels s'appliquent sur le prix TTC affiché, dans les
+              conditions communiquées avec le code, et ne sont pas cumulables.
             </p>
 
             <h2 id="article-6">6. Modalités de paiement</h2>
@@ -138,8 +138,8 @@ export default function ConditionsGeneralesPage() {
               Le paiement s’effectue en ligne par carte bancaire, via la
               plateforme de paiement sécurisée du CMI (Centre Monétique
               Interbancaire). Les transactions sont protégées par le protocole
-              3D Secure, qui peut nécessiter une authentification
-              complémentaire auprès de la banque émettrice de la carte.
+              3D Secure, qui peut nécessiter une authentification complémentaire
+              auprès de la banque émettrice de la carte.
             </p>
             <p>
               Les données de la carte bancaire sont saisies directement sur la
@@ -204,8 +204,8 @@ export default function ConditionsGeneralesPage() {
               à cocher distincte et non pré-cochée.
             </p>
             <p>
-              Pour les formations organisées par sessions, la formation débute
-              à la date de session indiquée lors de la commande.
+              Pour les formations organisées par sessions, la formation débute à
+              la date de session indiquée lors de la commande.
             </p>
 
             <h2 id="article-9">9. Obligations de l’utilisateur</h2>
@@ -236,8 +236,8 @@ export default function ConditionsGeneralesPage() {
 
             <h2 id="article-10">10. Annulation et remboursement</h2>
             <p>
-              Les conditions d’annulation et de remboursement sont définies
-              dans notre{" "}
+              Les conditions d’annulation et de remboursement sont définies dans
+              notre{" "}
               <Link href="/remboursement" className={linkClass}>
                 politique de remboursement
               </Link>
@@ -271,8 +271,8 @@ export default function ConditionsGeneralesPage() {
 
             <h2 id="article-12">12. Données personnelles</h2>
             <p>
-              Les données personnelles du Client sont traitées conformément à
-              la loi n° 09-08 relative à la protection des personnes physiques à
+              Les données personnelles du Client sont traitées conformément à la
+              loi n° 09-08 relative à la protection des personnes physiques à
               l’égard du traitement des données à caractère personnel, dans les
               conditions décrites dans notre{" "}
               <Link href="/confidentialite" className={linkClass}>
@@ -286,10 +286,10 @@ export default function ConditionsGeneralesPage() {
             </h2>
             <p>
               Les contenus pédagogiques (supports de cours, modules e-learning,
-              vidéos, exercices, études de cas, brochures et tout autre
-              document remis au Client) sont la propriété de{" "}
-              {legalEntity.name} ou de ses partenaires et sont protégés par le
-              droit de la propriété intellectuelle.
+              vidéos, exercices, études de cas, brochures et tout autre document
+              remis au Client) sont la propriété de {legalEntity.name} ou de ses
+              partenaires et sont protégés par le droit de la propriété
+              intellectuelle.
             </p>
             <p>
               L’inscription confère au Client un droit d’utilisation personnel,
@@ -321,8 +321,8 @@ export default function ConditionsGeneralesPage() {
               de litige, les parties rechercheront en priorité une solution
               amiable. À défaut d’accord amiable, le litige sera porté devant
               les tribunaux compétents de Casablanca, sous réserve des
-              dispositions impératives applicables aux consommateurs,
-              notamment la loi n° 31-08 édictant des mesures de protection du
+              dispositions impératives applicables aux consommateurs, notamment
+              la loi n° 31-08 édictant des mesures de protection du
               consommateur.
             </p>
           </div>
