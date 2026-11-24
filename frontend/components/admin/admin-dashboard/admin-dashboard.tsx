@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { DashboardActivityView } from "../dashboard/dashboard-activity-view";
+import { DashboardCodesView } from "../dashboard/dashboard-codes-view";
+import { DashboardStudentProofsView } from "../dashboard/dashboard-student-proofs-view";
 import { DashboardFormationCandidatesModal } from "../dashboard/dashboard-formation-candidates-modal";
 import { DashboardInscriptionsView } from "../dashboard/dashboard-inscriptions-view";
 import { DashboardRequestModal } from "../dashboard/dashboard-request-modal";
@@ -20,6 +23,11 @@ export function AdminDashboard({
   accessToken: string;
 }) {
   const controller = useAdminDashboardController(accessToken);
+  // Les vues Justificatifs / Codes chargent leurs propres donnees : elles
+  // remontent leurs compteurs pour la barre laterale.
+  const [commerceCounts, setCommerceCounts] = useState({ total: 0, last24h: 0 });
+  const isCommerceView =
+    controller.view === "justificatifs" || controller.view === "codes";
 
   return (
     <div className="min-h-screen bg-wl-gray-light pt-10 pb-4">
@@ -27,8 +35,8 @@ export function AdminDashboard({
         <DashboardSidebar
           view={controller.view}
           onViewChange={controller.handleViewChange}
-          totalRows={controller.totalRows}
-          last24h={controller.last24h}
+          totalRows={isCommerceView ? commerceCounts.total : controller.totalRows}
+          last24h={isCommerceView ? commerceCounts.last24h : controller.last24h}
         />
 
         <div className="space-y-6">
@@ -37,7 +45,7 @@ export function AdminDashboard({
             onLogout={controller.handleLogout}
           />
 
-          {controller.notice ? (
+          {controller.notice && !isCommerceView ? (
             <div className="rounded-xl border border-wl-orange/30 bg-wl-orange-tint px-4 py-3 text-sm text-wl-text-secondary">
               {controller.notice}
             </div>
@@ -110,7 +118,23 @@ export function AdminDashboard({
             />
           ) : null}
 
-          {controller.loading ? (
+          {controller.view === "justificatifs" ? (
+            <DashboardStudentProofsView
+              accessToken={accessToken}
+              onUnauthorized={controller.handleUnauthorized}
+              onCounts={setCommerceCounts}
+            />
+          ) : null}
+
+          {controller.view === "codes" ? (
+            <DashboardCodesView
+              accessToken={accessToken}
+              onUnauthorized={controller.handleUnauthorized}
+              onCounts={setCommerceCounts}
+            />
+          ) : null}
+
+          {controller.loading && !isCommerceView ? (
             <p className="text-sm text-wl-text-secondary">
               Chargement du dashboard...
             </p>

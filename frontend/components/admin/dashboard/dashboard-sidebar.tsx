@@ -1,10 +1,12 @@
-import { Activity, HeartHandshake, Inbox } from "lucide-react";
+import { Activity, GraduationCap, HeartHandshake, Inbox, TicketPercent } from "lucide-react";
 import type { AdminView } from "./dashboard-types";
 
 const viewConfig = [
   { id: "activite", label: "Activite", icon: Activity },
   { id: "inscriptions", label: "Inscriptions", icon: Inbox },
   { id: "sponsors", label: "Sponsors", icon: HeartHandshake },
+  { id: "justificatifs", label: "Justificatifs étudiants", icon: GraduationCap },
+  { id: "codes", label: "Codes de réduction", icon: TicketPercent },
 ] as const;
 
 export function DashboardSidebar({

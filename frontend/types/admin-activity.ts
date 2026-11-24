@@ -1,10 +1,29 @@
-export type AdminActivityEntityType = "student" | "sponsor";
+export type AdminActivityEntityType = "student" | "sponsor" | "student_proof" | "code";
 export type AdminActivityEventType =
   | "new_request"
   /** Demande de brochure (registration_requests.source = 'brochure'). */
   | "brochure_request"
   | "treated"
-  | "untreated";
+  | "untreated"
+  | "proof_submitted"
+  | "proof_approved"
+  | "proof_rejected"
+  | "proof_email_resent"
+  | "code_created"
+  | "code_revoked"
+  | "code_email_resent";
+
+export type AdminActivityStudentProofInfo = {
+  fullName: string;
+  email: string;
+  pageSlug: string;
+};
+
+export type AdminActivityCodeInfo = {
+  code: string;
+  kind: "student" | "discount";
+  email: string;
+};
 
 export type AdminActivityStudentInfo = {
   fullName: string;
@@ -28,6 +47,9 @@ export type AdminActivityRecord = {
   createdAt: string;
   student: AdminActivityStudentInfo | null;
   sponsor: AdminActivitySponsorInfo | null;
+  /** Absents des reponses d'un backend anterieur aux justificatifs / codes. */
+  studentProof?: AdminActivityStudentProofInfo | null;
+  code?: AdminActivityCodeInfo | null;
 };
 
 export type AdminActivityListResponse = {

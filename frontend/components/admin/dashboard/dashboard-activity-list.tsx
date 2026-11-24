@@ -1,9 +1,14 @@
 import {
+  Ban,
   CheckCircle2,
   FileDown,
+  GraduationCap,
   HeartHandshake,
+  Send,
+  TicketPercent,
   Undo2,
   Users,
+  XCircle,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type {
@@ -33,6 +38,34 @@ const EVENT_BADGES: Record<
     label: "Annulé",
     className: "border-wl-border bg-wl-gray-light text-wl-text-secondary",
   },
+  proof_submitted: {
+    label: "Justificatif",
+    className: "border-wl-orange/30 bg-wl-orange-tint text-wl-orange",
+  },
+  proof_approved: {
+    label: "Validé",
+    className: "border-wl-success/30 bg-wl-success-tint text-wl-success",
+  },
+  proof_rejected: {
+    label: "Refusé",
+    className: "border-red-200 bg-red-50 text-red-700",
+  },
+  code_created: {
+    label: "Code créé",
+    className: "border-wl-blue/20 bg-wl-blue-tint text-wl-blue",
+  },
+  code_revoked: {
+    label: "Code révoqué",
+    className: "border-wl-border bg-wl-gray-light text-wl-text-secondary",
+  },
+  proof_email_resent: {
+    label: "E-mail du code renvoyé",
+    className: "border-wl-blue/20 bg-wl-blue-tint text-wl-blue",
+  },
+  code_email_resent: {
+    label: "E-mail du code renvoyé",
+    className: "border-wl-blue/20 bg-wl-blue-tint text-wl-blue",
+  },
 };
 
 // Garde-fou : un event_type inconnu (base en avance sur le frontend) ne doit
@@ -43,6 +76,12 @@ const FALLBACK_BADGE = {
 };
 
 function eventIcon(eventType: AdminActivityRecord["eventType"]) {
+  if (eventType === "proof_submitted") return GraduationCap;
+  if (eventType === "proof_approved") return CheckCircle2;
+  if (eventType === "proof_rejected") return XCircle;
+  if (eventType === "code_created") return TicketPercent;
+  if (eventType === "code_revoked") return Ban;
+  if (eventType === "proof_email_resent" || eventType === "code_email_resent") return Send;
   if (eventType === "treated") return CheckCircle2;
   if (eventType === "untreated") return Undo2;
   if (eventType === "brochure_request") return FileDown;
@@ -50,6 +89,16 @@ function eventIcon(eventType: AdminActivityRecord["eventType"]) {
 }
 
 function describeEntity(item: AdminActivityRecord) {
+  if (item.entityType === "student_proof") {
+    return item.studentProof
+      ? `${item.studentProof.fullName} (${item.studentProof.email})`
+      : "Justificatif supprime";
+  }
+
+  if (item.entityType === "code") {
+    return item.code ? `${item.code.code} — ${item.code.email}` : "Code supprime";
+  }
+
   if (item.entityType === "student") {
     return item.student
       ? `${item.student.fullName} — ${item.student.formationTitle}`
@@ -61,7 +110,34 @@ function describeEntity(item: AdminActivityRecord) {
     : "Sponsor supprime";
 }
 
+/** Evenements des justificatifs et des codes ; null pour les autres. */
+function describeCommerceAction(item: AdminActivityRecord): string | null {
+  const by = item.actorEmail ? ` (${item.actorEmail})` : "";
+  switch (item.eventType) {
+    case "proof_submitted":
+      return "a déposé un justificatif étudiant.";
+    case "proof_approved":
+      return `justificatif validé, code envoyé${by}.`;
+    case "proof_rejected":
+      return `justificatif refusé${by}.`;
+    case "code_created":
+      return `code ${item.code?.kind === "student" ? "étudiant" : "de réduction"} créé${by}.`;
+    case "code_revoked":
+      return `code révoqué${by}.`;
+    case "proof_email_resent":
+    case "code_email_resent":
+      return `e-mail du code renvoyé${by}.`;
+    default:
+      return null;
+  }
+}
+
 function describeAction(item: AdminActivityRecord) {
+  const commerce = describeCommerceAction(item);
+  if (commerce) {
+    return commerce;
+  }
+
   const entityLabel = item.entityType === "student" ? "l'inscription" : "le sponsor";
 
   if (item.eventType === "new_request") {
@@ -110,6 +186,24 @@ export function DashboardActivityList({
                   >
                     <HeartHandshake className="h-3 w-3" />
                     Sponsor
+                  </Badge>
+                ) : null}
+                {item.entityType === "student_proof" ? (
+                  <Badge
+                    variant="outline"
+                    className="border-wl-blue/20 bg-wl-blue-tint text-wl-blue"
+                  >
+                    <GraduationCap className="h-3 w-3" />
+                    Justificatif étudiant
+                  </Badge>
+                ) : null}
+                {item.entityType === "code" ? (
+                  <Badge
+                    variant="outline"
+                    className="border-wl-blue/20 bg-wl-blue-tint text-wl-blue"
+                  >
+                    <TicketPercent className="h-3 w-3" />
+                    Code
                   </Badge>
                 ) : null}
                 <span className="text-xs text-wl-text-secondary">

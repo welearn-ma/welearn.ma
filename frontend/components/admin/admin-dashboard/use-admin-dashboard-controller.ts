@@ -579,6 +579,7 @@ export function useAdminDashboardController(accessToken: string) {
     setSelectedRequest,
     refreshData,
     handleLogout,
+    handleUnauthorized,
     handleContact,
     handleViewChange,
     handleViewRequest,

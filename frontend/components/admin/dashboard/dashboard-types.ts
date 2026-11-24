@@ -1,4 +1,4 @@
-export type AdminView = "inscriptions" | "activite" | "sponsors";
+export type AdminView = "inscriptions" | "activite" | "sponsors" | "justificatifs" | "codes";
 export type DateFilter = "all" | "7d" | "30d" | "90d";
 
 /** Onglet Nouveaux/Traités partagé par les vues Inscriptions et Sponsors. */
