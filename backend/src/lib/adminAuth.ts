@@ -11,15 +11,13 @@ type AdminAccessResult =
       reason: "missing_token" | "invalid_token" | "not_admin";
     };
 
+/**
+ * Seul `app_metadata` fait foi : il n'est modifiable qu'avec la service role
+ * key. `user_metadata` est ecrit par l'utilisateur lui-meme (inscription,
+ * supabase.auth.updateUser) et ne doit JAMAIS donner de droits.
+ */
 function isUserAdmin(user: User) {
-  const appRole = String(user.app_metadata?.role ?? "").toLowerCase();
-  const userRole = String(user.user_metadata?.role ?? "").toLowerCase();
-  const appIsAdmin = user.app_metadata?.is_admin === true;
-  const userIsAdmin = user.user_metadata?.is_admin === true;
-
-  return (
-    appRole === "admin" || userRole === "admin" || appIsAdmin || userIsAdmin
-  );
+  return user.app_metadata?.role === "admin";
 }
 
 export function getBearerToken(authorizationHeader?: string) {
