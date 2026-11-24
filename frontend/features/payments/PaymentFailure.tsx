@@ -1,11 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PAYMENT_RETRY_PATH } from "@/data/payment";
-import { parseOrderRef } from "@/lib/api/payments";
+import { checkoutPath, LAST_CHECKOUT_KEY, PAYMENT_RETRY_PATH } from "@/data/payment";
+import { parseOrderRef, parseProductSlug } from "@/lib/api/payments";
 import {
   OrderRefLine,
   PaymentContactLine,
@@ -19,6 +20,10 @@ const REASON_MESSAGES = {
   invalid:
     "Certaines informations du formulaire sont invalides. Merci de vérifier vos informations et de réessayer.",
   name_latin: "Merci de saisir votre nom en caractères latins.",
+  code_required:
+    "Le Pack Étudiants nécessite un code personnel, envoyé après validation de votre justificatif étudiant.",
+  code_invalid:
+    "Ce code n'est pas valide pour cette commande. Vérifiez le code et l'adresse e-mail utilisée, ou contactez-nous.",
   document:
     "Votre nom ou votre adresse e-mail contient un terme non accepté par la plateforme de paiement. Merci d'utiliser une autre adresse e-mail ou de nous contacter.",
   error:
@@ -44,6 +49,18 @@ export function PaymentFailure() {
   const orderRef = parseOrderRef(params.get("ref"));
   const message = messageForReason(params.get("reason"));
 
+  // « Réessayer » ramène à la page de paiement du dernier produit envoyé
+  // (mémorisé par CheckoutForm), sinon à la cible par défaut.
+  const [retryPath, setRetryPath] = useState(PAYMENT_RETRY_PATH);
+  useEffect(() => {
+    try {
+      const slug = parseProductSlug(window.sessionStorage.getItem(LAST_CHECKOUT_KEY));
+      if (slug) setRetryPath(checkoutPath(slug));
+    } catch {
+      // Stockage indisponible : cible par défaut.
+    }
+  }, []);
+
   return (
     <PaymentResultShell>
       <PaymentResultHeader tone="error" icon={XCircle} title="Paiement non abouti" />
@@ -54,7 +71,7 @@ export function PaymentFailure() {
           asChild
           className="h-11 w-full bg-wl-blue px-8 text-white transition-all duration-200 hover:bg-wl-blue-dark sm:w-auto"
         >
-          <Link href={PAYMENT_RETRY_PATH}>Réessayer</Link>
+          <Link href={retryPath}>Réessayer</Link>
         </Button>
       </div>
       <PaymentContactLine />

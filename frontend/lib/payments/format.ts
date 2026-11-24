@@ -1,9 +1,15 @@
-/** « 10,00 MAD » (format français, 2 décimales). */
+/** « 10,00 MAD », « 8 500,00 MAD » (format français, 2 décimales). */
 export function formatAmountMad(amount: number): string {
   const value = new Intl.NumberFormat("fr-FR", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);
+  return `${value} MAD`;
+}
+
+/** « 8 500 MAD » (montant entier, sans décimales). */
+export function formatWholeAmountMad(amount: number): string {
+  const value = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format(amount);
   return `${value} MAD`;
 }
 

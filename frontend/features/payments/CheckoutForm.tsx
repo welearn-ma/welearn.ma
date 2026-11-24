@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { PaymentSecurityLogos } from "@/components/payment-security-logos";
-import type { PaymentProduct } from "@/data/payment";
-import { cmiInitUrl, getPaymentsApiBaseUrl } from "@/lib/api/payments";
+import { LAST_CHECKOUT_KEY, type PaymentProduct } from "@/data/payment";
+import { checkPaymentCode, cmiInitUrl, getPaymentsApiBaseUrl } from "@/lib/api/payments";
 import {
   CHECKOUT_MESSAGES,
   MAX_EMAIL_LENGTH,
@@ -18,9 +18,47 @@ import {
   validateCustomerName,
   validateCustomerPhone,
 } from "@/lib/payments/checkout-validation";
+import { formatAmountMad } from "@/lib/payments/format";
 import { PHONE_COUNTRIES } from "@/lib/phone-countries";
 
+/**
+ * Produit à payer. `codeMode` : champ code absent (page de test), facultatif
+ * (code de réduction) ou obligatoire (Pack Étudiants).
+ */
+export type CheckoutProduct = PaymentProduct & {
+  codeMode?: "none" | "optional" | "required";
+  /** Page de dépôt du justificatif (lien affiché si le code est obligatoire). */
+  proofPath?: string;
+};
+
 type AccessChoice = "immediate" | "after_withdrawal";
+
+/** Même forme que normalizeCode — backend/src/commerce/codes.ts. */
+const CODE_PATTERN = /^WL-[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/;
+function normalizeCode(input: string): string | null {
+  const compact = input.toUpperCase().replace(/[\s-]/g, "");
+  const match = /^WL([A-Z0-9]{4})([A-Z0-9]{4})$/.exec(compact);
+  if (!match) return null;
+  const code = `WL-${match[1]}-${match[2]}`;
+  return CODE_PATTERN.test(code) ? code : null;
+}
+
+const CODE_MESSAGES = {
+  required: "Saisissez votre code personnel.",
+  // Texte de /paiement/echec/?reason=code_invalid.
+  invalid:
+    "Ce code n'est pas valide pour cette commande. Vérifiez le code et l'adresse e-mail utilisée, ou contactez-nous.",
+  emailFirst: "Saisissez d'abord votre adresse e-mail : le code est lié à cette adresse.",
+  rateLimited: "Trop de vérifications depuis cette connexion. Merci de réessayer dans quelques minutes.",
+  error: "La vérification du code est momentanément impossible. Merci de réessayer.",
+  studentHelp:
+    "Le Pack Étudiants nécessite un code personnel, envoyé après validation de votre justificatif étudiant.",
+} as const;
+
+type CodeCheck =
+  | { state: "idle" }
+  | { state: "checking" }
+  | { state: "valid"; key: string; amount: number; list: number; discount: number };
 
 /** Libellés de l'article 8 des CGV : texte exact, ne pas reformuler. */
 const ACCESS_OPTIONS: ReadonlyArray<{ value: AccessChoice; text: string }> = [
@@ -39,6 +77,7 @@ type Field =
   | "customer_name"
   | "customer_email"
   | "customer_phone"
+  | "code"
   | "access_choice"
   | "cgv_accepted";
 type FormErrors = Partial<Record<Field, string>>;
@@ -48,6 +87,7 @@ const FIELD_FOCUS_ID: ReadonlyArray<[Field, string]> = [
   ["customer_name", "customer_name"],
   ["customer_email", "customer_email"],
   ["customer_phone", "customer_phone"],
+  ["code", "payment_code"],
   ["access_choice", "access_choice_immediate"],
   ["cgv_accepted", "cgv_accepted"],
 ];
@@ -91,21 +131,32 @@ function NewTabLink({ href, children }: { href: string; children: string }) {
  * qui renvoie la page d'auto-soumission vers la passerelle CMI. La
  * validation client bloque l'envoi ; le backend reste la source de vérité.
  */
-export function CheckoutForm({ product }: { product: PaymentProduct }) {
+export function CheckoutForm({ product }: { product: CheckoutProduct }) {
   const apiBaseUrl = getPaymentsApiBaseUrl();
   const actionUrl = apiBaseUrl ? cmiInitUrl(apiBaseUrl) : null;
+  const codeMode = product.codeMode ?? "none";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [code, setCode] = useState("");
+  const [codeCheck, setCodeCheck] = useState<CodeCheck>({ state: "idle" });
   const [accessChoice, setAccessChoice] = useState<AccessChoice | null>(null);
   const [cgvAccepted, setCgvAccepted] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submittingRef = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   // PhoneInput vaut "+33" quand seul le pays est choisi : rien à poster.
   const phoneValue = DIAL_CODES.has(phone.trim()) ? "" : normalizePhone(phone);
+
+  // Code vérifié pour CE code et CET e-mail (sinon il faut revérifier).
+  const canonicalCode = normalizeCode(code);
+  const codeKey = `${canonicalCode}|${email.trim().toLowerCase()}`;
+  const verified = codeCheck.state === "valid" && codeCheck.key === codeKey ? codeCheck : null;
+  // Montant affiché : celui calculé par le backend pour le code vérifié.
+  const payAmount = verified ? formatAmountMad(verified.amount) : product.displayAmount;
 
   // Retour arrière depuis la passerelle (cache navigateur) : le bouton doit
   // redevenir utilisable.
@@ -133,13 +184,76 @@ export function CheckoutForm({ product }: { product: PaymentProduct }) {
     if (nameError) next.customer_name = nameError;
     if (emailError) next.customer_email = emailError;
     if (phoneError) next.customer_phone = phoneError;
+    if (codeMode !== "none") {
+      if (!code.trim()) {
+        if (codeMode === "required") next.code = CODE_MESSAGES.required;
+      } else if (!canonicalCode) {
+        next.code = CODE_MESSAGES.invalid;
+      }
+    }
     if (!accessChoice) next.access_choice = CHECKOUT_MESSAGES.accessRequired;
     if (!cgvAccepted) next.cgv_accepted = CHECKOUT_MESSAGES.cgvRequired;
     return next;
   };
 
+  /** Vérifie le code auprès du backend ; true si valide pour ce produit et cet e-mail. */
+  const verifyCode = async (): Promise<boolean> => {
+    if (!apiBaseUrl || codeCheck.state === "checking") return false;
+    if (!canonicalCode) {
+      setErrors((current) => ({
+        ...current,
+        code: code.trim() ? CODE_MESSAGES.invalid : CODE_MESSAGES.required,
+      }));
+      return false;
+    }
+    if (validateCustomerEmail(email)) {
+      setErrors((current) => ({ ...current, code: CODE_MESSAGES.emailFirst }));
+      return false;
+    }
+    const key = codeKey;
+    setCodeCheck({ state: "checking" });
+    const result = await checkPaymentCode(apiBaseUrl, {
+      product: product.slug,
+      code: canonicalCode,
+      email: email.trim(),
+    });
+    if (result.status === "valid") {
+      setCodeCheck({
+        state: "valid",
+        key,
+        amount: result.amount_mad,
+        list: result.list_amount_mad,
+        discount: result.discount_mad,
+      });
+      clearError("code");
+      return true;
+    }
+    setCodeCheck({ state: "idle" });
+    setErrors((current) => ({
+      ...current,
+      code:
+        result.status === "invalid"
+          ? CODE_MESSAGES.invalid
+          : result.status === "rate_limited"
+            ? CODE_MESSAGES.rateLimited
+            : CODE_MESSAGES.error,
+    }));
+    return false;
+  };
+
+  /** Envoi réel (POST natif) : bouton désactivé, produit mémorisé pour « Réessayer ». */
+  const markSubmitting = () => {
+    submittingRef.current = true;
+    setIsSubmitting(true);
+    try {
+      window.sessionStorage.setItem(LAST_CHECKOUT_KEY, product.slug);
+    } catch {
+      // Stockage indisponible : « Réessayer » utilisera la cible par défaut.
+    }
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    if (submittingRef.current || !actionUrl) {
+    if (submittingRef.current || !actionUrl || codeCheck.state === "checking") {
       event.preventDefault();
       return;
     }
@@ -153,14 +267,29 @@ export function CheckoutForm({ product }: { product: PaymentProduct }) {
       return;
     }
 
+    // Code saisi mais pas encore vérifié : vérification d'abord, pour que le
+    // montant affiché soit celui qui sera débité, puis envoi.
+    if (codeMode !== "none" && canonicalCode && !verified) {
+      event.preventDefault();
+      void verifyCode().then((valid) => {
+        if (valid) {
+          markSubmitting();
+          formRef.current?.submit();
+        } else {
+          document.getElementById("payment_code")?.focus();
+        }
+      });
+      return;
+    }
+
     // Pas de preventDefault : le navigateur poste le formulaire. Seul le
     // bouton est désactivé (des champs désactivés ne seraient pas envoyés).
-    submittingRef.current = true;
-    setIsSubmitting(true);
+    markSubmitting();
   };
 
   return (
     <form
+      ref={formRef}
       method="POST"
       action={actionUrl ?? undefined}
       acceptCharset="UTF-8"
@@ -179,9 +308,19 @@ export function CheckoutForm({ product }: { product: PaymentProduct }) {
           <dt className="text-wl-text-secondary">Formation</dt>
           <dd className="font-medium text-wl-text">{product.label}</dd>
           <dt className="text-wl-text-secondary">Montant</dt>
-          <dd className="font-semibold text-wl-text">
+          <dd className={verified?.discount ? "text-wl-text-secondary line-through" : "font-semibold text-wl-text"}>
             {product.displayAmount} TTC
           </dd>
+          {verified?.discount ? (
+            <>
+              <dt className="text-wl-text-secondary">Réduction</dt>
+              <dd className="font-medium text-wl-success">
+                −{formatAmountMad(verified.discount)} ({canonicalCode})
+              </dd>
+              <dt className="text-wl-text-secondary">Total</dt>
+              <dd className="font-semibold text-wl-text">{formatAmountMad(verified.amount)} TTC</dd>
+            </>
+          ) : null}
         </dl>
       </div>
 
@@ -273,6 +412,72 @@ export function CheckoutForm({ product }: { product: PaymentProduct }) {
           <FieldError id="customer_phone-error" message={errors.customer_phone} />
         </div>
 
+        {codeMode !== "none" ? (
+          <div>
+            <Label htmlFor="payment_code" className="text-sm font-medium text-wl-text">
+              {codeMode === "required" ? "Code personnel" : "Code de réduction (facultatif)"}
+            </Label>
+            {codeMode === "required" ? (
+              <p id="payment_code-hint" className="mt-1 text-xs text-wl-text-tertiary">
+                {CODE_MESSAGES.studentHelp}
+                {product.proofPath ? (
+                  <>
+                    {" "}
+                    <a href={product.proofPath} className={linkClass}>
+                      Envoyer mon justificatif étudiant
+                    </a>
+                  </>
+                ) : null}
+              </p>
+            ) : null}
+            <div className="mt-1 flex gap-2">
+              <Input
+                id="payment_code"
+                name="code"
+                value={code}
+                onChange={(e) => {
+                  setCode(e.target.value);
+                  clearError("code");
+                }}
+                placeholder="WL-XXXX-XXXX"
+                maxLength={20}
+                autoComplete="off"
+                autoCapitalize="characters"
+                spellCheck={false}
+                required={codeMode === "required"}
+                aria-invalid={Boolean(errors.code)}
+                aria-describedby={
+                  [codeMode === "required" ? "payment_code-hint" : "", errors.code ? "payment_code-error" : ""]
+                    .filter(Boolean)
+                    .join(" ") || undefined
+                }
+                className={`${inputClass} mt-0 font-mono uppercase`}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => void verifyCode()}
+                disabled={codeCheck.state === "checking" || !code.trim()}
+                className="h-11 shrink-0 border-wl-border text-wl-text hover:border-wl-blue/30 hover:bg-wl-blue-tint hover:text-wl-blue"
+              >
+                {codeCheck.state === "checking" ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                ) : null}
+                Vérifier
+              </Button>
+            </div>
+            {verified ? (
+              <p role="status" className="mt-1 flex items-center gap-1.5 text-xs text-wl-success">
+                <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+                {verified.discount
+                  ? `Code appliqué : −${formatAmountMad(verified.discount)}.`
+                  : "Code valide."}
+              </p>
+            ) : null}
+            <FieldError id="payment_code-error" message={errors.code} />
+          </div>
+        ) : null}
+
         <fieldset aria-describedby={errors.access_choice ? "access_choice-error" : undefined}>
           <legend className="text-sm font-medium text-wl-text">
             Accès à la formation (article 8 des CGV)
@@ -343,7 +548,7 @@ export function CheckoutForm({ product }: { product: PaymentProduct }) {
           {/* Pas d'attribut name : le bouton ne doit pas être posté. */}
           <Button
             type="submit"
-            disabled={isSubmitting || !actionUrl}
+            disabled={isSubmitting || !actionUrl || codeCheck.state === "checking"}
             className="h-11 w-full bg-wl-blue text-white transition-all duration-200 hover:bg-wl-blue-dark"
           >
             {isSubmitting ? (
@@ -352,7 +557,7 @@ export function CheckoutForm({ product }: { product: PaymentProduct }) {
                 Redirection vers le paiement sécurisé…
               </>
             ) : (
-              `Payer ${product.displayAmount}`
+              `Payer ${payAmount}`
             )}
           </Button>
 

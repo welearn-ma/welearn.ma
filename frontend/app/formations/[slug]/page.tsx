@@ -13,6 +13,9 @@ import {
 } from "@/features/formations/sections";
 import { RegistrationForm } from "@/features/formations/RegistrationForm";
 import { getFormationBySlug, getAllFormationSlugs } from "@/data/formations";
+import { paymentLive } from "@/config/site";
+import { BIM_FOUNDATIONS_PACKS } from "@/data/payment";
+import { BimPricingBlock } from "@/features/payments/BimPricingBlock";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -83,6 +86,11 @@ export default async function FormationDetailPage({ params }: PageProps) {
         ctaLabel={formation.ctaInscription}
       />
       <FormationTestimonials testimonials={formation.testimonials} />
+
+      {/* Tarifs et paiement en ligne : seulement quand le paiement est ouvert au public. */}
+      {paymentLive && formation.slug === BIM_FOUNDATIONS_PACKS.pageSlug ? (
+        <BimPricingBlock />
+      ) : null}
 
       {/* ── REGISTRATION FORM (do not modify) ── */}
       <section id="registration-form" className="bg-white py-20">

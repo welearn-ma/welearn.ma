@@ -16,6 +16,93 @@ export function cmiInitUrl(baseUrl: string): string {
   return `${baseUrl}/api/payments/cmi/init`;
 }
 
+// --- Catalogue et codes (backend/src/payments/catalog.ts) --------------------
+
+const PRODUCT_SLUG_REGEX = /^[a-z0-9-]{1,100}$/;
+
+/** Slug de produit lu dans l'URL : null si absent ou mal formé. */
+export function parseProductSlug(value: string | null): string | null {
+  const slug = value?.trim() ?? "";
+  return PRODUCT_SLUG_REGEX.test(slug) ? slug : null;
+}
+
+export type ProductInfo = {
+  slug: string;
+  label: string;
+  amount_mad: number;
+  requires_student_code: boolean;
+};
+
+/**
+ * GET /api/payments/products/:slug — null si le produit est inconnu ou
+ * inactif (404). Lève une erreur sur toute autre réponse.
+ */
+export async function fetchProduct(
+  baseUrl: string,
+  slug: string,
+  signal?: AbortSignal,
+): Promise<ProductInfo | null> {
+  const response = await fetch(
+    `${baseUrl}/api/payments/products/${encodeURIComponent(slug)}`,
+    { cache: "no-store", signal },
+  );
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error(`products ${response.status}`);
+  const body = (await response.json()) as Partial<ProductInfo>;
+  if (
+    body.slug !== slug ||
+    typeof body.label !== "string" ||
+    typeof body.amount_mad !== "number" ||
+    typeof body.requires_student_code !== "boolean"
+  ) {
+    throw new Error("products: invalid body");
+  }
+  return body as ProductInfo;
+}
+
+export type CodeCheckResult =
+  | { status: "valid"; amount_mad: number; list_amount_mad: number; discount_mad: number }
+  | { status: "invalid" }
+  | { status: "rate_limited" }
+  | { status: "error" };
+
+/**
+ * POST /api/payments/codes/check — montants calculés par le backend, ou
+ * « invalide » sans motif. Ne lève jamais.
+ */
+export async function checkPaymentCode(
+  baseUrl: string,
+  input: { product: string; code: string; email: string },
+): Promise<CodeCheckResult> {
+  try {
+    const response = await fetch(`${baseUrl}/api/payments/codes/check`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+      cache: "no-store",
+    });
+    if (response.status === 429) return { status: "rate_limited" };
+    if (!response.ok) return { status: "error" };
+    const body = (await response.json()) as Record<string, unknown>;
+    if (
+      body.valid === true &&
+      typeof body.amount_mad === "number" &&
+      typeof body.list_amount_mad === "number" &&
+      typeof body.discount_mad === "number"
+    ) {
+      return {
+        status: "valid",
+        amount_mad: body.amount_mad,
+        list_amount_mad: body.list_amount_mad,
+        discount_mad: body.discount_mad,
+      };
+    }
+    return { status: "invalid" };
+  } catch {
+    return { status: "error" };
+  }
+}
+
 /** Même règle que ORDER_REF_REGEX — backend/src/controllers/paymentController.ts */
 const ORDER_REF_REGEX = /^[A-Za-z0-9]{1,64}$/;
 
