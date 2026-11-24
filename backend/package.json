@@ -9,6 +9,7 @@
     "start": "npm run build && node dist/index.js",
     "test": "vitest run",
     "smoke:cmi": "node scripts/cmi-smoke.mjs",
+    "mail:test": "node scripts/mail-test.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {

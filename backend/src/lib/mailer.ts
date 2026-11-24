@@ -27,41 +27,63 @@ export class MailerUnavailableError extends Error {
 
 type Env = Record<string, string | undefined>;
 
+/** Parametres SMTP effectifs, sans le mot de passe (affichables). */
+export interface SmtpSettings {
+  host: string;
+  port: number;
+  secure: boolean;
+  user: string;
+}
+
+export interface SmtpTransport {
+  transporter: Transporter;
+  from: string;
+  settings: SmtpSettings;
+}
+
+/**
+ * Lit SMTP_* et cree le transport ; leve MailerUnavailableError si la
+ * configuration est incomplete. Utilise par createSmtpMailer et par
+ * scripts/mail-test.mjs (diagnostic), pour tester exactement la meme config.
+ */
+export function createSmtpTransport(env: Env = process.env): SmtpTransport {
+  const host = env.SMTP_HOST?.trim();
+  const user = env.SMTP_USER?.trim();
+  const pass = env.SMTP_PASS;
+  const port = Number(env.SMTP_PORT || "587");
+  const missing = [
+    !host && "SMTP_HOST",
+    !user && "SMTP_USER",
+    !pass && "SMTP_PASS",
+    !Number.isFinite(port) && "SMTP_PORT",
+  ].filter((name): name is string => Boolean(name));
+  if (missing.length || !host || !user) {
+    throw new MailerUnavailableError(missing);
+  }
+
+  const secure = env.SMTP_SECURE === "true" || port === 465;
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure,
+    auth: { user, pass },
+  });
+  const address = env.SMTP_FROM?.trim() || user;
+  return {
+    transporter,
+    from: `"Welearn" <${address}>`,
+    settings: { host, port, secure, user },
+  };
+}
+
 /** Transport cree a la premiere utilisation, puis reutilise. */
 export function createSmtpMailer(env: Env = process.env): Mailer {
-  let transporter: Transporter | null = null;
-
-  function getTransport(): { transporter: Transporter; from: string } {
-    const host = env.SMTP_HOST?.trim();
-    const user = env.SMTP_USER?.trim();
-    const pass = env.SMTP_PASS;
-    const port = Number(env.SMTP_PORT || "587");
-    const missing = [
-      !host && "SMTP_HOST",
-      !user && "SMTP_USER",
-      !pass && "SMTP_PASS",
-      !Number.isFinite(port) && "SMTP_PORT",
-    ].filter((name): name is string => Boolean(name));
-    if (missing.length) {
-      throw new MailerUnavailableError(missing);
-    }
-
-    if (!transporter) {
-      transporter = nodemailer.createTransport({
-        host,
-        port,
-        secure: env.SMTP_SECURE === "true" || port === 465,
-        auth: { user, pass },
-      });
-    }
-    const address = env.SMTP_FROM?.trim() || (user as string);
-    return { transporter, from: `"Welearn" <${address}>` };
-  }
+  let transport: SmtpTransport | null = null;
 
   return {
     async send(message) {
-      const { transporter: transport, from } = getTransport();
-      await transport.sendMail({ from, ...message });
+      transport ??= createSmtpTransport(env);
+      await transport.transporter.sendMail({ from: transport.from, ...message });
     },
   };
 }
