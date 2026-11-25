@@ -6,7 +6,7 @@
 //   npm run build && npm run mail:test -- someone@example.com
 //
 // Code de sortie : 0 si verify() ET l'envoi reussissent, 1 sinon, 2 si
-// l'adresse manque.
+// l'adresse manque ou est invalide (regle partagee, dist/lib/emailAddress.js).
 import "dotenv/config";
 import { existsSync } from "node:fs";
 import { createRequire } from "node:module";
@@ -14,19 +14,26 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+const USAGE = "Usage: npm run mail:test -- someone@example.com";
 const to = process.argv[2]?.trim();
-if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
-  console.error("Usage: npm run mail:test -- someone@example.com");
+if (!to) {
+  console.error(USAGE);
   process.exit(2);
 }
 
 const mailerPath = fileURLToPath(new URL("../dist/lib/mailer.js", import.meta.url));
-if (!existsSync(mailerPath)) {
+const emailPath = fileURLToPath(new URL("../dist/lib/emailAddress.js", import.meta.url));
+if (!existsSync(mailerPath) || !existsSync(emailPath)) {
   console.error("dist/lib/mailer.js not found: run `npm run build` first.");
   process.exit(1);
 }
 const require = createRequire(import.meta.url);
 const { createSmtpTransport, MailerUnavailableError } = require(mailerPath);
+const { isValidEmail } = require(emailPath);
+if (!isValidEmail(to)) {
+  console.error(USAGE);
+  process.exit(2);
+}
 
 const envFile = path.resolve(process.cwd(), ".env");
 console.log(

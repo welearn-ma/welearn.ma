@@ -16,6 +16,7 @@ import {
   PaymentResultHeader,
   PaymentResultShell,
 } from "./PaymentResult";
+import { isValidEmail } from "@/lib/email";
 
 /*
  * Dépôt du justificatif de statut étudiant (Pack Étudiants) :
@@ -24,7 +25,6 @@ import {
  * consentement obligatoire. Seul `formation` est lu dans l'URL.
  */
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_BYTES = 5 * 1024 * 1024;
 const ACCEPTED_TYPES = new Set(["application/pdf", "image/jpeg", "image/jpg", "image/png"]);
 const ACCEPTED_EXTENSIONS = /\.(pdf|jpe?g|png)$/i;
@@ -106,7 +106,7 @@ export function StudentProofForm() {
     const name = fullName.trim();
     if (!name || Array.from(name).length > 255) next.full_name = MESSAGES.name;
     const mail = email.trim();
-    if (!mail || mail.length > 64 || !EMAIL_REGEX.test(mail)) next.email = MESSAGES.email;
+    if (!isValidEmail(mail)) next.email = MESSAGES.email;
     const phoneError = validateCustomerPhone(phoneValue);
     if (phoneError) next.phone = phoneError;
     if (!file || file.size === 0) {

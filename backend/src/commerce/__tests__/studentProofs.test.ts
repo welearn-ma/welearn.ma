@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { FORBIDDEN_EMAILS, PLUS_TAG_EMAIL } from "../../lib/__tests__/emailSamples";
 import { MemoryPaymentStore } from "../../payments/__tests__/memoryStore";
 import { multipart, request, SITE, startServer, type TestServer } from "../../payments/__tests__/harness";
 import { createStudentProofsRouter } from "../studentProofs";
@@ -65,6 +66,22 @@ beforeEach(async () => {
 afterEach(async () => {
   vi.restoreAllMocks();
   await server.close();
+});
+
+describe("POST /api/students/proofs: e-mail format (shared rule)", () => {
+  it.each(FORBIDDEN_EMAILS)("refuses %s → 400, nothing stored or sent", async (_label, email) => {
+    const res = await upload({ ...FIELDS, email });
+    expect(res.status).toBe(400);
+    expect(JSON.parse(res.body)).toEqual({ ok: false, message: "Merci de saisir une adresse e-mail valide." });
+    expect(store.proofs.size + files.objects.size + mailer.sent.length).toBe(0);
+  });
+
+  it(`accepts ${PLUS_TAG_EMAIL}`, async () => {
+    vi.spyOn(console, "log").mockImplementation(() => undefined);
+    const res = await upload({ ...FIELDS, email: PLUS_TAG_EMAIL });
+    expect(res.status).toBe(201);
+    expect([...store.proofs.values()].map((proof) => proof.email)).toEqual([PLUS_TAG_EMAIL]);
+  });
 });
 
 describe("POST /api/students/proofs", () => {

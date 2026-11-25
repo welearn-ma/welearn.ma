@@ -21,6 +21,7 @@ import {
 import { DashboardConfirmModal } from "./dashboard-confirm-modal";
 import { DashboardSegmentedToggle, type SegmentedToggleOption } from "./dashboard-segmented-toggle";
 import { neutralActionButtonClass } from "./dashboard-utils";
+import { isValidEmail } from "@/lib/email";
 
 type KindFilter = CodeKind | "all";
 
@@ -37,7 +38,6 @@ const STATUS_BADGES: Record<CodeStatus, { label: string; className: string }> = 
   revoked: { label: "Révoqué", className: "border-red-200 bg-red-50 text-red-700" },
 };
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const DEFAULT_VALIDITY_DAYS = 30;
 const MAX_VALIDITY_DAYS = 365;
 
@@ -124,7 +124,7 @@ export function DashboardCodesView({
   const create = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const normalized = email.trim().toLowerCase();
-    if (!normalized || normalized.length > 64 || !EMAIL_REGEX.test(normalized)) {
+    if (!isValidEmail(normalized)) {
       setFormError("Adresse e-mail invalide.");
       return;
     }

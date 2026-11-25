@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { codeRejection, normalizeCode, priceOrder } from "../commerce/codes";
 import type { PaymentStore } from "./store";
+import { isValidEmail } from "../lib/emailAddress";
 
 /*
  * Lecture publique du catalogue et verification de code (page de paiement) :
@@ -13,8 +14,6 @@ import type { PaymentStore } from "./store";
  */
 
 const PRODUCT_SLUG_REGEX = /^[a-z0-9-]{1,100}$/;
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MAX_EMAIL_LENGTH = 64;
 
 function stringField(body: unknown, key: string): string | null {
   if (!body || typeof body !== "object" || Array.isArray(body)) return null;
@@ -66,8 +65,7 @@ export function createCatalogHandlers({
       !PRODUCT_SLUG_REGEX.test(productSlug) ||
       !codeInput ||
       !email ||
-      email.length > MAX_EMAIL_LENGTH ||
-      !EMAIL_REGEX.test(email)
+      !isValidEmail(email)
     ) {
       invalid();
       return;

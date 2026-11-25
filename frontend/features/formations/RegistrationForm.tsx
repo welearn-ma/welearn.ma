@@ -9,6 +9,7 @@ import { PhoneInput } from "@/components/ui/phone-input";
 import { Textarea } from "@/components/ui/textarea";
 import { submitRegistration } from "@/lib/api/registrations";
 import type { RegistrationPayload } from "@/types/registration";
+import { isValidEmail } from "@/lib/email";
 
 type RegistrationFormProps = {
   formationSlug: string;
@@ -18,7 +19,6 @@ type RegistrationFormProps = {
 type FormValues = Omit<RegistrationPayload, "formationSlug" | "formationTitle">;
 type FormErrors = Partial<Record<keyof FormValues, string>>;
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
 
 export function RegistrationForm({
@@ -47,7 +47,7 @@ export function RegistrationForm({
       nextErrors.email = "L'email professionnel est requis.";
     if (!values.phone.trim()) nextErrors.phone = "Le téléphone est requis.";
 
-    if (values.email && !emailRegex.test(values.email)) {
+    if (values.email && !isValidEmail(values.email)) {
       nextErrors.email = "Veuillez saisir un email valide.";
     }
 

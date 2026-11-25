@@ -23,6 +23,7 @@ import {
   type PaymentEventSource,
   type PaymentStore,
 } from "../payments/store";
+import { isValidEmail } from "../lib/emailAddress";
 
 /*
  * Paiement CMI 3D Pay Hosting (kit V2.0, sections 4.1-4.2).
@@ -58,12 +59,11 @@ export type PaymentPage = "succes" | "echec" | "en-attente";
 
 const CURRENCY_MAD = "504";
 const PROC_RETURN_CODE_APPROVED = "00";
-// Memes regles que registrationController.
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Memes regles que registrationController. E-mail : lib/emailAddress
+// (64 caracteres max, limite CMI « email : Alphanumeric (64) »).
 const PHONE_REGEX = /^\+?[0-9\s().-]{8,20}$/;
 const MAX_SLUG_LENGTH = 100;
 const MAX_NAME_LENGTH = 255; // BillToName : Alphabetic (255)
-const MAX_EMAIL_LENGTH = 64; // email : Alphanumeric (64)
 const ORDER_REF_REGEX = /^[A-Za-z0-9]{1,64}$/; // oid : Alphanumeric (64)
 const WITHDRAWAL_PERIOD_MS = 7 * 24 * 60 * 60 * 1000; // CGV art. 8 : 7 jours
 
@@ -188,7 +188,7 @@ export function parseCheckoutForm(
   if (!customerName || Array.from(customerName).length > MAX_NAME_LENGTH) {
     return "invalid";
   }
-  if (!email || email.length > MAX_EMAIL_LENGTH || !EMAIL_REGEX.test(email)) {
+  if (!email || !isValidEmail(email)) {
     return "invalid";
   }
   if (phone && !PHONE_REGEX.test(phone)) {

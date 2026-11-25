@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { Textarea } from "@/components/ui/textarea";
 import { requestBrochure } from "@/lib/api/brochures";
+import { isValidEmail } from "@/lib/email";
 
 /*
  * Copie VOLONTAIRE de features/formations/RegistrationForm.tsx (champs, ordre,
@@ -33,7 +34,6 @@ type FormValues = {
 };
 type FormErrors = Partial<Record<keyof FormValues, string>>;
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
 
 function triggerDownload(url: string) {
@@ -75,7 +75,7 @@ export function BrochureRequestForm({
       nextErrors.email = "L'email professionnel est requis.";
     if (!values.phone.trim()) nextErrors.phone = "Le téléphone est requis.";
 
-    if (values.email && !emailRegex.test(values.email)) {
+    if (values.email && !isValidEmail(values.email)) {
       nextErrors.email = "Veuillez saisir un email valide.";
     }
 

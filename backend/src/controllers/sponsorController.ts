@@ -14,6 +14,7 @@ import type {
   UpdateSponsorTreatedPayload,
   UpdateSponsorTreatedResponse,
 } from "../types/sponsor";
+import { isValidEmail } from "../lib/emailAddress";
 
 /*
 -- CREATE TABLE sponsors (
@@ -45,7 +46,6 @@ function isEmpty(value: unknown): value is undefined | null | "" {
   return value === undefined || value === null || value === "";
 }
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
 
 const ALLOWED_PROGRAMS = ["sponsoring", "mooc", "fnpi"] as const;
@@ -90,7 +90,7 @@ export async function createSponsor(
       .json({ success: false, message: "email is required" });
   }
 
-  if (!emailRegex.test(String(payload.email).trim())) {
+  if (!isValidEmail(String(payload.email).trim())) {
     return res
       .status(400)
       .json({ success: false, message: "email format is invalid" });

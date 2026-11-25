@@ -11,6 +11,7 @@ import { createRateLimiter } from "../lib/rateLimit";
 import { proofNotificationEmail, proofReceivedEmail } from "./emails";
 import { detectProofType, normalizeDeclaredMime, type ProofFiles } from "./proofFiles";
 import type { StudentProofStore } from "./store";
+import { isValidEmail } from "../lib/emailAddress";
 
 /*
  * POST /api/students/proofs (multipart/form-data)
@@ -19,10 +20,8 @@ import type { StudentProofStore } from "./store";
  * Reponses JSON : 201 { ok: true } | 400 / 429 / 500 { ok: false, message }.
  */
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_REGEX = /^\+?[0-9\s().-]{8,20}$/;
 const MAX_NAME_LENGTH = 255;
-const MAX_EMAIL_LENGTH = 64;
 const MAX_PAGE_SLUG_LENGTH = 100;
 
 type Reply = { ok: true } | { ok: false; message: string };
@@ -136,11 +135,7 @@ export function createStudentProofsRouter({
     if (!fullName || Array.from(fullName).length > MAX_NAME_LENGTH) {
       return fail(res, 400, MESSAGES.name);
     }
-    if (
-      !emailInput ||
-      emailInput.length > MAX_EMAIL_LENGTH ||
-      !EMAIL_REGEX.test(emailInput)
-    ) {
+    if (!emailInput || !isValidEmail(emailInput)) {
       return fail(res, 400, MESSAGES.email);
     }
     if (phoneInput === null || (phoneInput && !PHONE_REGEX.test(phoneInput))) {

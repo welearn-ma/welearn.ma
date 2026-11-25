@@ -12,6 +12,7 @@ import {
   formationLabel,
 } from "@/lib/sponsoring/formations";
 import type { SponsorPayload, SponsorProgram } from "@/types/sponsor";
+import { isValidEmail } from "@/lib/email";
 
 type SponsorshipFormProps = {
   program?: SponsorProgram;
@@ -34,7 +35,6 @@ type FormValues = {
 
 type FormErrors = Partial<Record<keyof FormValues | "formations", string>>;
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
 
 const inputClassName =
@@ -92,7 +92,7 @@ export function SponsorshipForm({ program, items }: SponsorshipFormProps = {}) {
 
     if (!values.email.trim()) {
       nextErrors.email = "L'email est requis.";
-    } else if (!emailRegex.test(values.email)) {
+    } else if (!isValidEmail(values.email)) {
       nextErrors.email = "Veuillez saisir un email valide.";
     }
 

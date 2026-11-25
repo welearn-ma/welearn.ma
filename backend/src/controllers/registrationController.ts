@@ -10,6 +10,7 @@ import type {
   UpdateTreatedPayload,
   UpdateTreatedResponse,
 } from "../types/registration";
+import { isValidEmail } from "../lib/emailAddress";
 
 /*
 -- CREATE TABLE registration_requests (
@@ -35,7 +36,6 @@ function isEmpty(value: unknown): value is undefined | null | "" {
   return value === undefined || value === null || value === "";
 }
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
 
 export async function createRegistration(
@@ -56,7 +56,7 @@ export async function createRegistration(
       .json({ success: false, message: "email is required" });
   }
 
-  if (!emailRegex.test(String(payload.email).trim())) {
+  if (!isValidEmail(String(payload.email).trim())) {
     return res.status(400).json({
       success: false,
       message: "email format is invalid",

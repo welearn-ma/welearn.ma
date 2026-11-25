@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { CodeRecord } from "../../commerce/types";
+import { FORBIDDEN_EMAILS, PLUS_TAG_EMAIL } from "../../lib/__tests__/emailSamples";
 import { expireStalePendingOrders, startPendingExpiryTimer } from "../expiry";
 import { createPaymentsRouter } from "../router";
 import {
@@ -92,6 +93,42 @@ afterEach(async () => {
   vi.restoreAllMocks();
   vi.useRealTimers();
   await server.close();
+});
+
+// ---------------------------------------------------------------------------
+
+describe("e-mail format (shared rule) on /cmi/init and /codes/check", () => {
+  it.each(FORBIDDEN_EMAILS)("/cmi/init refuses %s → echec?reason=invalid, no order", async (_label, email) => {
+    const res = await init({ customer_email: email });
+    expect(res.status).toBe(302);
+    expect(res.headers.location).toBe(failure("invalid"));
+    expect(store.orders.size).toBe(0);
+  });
+
+  it.each(FORBIDDEN_EMAILS)(
+    "/codes/check refuses %s → { valid: false }, even for a code bound to that exact address",
+    async (_label, email) => {
+      store.addCode({ code: "WL-FRMT-CCCC", kind: "discount", customer_email: email });
+      const res = await post("/api/payments/codes/check", {
+        json: { product: PRO, code: "WL-FRMT-CCCC", email },
+        headers: { origin: SITE },
+      });
+      expect(res.status).toBe(200);
+      expect(res.body).toBe('{"valid":false}');
+    },
+  );
+
+  it(`${PLUS_TAG_EMAIL} is accepted by /cmi/init and /codes/check`, async () => {
+    const { order } = await initOk({ customer_email: PLUS_TAG_EMAIL });
+    expect(order.customer_email).toBe(PLUS_TAG_EMAIL);
+
+    store.addCode({ code: "WL-PLUS-CCCC", kind: "discount", customer_email: PLUS_TAG_EMAIL });
+    const res = await post("/api/payments/codes/check", {
+      json: { product: PRO, code: "WL-PLUS-CCCC", email: PLUS_TAG_EMAIL },
+      headers: { origin: SITE },
+    });
+    expect(JSON.parse(res.body)).toMatchObject({ valid: true, amount_mad: 8075 });
+  });
 });
 
 // ---------------------------------------------------------------------------

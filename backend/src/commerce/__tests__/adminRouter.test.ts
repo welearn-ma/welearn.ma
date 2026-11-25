@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { FORBIDDEN_EMAILS, PLUS_TAG_EMAIL } from "../../lib/__tests__/emailSamples";
 import { MemoryPaymentStore } from "../../payments/__tests__/memoryStore";
 import { request, SITE, startServer, type TestServer } from "../../payments/__tests__/harness";
 import { createAdminCommerceRouters } from "../adminRouter";
@@ -58,6 +59,22 @@ beforeEach(async () => {
 afterEach(async () => {
   vi.restoreAllMocks();
   await server.close();
+});
+
+describe("POST /api/admin/codes: e-mail format (shared rule)", () => {
+  it.each(FORBIDDEN_EMAILS)("refuses %s → 400, no code, no e-mail", async (_label, email) => {
+    const res = await call("POST", "/codes", { email, sendEmail: true });
+    expect(res.status).toBe(400);
+    expect(res.data).toEqual({ success: false, message: "Adresse e-mail invalide." });
+    expect(store.codes.size).toBe(0);
+    expect(mailer.sent).toHaveLength(0);
+  });
+
+  it(`accepts ${PLUS_TAG_EMAIL}`, async () => {
+    const res = await call("POST", "/codes", { email: PLUS_TAG_EMAIL });
+    expect(res.status).toBe(201);
+    expect([...store.codes.values()].map((code) => code.customer_email)).toEqual([PLUS_TAG_EMAIL]);
+  });
 });
 
 describe("admin auth", () => {

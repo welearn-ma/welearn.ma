@@ -9,6 +9,7 @@ import type {
   BrochureRequestPayload,
   BrochureRequestResponse,
 } from "../types/brochure";
+import { isValidEmail } from "../lib/emailAddress";
 
 // Validateurs dupliques depuis registrationController (non exportes la-bas) :
 // garder les deux en phase.
@@ -16,7 +17,6 @@ function isEmpty(value: unknown): value is undefined | null | "" {
   return value === undefined || value === null || value === "";
 }
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
 
 /** Envoi plus rapide que ce seuil apres l'ouverture du formulaire = bot. */
@@ -52,7 +52,7 @@ export async function requestBrochure(
     return res.status(400).json({ ok: false, message: "email is required" });
   }
 
-  if (!emailRegex.test(String(payload.email).trim())) {
+  if (!isValidEmail(String(payload.email).trim())) {
     return res
       .status(400)
       .json({ ok: false, message: "email format is invalid" });

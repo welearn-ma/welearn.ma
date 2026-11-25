@@ -3,7 +3,9 @@
  *
  * Miroir des règles du backend, qui reste la source de vérité :
  *   - backend/src/controllers/paymentController.ts (parseCheckoutForm,
- *     EMAIL_REGEX, PHONE_REGEX, MAX_NAME_LENGTH, MAX_EMAIL_LENGTH) ;
+ *     PHONE_REGEX, MAX_NAME_LENGTH) ;
+ *   - backend/src/lib/emailAddress.ts (e-mail : format + 64 caractères),
+ *     miroir lib/email.ts ;
  *   - backend/src/payments/cmi/sanitize.ts (sanitizeBillTo,
  *     containsDocumentWord).
  * Toute modification côté backend doit être reportée ici.
@@ -12,13 +14,13 @@
  * lettres latines (accents compris), espaces, tirets et apostrophes.
  */
 
+import { isValidEmail, MAX_EMAIL_LENGTH } from "@/lib/email";
+
 // Copie exacte de PHONE_REGEX — backend/src/controllers/paymentController.ts
 export const PHONE_REGEX = /^\+?[0-9\s().-]{8,20}$/;
-// Copie exacte de EMAIL_REGEX — backend/src/controllers/paymentController.ts
-export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// MAX_NAME_LENGTH (BillToName, en points de code) et MAX_EMAIL_LENGTH du backend.
+// MAX_NAME_LENGTH du backend (BillToName, en points de code).
 export const MAX_NAME_LENGTH = 255;
-export const MAX_EMAIL_LENGTH = 64;
+export { MAX_EMAIL_LENGTH };
 
 export const CHECKOUT_MESSAGES = {
   nameRequired: "Veuillez saisir votre nom et prénom.",
@@ -105,7 +107,7 @@ export function validateCustomerEmail(raw: string): string | null {
   const email = raw.trim();
   if (!email) return CHECKOUT_MESSAGES.emailRequired;
   if (email.length > MAX_EMAIL_LENGTH) return CHECKOUT_MESSAGES.emailTooLong;
-  if (!EMAIL_REGEX.test(email)) return CHECKOUT_MESSAGES.emailInvalid;
+  if (!isValidEmail(email)) return CHECKOUT_MESSAGES.emailInvalid;
   if (DOCUMENT_WORD.test(email)) return CHECKOUT_MESSAGES.emailDocument;
   return null;
 }

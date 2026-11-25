@@ -2,8 +2,8 @@ import type { Request, Response } from "express";
 import nodemailer from "nodemailer";
 import { escapeHtml } from "../lib/emailTemplate";
 import type { ContactPayload, ContactResponse } from "../types/contact";
+import { isValidEmail } from "../lib/emailAddress";
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?[0-9\s().-]{8,20}$/;
 
 function isEmpty(value: unknown): value is undefined | null | "" {
@@ -28,7 +28,7 @@ export async function submitContactRequest(
       .json({ success: false, message: "email is required" });
   }
 
-  if (!emailRegex.test(String(payload.email).trim())) {
+  if (!isValidEmail(String(payload.email).trim())) {
     return res.status(400).json({
       success: false,
       message: "email format is invalid",

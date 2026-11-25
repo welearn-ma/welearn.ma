@@ -27,6 +27,7 @@ import type {
   ProofStatus,
   StudentProofRecord,
 } from "./types";
+import { isValidEmail } from "../lib/emailAddress";
 
 /*
  * Admin (meme authentification que les autres routes /api/admin) :
@@ -58,8 +59,6 @@ export interface AdminCommerceDeps {
 }
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MAX_EMAIL_LENGTH = 64;
 const MAX_REASON_LENGTH = 1000;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const MAX_CODE_INSERT_ATTEMPTS = 5;
@@ -507,7 +506,7 @@ export function createAdminCommerceRouters({
   codes.post("/", async (req, res) => {
     const body = (req.body ?? {}) as { email?: unknown; expiresAt?: unknown; sendEmail?: unknown };
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
-    if (!email || email.length > MAX_EMAIL_LENGTH || !EMAIL_REGEX.test(email)) {
+    if (!isValidEmail(email)) {
       return sendError(res, 400, "Adresse e-mail invalide.");
     }
 

@@ -4,6 +4,7 @@ import type { Request, Response } from "express";
 import addressparser from "nodemailer/lib/addressparser";
 import MailComposer from "nodemailer/lib/mail-composer";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { FORBIDDEN_EMAILS, PLUS_TAG_EMAIL } from "../../lib/__tests__/emailSamples";
 import { submitContactRequest } from "../contactController";
 
 /**
@@ -163,16 +164,48 @@ describe("contact e-mail escapes user input in the HTML", () => {
     expect(mail.html).not.toContain(INJECTION);
   });
 
-  it("e-mail field: markup that passes the e-mail format check is escaped too (text and mailto links)", async () => {
-    const email = '"><b>x</b><script>alert(1)</script>@example.test';
+  it("e-mail field: characters the format check still allows (' and &) are escaped (text and mailto links)", async () => {
+    // < > " sont refuses par la regle e-mail (tests « contact: e-mail format »).
+    const email = "o'neil&co@example.test";
     const { html } = await send({ ...harmless, email });
-    const escaped =
-      "&quot;&gt;&lt;b&gt;x&lt;/b&gt;&lt;script&gt;alert(1)&lt;/script&gt;@example.test";
+    const escaped = "o&#39;neil&amp;co@example.test";
 
-    expect(html).not.toMatch(/<b>|<script/);
+    expect(html).not.toContain(email);
     expect(html).toContain(`<a href="mailto:${escaped}" style="color:#1B5FAA;text-decoration:none;">${escaped}</a>`);
     expect(html).toContain(`<a href="mailto:${escaped}?subject=Re: Sujet"`);
     expect(tagSkeleton(html)).toEqual(tagSkeleton((await send(harmless)).html));
+  });
+});
+
+describe("contact: e-mail format (shared rule)", () => {
+  const base = { fullName: "Nom", subject: "Sujet", message: "Message" };
+
+  it.each(FORBIDDEN_EMAILS)("refuses %s → 400, nothing sent", async (_label, email) => {
+    sendMail.mockClear();
+    const res = fakeResponse();
+    await submitContactRequest(
+      { body: { ...base, email } } as unknown as Request,
+      res as unknown as Response,
+    );
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toEqual({ success: false, message: "email format is invalid" });
+    expect(sendMail).not.toHaveBeenCalled();
+  });
+
+  it("refuses an address over 64 characters (limit now applied here too)", async () => {
+    sendMail.mockClear();
+    const res = fakeResponse();
+    await submitContactRequest(
+      { body: { ...base, email: `${"a".repeat(54)}@domaine.ma` } } as unknown as Request,
+      res as unknown as Response,
+    );
+    expect(res.statusCode).toBe(400);
+    expect(sendMail).not.toHaveBeenCalled();
+  });
+
+  it(`accepts ${PLUS_TAG_EMAIL}`, async () => {
+    const mail = await send({ ...base, email: PLUS_TAG_EMAIL });
+    expect(mail.replyTo).toEqual({ name: "Nom", address: PLUS_TAG_EMAIL });
   });
 });
 
