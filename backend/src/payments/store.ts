@@ -41,6 +41,33 @@ export interface OrderRecord {
   code_id: string | null;
 }
 
+/**
+ * Commande complete, AVEC les donnees client : lue uniquement pour les
+ * e-mails de commande payee (apres la reponse au CMI), jamais renvoyee par
+ * un endpoint ni journalisee.
+ */
+export interface OrderDetails {
+  oid: string;
+  formation_slug: string;
+  status: OrderStatus;
+  amount_mad: number;
+  /** null seulement sur les commandes anterieures a 20261124000000. */
+  list_amount_mad: number | null;
+  discount_mad: number;
+  code_id: string | null;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string | null;
+  access_choice: AccessChoice;
+  access_available_at: string | null;
+  paid_at: string | null;
+  cmi_trans_id: string | null;
+  cmi_auth_code: string | null;
+}
+
+/** Horodatages des e-mails de commande payee (20261125000000). */
+export type OrderEmailColumn = "confirmation_email_sent_at" | "team_notified_at";
+
 export interface PaidUpdate {
   paid_at: string;
   access_available_at: string;
@@ -86,6 +113,12 @@ export interface PaymentStore {
    * Retourne false si aucune ligne PENDING n'a ete mise a jour.
    */
   markOrderPaid(oid: string, update: PaidUpdate): Promise<boolean>;
+  /** Commande complete (donnees client comprises), ou null. */
+  findOrderDetails(oid: string): Promise<OrderDetails | null>;
+  /** Code par son id, ou null. */
+  findCodeById(id: string): Promise<CodeRecord | null>;
+  /** `column` = `at`, seulement s'il est encore NULL. */
+  markOrderEmailSent(oid: string, column: OrderEmailColumn, at: string): Promise<void>;
   /** Ne leve jamais : retourne null si l'insertion echoue. */
   insertEvent(event: NewPaymentEvent): Promise<number | null>;
   /** Ne leve jamais. */

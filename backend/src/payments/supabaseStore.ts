@@ -2,6 +2,7 @@ import { CODE_COLUMNS, PRODUCT_COLUMNS, toCode, toProduct } from "../commerce/ro
 import { supabase } from "../lib/supabaseClient";
 import {
   PaymentStoreError,
+  type OrderDetails,
   type OrderRecord,
   type PaymentStore,
 } from "./store";
@@ -10,6 +11,12 @@ type DbError = { code?: string; message?: string };
 
 const ORDER_COLUMNS =
   "oid, formation_slug, amount_mad, status, access_choice, paid_at, cmi_trans_id, code_id";
+
+/** E-mails de commande payee uniquement (donnees client comprises). */
+const ORDER_DETAILS_COLUMNS =
+  "oid, formation_slug, status, amount_mad, list_amount_mad, discount_mad, code_id, " +
+  "customer_name, customer_email, customer_phone, access_choice, access_available_at, " +
+  "paid_at, cmi_trans_id, cmi_auth_code";
 
 /** Essais de la mise a jour optimiste de used_count (concurrence). */
 const CONSUME_ATTEMPTS = 3;
@@ -146,6 +153,54 @@ export const supabasePaymentStore: PaymentStore = {
       fail("orders.update", error);
     }
     return (data?.length ?? 0) > 0;
+  },
+
+  async findOrderDetails(oid) {
+    const { data, error } = await supabase
+      .from("orders")
+      .select(ORDER_DETAILS_COLUMNS)
+      .eq("oid", oid)
+      .maybeSingle();
+
+    if (error) {
+      fail("orders.select details", error);
+    }
+    if (!data) {
+      return null;
+    }
+
+    const row = data as unknown as Record<string, unknown>;
+    return {
+      ...(row as unknown as OrderDetails),
+      amount_mad: Number(row.amount_mad),
+      list_amount_mad: row.list_amount_mad === null ? null : Number(row.list_amount_mad),
+      discount_mad: Number(row.discount_mad),
+    };
+  },
+
+  async findCodeById(id) {
+    const { data, error } = await supabase
+      .from("codes")
+      .select(CODE_COLUMNS)
+      .eq("id", id)
+      .maybeSingle();
+
+    if (error) {
+      fail("codes.select", error);
+    }
+    return data ? toCode(data) : null;
+  },
+
+  async markOrderEmailSent(oid, column, at) {
+    const { error } = await supabase
+      .from("orders")
+      .update({ [column]: at })
+      .eq("oid", oid)
+      .is(column, null);
+
+    if (error) {
+      fail("orders.update email", error);
+    }
   },
 
   async insertEvent(event) {

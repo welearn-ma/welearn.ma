@@ -33,6 +33,9 @@ import {
  *                       ici, consomme seulement au passage en PAID.
  *   POST /cmi/callback  serveur-a-serveur CMI -> 200 text/plain
  *                       ACTION=POSTAUTH | APPROVED | FAILURE.
+ *                       Si CETTE requete a fait passer la commande
+ *                       PENDING -> PAID : e-mails client + equipe, APRES la
+ *                       reponse (setImmediate), sans effet sur elle.
  *   POST /cmi/return    navigateur (okUrl + failUrl) -> 302 vers /paiement/...
  *   GET  /order-status  statut public d'une commande (aucune donnee client).
  *
@@ -241,12 +244,26 @@ export interface PaymentHandlerDeps {
   store: PaymentStore;
   /** Horloge injectable (tests). */
   now?: () => Date;
+  /**
+   * Travail apres passage PENDING -> PAID (e-mails), lance apres la reponse
+   * au CMI. Ne doit pas lever ; ses erreurs sont de toute facon absorbees.
+   */
+  onOrderPaid?: (oid: string) => Promise<void>;
+}
+
+/**
+ * Etat propre a UNE requete de callback : renseigne uniquement quand la mise
+ * a jour conditionnelle de cette requete a fait passer la commande en PAID.
+ */
+interface CallbackTransition {
+  paidOid: string | null;
 }
 
 export function createPaymentHandlers({
   config,
   store,
   now = () => new Date(),
+  onOrderPaid,
 }: PaymentHandlerDeps) {
   const returnUrl = `${config.apiPublicUrl}/api/payments/cmi/return`;
   const callbackUrl = `${config.apiPublicUrl}/api/payments/cmi/callback`;
@@ -462,7 +479,10 @@ export function createPaymentHandlers({
   }
 
   /** Decide la reponse au callback ; leve en cas d'erreur technique. */
-  async function processCallback(body: FormBody | null): Promise<CallbackReply> {
+  async function processCallback(
+    body: FormBody | null,
+    transition: CallbackTransition,
+  ): Promise<CallbackReply> {
     const oid = cmiField(body, "oid");
     if (!oid) {
       return "FAILURE";
@@ -506,6 +526,7 @@ export function createPaymentHandlers({
       cmi_proc_return_code: PROC_RETURN_CODE_APPROVED,
     });
     if (updated) {
+      transition.paidOid = oid;
       if (order.code_id) {
         await consumeOrderCode(order.code_id, oid);
       }
@@ -517,17 +538,36 @@ export function createPaymentHandlers({
     return current?.status === "PAID" ? replyForPaidOrder(current, transId) : "FAILURE";
   }
 
+  /**
+   * Lance onOrderPaid au tour suivant de la boucle, APRES l'envoi de la
+   * reponse au CMI. Toute erreur (synchrone ou non) est absorbee.
+   */
+  function scheduleOrderPaid(oid: string): void {
+    const work = onOrderPaid;
+    if (!work) {
+      return;
+    }
+    setImmediate(() => {
+      Promise.resolve()
+        .then(() => work(oid))
+        .catch(() => {
+          console.error(`[mail] order e-mails failed unexpectedly oid=${oid}`);
+        });
+    });
+  }
+
   async function callback(req: Request, res: Response): Promise<void> {
     let reply: CallbackReply = "FAILURE";
     let hashValid: boolean | null = null;
     let eventId: number | null = null;
+    const transition: CallbackTransition = { paidOid: null };
 
     try {
       const body = asFormBody(req.body);
       eventId = await recordEvent("callback", body);
 
       hashValid = verifyCallbackHash(body, config.storeKey);
-      reply = hashValid ? await processCallback(body) : "FAILURE";
+      reply = hashValid ? await processCallback(body, transition) : "FAILURE";
     } catch (error) {
       logPaymentError("callback", error);
       reply = "FAILURE";
@@ -535,6 +575,13 @@ export function createPaymentHandlers({
 
     await finishEvent(eventId, hashValid, reply);
     sendCallbackReply(res, reply);
+
+    // E-mails seulement si CETTE requete a fait passer la commande en PAID
+    // et que le CMI capture (jamais : rejeu, DUPLICATE_APPROVAL, course
+    // perdue, non-00, hash ou montant invalide).
+    if (transition.paidOid !== null && reply === "ACTION=POSTAUTH") {
+      scheduleOrderPaid(transition.paidOid);
+    }
   }
 
   async function handleReturn(req: Request, res: Response): Promise<void> {

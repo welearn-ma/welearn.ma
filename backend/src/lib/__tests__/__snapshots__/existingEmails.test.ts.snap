@@ -1,0 +1,403 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`existing e-mails are unchanged > discountCodeEmail 1`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code de réduction</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Code de réduction</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Bonjour,</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Votre code de réduction personnel : <strong>WL-DSCT-AAAA</strong>. Il vous donne droit à 5 % de réduction, valable jusqu&#39;au 25/12/2026, à saisir lors du paiement avec cette adresse e-mail : <a href="https://site.example.test/paiement/?produit=bim-foundations-pro" style="color:#1B5FAA;">https://site.example.test/paiement/?produit=bim-foundations-pro</a>.</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Ce code est utilisable une seule fois et n&#39;est pas cumulable avec un autre code.</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">L&#39;équipe Welearn</p>
+
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "contact@example.test",
+  "subject": "Votre code de réduction Welearn",
+  "text": "Bonjour,
+
+Votre code de réduction personnel : WL-DSCT-AAAA. Il vous donne droit à 5 % de réduction, valable jusqu'au 25/12/2026, à saisir lors du paiement avec cette adresse e-mail : https://site.example.test/paiement/?produit=bim-foundations-pro.
+
+Ce code est utilisable une seule fois et n'est pas cumulable avec un autre code.
+
+L'équipe Welearn
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "client@example.test",
+}
+`;
+
+exports[`existing e-mails are unchanged > proofApprovedEmail 1`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Statut étudiant validé</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Statut étudiant validé</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Bonjour Étudiant Test,</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Votre statut étudiant a été validé. Votre code personnel : <strong>WL-ABCD-EFGH</strong>, valable jusqu&#39;au 25/12/2026, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : <a href="https://site.example.test/paiement/?produit=bim-foundations-pro" style="color:#1B5FAA;">https://site.example.test/paiement/?produit=bim-foundations-pro</a>.</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">L&#39;équipe Welearn</p>
+
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "contact@example.test",
+  "subject": "Votre code personnel Welearn",
+  "text": "Bonjour Étudiant Test,
+
+Votre statut étudiant a été validé. Votre code personnel : WL-ABCD-EFGH, valable jusqu'au 25/12/2026, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : https://site.example.test/paiement/?produit=bim-foundations-pro.
+
+L'équipe Welearn
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "etu@example.test",
+}
+`;
+
+exports[`existing e-mails are unchanged > proofNotificationEmail (with and without phone) 1`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nouveau justificatif étudiant</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Nouveau justificatif étudiant</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Un nouveau justificatif étudiant a été déposé. Il est à examiner dans l&#39;espace admin, rubrique « Justificatifs étudiants ».</p>
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Nom</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Étudiant &lt;Test&gt;</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">E-mail</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">etu@example.test</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Téléphone</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">+212 600 000 000</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Formation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">bim-foundations-professional</td></tr></table>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "etu@example.test",
+  "subject": "[Justificatif étudiant] Étudiant <Test>",
+  "text": "Un nouveau justificatif étudiant a été déposé. Il est à examiner dans l'espace admin, rubrique « Justificatifs étudiants ».
+
+Nom : Étudiant <Test>
+
+E-mail : etu@example.test
+
+Téléphone : +212 600 000 000
+
+Formation : bim-foundations-professional
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "contact@example.test",
+}
+`;
+
+exports[`existing e-mails are unchanged > proofNotificationEmail (with and without phone) 2`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nouveau justificatif étudiant</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Nouveau justificatif étudiant</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Un nouveau justificatif étudiant a été déposé. Il est à examiner dans l&#39;espace admin, rubrique « Justificatifs étudiants ».</p>
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Nom</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Étudiant &lt;Test&gt;</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">E-mail</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">etu@example.test</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Formation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">bim-foundations-professional</td></tr></table>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "etu@example.test",
+  "subject": "[Justificatif étudiant] Étudiant <Test>",
+  "text": "Un nouveau justificatif étudiant a été déposé. Il est à examiner dans l'espace admin, rubrique « Justificatifs étudiants ».
+
+Nom : Étudiant <Test>
+
+E-mail : etu@example.test
+
+Formation : bim-foundations-professional
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "contact@example.test",
+}
+`;
+
+exports[`existing e-mails are unchanged > proofReceivedEmail 1`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Justificatif étudiant</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Justificatif étudiant</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Bonjour Éa &lt;b&gt;&amp;&#39;&quot;,</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Nous avons bien reçu votre justificatif. Il sera examiné par notre équipe.</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">L&#39;équipe Welearn</p>
+
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "contact@example.test",
+  "subject": "Votre justificatif étudiant a bien été reçu",
+  "text": "Bonjour Éa <b>&'",
+
+Nous avons bien reçu votre justificatif. Il sera examiné par notre équipe.
+
+L'équipe Welearn
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "etu@example.test",
+}
+`;
+
+exports[`existing e-mails are unchanged > proofRejectedEmail 1`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Justificatif étudiant</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Justificatif étudiant</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Bonjour Étudiant Test,</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Votre justificatif n&#39;a pas pu être validé : document illisible. Vous pouvez <a href="https://site.example.test/etudiant/justificatif/?formation=bim" style="color:#1B5FAA;">nous envoyer un nouveau justificatif</a>.</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">L&#39;équipe Welearn</p>
+
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "contact@example.test",
+  "subject": "Votre justificatif étudiant",
+  "text": "Bonjour Étudiant Test,
+
+Votre justificatif n'a pas pu être validé : document illisible. Vous pouvez nous envoyer un nouveau justificatif (https://site.example.test/etudiant/justificatif/?formation=bim).
+
+L'équipe Welearn
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "etu@example.test",
+}
+`;
+
+exports[`existing e-mails are unchanged > renderEmail: rows, bold, links (http and non-http), escaping 1`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Titre &lt;h&gt;</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Titre &lt;h&gt;</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Texte &amp; <strong>gras</strong> <a href="https://x.test/?a=1&amp;b=2" style="color:#1B5FAA;">lien</a></p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">pas un lien<a href="https://x.test/" style="color:#1B5FAA;">https://x.test/</a></p>
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Nom</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">&lt;script&gt;</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">E-mail</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">a@b.test</td></tr></table>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "text": "Texte & gras lien (https://x.test/?a=1&b=2)
+
+pas un lienhttps://x.test/
+
+Nom : <script>
+
+E-mail : a@b.test
+
+
+
+© 2026 Welearn — welearn.ma",
+}
+`;

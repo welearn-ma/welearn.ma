@@ -31,3 +31,14 @@ describe("CGV version", () => {
     expect(backend).toBe(frontend);
   });
 });
+
+describe("contact phone", () => {
+  it("backend CONTACT_PHONE matches frontend legalEntity.phone", () => {
+    const backend = readStringConstant(BACKEND_LEGAL, "CONTACT_PHONE");
+    const frontendSource = readFileSync(FRONTEND_LEGAL, "utf8");
+    const frontend = /export const legalEntity = \{[^}]*?\bphone:\s*"([^"]*)"/.exec(frontendSource)?.[1];
+
+    expect(backend).toMatch(/^\+212 /);
+    expect(backend).toBe(frontend);
+  });
+});

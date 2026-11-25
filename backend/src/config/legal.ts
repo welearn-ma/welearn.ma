@@ -8,3 +8,10 @@
  * les deux valeurs different.
  */
 export const CGV_VERSION = "24/11/2026";
+
+/**
+ * Telephone de contact cite dans les e-mails clients (confirmation de
+ * paiement). Miroir de legalEntity.phone dans frontend/data/legal.ts : a
+ * mettre a jour dans les DEUX fichiers.
+ */
+export const CONTACT_PHONE = "+212 661 499 479";

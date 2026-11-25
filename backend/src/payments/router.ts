@@ -13,14 +13,25 @@ import {
   redirectToFailure,
   sendCallbackReply,
 } from "../controllers/paymentController";
+import type { Mailer } from "../lib/mailer";
 import { createRateLimiter } from "../lib/rateLimit";
 import { createCatalogHandlers } from "./catalog";
+import { notifyOrderPaid } from "./orderEmails";
 import type { PaymentStore } from "./store";
 
 export interface PaymentsRouterDeps {
   cmi: CmiConfigResult;
   store: PaymentStore;
   now?: () => Date;
+  /**
+   * E-mails des commandes payees (client + equipe). Absent : aucun e-mail
+   * (tests existants). Fourni en production par routes/payments.ts.
+   */
+  orderEmails?: {
+    mailer: Mailer;
+    /** CONTACT_RECIPIENT : destinataire equipe et Reply-To du client. */
+    contactRecipient: string;
+  };
 }
 
 type Handler = (req: Request, res: Response) => void | Promise<void>;
@@ -68,7 +79,7 @@ function jsonBody(req: Request, res: Response, next: NextFunction): void {
  * CORS (SITE_URL + variante www) sur les routes appelees par le site :
  * GET /order-status, GET /products/:slug, POST /codes/check.
  */
-export function createPaymentsRouter({ cmi, store, now }: PaymentsRouterDeps): Router {
+export function createPaymentsRouter({ cmi, store, now, orderEmails }: PaymentsRouterDeps): Router {
   const router = Router();
   router.use(noStore);
 
@@ -111,7 +122,19 @@ export function createPaymentsRouter({ cmi, store, now }: PaymentsRouterDeps): R
   router.get("/products/:slug", productCors, catalog.product);
   router.post("/codes/check", codeCheckCors, codeCheckLimit, jsonBody, catalog.checkCode);
 
-  const handlers = createPaymentHandlers({ config: cmi.config, store, now });
+  const emailDeps = orderEmails && {
+    store,
+    mailer: orderEmails.mailer,
+    contactRecipient: orderEmails.contactRecipient,
+    siteUrl: cmi.config.siteUrl,
+    now,
+  };
+  const handlers = createPaymentHandlers({
+    config: cmi.config,
+    store,
+    now,
+    onOrderPaid: emailDeps ? (oid) => notifyOrderPaid(emailDeps, oid) : undefined,
+  });
 
   router.post(
     "/cmi/init",

@@ -4,7 +4,18 @@
  * ne sont rendus que pour des URLs http(s).
  */
 
-export type Segment = string | { text: string; bold?: boolean; href?: string };
+export type Segment =
+  | string
+  | {
+      text: string;
+      bold?: boolean;
+      href?: string;
+      /**
+       * Rendu de la version texte seule, a la place du rendu par defaut
+       * (`text`, ou « text (href) » pour un lien). HTML inchange.
+       */
+      plain?: string;
+    };
 export type Paragraph = Segment[];
 
 export interface EmailContent {
@@ -13,6 +24,8 @@ export interface EmailContent {
   paragraphs: Paragraph[];
   /** Lignes d'information (libelle / valeur), facultatives. */
   rows?: Array<[string, string]>;
+  /** Paragraphes places APRES les lignes d'information, facultatifs. */
+  paragraphsAfterRows?: Paragraph[];
 }
 
 export function escapeHtml(value: string): string {
@@ -51,6 +64,9 @@ function segmentText(segment: Segment): string {
   if (typeof segment === "string") {
     return segment;
   }
+  if (segment.plain !== undefined) {
+    return segment.plain;
+  }
   if (segment.href && isHttpUrl(segment.href) && segment.href !== segment.text) {
     return `${segment.text} (${segment.href})`;
   }
@@ -61,14 +77,16 @@ export function renderEmail(
   content: EmailContent,
   year: number = new Date().getFullYear(),
 ): { html: string; text: string } {
-  const paragraphsHtml = content.paragraphs
-    .map(
-      (paragraph) =>
-        `<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">${paragraph
-          .map(segmentHtml)
-          .join("")}</p>`,
-    )
-    .join("\n");
+  const paragraphHtml = (paragraph: Paragraph) =>
+    `<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">${paragraph
+      .map(segmentHtml)
+      .join("")}</p>`;
+  const paragraphText = (paragraph: Paragraph) => paragraph.map(segmentText).join("");
+
+  const paragraphsHtml = content.paragraphs.map(paragraphHtml).join("\n");
+  const afterRows = content.paragraphsAfterRows ?? [];
+  // Sans paragraphsAfterRows, le HTML reste identique octet pour octet.
+  const afterRowsHtml = afterRows.length ? `\n${afterRows.map(paragraphHtml).join("\n")}` : "";
 
   const rowsHtml = content.rows?.length
     ? `<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;">${content.rows
@@ -107,7 +125,7 @@ export function renderEmail(
           <tr>
             <td style="padding:36px 40px 20px;">
 ${paragraphsHtml}
-${rowsHtml}
+${rowsHtml}${afterRowsHtml}
             </td>
           </tr>
           <tr>
@@ -123,8 +141,9 @@ ${rowsHtml}
 </html>`;
 
   const text = [
-    ...content.paragraphs.map((paragraph) => paragraph.map(segmentText).join("")),
+    ...content.paragraphs.map(paragraphText),
     ...(content.rows ?? []).map(([label, value]) => `${label} : ${value}`),
+    ...afterRows.map(paragraphText),
     "",
     `© ${year} Welearn — welearn.ma`,
   ].join("\n\n");

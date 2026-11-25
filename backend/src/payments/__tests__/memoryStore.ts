@@ -13,6 +13,8 @@ import type {
 import type {
   NewOrder,
   NewPaymentEvent,
+  OrderDetails,
+  OrderEmailColumn,
   OrderRecord,
   OrderStatus,
   PaidUpdate,
@@ -28,6 +30,8 @@ export interface StoredOrder extends NewOrder {
   cmi_auth_code: string | null;
   cmi_proc_return_code: string | null;
   paid_at: string | null;
+  confirmation_email_sent_at: string | null;
+  team_notified_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -63,6 +67,8 @@ export class MemoryPaymentStore implements PaymentStore, StudentProofStore, Admi
     expirePendingOrders: false,
     insertStudentProof: false,
     insertCode: false,
+    findOrderDetails: false,
+    markOrderEmailSent: false,
   };
   /** Nombre de prochains insertOrder a rejeter comme oid en doublon. */
   duplicateOidsToSimulate = 0;
@@ -148,6 +154,8 @@ export class MemoryPaymentStore implements PaymentStore, StudentProofStore, Admi
       cmi_auth_code: null,
       cmi_proc_return_code: null,
       paid_at: null,
+      confirmation_email_sent_at: null,
+      team_notified_at: null,
       created_at: order.cgv_accepted_at,
       updated_at: order.cgv_accepted_at,
     });
@@ -179,6 +187,39 @@ export class MemoryPaymentStore implements PaymentStore, StudentProofStore, Admi
     }
     Object.assign(order, update, { status: "PAID", updated_at: update.paid_at });
     return true;
+  }
+
+  async findOrderDetails(oid: string): Promise<OrderDetails | null> {
+    if (this.fail.findOrderDetails) simulated();
+    const order = this.orders.get(oid);
+    if (!order) {
+      return null;
+    }
+    return {
+      oid: order.oid,
+      formation_slug: order.formation_slug,
+      status: order.status,
+      amount_mad: order.amount_mad,
+      list_amount_mad: order.list_amount_mad,
+      discount_mad: order.discount_mad,
+      code_id: order.code_id,
+      customer_name: order.customer_name,
+      customer_email: order.customer_email,
+      customer_phone: order.customer_phone,
+      access_choice: order.access_choice,
+      access_available_at: order.access_available_at,
+      paid_at: order.paid_at,
+      cmi_trans_id: order.cmi_trans_id,
+      cmi_auth_code: order.cmi_auth_code,
+    };
+  }
+
+  async markOrderEmailSent(oid: string, column: OrderEmailColumn, at: string): Promise<void> {
+    if (this.fail.markOrderEmailSent) simulated();
+    const order = this.orders.get(oid);
+    if (order && order[column] === null) {
+      order[column] = at;
+    }
   }
 
   async insertEvent(event: NewPaymentEvent): Promise<number | null> {

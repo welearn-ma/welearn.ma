@@ -2,6 +2,7 @@ import { readCmiConfig } from "../config/cmi";
 import { startPendingExpiryTimer } from "../payments/expiry";
 import { createPaymentsRouter } from "../payments/router";
 import { supabasePaymentStore } from "../payments/supabaseStore";
+import { contactRecipient, mailer } from "./commerceDeps";
 
 // Lu une fois au demarrage (dotenv est charge en premier dans index.ts).
 const cmi = readCmiConfig(process.env);
@@ -19,4 +20,9 @@ if (cmi.enabled) {
   );
 }
 
-export default createPaymentsRouter({ cmi, store: supabasePaymentStore });
+// E-mails des commandes payees : mailer partage, equipe = CONTACT_RECIPIENT.
+export default createPaymentsRouter({
+  cmi,
+  store: supabasePaymentStore,
+  orderEmails: { mailer, contactRecipient },
+});

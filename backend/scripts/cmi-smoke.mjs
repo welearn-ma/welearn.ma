@@ -33,6 +33,8 @@ const CONFIG = {
 
 // --- Store en memoire (meme contrat que src/payments/store.ts) -------------
 const CLIENT_EMAIL = "client@example.test";
+const CONTACT = "contact@example.test";
+const NBSP = " ";
 
 function createMemoryStore() {
   const product = (slug, label, amount_mad, extra = {}) => [
@@ -114,6 +116,8 @@ function createMemoryStore() {
         cmi_auth_code: null,
         cmi_proc_return_code: null,
         paid_at: null,
+        confirmation_email_sent_at: null,
+        team_notified_at: null,
         created_at: order.cgv_accepted_at,
       });
       return "inserted";
@@ -139,6 +143,24 @@ function createMemoryStore() {
       Object.assign(o, update, { status: "PAID", updated_at: update.paid_at });
       return true;
     },
+    async findOrderDetails(oid) {
+      const o = orders.get(oid);
+      if (!o) return null;
+      const { oid: ref, formation_slug, status, amount_mad, list_amount_mad, discount_mad, code_id,
+        customer_name, customer_email, customer_phone, access_choice, access_available_at, paid_at,
+        cmi_trans_id, cmi_auth_code } = o;
+      return { oid: ref, formation_slug, status, amount_mad, list_amount_mad, discount_mad, code_id,
+        customer_name, customer_email, customer_phone, access_choice, access_available_at, paid_at,
+        cmi_trans_id, cmi_auth_code };
+    },
+    async findCodeById(id) {
+      const c = codes.get(id);
+      return c ? { ...c } : null;
+    },
+    async markOrderEmailSent(oid, column, at) {
+      const o = orders.get(oid);
+      if (o && o[column] === null) o[column] = at;
+    },
     async insertEvent(event) {
       events.push({ ...event, payload: JSON.parse(JSON.stringify(event.payload)), id: events.length + 1 });
       return events.length;
@@ -149,10 +171,25 @@ function createMemoryStore() {
   };
 }
 
+// --- Mailer factice : garde les e-mails (aucun envoi SMTP) -----------------
+const mails = [];
+const mailer = {
+  async send(message) {
+    mails.push(message);
+  },
+};
+
 // --- Serveur -----------------------------------------------------------------
 const store = createMemoryStore();
 const app = express();
-app.use("/api/payments", createPaymentsRouter({ cmi: { enabled: true, config: CONFIG }, store }));
+app.use(
+  "/api/payments",
+  createPaymentsRouter({
+    cmi: { enabled: true, config: CONFIG },
+    store,
+    orderEmails: { mailer, contactRecipient: CONTACT },
+  }),
+);
 app.use(
   cors({
     origin(origin, cb) {
@@ -187,6 +224,18 @@ function request(method, path, { form, json, headers = {} } = {}) {
     r.end();
   });
 }
+
+/** Attend les 2 e-mails d'une commande payee (horodatages poses), max ~1 s. */
+async function emailsDone(oid) {
+  for (let i = 0; i < 200; i += 1) {
+    const o = store.orders.get(oid);
+    if (o?.confirmation_email_sent_at && o?.team_notified_at) return true;
+    await new Promise((r) => setTimeout(r, 5));
+  }
+  return false;
+}
+/** Laisse passer tout travail differe (aucun e-mail attendu). */
+const settle = () => new Promise((r) => setTimeout(r, 50));
 
 const results = [];
 function check(label, ok, detail = "") {
@@ -258,6 +307,26 @@ try {
     paid.status === "PAID" && paid.paid_at && paid.cmi_trans_id === "SMOKE-TRANS-1" &&
       paid.cmi_auth_code === "SMOKE1" && paid.access_available_at === paid.paid_at);
 
+  // 2b. E-mails de la commande payee (apres la reponse au CMI)
+  const aOid = a.posted.oid;
+  check("paid order -> e-mails timestamped (confirmation_email_sent_at, team_notified_at)", await emailsDone(aOid));
+  const [aCustomer, aTeam] = mails;
+  check("paid order -> exactly 2 e-mails: customer then team",
+    mails.length === 2 && aCustomer.to === CLIENT_EMAIL && aTeam.to === CONTACT, mails.map((m) => m.to).join(","));
+  check("customer e-mail: [TEST] subject, Reply-To CONTACT_RECIPIENT, ref, amount, access text",
+    aCustomer.subject === "[TEST] Confirmation de votre paiement — Welearn" && aCustomer.replyTo === CONTACT &&
+      aCustomer.text.includes(`Référence de commande : ${aOid}`) &&
+      aCustomer.text.includes("Montant payé : 10,00 MAD TTC") &&
+      aCustomer.text.includes("Votre accès à la formation sera ouvert sous 24 heures ouvrées.") &&
+      !aCustomer.text.includes("Prix catalogue"), aCustomer.subject);
+  check("customer e-mail: no card / CMI transaction data",
+    ![aCustomer.text, aCustomer.html].some((s) => s.includes("SMOKE-TRANS-1") || s.includes("SMOKE1")));
+  check("team e-mail: [TEST] subject, Reply-To customer, TransId, AuthCode, opening delay",
+    aTeam.subject === `[TEST] [Commande payée] Test paiement CMI — 10,00 MAD — ${aOid}` &&
+      aTeam.replyTo === CLIENT_EMAIL && aTeam.text.includes("TransId CMI : SMOKE-TRANS-1") &&
+      aTeam.text.includes("Code d'autorisation : SMOKE1") && aTeam.text.includes("Ouvrir l'accès : sous 24 h ouvrées"),
+    aTeam.subject);
+
   // 3. rejeu meme TransId -> POSTAUTH ; TransId different -> APPROVED + alerte
   const snapshot = JSON.stringify(paid);
   const retry = await callback(cmiSigned(a.posted, APPROVED));
@@ -283,6 +352,8 @@ try {
   const cbDeclined = await callback(cmiSigned(b.posted, DECLINED));
   check("non-00 -> APPROVED, still PENDING",
     cbDeclined.text === "APPROVED" && store.orders.get(b.posted.oid).status === "PENDING", cbDeclined.text);
+  await settle();
+  check("no e-mail on retry, DUPLICATE_APPROVAL, non-00, tampered payload", mails.length === 2, String(mails.length));
 
   // 6. Retours navigateur (Origin etrangere)
   const r1 = await cmiReturn(cmiSigned(a.posted, APPROVED));
@@ -324,6 +395,14 @@ try {
   check("discount callback 00 -> POSTAUTH, PAID, code consumed",
     dPaid.text === "ACTION=POSTAUTH" && store.orders.get(d.posted.oid).status === "PAID" &&
       store.codes.get("11111111-1111-4111-8111-111111111111").used_count === 1, dPaid.text);
+  const dMailed = await emailsDone(d.posted.oid);
+  const [dCustomer, dTeam] = mails.slice(2);
+  check("discount order e-mails: no [TEST], discount block, Code row",
+    dMailed && mails.length === 4 && dCustomer.subject === "Confirmation de votre paiement — Welearn" &&
+      dCustomer.text.includes(`Prix catalogue : 8${NBSP}500,00 MAD TTC — Réduction : −425,00 MAD`) &&
+      dCustomer.text.includes(`Montant payé : 8${NBSP}075,00 MAD TTC`) &&
+      dTeam.subject === `[Commande payée] BIM Foundations Professional — Pack Professionnels — 8${NBSP}075,00 MAD — ${d.posted.oid}` &&
+      dTeam.text.includes("Code : WL-DSCT-AAAA"), String(mails.length));
   const dAgain = await request("POST", "/api/payments/cmi/init", { form: { ...CHECKOUT, ...PRO, code: "WL-DSCT-AAAA" } });
   check("used discount code -> echec/?reason=code_invalid", dAgain.headers.location === `${SITE}/paiement/echec/?reason=code_invalid`, dAgain.headers.location);
 
@@ -338,6 +417,11 @@ try {
   check("student callback 00 -> POSTAUTH, PAID, code consumed",
     sPaid.text === "ACTION=POSTAUTH" && store.orders.get(s.posted.oid).status === "PAID" &&
       store.codes.get("22222222-2222-4222-8222-222222222222").used_count === 1, sPaid.text);
+  const sMailed = await emailsDone(s.posted.oid);
+  const [sCustomer, sTeam] = mails.slice(4);
+  check("student order e-mails: no discount block (discount 0), Code row, Réduction aucune",
+    sMailed && mails.length === 6 && !sCustomer.text.includes("Prix catalogue") &&
+      sTeam.text.includes("Code : WL-STUD-BBBB") && sTeam.text.includes("Réduction : aucune"), String(mails.length));
 
   // 11. Isolation
   check("Supabase client never loaded", !Object.keys(require.cache).some((k) => k.includes("supabaseClient")));
