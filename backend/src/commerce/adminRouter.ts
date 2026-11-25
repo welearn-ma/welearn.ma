@@ -311,7 +311,7 @@ export function createAdminCommerceRouters({
           fullName: proof.full_name,
           code: code.code,
           expiresAt: code.expires_at,
-          paymentUrl: checkoutUrl(siteUrl, product.slug),
+          paymentUrl: checkoutUrl(siteUrl, product.slug, code.code),
           replyTo,
         }),
       );
@@ -406,7 +406,7 @@ export function createAdminCommerceRouters({
           fullName: proof.full_name,
           code: code.code,
           expiresAt: code.expires_at,
-          paymentUrl: checkoutUrl(siteUrl, code.product_slug ?? ""),
+          paymentUrl: checkoutUrl(siteUrl, code.product_slug ?? "", code.code),
           replyTo,
         }),
       );

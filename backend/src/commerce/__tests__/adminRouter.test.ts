@@ -139,10 +139,25 @@ describe("student proofs", () => {
     const mail = mailer.sent[0];
     expect(mail.to).toBe(STUDENT_EMAIL);
     expect(mail.replyTo).toBe(REPLY_TO);
+    const payUrl = `${SITE}/paiement/?produit=bim-foundations-etudiant&code=${code}`;
+    expect(mail.subject).toBe("Votre code personnel Welearn");
     expect(mail.text).toContain(
-      `Votre statut étudiant a été validé. Votre code personnel : ${code}, valable jusqu'au 24/12/2026, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : ${SITE}/paiement/?produit=bim-foundations-etudiant.`,
+      [
+        "Statut du justificatif : Validé",
+        `Votre statut étudiant a été validé. Votre code personnel : ${code}, valable jusqu'au 24/12/2026, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : ${payUrl}.`,
+        // Bouton, version texte : l'URL seule sur sa ligne.
+        payUrl,
+        "Utilisez cette adresse e-mail lors du paiement : votre code y est lié.",
+        "L'équipe Welearn",
+      ].join("\n\n"),
     );
-    expect(mail.html).toContain(`href="${SITE}/paiement/?produit=bim-foundations-etudiant"`);
+    expect(mail.html).toMatch(
+      new RegExp(
+        `<a href="${SITE}/paiement/\\?produit=bim-foundations-etudiant&amp;code=${code}" style="display:inline-block;background-color:#E8721C;[^"]*">Payer le Pack Étudiants</a>`,
+      ),
+    );
+    // Jamais l'e-mail dans l'URL.
+    expect(mail.text).not.toMatch(/[?&]email=|salma%40/i);
     expect(JSON.stringify(mail)).not.toMatch(/\.pdf|signed/);
   });
 
@@ -184,13 +199,32 @@ describe("student proofs", () => {
     expect(store.proofs.get(proofId)).toMatchObject({ status: "REJECTED", rejection_reason: "Carte expirée.", reviewed_by: ADMIN });
     expect(store.codes.size).toBe(0);
     expect(store.activity[0]).toMatchObject({ event_type: "proof_rejected", note: "Carte expirée." });
+    expect(mailer.sent[0].subject).toBe("Votre justificatif étudiant");
     expect(mailer.sent[0].text).toContain(
-      "Votre justificatif n'a pas pu être validé : Carte expirée. Vous pouvez nous envoyer un nouveau justificatif",
+      [
+        "Statut du justificatif : Refusé",
+        "Motif : Carte expirée.",
+        `Vous pouvez nous envoyer un nouveau justificatif (${SITE}/etudiant/justificatif/?formation=bim-foundations-professional).`,
+        "L'équipe Welearn",
+      ].join("\n\n"),
     );
+    expect(mailer.sent[0].text).not.toContain("n'a pas pu être validé");
     expect(mailer.sent[0].html).toContain(
       `href="${SITE}/etudiant/justificatif/?formation=bim-foundations-professional"`,
     );
     expect((await call("POST", `/student-proofs/${proofId}/reject`, { reason: "Encore" })).status).toBe(409);
+  });
+
+  it("the rejection e-mail contains no payment link and no product / checkout URL", async () => {
+    await call("POST", `/student-proofs/${proofId}/reject`, { reason: "Carte expirée." });
+
+    expect(mailer.sent).toHaveLength(1);
+    const { html, text, subject } = mailer.sent[0];
+    for (const content of [html, text, subject]) {
+      expect(content).not.toContain("/paiement");
+      expect(content).not.toContain("produit=");
+      expect(content).not.toContain("Payer");
+    }
   });
 
   it("escapes user-provided text in emails", async () => {
@@ -218,7 +252,14 @@ describe("« Renvoyer l'e-mail » — existing code only", () => {
     ]);
     expect(mailer.sent).toHaveLength(1);
     expect(mailer.sent[0].to).toBe(STUDENT_EMAIL);
+    expect(mailer.sent[0].subject).toBe("Votre code personnel Welearn");
     expect(mailer.sent[0].text).toContain(`Votre code personnel : ${code}, valable jusqu'au 24/12/2026`);
+    // Meme e-mail que la validation : statut, bouton avec le code, rappel e-mail.
+    const payUrl = `${SITE}/paiement/?produit=bim-foundations-etudiant&code=${code}`;
+    expect(mailer.sent[0].text).toContain("Statut du justificatif : Validé");
+    expect(mailer.sent[0].text).toContain(`\n\n${payUrl}\n\n`);
+    expect(mailer.sent[0].text).toContain("Utilisez cette adresse e-mail lors du paiement : votre code y est lié.");
+    expect(mailer.sent[0].html).toContain(">Payer le Pack Étudiants</a>");
   });
 
   it("refuses a pending or rejected proof (no code)", async () => {

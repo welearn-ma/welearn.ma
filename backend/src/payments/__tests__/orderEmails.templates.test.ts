@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { formatDateTimeCasablanca } from "../../commerce/emails";
 import {
-  formatDateTimeCasablanca,
   formatMad,
   orderConfirmationEmail,
   orderTeamNotificationEmail,

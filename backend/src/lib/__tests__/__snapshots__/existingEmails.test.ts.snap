@@ -60,6 +60,457 @@ L'équipe Welearn
 }
 `;
 
+exports[`existing e-mails are unchanged > order e-mails (customer + team; discount + immediate, after_withdrawal, test product) 1`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirmation de paiement</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Confirmation de paiement</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Bonjour Salma &lt;Alaoui&gt; &amp; &#39;co&#39;,</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Nous confirmons la réception de votre paiement.</p>
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Formation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">BIM Foundations Professional — Pack Professionnels</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Montant payé</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">8 075,00 MAD TTC</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Prix catalogue</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">8 500,00 MAD TTC — Réduction : −425,00 MAD</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Référence de commande</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">WL20261125143000K7M2Q9TX</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Date du paiement</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">25/11/2026 14:30</td></tr></table>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Votre accès à la formation sera ouvert sous 24 heures ouvrées. Conformément à votre choix lors de la commande, vous avez renoncé à votre droit de rétractation dès l&#39;ouverture effective de l&#39;accès.</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;"><a href="https://site.example.test/cgv/" style="color:#1B5FAA;">Conditions générales de vente</a> · <a href="https://site.example.test/remboursement/" style="color:#1B5FAA;">Politique de remboursement</a></p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">L&#39;équipe Welearn</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "contact@example.test",
+  "subject": "Confirmation de votre paiement — Welearn",
+  "text": "Bonjour Salma <Alaoui> & 'co',
+
+Nous confirmons la réception de votre paiement.
+
+Formation : BIM Foundations Professional — Pack Professionnels
+
+Montant payé : 8 075,00 MAD TTC
+
+Prix catalogue : 8 500,00 MAD TTC — Réduction : −425,00 MAD
+
+Référence de commande : WL20261125143000K7M2Q9TX
+
+Date du paiement : 25/11/2026 14:30
+
+Votre accès à la formation sera ouvert sous 24 heures ouvrées. Conformément à votre choix lors de la commande, vous avez renoncé à votre droit de rétractation dès l'ouverture effective de l'accès.
+
+Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.
+
+Conditions générales de vente (https://site.example.test/cgv/) · Politique de remboursement (https://site.example.test/remboursement/)
+
+L'équipe Welearn
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "salma@example.test",
+}
+`;
+
+exports[`existing e-mails are unchanged > order e-mails (customer + team; discount + immediate, after_withdrawal, test product) 2`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commande payée</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Commande payée</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Client</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Salma &lt;Alaoui&gt; &amp; &#39;co&#39;</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">E-mail</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">salma@example.test</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Téléphone</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">+212 600 123 456</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Produit</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">BIM Foundations Professional — Pack Professionnels (bim-foundations-pro)</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Prix catalogue</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">8 500,00 MAD TTC</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Réduction</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">−425,00 MAD</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Code</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">WL-DSCT-7K2M</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Montant payé</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">8 075,00 MAD TTC</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Accès</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Immédiat — renonciation au droit de rétractation</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Ouvrir l&#39;accès</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">sous 24 h ouvrées</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Payé le</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">25/11/2026 14:30</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">TransId CMI</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">26329ABCD1234</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Code d&#39;autorisation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">P12345</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Référence</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">WL20261125143000K7M2Q9TX</td></tr></table>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "salma@example.test",
+  "subject": "[Commande payée] BIM Foundations Professional — Pack Professionnels — 8 075,00 MAD — WL20261125143000K7M2Q9TX",
+  "text": "Client : Salma <Alaoui> & 'co'
+
+E-mail : salma@example.test
+
+Téléphone : +212 600 123 456
+
+Produit : BIM Foundations Professional — Pack Professionnels (bim-foundations-pro)
+
+Prix catalogue : 8 500,00 MAD TTC
+
+Réduction : −425,00 MAD
+
+Code : WL-DSCT-7K2M
+
+Montant payé : 8 075,00 MAD TTC
+
+Accès : Immédiat — renonciation au droit de rétractation
+
+Ouvrir l'accès : sous 24 h ouvrées
+
+Payé le : 25/11/2026 14:30
+
+TransId CMI : 26329ABCD1234
+
+Code d'autorisation : P12345
+
+Référence : WL20261125143000K7M2Q9TX
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "contact@example.test",
+}
+`;
+
+exports[`existing e-mails are unchanged > order e-mails (customer + team; discount + immediate, after_withdrawal, test product) 3`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirmation de paiement</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Confirmation de paiement</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Bonjour Salma &lt;Alaoui&gt; &amp; &#39;co&#39;,</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Nous confirmons la réception de votre paiement.</p>
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Formation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">BIM Foundations Professional — Pack Étudiants</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Montant payé</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">5 000,00 MAD TTC</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Référence de commande</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">WL20261125143000K7M2Q9TX</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Date du paiement</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">25/11/2026 14:30</td></tr></table>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Conformément à votre choix lors de la commande, votre accès à la formation sera ouvert à l&#39;expiration du délai légal de rétractation de 7 jours, à partir du 02/12/2026. Vous pouvez exercer votre droit de rétractation pendant ce délai, par écrit à contact@example.test (<a href="https://site.example.test/documents/formulaire-retractation-welearn.pdf" style="color:#1B5FAA;">formulaire de rétractation</a>).</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;"><a href="https://site.example.test/cgv/" style="color:#1B5FAA;">Conditions générales de vente</a> · <a href="https://site.example.test/remboursement/" style="color:#1B5FAA;">Politique de remboursement</a></p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">L&#39;équipe Welearn</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "contact@example.test",
+  "subject": "Confirmation de votre paiement — Welearn",
+  "text": "Bonjour Salma <Alaoui> & 'co',
+
+Nous confirmons la réception de votre paiement.
+
+Formation : BIM Foundations Professional — Pack Étudiants
+
+Montant payé : 5 000,00 MAD TTC
+
+Référence de commande : WL20261125143000K7M2Q9TX
+
+Date du paiement : 25/11/2026 14:30
+
+Conformément à votre choix lors de la commande, votre accès à la formation sera ouvert à l'expiration du délai légal de rétractation de 7 jours, à partir du 02/12/2026. Vous pouvez exercer votre droit de rétractation pendant ce délai, par écrit à contact@example.test ou avec le formulaire de rétractation : https://site.example.test/documents/formulaire-retractation-welearn.pdf.
+
+Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.
+
+Conditions générales de vente (https://site.example.test/cgv/) · Politique de remboursement (https://site.example.test/remboursement/)
+
+L'équipe Welearn
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "salma@example.test",
+}
+`;
+
+exports[`existing e-mails are unchanged > order e-mails (customer + team; discount + immediate, after_withdrawal, test product) 4`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commande payée</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Commande payée</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Client</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Salma &lt;Alaoui&gt; &amp; &#39;co&#39;</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">E-mail</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">salma@example.test</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Produit</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">BIM Foundations Professional — Pack Étudiants (bim-foundations-etudiant)</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Prix catalogue</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">5 000,00 MAD TTC</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Réduction</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">aucune</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Code</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">WL-STUD-9P4R</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Montant payé</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">5 000,00 MAD TTC</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Accès</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Après le délai de rétractation de 7 jours</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Ouvrir l&#39;accès</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">à partir du 02/12/2026</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Payé le</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">25/11/2026 14:30</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">TransId CMI</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">—</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Code d&#39;autorisation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">—</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Référence</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">WL20261125143000K7M2Q9TX</td></tr></table>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "salma@example.test",
+  "subject": "[Commande payée] BIM Foundations Professional — Pack Étudiants — 5 000,00 MAD — WL20261125143000K7M2Q9TX",
+  "text": "Client : Salma <Alaoui> & 'co'
+
+E-mail : salma@example.test
+
+Produit : BIM Foundations Professional — Pack Étudiants (bim-foundations-etudiant)
+
+Prix catalogue : 5 000,00 MAD TTC
+
+Réduction : aucune
+
+Code : WL-STUD-9P4R
+
+Montant payé : 5 000,00 MAD TTC
+
+Accès : Après le délai de rétractation de 7 jours
+
+Ouvrir l'accès : à partir du 02/12/2026
+
+Payé le : 25/11/2026 14:30
+
+TransId CMI : —
+
+Code d'autorisation : —
+
+Référence : WL20261125143000K7M2Q9TX
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "contact@example.test",
+}
+`;
+
+exports[`existing e-mails are unchanged > order e-mails (customer + team; discount + immediate, after_withdrawal, test product) 5`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirmation de paiement</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Confirmation de paiement</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Bonjour Salma &lt;Alaoui&gt; &amp; &#39;co&#39;,</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Nous confirmons la réception de votre paiement.</p>
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Formation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Test paiement CMI</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Montant payé</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">10,00 MAD TTC</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Référence de commande</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">WL20261125143000K7M2Q9TX</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Date du paiement</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">25/11/2026 14:30</td></tr></table>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Votre accès à la formation sera ouvert sous 24 heures ouvrées. Conformément à votre choix lors de la commande, vous avez renoncé à votre droit de rétractation dès l&#39;ouverture effective de l&#39;accès.</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;"><a href="https://site.example.test/cgv/" style="color:#1B5FAA;">Conditions générales de vente</a> · <a href="https://site.example.test/remboursement/" style="color:#1B5FAA;">Politique de remboursement</a></p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">L&#39;équipe Welearn</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "contact@example.test",
+  "subject": "[TEST] Confirmation de votre paiement — Welearn",
+  "text": "Bonjour Salma <Alaoui> & 'co',
+
+Nous confirmons la réception de votre paiement.
+
+Formation : Test paiement CMI
+
+Montant payé : 10,00 MAD TTC
+
+Référence de commande : WL20261125143000K7M2Q9TX
+
+Date du paiement : 25/11/2026 14:30
+
+Votre accès à la formation sera ouvert sous 24 heures ouvrées. Conformément à votre choix lors de la commande, vous avez renoncé à votre droit de rétractation dès l'ouverture effective de l'accès.
+
+Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.
+
+Conditions générales de vente (https://site.example.test/cgv/) · Politique de remboursement (https://site.example.test/remboursement/)
+
+L'équipe Welearn
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "salma@example.test",
+}
+`;
+
+exports[`existing e-mails are unchanged > order e-mails (customer + team; discount + immediate, after_withdrawal, test product) 6`] = `
+{
+  "html": "<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commande payée</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f9;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color:#1B5FAA;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Welearn</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#aacbee;letter-spacing:1px;text-transform:uppercase;">Commande payée</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#E8721C;height:4px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:36px 40px 20px;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Client</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Salma &lt;Alaoui&gt; &amp; &#39;co&#39;</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">E-mail</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">salma@example.test</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Téléphone</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">+212 600 123 456</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Produit</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Test paiement CMI (test-paiement-cmi)</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Prix catalogue</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">10,00 MAD TTC</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Réduction</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">aucune</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Montant payé</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">10,00 MAD TTC</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Accès</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Immédiat — renonciation au droit de rétractation</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Ouvrir l&#39;accès</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">sous 24 h ouvrées</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Payé le</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">25/11/2026 14:30</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">TransId CMI</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">26329ABCD1234</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Code d&#39;autorisation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">P12345</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Référence</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">WL20261125143000K7M2Q9TX</td></tr></table>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#0D3D6E;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#8ba8c9;">© 2026 Welearn — <a href="https://welearn.ma" style="color:#8ba8c9;text-decoration:none;">welearn.ma</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>",
+  "replyTo": "salma@example.test",
+  "subject": "[TEST] [Commande payée] Test paiement CMI — 10,00 MAD — WL20261125143000K7M2Q9TX",
+  "text": "Client : Salma <Alaoui> & 'co'
+
+E-mail : salma@example.test
+
+Téléphone : +212 600 123 456
+
+Produit : Test paiement CMI (test-paiement-cmi)
+
+Prix catalogue : 10,00 MAD TTC
+
+Réduction : aucune
+
+Montant payé : 10,00 MAD TTC
+
+Accès : Immédiat — renonciation au droit de rétractation
+
+Ouvrir l'accès : sous 24 h ouvrées
+
+Payé le : 25/11/2026 14:30
+
+TransId CMI : 26329ABCD1234
+
+Code d'autorisation : P12345
+
+Référence : WL20261125143000K7M2Q9TX
+
+
+
+© 2026 Welearn — welearn.ma",
+  "to": "contact@example.test",
+}
+`;
+
 exports[`existing e-mails are unchanged > proofApprovedEmail 1`] = `
 {
   "html": "<!DOCTYPE html>
@@ -86,9 +537,11 @@ exports[`existing e-mails are unchanged > proofApprovedEmail 1`] = `
           <tr>
             <td style="padding:36px 40px 20px;">
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Bonjour Étudiant Test,</p>
-<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Votre statut étudiant a été validé. Votre code personnel : <strong>WL-ABCD-EFGH</strong>, valable jusqu&#39;au 25/12/2026, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : <a href="https://site.example.test/paiement/?produit=bim-foundations-pro" style="color:#1B5FAA;">https://site.example.test/paiement/?produit=bim-foundations-pro</a>.</p>
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Statut du justificatif</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Validé</td></tr></table>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Votre statut étudiant a été validé. Votre code personnel : <strong>WL-ABCD-EFGH</strong>, valable jusqu&#39;au 25/12/2026, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : <a href="https://site.example.test/paiement/?produit=bim-foundations-etudiant&amp;code=WL-ABCD-EFGH" style="color:#1B5FAA;">https://site.example.test/paiement/?produit=bim-foundations-etudiant&amp;code=WL-ABCD-EFGH</a>.</p>
+<table width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 20px;"><tr><td align="center"><a href="https://site.example.test/paiement/?produit=bim-foundations-etudiant&amp;code=WL-ABCD-EFGH" style="display:inline-block;background-color:#E8721C;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:6px;letter-spacing:0.3px;">Payer le Pack Étudiants</a></td></tr></table>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Utilisez cette adresse e-mail lors du paiement : votre code y est lié.</p>
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">L&#39;équipe Welearn</p>
-
             </td>
           </tr>
           <tr>
@@ -106,7 +559,13 @@ exports[`existing e-mails are unchanged > proofApprovedEmail 1`] = `
   "subject": "Votre code personnel Welearn",
   "text": "Bonjour Étudiant Test,
 
-Votre statut étudiant a été validé. Votre code personnel : WL-ABCD-EFGH, valable jusqu'au 25/12/2026, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : https://site.example.test/paiement/?produit=bim-foundations-pro.
+Statut du justificatif : Validé
+
+Votre statut étudiant a été validé. Votre code personnel : WL-ABCD-EFGH, valable jusqu'au 25/12/2026, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : https://site.example.test/paiement/?produit=bim-foundations-etudiant&code=WL-ABCD-EFGH.
+
+https://site.example.test/paiement/?produit=bim-foundations-etudiant&code=WL-ABCD-EFGH
+
+Utilisez cette adresse e-mail lors du paiement : votre code y est lié.
 
 L'équipe Welearn
 
@@ -143,7 +602,8 @@ exports[`existing e-mails are unchanged > proofNotificationEmail (with and witho
           <tr>
             <td style="padding:36px 40px 20px;">
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Un nouveau justificatif étudiant a été déposé. Il est à examiner dans l&#39;espace admin, rubrique « Justificatifs étudiants ».</p>
-<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Nom</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Étudiant &lt;Test&gt;</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">E-mail</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">etu@example.test</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Téléphone</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">+212 600 000 000</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Formation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">bim-foundations-professional</td></tr></table>
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Nom</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Étudiant &lt;Test&gt;</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">E-mail</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">etu@example.test</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Téléphone</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">+212 600 000 000</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Formation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">bim-foundations-professional</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Statut</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">À examiner</td></tr></table>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;"><a href="https://site.example.test/admin/" style="color:#1B5FAA;">Examiner dans l&#39;espace admin</a></p>
             </td>
           </tr>
           <tr>
@@ -168,6 +628,10 @@ E-mail : etu@example.test
 Téléphone : +212 600 000 000
 
 Formation : bim-foundations-professional
+
+Statut : À examiner
+
+Examiner dans l'espace admin (https://site.example.test/admin/)
 
 
 
@@ -202,7 +666,8 @@ exports[`existing e-mails are unchanged > proofNotificationEmail (with and witho
           <tr>
             <td style="padding:36px 40px 20px;">
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Un nouveau justificatif étudiant a été déposé. Il est à examiner dans l&#39;espace admin, rubrique « Justificatifs étudiants ».</p>
-<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Nom</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Étudiant &lt;Test&gt;</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">E-mail</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">etu@example.test</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Formation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">bim-foundations-professional</td></tr></table>
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Nom</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Étudiant &lt;Test&gt;</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">E-mail</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">etu@example.test</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Formation</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">bim-foundations-professional</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Statut</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">À examiner</td></tr></table>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;"><a href="https://site.example.test/admin/" style="color:#1B5FAA;">Examiner dans l&#39;espace admin</a></p>
             </td>
           </tr>
           <tr>
@@ -225,6 +690,10 @@ Nom : Étudiant <Test>
 E-mail : etu@example.test
 
 Formation : bim-foundations-professional
+
+Statut : À examiner
+
+Examiner dans l'espace admin (https://site.example.test/admin/)
 
 
 
@@ -260,8 +729,9 @@ exports[`existing e-mails are unchanged > proofReceivedEmail 1`] = `
             <td style="padding:36px 40px 20px;">
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Bonjour Éa &lt;b&gt;&amp;&#39;&quot;,</p>
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Nous avons bien reçu votre justificatif. Il sera examiné par notre équipe.</p>
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Statut du justificatif</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">En cours d&#39;examen</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Date de dépôt</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">25/11/2026 11:00</td></tr></table>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Vous recevrez un e-mail dès que notre équipe l&#39;aura examiné.</p>
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">L&#39;équipe Welearn</p>
-
             </td>
           </tr>
           <tr>
@@ -280,6 +750,12 @@ exports[`existing e-mails are unchanged > proofReceivedEmail 1`] = `
   "text": "Bonjour Éa <b>&'",
 
 Nous avons bien reçu votre justificatif. Il sera examiné par notre équipe.
+
+Statut du justificatif : En cours d'examen
+
+Date de dépôt : 25/11/2026 11:00
+
+Vous recevrez un e-mail dès que notre équipe l'aura examiné.
 
 L'équipe Welearn
 
@@ -316,9 +792,9 @@ exports[`existing e-mails are unchanged > proofRejectedEmail 1`] = `
           <tr>
             <td style="padding:36px 40px 20px;">
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Bonjour Étudiant Test,</p>
-<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Votre justificatif n&#39;a pas pu être validé : document illisible. Vous pouvez <a href="https://site.example.test/etudiant/justificatif/?formation=bim" style="color:#1B5FAA;">nous envoyer un nouveau justificatif</a>.</p>
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Statut du justificatif</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Refusé</td></tr><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Motif</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">document illisible.</td></tr></table>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Vous pouvez <a href="https://site.example.test/etudiant/justificatif/?formation=bim" style="color:#1B5FAA;">nous envoyer un nouveau justificatif</a>.</p>
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">L&#39;équipe Welearn</p>
-
             </td>
           </tr>
           <tr>
@@ -336,7 +812,11 @@ exports[`existing e-mails are unchanged > proofRejectedEmail 1`] = `
   "subject": "Votre justificatif étudiant",
   "text": "Bonjour Étudiant Test,
 
-Votre justificatif n'a pas pu être validé : document illisible. Vous pouvez nous envoyer un nouveau justificatif (https://site.example.test/etudiant/justificatif/?formation=bim).
+Statut du justificatif : Refusé
+
+Motif : document illisible.
+
+Vous pouvez nous envoyer un nouveau justificatif (https://site.example.test/etudiant/justificatif/?formation=bim).
 
 L'équipe Welearn
 

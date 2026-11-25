@@ -47,7 +47,11 @@ export interface StudentProofDeps {
   mailer: Mailer;
   /** Destinataire interne des notifications (CONTACT_RECIPIENT). */
   notifyRecipient: string;
+  /** Site public (lien vers l'espace admin dans la notification). */
+  siteUrl: string;
   newId?: () => string;
+  /** Horloge injectable (tests) : date de depot de l'accuse de reception. */
+  now?: () => Date;
 }
 
 function fail(res: Response<Reply>, status: number, message: string): void {
@@ -67,7 +71,9 @@ export function createStudentProofsRouter({
   files,
   mailer,
   notifyRecipient,
+  siteUrl,
   newId = randomUUID,
+  now = () => new Date(),
 }: StudentProofDeps): Router {
   const router = Router();
 
@@ -162,6 +168,7 @@ export function createStudentProofsRouter({
     }
 
     const email = emailInput.toLowerCase();
+    const submittedAt = now().toISOString();
     const id = newId();
     const path = `${id}.${detected.ext}`;
     let uploaded = false;
@@ -204,7 +211,7 @@ export function createStudentProofsRouter({
       trySend(
         mailer,
         "proof acknowledgement",
-        proofReceivedEmail({ to: email, fullName, replyTo: notifyRecipient }),
+        proofReceivedEmail({ to: email, fullName, submittedAt, replyTo: notifyRecipient }),
       ),
       trySend(
         mailer,
@@ -215,6 +222,7 @@ export function createStudentProofsRouter({
           email,
           phone: phoneInput || null,
           pageSlug,
+          siteUrl,
         }),
       ),
     ]);

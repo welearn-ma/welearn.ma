@@ -1,4 +1,4 @@
-import { formatDateCasablanca } from "../commerce/emails";
+import { formatDateCasablanca, formatDateTimeCasablanca } from "../commerce/emails";
 import { TEST_PRODUCT_SLUG } from "../config/commerce";
 import { CONTACT_PHONE } from "../config/legal";
 import { renderEmail, type Paragraph } from "../lib/emailTemplate";
@@ -65,24 +65,6 @@ const AMOUNT_FORMAT = new Intl.NumberFormat("fr-FR", {
  */
 export function formatMad(amount: number): string {
   return AMOUNT_FORMAT.format(amount).replace(/ /g, " ");
-}
-
-const DATE_TIME_FORMAT = new Intl.DateTimeFormat("fr-FR", {
-  timeZone: "Africa/Casablanca",
-  day: "2-digit",
-  month: "2-digit",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-  hourCycle: "h23",
-});
-
-/** JJ/MM/AAAA HH:mm a l'heure de Casablanca. */
-export function formatDateTimeCasablanca(iso: string): string {
-  const parts = Object.fromEntries(
-    DATE_TIME_FORMAT.formatToParts(new Date(iso)).map((part) => [part.type, part.value]),
-  );
-  return `${parts.day}/${parts.month}/${parts.year} ${parts.hour}:${parts.minute}`;
 }
 
 function subjectPrefix(order: PaidOrder): string {

@@ -18,14 +18,25 @@ export type Segment =
     };
 export type Paragraph = Segment[];
 
+/**
+ * Bouton d'action (meme style que le bouton « Répondre » de l'e-mail de
+ * contact). Version texte seule : l'URL, seule sur sa ligne. Rendu
+ * uniquement pour une URL http(s) ; sinon, simple paragraphe du libelle.
+ */
+export interface EmailButton {
+  button: { text: string; href: string };
+}
+
+export type Block = Paragraph | EmailButton;
+
 export interface EmailContent {
   /** Sous-titre de l'en-tete (ex. « Justificatif etudiant »). */
   heading: string;
-  paragraphs: Paragraph[];
+  paragraphs: Block[];
   /** Lignes d'information (libelle / valeur), facultatives. */
   rows?: Array<[string, string]>;
-  /** Paragraphes places APRES les lignes d'information, facultatifs. */
-  paragraphsAfterRows?: Paragraph[];
+  /** Paragraphes (ou boutons) places APRES les lignes d'information, facultatifs. */
+  paragraphsAfterRows?: Block[];
 }
 
 export function escapeHtml(value: string): string {
@@ -77,11 +88,28 @@ export function renderEmail(
   content: EmailContent,
   year: number = new Date().getFullYear(),
 ): { html: string; text: string } {
-  const paragraphHtml = (paragraph: Paragraph) =>
-    `<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">${paragraph
+  const paragraphHtml = (block: Block): string => {
+    if (!Array.isArray(block)) {
+      const { text, href } = block.button;
+      if (!isHttpUrl(href)) {
+        return paragraphHtml([text]);
+      }
+      return `<table width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 20px;"><tr><td align="center"><a href="${escapeHtml(
+        href,
+      )}" style="display:inline-block;background-color:#E8721C;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:6px;letter-spacing:0.3px;">${escapeHtml(
+        text,
+      )}</a></td></tr></table>`;
+    }
+    return `<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">${block
       .map(segmentHtml)
       .join("")}</p>`;
-  const paragraphText = (paragraph: Paragraph) => paragraph.map(segmentText).join("");
+  };
+  const paragraphText = (block: Block): string => {
+    if (!Array.isArray(block)) {
+      return isHttpUrl(block.button.href) ? block.button.href : block.button.text;
+    }
+    return block.map(segmentText).join("");
+  };
 
   const paragraphsHtml = content.paragraphs.map(paragraphHtml).join("\n");
   const afterRows = content.paragraphsAfterRows ?? [];
