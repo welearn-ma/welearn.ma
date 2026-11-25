@@ -9,6 +9,7 @@ import { PhoneInput } from "@/components/ui/phone-input";
 import { PaymentSecurityLogos } from "@/components/payment-security-logos";
 import { LAST_CHECKOUT_KEY, type PaymentProduct } from "@/data/payment";
 import { checkPaymentCode, cmiInitUrl, getPaymentsApiBaseUrl } from "@/lib/api/payments";
+import { normalizeCode } from "@/lib/payments/code";
 import {
   CHECKOUT_MESSAGES,
   MAX_EMAIL_LENGTH,
@@ -32,16 +33,6 @@ export type CheckoutProduct = PaymentProduct & {
 };
 
 type AccessChoice = "immediate" | "after_withdrawal";
-
-/** Même forme que normalizeCode — backend/src/commerce/codes.ts. */
-const CODE_PATTERN = /^WL-[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/;
-function normalizeCode(input: string): string | null {
-  const compact = input.toUpperCase().replace(/[\s-]/g, "");
-  const match = /^WL([A-Z0-9]{4})([A-Z0-9]{4})$/.exec(compact);
-  if (!match) return null;
-  const code = `WL-${match[1]}-${match[2]}`;
-  return CODE_PATTERN.test(code) ? code : null;
-}
 
 const CODE_MESSAGES = {
   required: "Saisissez votre code personnel.",
@@ -131,15 +122,26 @@ function NewTabLink({ href, children }: { href: string; children: string }) {
  * qui renvoie la page d'auto-soumission vers la passerelle CMI. La
  * validation client bloque l'envoi ; le backend reste la source de vérité.
  */
-export function CheckoutForm({ product }: { product: CheckoutProduct }) {
+export function CheckoutForm({
+  product,
+  initialCode = null,
+}: {
+  product: CheckoutProduct;
+  /**
+   * Code du lien de l'e-mail (?code=, forme canonique) : pré-remplit le champ
+   * code, puis est vérifié automatiquement une fois l'e-mail saisi.
+   */
+  initialCode?: string | null;
+}) {
   const apiBaseUrl = getPaymentsApiBaseUrl();
   const actionUrl = apiBaseUrl ? cmiInitUrl(apiBaseUrl) : null;
   const codeMode = product.codeMode ?? "none";
+  const linkCode = codeMode !== "none" ? initialCode : null;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(linkCode ?? "");
   const [codeCheck, setCodeCheck] = useState<CodeCheck>({ state: "idle" });
   const [accessChoice, setAccessChoice] = useState<AccessChoice | null>(null);
   const [cgvAccepted, setCgvAccepted] = useState(false);
@@ -147,6 +149,8 @@ export function CheckoutForm({ product }: { product: CheckoutProduct }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submittingRef = useRef(false);
   const formRef = useRef<HTMLFormElement>(null);
+  // Dernier couple code / e-mail vérifié automatiquement (une seule fois).
+  const autoCheckedKeyRef = useRef<string | null>(null);
 
   // PhoneInput vaut "+33" quand seul le pays est choisi : rien à poster.
   const phoneValue = DIAL_CODES.has(phone.trim()) ? "" : normalizePhone(phone);
@@ -239,6 +243,20 @@ export function CheckoutForm({ product }: { product: CheckoutProduct }) {
             : CODE_MESSAGES.error,
     }));
     return false;
+  };
+
+  /**
+   * Code venu du lien de l'e-mail : vérifié automatiquement (même appel
+   * /codes/check, même limite) dès que l'e-mail saisi est valide, à la sortie
+   * du champ. Une seule fois par couple code / e-mail ; si le code a été
+   * modifié, la vérification redevient manuelle (bouton « Vérifier »).
+   */
+  const autoVerifyLinkCode = () => {
+    if (!linkCode || canonicalCode !== linkCode) return;
+    if (verified || codeCheck.state === "checking" || validateCustomerEmail(email)) return;
+    if (autoCheckedKeyRef.current === codeKey) return;
+    autoCheckedKeyRef.current = codeKey;
+    void verifyCode();
   };
 
   /** Envoi réel (POST natif) : bouton désactivé, produit mémorisé pour « Réessayer ». */
@@ -383,6 +401,7 @@ export function CheckoutForm({ product }: { product: CheckoutProduct }) {
               setEmail(e.target.value);
               clearError("customer_email");
             }}
+            onBlur={autoVerifyLinkCode}
             maxLength={MAX_EMAIL_LENGTH}
             autoComplete="email"
             required

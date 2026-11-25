@@ -14,6 +14,7 @@ import {
   parseProductSlug,
   type ProductInfo,
 } from "@/lib/api/payments";
+import { normalizeCode } from "@/lib/payments/code";
 import { formatAmountMad } from "@/lib/payments/format";
 import { CheckoutForm, type CheckoutProduct } from "./CheckoutForm";
 import {
@@ -50,11 +51,15 @@ function toCheckoutProduct(product: ProductInfo): CheckoutProduct {
 }
 
 /**
- * /paiement/?produit=<slug> : libellé et prix lus via
- * GET /api/payments/products/<slug>. Seul `produit` est lu dans l'URL.
+ * /paiement/?produit=<slug>[&code=<WL-XXXX-XXXX>] : libellé et prix lus via
+ * GET /api/payments/products/<slug>. Seuls `produit` et `code` (lien de
+ * l'e-mail de validation, pré-remplit le champ si son format est valide)
+ * sont lus dans l'URL ; jamais l'e-mail.
  */
 export function ProductCheckout() {
-  const slug = parseProductSlug(useSearchParams().get("produit"));
+  const searchParams = useSearchParams();
+  const slug = parseProductSlug(searchParams.get("produit"));
+  const linkCode = normalizeCode(searchParams.get("code") ?? "");
   const baseUrl = getPaymentsApiBaseUrl();
   const [state, setState] = useState<State>({ kind: "loading" });
 
@@ -112,7 +117,7 @@ export function ProductCheckout() {
             <p>Page de test — paiement CMI (environnement de test)</p>
           </div>
         ) : null}
-        <CheckoutForm product={toCheckoutProduct(state.product)} />
+        <CheckoutForm product={toCheckoutProduct(state.product)} initialCode={linkCode} />
       </div>
     </section>
   );
