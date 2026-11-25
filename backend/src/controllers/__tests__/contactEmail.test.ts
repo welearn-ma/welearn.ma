@@ -1,4 +1,8 @@
 import type { Request, Response } from "express";
+// Modules internes de nodemailer, non mockes (seul "nodemailer" l'est) :
+// composent le message reel, sans envoi, pour lire en-tetes et enveloppe.
+import addressparser from "nodemailer/lib/addressparser";
+import MailComposer from "nodemailer/lib/mail-composer";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { submitContactRequest } from "../contactController";
 
@@ -84,8 +88,9 @@ describe("contact e-mail is unchanged", () => {
 });
 
 interface SentMail {
-  from: string;
-  replyTo: string;
+  from: string | { name: string; address: string };
+  to: string;
+  replyTo: string | { name: string; address: string };
   subject: string;
   text: string;
   html: string;
@@ -168,5 +173,66 @@ describe("contact e-mail escapes user input in the HTML", () => {
     expect(html).toContain(`<a href="mailto:${escaped}" style="color:#1B5FAA;text-decoration:none;">${escaped}</a>`);
     expect(html).toContain(`<a href="mailto:${escaped}?subject=Re: Sujet"`);
     expect(tagSkeleton(html)).toEqual(tagSkeleton((await send(harmless)).html));
+  });
+});
+
+/** Message tel que nodemailer le compose : en-tetes (deplies) + enveloppe SMTP. */
+async function composed(mail: SentMail) {
+  const node = new MailComposer(mail).compile();
+  const raw = (await node.build()).toString();
+  const head = raw
+    .split(/\r?\n\r?\n/)[0]
+    .replace(/\r?\n[ \t]+/g, " ")
+    .split(/\r?\n/);
+  const header = (name: string) =>
+    head
+      .filter((line) => line.toLowerCase().startsWith(`${name.toLowerCase()}:`))
+      .map((line) => line.slice(name.length + 1).trim());
+  return { header, envelope: node.getEnvelope() };
+}
+
+/** Adresses lues dans un en-tete, comme le ferait un client mail. */
+function addressesIn(value: string): string[] {
+  return addressparser(value, { flatten: true }).map((entry) => entry.address);
+}
+
+describe("contact e-mail: From and Reply-To carry one address, whatever the name", () => {
+  const NAME = 'Eve" <attacker@evil.example>, "Mallory <second@evil.example>';
+
+  it('a name with ", <, >, a comma and a second address adds no address (headers and SMTP envelope)', async () => {
+    const mail = await send({
+      fullName: NAME,
+      email: "client@example.test",
+      subject: "Sujet",
+      message: "Message",
+    });
+    const { header, envelope } = await composed(mail);
+
+    expect(header("From")).toHaveLength(1);
+    expect(addressesIn(header("From")[0])).toEqual(["no-reply@example.test"]);
+    expect(header("Reply-To")).toHaveLength(1);
+    expect(addressesIn(header("Reply-To")[0])).toEqual(["client@example.test"]);
+    // Expediteur SMTP (MAIL FROM) : toujours notre adresse.
+    expect(envelope).toEqual({ from: "no-reply@example.test", to: ["contact@example.test"] });
+
+    // Le nom reste affiche tel quel, dans le seul champ « nom ».
+    expect(mail.from).toEqual({ name: `${NAME} via Welearn`, address: "no-reply@example.test" });
+    expect(mail.replyTo).toEqual({ name: NAME, address: "client@example.test" });
+  });
+
+  it("ordinary names: same From / Reply-To on the wire as before", async () => {
+    const { header } = await composed(
+      await send({
+        fullName: "Éric Benjelloun",
+        email: "eric@example.test",
+        subject: "Sujet",
+        message: "Message",
+      }),
+    );
+    // Valeurs produites par l'ancienne forme `"<nom> via Welearn" <adresse>`.
+    expect(header("From")).toEqual([
+      "=?UTF-8?Q?=C3=89ric_Benjelloun_via_Welearn?= <no-reply@example.test>",
+    ]);
+    expect(header("Reply-To")).toEqual(["=?UTF-8?Q?=C3=89ric_Benjelloun?= <eric@example.test>"]);
   });
 });

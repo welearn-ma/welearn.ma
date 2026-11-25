@@ -98,8 +98,11 @@ export async function submitContactRequest(
   const htmlSubject = escapeHtml(subject);
   const htmlMessage = escapeHtml(message).replace(/\n/g, "<br />");
 
-  // Show sender's name in the From display name; replyTo routes replies to the actual sender
-  const fromHeader = `"${fullName} via Welearn" <${smtpFrom}>`;
+  // Show sender's name in the From display name; replyTo routes replies to the actual sender.
+  // Nom et adresse passes separement : nodemailer encode le nom lui-meme, qui
+  // ne peut donc pas ajouter d'adresse (guillemets, chevrons, virgule…).
+  const fromAddress = { name: `${fullName} via Welearn`, address: smtpFrom };
+  const replyToAddress = { name: fullName, address: email };
 
   const htmlBody = `<!DOCTYPE html>
 <html lang="fr">
@@ -194,9 +197,9 @@ export async function submitContactRequest(
 
   try {
     await transporter.sendMail({
-      from: fromHeader,
+      from: fromAddress,
       to: recipient,
-      replyTo: `"${fullName}" <${email}>`,
+      replyTo: replyToAddress,
       subject: `[Contact Welearn] ${subject}`,
       text: [
         "Nouvelle demande de contact — welearn.ma",

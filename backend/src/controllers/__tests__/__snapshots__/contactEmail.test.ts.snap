@@ -2,7 +2,10 @@
 
 exports[`contact e-mail is unchanged > with phone 1`] = `
 {
-  "from": ""Éric Benjelloun via Welearn" <no-reply@example.test>",
+  "from": {
+    "address": "no-reply@example.test",
+    "name": "Éric Benjelloun via Welearn",
+  },
   "html": "<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -89,7 +92,10 @@ exports[`contact e-mail is unchanged > with phone 1`] = `
   </table>
 </body>
 </html>",
-  "replyTo": ""Éric Benjelloun" <eric@example.test>",
+  "replyTo": {
+    "address": "eric@example.test",
+    "name": "Éric Benjelloun",
+  },
   "subject": "[Contact Welearn] Question sur la formation BIM",
   "text": "Nouvelle demande de contact — welearn.ma
 Nom: Éric Benjelloun
@@ -106,7 +112,10 @@ Merci",
 
 exports[`contact e-mail is unchanged > without phone 1`] = `
 {
-  "from": ""Client Test via Welearn" <no-reply@example.test>",
+  "from": {
+    "address": "no-reply@example.test",
+    "name": "Client Test via Welearn",
+  },
   "html": "<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -190,7 +199,10 @@ exports[`contact e-mail is unchanged > without phone 1`] = `
   </table>
 </body>
 </html>",
-  "replyTo": ""Client Test" <client@example.test>",
+  "replyTo": {
+    "address": "client@example.test",
+    "name": "Client Test",
+  },
   "subject": "[Contact Welearn] Devis & tarifs",
   "text": "Nouvelle demande de contact — welearn.ma
 Nom: Client Test
