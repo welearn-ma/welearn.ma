@@ -250,7 +250,7 @@ describe("POST /api/payments/cmi/init", () => {
       customer_email: "eric@example.test",
       customer_phone: "+212 600 000 000",
       cgv_accepted_at: CREATED_AT.toISOString(),
-      cgv_version: "19/11/2026",
+      cgv_version: "24/11/2026",
       access_choice: "immediate",
       access_available_at: null,
       paid_at: null,
