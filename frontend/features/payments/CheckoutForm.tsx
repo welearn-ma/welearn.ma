@@ -85,6 +85,13 @@ const FIELD_FOCUS_ID: ReadonlyArray<[Field, string]> = [
 
 const DIAL_CODES = new Set(PHONE_COUNTRIES.map((country) => country.dialCode));
 
+/**
+ * Délai max entre l'appui sur « Payer » et la perte de focus de l'e-mail
+ * (sur écran tactile, le focus change au relâchement) : au-delà, l'appui
+ * est ignoré.
+ */
+const PAY_PRESS_WINDOW_MS = 2000;
+
 const inputClass =
   "mt-1 h-11 border-wl-border text-wl-text placeholder:text-wl-text-tertiary focus-visible:border-wl-blue focus-visible:ring-wl-blue/25";
 const linkClass =
@@ -151,6 +158,8 @@ export function CheckoutForm({
   const formRef = useRef<HTMLFormElement>(null);
   // Dernier couple code / e-mail vérifié automatiquement (une seule fois).
   const autoCheckedKeyRef = useRef<string | null>(null);
+  // Instant de l'appui sur « Payer » (pointerdown, avant la perte de focus).
+  const payPressedAtRef = useRef<number | null>(null);
 
   // PhoneInput vaut "+33" quand seul le pays est choisi : rien à poster.
   const phoneValue = DIAL_CODES.has(phone.trim()) ? "" : normalizePhone(phone);
@@ -250,8 +259,16 @@ export function CheckoutForm({
    * /codes/check, même limite) dès que l'e-mail saisi est valide, à la sortie
    * du champ. Une seule fois par couple code / e-mail ; si le code a été
    * modifié, la vérification redevient manuelle (bouton « Vérifier »).
+   *
+   * Si le champ perd le focus parce que l'on appuie sur « Payer », rien ici :
+   * la vérification désactiverait le bouton et le clic serait perdu. C'est
+   * l'envoi (handleSubmit) qui vérifie le code puis envoie le formulaire s'il
+   * est valide, sans second clic ; sinon, message d'erreur et pas d'envoi.
    */
   const autoVerifyLinkCode = () => {
+    const pressedAt = payPressedAtRef.current;
+    payPressedAtRef.current = null;
+    if (pressedAt !== null && performance.now() - pressedAt < PAY_PRESS_WINDOW_MS) return;
     if (!linkCode || canonicalCode !== linkCode) return;
     if (verified || codeCheck.state === "checking" || validateCustomerEmail(email)) return;
     if (autoCheckedKeyRef.current === codeKey) return;
@@ -271,6 +288,7 @@ export function CheckoutForm({
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    payPressedAtRef.current = null;
     if (submittingRef.current || !actionUrl || codeCheck.state === "checking") {
       event.preventDefault();
       return;
@@ -567,6 +585,12 @@ export function CheckoutForm({
           {/* Pas d'attribut name : le bouton ne doit pas être posté. */}
           <Button
             type="submit"
+            onPointerDown={(e) => {
+              if (e.button === 0) payPressedAtRef.current = performance.now();
+            }}
+            onPointerCancel={() => {
+              payPressedAtRef.current = null;
+            }}
             disabled={isSubmitting || !actionUrl || codeCheck.state === "checking"}
             className="h-11 w-full bg-wl-blue text-white transition-all duration-200 hover:bg-wl-blue-dark"
           >
