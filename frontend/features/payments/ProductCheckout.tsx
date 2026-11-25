@@ -55,13 +55,26 @@ function toCheckoutProduct(product: ProductInfo): CheckoutProduct {
  * GET /api/payments/products/<slug>. Seuls `produit` et `code` (lien de
  * l'e-mail de validation, pré-remplit le champ si son format est valide)
  * sont lus dans l'URL ; jamais l'e-mail.
+ *
+ * `code` est lu une seule fois puis retiré de la barre d'adresse
+ * (history.replaceState, `produit` conservé) : il ne reste ni dans l'URL
+ * affichée ni dans l'historique.
  */
 export function ProductCheckout() {
   const searchParams = useSearchParams();
   const slug = parseProductSlug(searchParams.get("produit"));
-  const linkCode = normalizeCode(searchParams.get("code") ?? "");
+  // Lu au premier rendu : replaceState met à jour useSearchParams, le code
+  // doit survivre à son retrait de l'URL.
+  const [linkCode] = useState(() => normalizeCode(searchParams.get("code") ?? ""));
   const baseUrl = getPaymentsApiBaseUrl();
   const [state, setState] = useState<State>({ kind: "loading" });
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("code")) return;
+    url.searchParams.delete("code");
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  }, []);
 
   useEffect(() => {
     if (!slug) {
