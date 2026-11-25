@@ -155,7 +155,7 @@ exports[`contact e-mail is unchanged > without phone 1`] = `
                 
                 <tr>
                   <td style="padding:12px 16px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;vertical-align:top;">Sujet</td>
-                  <td style="padding:12px 16px;background-color:#ffffff;font-size:14px;color:#1f2937;vertical-align:top;">Devis & tarifs</td>
+                  <td style="padding:12px 16px;background-color:#ffffff;font-size:14px;color:#1f2937;vertical-align:top;">Devis &amp; tarifs</td>
                 </tr>
               </table>
 

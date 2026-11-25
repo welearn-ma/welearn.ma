@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import nodemailer from "nodemailer";
+import { escapeHtml } from "../lib/emailTemplate";
 import type { ContactPayload, ContactResponse } from "../types/contact";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -89,6 +90,14 @@ export async function submitContactRequest(
   const subject = String(payload.subject).trim();
   const message = String(payload.message).trim();
 
+  // Saisies de l'internaute inserees dans le HTML : toujours echappees
+  // (meme fonction que les autres e-mails). Texte brut et en-tetes : bruts.
+  const htmlName = escapeHtml(fullName);
+  const htmlEmail = escapeHtml(email);
+  const htmlPhone = escapeHtml(phone);
+  const htmlSubject = escapeHtml(subject);
+  const htmlMessage = escapeHtml(message).replace(/\n/g, "<br />");
+
   // Show sender's name in the From display name; replyTo routes replies to the actual sender
   const fromHeader = `"${fullName} via Welearn" <${smtpFrom}>`;
 
@@ -131,29 +140,29 @@ export async function submitContactRequest(
               <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:28px;">
                 <tr>
                   <td style="padding:12px 16px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Nom</td>
-                  <td style="padding:12px 16px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">${fullName}</td>
+                  <td style="padding:12px 16px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">${htmlName}</td>
                 </tr>
                 <tr>
                   <td style="padding:12px 16px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;vertical-align:top;">Email</td>
-                  <td style="padding:12px 16px;background-color:#ffffff;font-size:14px;color:#1f2937;vertical-align:top;"><a href="mailto:${email}" style="color:#1B5FAA;text-decoration:none;">${email}</a></td>
+                  <td style="padding:12px 16px;background-color:#ffffff;font-size:14px;color:#1f2937;vertical-align:top;"><a href="mailto:${htmlEmail}" style="color:#1B5FAA;text-decoration:none;">${htmlEmail}</a></td>
                 </tr>
                 ${
                   phone
                     ? `<tr>
                   <td style="padding:12px 16px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;vertical-align:top;">Téléphone</td>
-                  <td style="padding:12px 16px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">${phone}</td>
+                  <td style="padding:12px 16px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">${htmlPhone}</td>
                 </tr>`
                     : ""
                 }
                 <tr>
                   <td style="padding:12px 16px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;vertical-align:top;">Sujet</td>
-                  <td style="padding:12px 16px;background-color:#ffffff;font-size:14px;color:#1f2937;vertical-align:top;">${subject}</td>
+                  <td style="padding:12px 16px;background-color:#ffffff;font-size:14px;color:#1f2937;vertical-align:top;">${htmlSubject}</td>
                 </tr>
               </table>
 
               <!-- Message block -->
               <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:#0D3D6E;text-transform:uppercase;letter-spacing:0.5px;">Message</p>
-              <div style="background-color:#f8fafc;border-left:4px solid #E8721C;border-radius:0 6px 6px 0;padding:16px 20px;font-size:14px;color:#374151;line-height:1.7;white-space:pre-wrap;">${message.replace(/\n/g, "<br />")}</div>
+              <div style="background-color:#f8fafc;border-left:4px solid #E8721C;border-radius:0 6px 6px 0;padding:16px 20px;font-size:14px;color:#374151;line-height:1.7;white-space:pre-wrap;">${htmlMessage}</div>
 
             </td>
           </tr>
@@ -161,9 +170,9 @@ export async function submitContactRequest(
           <!-- Reply CTA -->
           <tr>
             <td style="padding:0 40px 36px;text-align:center;">
-              <a href="mailto:${email}?subject=Re: ${encodeURIComponent(subject)}"
+              <a href="mailto:${htmlEmail}?subject=Re: ${encodeURIComponent(subject)}"
                  style="display:inline-block;background-color:#E8721C;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:6px;letter-spacing:0.3px;">
-                Répondre à ${fullName}
+                Répondre à ${htmlName}
               </a>
             </td>
           </tr>
