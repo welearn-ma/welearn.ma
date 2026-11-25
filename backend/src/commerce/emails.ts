@@ -172,9 +172,7 @@ export function proofApprovedEmail(input: {
         [
           "Votre statut étudiant a été validé. Votre code personnel : ",
           { text: input.code, bold: true },
-          `, valable jusqu'au ${formatDateCasablanca(input.expiresAt)}, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : `,
-          { text: input.paymentUrl, href: input.paymentUrl },
-          ".",
+          `, valable jusqu'au ${formatDateCasablanca(input.expiresAt)}.`,
         ],
         { button: { text: "Payer le Pack Étudiants", href: input.paymentUrl } },
         ["Utilisez cette adresse e-mail lors du paiement : votre code y est lié."],

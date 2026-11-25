@@ -144,7 +144,7 @@ describe("student proofs", () => {
     expect(mail.text).toContain(
       [
         "Statut du justificatif : Validé",
-        `Votre statut étudiant a été validé. Votre code personnel : ${code}, valable jusqu'au 24/12/2026, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : ${payUrl}.`,
+        `Votre statut étudiant a été validé. Votre code personnel : ${code}, valable jusqu'au 24/12/2026.`,
         // Bouton, version texte : l'URL seule sur sa ligne.
         payUrl,
         "Utilisez cette adresse e-mail lors du paiement : votre code y est lié.",
@@ -156,6 +156,9 @@ describe("student proofs", () => {
         `<a href="${SITE}/paiement/\\?produit=bim-foundations-etudiant&amp;code=${code}" style="display:inline-block;background-color:#E8721C;[^"]*">Payer le Pack Étudiants</a>`,
       ),
     );
+    // Le lien de paiement n'est plus que dans le bouton (une fois par version).
+    expect(mail.text.split("/paiement/")).toHaveLength(2);
+    expect(mail.html.split("/paiement/")).toHaveLength(2);
     // Jamais l'e-mail dans l'URL.
     expect(mail.text).not.toMatch(/[?&]email=|salma%40/i);
     expect(JSON.stringify(mail)).not.toMatch(/\.pdf|signed/);
@@ -253,7 +256,7 @@ describe("« Renvoyer l'e-mail » — existing code only", () => {
     expect(mailer.sent).toHaveLength(1);
     expect(mailer.sent[0].to).toBe(STUDENT_EMAIL);
     expect(mailer.sent[0].subject).toBe("Votre code personnel Welearn");
-    expect(mailer.sent[0].text).toContain(`Votre code personnel : ${code}, valable jusqu'au 24/12/2026`);
+    expect(mailer.sent[0].text).toContain(`Votre code personnel : ${code}, valable jusqu'au 24/12/2026.\n\n`);
     // Meme e-mail que la validation : statut, bouton avec le code, rappel e-mail.
     const payUrl = `${SITE}/paiement/?produit=bim-foundations-etudiant&code=${code}`;
     expect(mailer.sent[0].text).toContain("Statut du justificatif : Validé");

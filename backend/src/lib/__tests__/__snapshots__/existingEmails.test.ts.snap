@@ -538,7 +538,7 @@ exports[`existing e-mails are unchanged > proofApprovedEmail 1`] = `
             <td style="padding:36px 40px 20px;">
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Bonjour Étudiant Test,</p>
 <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 16px;"><tr><td style="padding:10px 14px;background-color:#E6F1FB;border-left:4px solid #1B5FAA;font-size:13px;font-weight:700;color:#0D3D6E;width:130px;vertical-align:top;">Statut du justificatif</td><td style="padding:10px 14px;background-color:#f8fafc;font-size:14px;color:#1f2937;vertical-align:top;">Validé</td></tr></table>
-<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Votre statut étudiant a été validé. Votre code personnel : <strong>WL-ABCD-EFGH</strong>, valable jusqu&#39;au 25/12/2026, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : <a href="https://site.example.test/paiement/?produit=bim-foundations-etudiant&amp;code=WL-ABCD-EFGH" style="color:#1B5FAA;">https://site.example.test/paiement/?produit=bim-foundations-etudiant&amp;code=WL-ABCD-EFGH</a>.</p>
+<p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Votre statut étudiant a été validé. Votre code personnel : <strong>WL-ABCD-EFGH</strong>, valable jusqu&#39;au 25/12/2026.</p>
 <table width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 20px;"><tr><td align="center"><a href="https://site.example.test/paiement/?produit=bim-foundations-etudiant&amp;code=WL-ABCD-EFGH" style="display:inline-block;background-color:#E8721C;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:6px;letter-spacing:0.3px;">Payer le Pack Étudiants</a></td></tr></table>
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">Utilisez cette adresse e-mail lors du paiement : votre code y est lié.</p>
 <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">L&#39;équipe Welearn</p>
@@ -561,7 +561,7 @@ exports[`existing e-mails are unchanged > proofApprovedEmail 1`] = `
 
 Statut du justificatif : Validé
 
-Votre statut étudiant a été validé. Votre code personnel : WL-ABCD-EFGH, valable jusqu'au 25/12/2026, à saisir lors du paiement du Pack Étudiants avec cette adresse e-mail : https://site.example.test/paiement/?produit=bim-foundations-etudiant&code=WL-ABCD-EFGH.
+Votre statut étudiant a été validé. Votre code personnel : WL-ABCD-EFGH, valable jusqu'au 25/12/2026.
 
 https://site.example.test/paiement/?produit=bim-foundations-etudiant&code=WL-ABCD-EFGH
 
