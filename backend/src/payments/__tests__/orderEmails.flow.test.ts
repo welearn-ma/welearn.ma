@@ -198,12 +198,12 @@ describe("PENDING → PAID", () => {
     expect(customer).toMatchObject({
       to: EMAIL,
       replyTo: CONTACT,
-      subject: "[TEST] Confirmation de votre paiement — Welearn",
+      subject: "Confirmation de votre paiement — Welearn",
     });
     expect(team).toMatchObject({
       to: CONTACT,
       replyTo: EMAIL,
-      subject: `[TEST] [Commande payée] Test paiement CMI — 10,00 MAD — ${oid}`,
+      subject: `[Commande payée] Test paiement CMI — 10,00 MAD — ${oid}`,
     });
     expect(customer.text).toContain(`Référence de commande : ${oid}`);
     expect(customer.text).toContain("Date du paiement : 24/11/2026 10:00");
@@ -218,7 +218,7 @@ describe("PENDING → PAID", () => {
     expect(errors).not.toHaveBeenCalled();
   });
 
-  it("discounted order: label, amounts and code read from the database; no [TEST] prefix", async () => {
+  it("discounted order: label, amounts and code read from the database", async () => {
     const { posted, oid } = await initOrder({
       formation_slug: "bim-foundations-pro",
       code: "WL-DSCT-AAAA",

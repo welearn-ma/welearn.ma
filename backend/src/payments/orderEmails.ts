@@ -1,5 +1,4 @@
 import { formatDateTimeCasablanca } from "../commerce/emails";
-import { TEST_PRODUCT_SLUG } from "../config/commerce";
 import { CONTACT_PHONE } from "../config/legal";
 import { renderEmail, type Paragraph } from "../lib/emailTemplate";
 import { describeMailError, type MailMessage, type Mailer } from "../lib/mailer";
@@ -15,6 +14,7 @@ import {
  *   - confirmation au client (orders.customer_email), Reply-To CONTACT_RECIPIENT ;
  *   - notification a l'equipe (CONTACT_RECIPIENT), Reply-To le client, pour
  *     ouvrir l'acces dans les delais des CGV.
+ * Aucune mention « test » dans les sujets, meme pour le produit de test.
  *
  * Declenches UNIQUEMENT pour la commande que le callback CMI vient de faire
  * passer PENDING -> PAID, APRES la reponse au CMI (paymentController). Best
@@ -96,10 +96,6 @@ function discountLabel(order: PaidOrder): string {
   return order.promotion ? `Réduction ${promotionName(order.promotion)}` : "Réduction";
 }
 
-function subjectPrefix(order: PaidOrder): string {
-  return order.formation_slug === TEST_PRODUCT_SLUG ? "[TEST] " : "";
-}
-
 function message(
   to: string,
   subject: string,
@@ -146,7 +142,7 @@ export function orderConfirmationEmail(
 
   return message(
     order.customer_email,
-    `${subjectPrefix(order)}Confirmation de votre paiement — Welearn`,
+    "Confirmation de votre paiement — Welearn",
     "Confirmation de paiement",
     contactRecipient,
     {
@@ -211,7 +207,7 @@ export function orderTeamNotificationEmail(
 
   return message(
     contactRecipient,
-    `${subjectPrefix(order)}[Commande payée] ${order.label} — ${amount} MAD — ${order.oid}`,
+    `[Commande payée] ${order.label} — ${amount} MAD — ${order.oid}`,
     "Commande payée",
     order.customer_email,
     { paragraphs: [], rows },

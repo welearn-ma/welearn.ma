@@ -236,15 +236,24 @@ describe("team notification e-mail", () => {
 });
 
 describe("test product and escaping", () => {
-  it("[TEST] prefix on both subjects for test-paiement-cmi only", () => {
+  it("test product: same subjects as any order, no [TEST] prefix", () => {
     expect(orderConfirmationEmail(TEST_PRODUCT, SETTINGS).subject).toBe(
-      "[TEST] Confirmation de votre paiement — Welearn",
+      "Confirmation de votre paiement — Welearn",
     );
     expect(orderTeamNotificationEmail(TEST_PRODUCT, SETTINGS).subject).toBe(
-      "[TEST] [Commande payée] Test paiement CMI — 10,00 MAD — WL20261120100500AB12CD",
+      "[Commande payée] Test paiement CMI — 10,00 MAD — WL20261120100500AB12CD",
     );
-    expect(orderConfirmationEmail(DISCOUNT_IMMEDIATE, SETTINGS).subject).not.toContain("[TEST]");
-    expect(orderTeamNotificationEmail(DISCOUNT_IMMEDIATE, SETTINGS).subject).not.toContain("[TEST]");
+    for (const order of [TEST_PRODUCT, DISCOUNT_IMMEDIATE, STUDENT]) {
+      for (const mail of [orderConfirmationEmail(order, SETTINGS), orderTeamNotificationEmail(order, SETTINGS)]) {
+        expect(mail.subject).not.toContain("[TEST]");
+        expect(mail.text).not.toContain("[TEST]");
+      }
+    }
+  });
+
+  it("test product keeps the access text (customer) and the opening delay (team)", () => {
+    expect(orderConfirmationEmail(TEST_PRODUCT, SETTINGS).text).toContain(ACCESS_TEXT);
+    expect(orderTeamNotificationEmail(TEST_PRODUCT, SETTINGS).text).toContain("Ouvrir l'accès : sous 24 h ouvrées");
   });
 
   it("every customer-controlled or DB value is HTML-escaped", () => {

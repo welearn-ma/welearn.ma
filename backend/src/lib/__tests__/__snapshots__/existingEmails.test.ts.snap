@@ -404,7 +404,7 @@ exports[`existing e-mails are unchanged > order e-mails (customer + team; discou
 </body>
 </html>",
   "replyTo": "contact@example.test",
-  "subject": "[TEST] Confirmation de votre paiement — Welearn",
+  "subject": "Confirmation de votre paiement — Welearn",
   "text": "Bonjour Salma <Alaoui> & 'co',
 
 Nous confirmons la réception de votre paiement.
@@ -473,7 +473,7 @@ exports[`existing e-mails are unchanged > order e-mails (customer + team; discou
 </body>
 </html>",
   "replyTo": "salma@example.test",
-  "subject": "[TEST] [Commande payée] Test paiement CMI — 10,00 MAD — WL20261125143000K7M2Q9TX",
+  "subject": "[Commande payée] Test paiement CMI — 10,00 MAD — WL20261125143000K7M2Q9TX",
   "text": "Client : Salma <Alaoui> & 'co'
 
 E-mail : salma@example.test
