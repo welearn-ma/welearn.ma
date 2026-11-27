@@ -32,6 +32,11 @@ export interface PaymentsRouterDeps {
     /** CONTACT_RECIPIENT : destinataire equipe et Reply-To du client. */
     contactRecipient: string;
   };
+  /**
+   * Origines autorisees EN PLUS de SITE_URL (+ www) pour les routes appelees
+   * par le site (CORS_ORIGIN, voir corsOriginsFromEnv).
+   */
+  extraOrigins?: string[];
 }
 
 type Handler = (req: Request, res: Response) => void | Promise<void>;
@@ -79,15 +84,22 @@ function jsonBody(req: Request, res: Response, next: NextFunction): void {
  * CORS (SITE_URL + variante www) sur les routes appelees par le site :
  * GET /order-status, GET /products/:slug, POST /codes/check.
  */
-export function createPaymentsRouter({ cmi, store, now, orderEmails }: PaymentsRouterDeps): Router {
+export function createPaymentsRouter({
+  cmi,
+  store,
+  now,
+  orderEmails,
+  extraOrigins = [],
+}: PaymentsRouterDeps): Router {
   const router = Router();
   router.use(noStore);
 
   const siteUrl = cmi.enabled ? cmi.config.siteUrl : cmi.fallbackSiteUrl;
   const failurePage = `${siteUrl}${paymentPagePath("echec")}`;
-  const orderStatusCors = cors({ origin: siteOrigins(siteUrl), methods: ["GET"] });
-  const productCors = cors({ origin: siteOrigins(siteUrl), methods: ["GET"] });
-  const codeCheckCors = cors({ origin: siteOrigins(siteUrl), methods: ["POST"] });
+  const siteCorsOrigins = [...new Set([...siteOrigins(siteUrl), ...extraOrigins])];
+  const orderStatusCors = cors({ origin: siteCorsOrigins, methods: ["GET"] });
+  const productCors = cors({ origin: siteCorsOrigins, methods: ["GET"] });
+  const codeCheckCors = cors({ origin: siteCorsOrigins, methods: ["POST"] });
 
   router.options("/order-status", orderStatusCors);
   router.options("/products/:slug", productCors);

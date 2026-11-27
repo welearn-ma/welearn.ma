@@ -103,3 +103,27 @@ export function siteOrigins(siteUrl: string): string[] {
     : `www.${url.hostname}`;
   return [url.origin, variant.origin];
 }
+
+/**
+ * Origines explicites de CORS_ORIGIN (liste separee par des virgules, comme
+ * le cors() global de index.ts), pour les routes du site sous
+ * /api/payments : ex. http://localhost:3000 en developpement, ou SITE_URL
+ * vaut l'adresse de production. "*" et les valeurs qui ne sont pas une
+ * origine http(s) sont ignores : jamais d'ouverture a toute origine ici.
+ */
+export function corsOriginsFromEnv(env: NodeJS.ProcessEnv): string[] {
+  const origins: string[] = [];
+  for (const raw of (env.CORS_ORIGIN ?? "").split(",")) {
+    const value = raw.trim();
+    if (!value || value === "*") continue;
+    try {
+      const url = new URL(value);
+      if (url.protocol === "http:" || url.protocol === "https:") {
+        origins.push(url.origin);
+      }
+    } catch {
+      // Valeur illisible : ignoree.
+    }
+  }
+  return [...new Set(origins)];
+}

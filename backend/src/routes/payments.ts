@@ -1,4 +1,4 @@
-import { readCmiConfig } from "../config/cmi";
+import { corsOriginsFromEnv, readCmiConfig } from "../config/cmi";
 import { startPendingExpiryTimer } from "../payments/expiry";
 import { createPaymentsRouter } from "../payments/router";
 import { supabasePaymentStore } from "../payments/supabaseStore";
@@ -21,8 +21,11 @@ if (cmi.enabled) {
 }
 
 // E-mails des commandes payees : mailer partage, equipe = CONTACT_RECIPIENT.
+// CORS des routes du site : SITE_URL (+ www) et les origines de CORS_ORIGIN
+// (ex. http://localhost:3000 en developpement).
 export default createPaymentsRouter({
   cmi,
   store: supabasePaymentStore,
   orderEmails: { mailer, contactRecipient },
+  extraOrigins: corsOriginsFromEnv(process.env),
 });

@@ -461,6 +461,38 @@ describe("GET /products/:slug", () => {
   );
 });
 
+describe("CORS of the site routes: SITE_URL + www, plus CORS_ORIGIN origins", () => {
+  const LOCAL = "http://localhost:3000";
+  const EVIL = "https://evil.example.test";
+  const allowOrigin = async (origin: string) => {
+    const product = await request(server.base, "GET", `/api/payments/products/${PRO}`, { headers: { origin } });
+    const preflight = await request(server.base, "OPTIONS", "/api/payments/codes/check", {
+      headers: { origin, "access-control-request-method": "POST", "access-control-request-headers": "content-type" },
+    });
+    const status = await request(server.base, "GET", "/api/payments/order-status?ref=NOPE", { headers: { origin } });
+    return [product, preflight, status].map((res) => res.headers["access-control-allow-origin"]);
+  };
+
+  it("without extra origins: localhost is not allowed (unchanged behaviour)", async () => {
+    expect(await allowOrigin(LOCAL)).toEqual([undefined, undefined, undefined]);
+  });
+
+  it("with CORS_ORIGIN origins: allowed on products, code check and order status; others still refused", async () => {
+    await server.close();
+    server = await startServer({
+      payments: createPaymentsRouter({
+        cmi: { enabled: true, config: CONFIG },
+        store,
+        now: () => clock,
+        extraOrigins: [LOCAL],
+      }),
+    });
+    expect(await allowOrigin(LOCAL)).toEqual([LOCAL, LOCAL, LOCAL]);
+    expect(await allowOrigin(SITE)).toEqual([SITE, SITE, SITE]);
+    expect(await allowOrigin(EVIL)).toEqual([undefined, undefined, undefined]);
+  });
+});
+
 describe("payments disabled", () => {
   it("products and code check answer 503", async () => {
     await server.close();

@@ -4,7 +4,7 @@ import { once } from "events";
 import http from "http";
 import type { AddressInfo } from "net";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { readCmiConfig, siteOrigins, type CmiConfig } from "../../config/cmi";
+import { corsOriginsFromEnv, readCmiConfig, siteOrigins, type CmiConfig } from "../../config/cmi";
 import {
   computeHash,
   computeReceivedHash,
@@ -780,6 +780,16 @@ describe("readCmiConfig / siteOrigins", () => {
       fallbackSiteUrl: "https://welearn.ma",
     });
     expect(JSON.stringify(result)).not.toContain("DUMMY_SECRET_VALUE");
+  });
+
+  it("corsOriginsFromEnv: explicit http(s) origins from CORS_ORIGIN, never '*'", () => {
+    expect(
+      corsOriginsFromEnv({
+        CORS_ORIGIN: " http://localhost:3000 , https://welearn.ma/,*,not a url, ftp://x.example.test,https://welearn.ma",
+      }),
+    ).toEqual(["http://localhost:3000", "https://welearn.ma"]);
+    expect(corsOriginsFromEnv({})).toEqual([]);
+    expect(corsOriginsFromEnv({ CORS_ORIGIN: "*" })).toEqual([]);
   });
 
   it("siteOrigins adds or removes www.", () => {
