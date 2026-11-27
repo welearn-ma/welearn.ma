@@ -206,7 +206,7 @@ describe("PENDING → PAID", () => {
       subject: `[TEST] [Commande payée] Test paiement CMI — 10,00 MAD — ${oid}`,
     });
     expect(customer.text).toContain(`Référence de commande : ${oid}`);
-    expect(customer.text).toContain("Date du paiement : 24/11/2026 11:00");
+    expect(customer.text).toContain("Date du paiement : 24/11/2026 10:00");
     expect(team.text).toContain("TransId CMI : T-0001");
     expect(team.text).toContain("Code d'autorisation : A1");
 

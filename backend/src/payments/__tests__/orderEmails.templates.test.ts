@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import { formatDateTimeCasablanca } from "../../commerce/emails";
+import { formatDateCasablanca, formatDateTimeCasablanca } from "../../commerce/emails";
 import {
   formatMad,
   orderConfirmationEmail,
@@ -9,7 +9,7 @@ import {
 
 const NBSP = " ";
 const SETTINGS = { siteUrl: "https://site.example.test", contactRecipient: "contact@example.test" };
-const PAID_AT = "2026-11-20T10:05:00.000Z"; // 11:05 a Casablanca (UTC+1)
+const PAID_AT = "2026-11-20T10:05:00.000Z"; // 10:05 a Casablanca (UTC+0 depuis le 20/09/2026)
 const ACCESS_TEXT = "Votre accès à la formation est immédiat : il sera ouvert sous 24 heures ouvrées.";
 
 /** Remise (Pack Professionnels, code de reduction). */
@@ -76,10 +76,25 @@ describe("formatting", () => {
     expect(formatMad(0.5)).toBe("0,50");
   });
 
-  it("dates: JJ/MM/AAAA HH:mm in Africa/Casablanca, 24 h clock", () => {
-    expect(formatDateTimeCasablanca(PAID_AT)).toBe("20/11/2026 11:05");
-    expect(formatDateTimeCasablanca("2026-11-20T23:30:00.000Z")).toBe("21/11/2026 00:30");
-    expect(formatDateTimeCasablanca("2026-11-20T23:00:00.000Z")).toBe("21/11/2026 00:00");
+  it("dates: JJ/MM/AAAA HH:mm, Casablanca = UTC+0 since 20/09/2026, 24 h clock", () => {
+    expect(formatDateTimeCasablanca(PAID_AT)).toBe("20/11/2026 10:05");
+    expect(formatDateTimeCasablanca("2026-11-20T23:30:00.000Z")).toBe("20/11/2026 23:30");
+    expect(formatDateTimeCasablanca("2026-11-30T23:59:00.000Z")).toBe("30/11/2026 23:59");
+    expect(formatDateTimeCasablanca("2026-12-01T00:00:00.000Z")).toBe("01/12/2026 00:00");
+    // Date seule (expiration des codes) : plus de bascule au lendemain a 23:00.
+    expect(formatDateCasablanca("2026-11-30T23:30:00.000Z")).toBe("30/11/2026");
+    expect(formatDateCasablanca("2026-12-26T23:59:59.000Z")).toBe("26/12/2026");
+  });
+
+  it("dates: switch from UTC+1 to UTC+0 on 20/09/2026 01:00 UTC, history kept", () => {
+    // Avant la bascule : UTC+1 (et UTC+0 pendant le Ramadan 2026).
+    expect(formatDateTimeCasablanca("2026-07-01T12:00:00.000Z")).toBe("01/07/2026 13:00");
+    expect(formatDateTimeCasablanca("2026-03-01T12:00:00.000Z")).toBe("01/03/2026 12:00");
+    expect(formatDateTimeCasablanca("2026-09-20T00:59:00.000Z")).toBe("20/09/2026 01:59");
+    expect(formatDateCasablanca("2026-07-01T23:30:00.000Z")).toBe("02/07/2026");
+    // A partir de la bascule : UTC+0, quelles que soient les donnees de fuseaux de Node.
+    expect(formatDateTimeCasablanca("2026-09-20T01:00:00.000Z")).toBe("20/09/2026 01:00");
+    expect(formatDateTimeCasablanca("2027-06-15T12:00:00.000Z")).toBe("15/06/2027 12:00");
   });
 });
 
@@ -98,7 +113,7 @@ describe("customer confirmation e-mail", () => {
         `Montant payé : 8${NBSP}075,00 MAD TTC`,
         `Prix catalogue : 8${NBSP}500,00 MAD TTC — Réduction : −425,00 MAD`,
         "Référence de commande : WL20261120100500AB12CD",
-        "Date du paiement : 20/11/2026 11:05",
+        "Date du paiement : 20/11/2026 10:05",
         ACCESS_TEXT,
         "Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.",
         "Conditions générales de vente (https://site.example.test/cgv/) · Politique de remboursement (https://site.example.test/remboursement/)",
@@ -119,7 +134,7 @@ describe("customer confirmation e-mail", () => {
         "Formation : BIM Foundations Professional — Pack Étudiants",
         `Montant payé : 5${NBSP}000,00 MAD TTC`,
         "Référence de commande : WL20261120100500EF34GH",
-        "Date du paiement : 20/11/2026 11:05",
+        "Date du paiement : 20/11/2026 10:05",
         ACCESS_TEXT,
         "Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.",
         "Conditions générales de vente (https://site.example.test/cgv/) · Politique de remboursement (https://site.example.test/remboursement/)",
@@ -193,7 +208,7 @@ describe("team notification e-mail", () => {
         "Code : WL-DSCT-AAAA",
         `Montant payé : 8${NBSP}075,00 MAD TTC`,
         "Ouvrir l'accès : sous 24 h ouvrées",
-        "Payé le : 20/11/2026 11:05",
+        "Payé le : 20/11/2026 10:05",
         "TransId CMI : 26324TEST0001",
         "Code d'autorisation : AUTH01",
         "Référence : WL20261120100500AB12CD",

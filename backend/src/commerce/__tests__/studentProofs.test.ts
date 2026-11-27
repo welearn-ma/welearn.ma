@@ -7,7 +7,7 @@ import { FakeMailer, JPEG_BYTES, MemoryProofFiles, PDF_BYTES, PNG_BYTES } from "
 
 const ID = "0f8fad5b-d9cb-469f-a165-70867728950e";
 const NOTIFY = "contact@example.test";
-const SUBMITTED_AT = new Date("2026-11-25T10:00:00.000Z"); // 11:00 a Casablanca
+const SUBMITTED_AT = new Date("2026-11-25T10:00:00.000Z"); // 10:00 a Casablanca (UTC+0)
 const FIELDS: Record<string, string> = {
   full_name: "Salma El Idrissi",
   email: "Salma.Student@Example.TEST",
@@ -110,7 +110,7 @@ describe("POST /api/students/proofs", () => {
       [
         "Nous avons bien reçu votre justificatif. Il sera examiné par notre équipe.",
         "Statut du justificatif : En cours d'examen",
-        "Date de dépôt : 25/11/2026 11:00",
+        "Date de dépôt : 25/11/2026 10:00",
         "Vous recevrez un e-mail dès que notre équipe l'aura examiné.",
         "L'équipe Welearn",
       ].join("\n\n"),

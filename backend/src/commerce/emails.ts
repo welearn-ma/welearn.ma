@@ -9,31 +9,58 @@ import type { MailMessage } from "../lib/mailer";
  * porte une ligne « Statut du justificatif » explicite.
  */
 
-/** JJ/MM/AAAA a l'heure de Casablanca. */
-export function formatDateCasablanca(iso: string): string {
-  return new Intl.DateTimeFormat("fr-FR", {
-    timeZone: "Africa/Casablanca",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(new Date(iso));
-}
+/**
+ * Heure legale du Maroc : UTC+0 depuis le 20/09/2026 a 01:00 UTC (fin de
+ * l'heure UTC+1 permanente). Les donnees de fuseaux de Node (tzdata 2025a
+ * en local, peut-etre aussi chez l'hebergeur) l'ignorent encore et
+ * ajouteraient une heure : a partir de cet instant, l'heure de Casablanca
+ * est donc calculee en UTC explicite. Avant, "Africa/Casablanca" (UTC+1,
+ * UTC+0 pendant le Ramadan : historique identique dans toutes les versions).
+ * A revoir si l'heure legale du Maroc change de nouveau.
+ */
+export const MOROCCO_UTC0_SINCE = Date.parse("2026-09-20T01:00:00.000Z");
 
-const DATE_TIME_FORMAT = new Intl.DateTimeFormat("fr-FR", {
-  timeZone: "Africa/Casablanca",
+const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
   day: "2-digit",
   month: "2-digit",
   year: "numeric",
+};
+
+const DATE_TIME_OPTIONS: Intl.DateTimeFormatOptions = {
+  ...DATE_OPTIONS,
   hour: "2-digit",
   minute: "2-digit",
   hourCycle: "h23",
-});
+};
+
+function casablancaFormats(options: Intl.DateTimeFormatOptions) {
+  return {
+    before: new Intl.DateTimeFormat("fr-FR", { ...options, timeZone: "Africa/Casablanca" }),
+    since: new Intl.DateTimeFormat("fr-FR", { ...options, timeZone: "UTC" }),
+  };
+}
+
+const DATE_FORMATS = casablancaFormats(DATE_OPTIONS);
+const DATE_TIME_FORMATS = casablancaFormats(DATE_TIME_OPTIONS);
+
+function casablancaParts(
+  formats: ReturnType<typeof casablancaFormats>,
+  iso: string,
+): Record<string, string> {
+  const date = new Date(iso);
+  const format = date.getTime() >= MOROCCO_UTC0_SINCE ? formats.since : formats.before;
+  return Object.fromEntries(format.formatToParts(date).map((part) => [part.type, part.value]));
+}
+
+/** JJ/MM/AAAA a l'heure de Casablanca. */
+export function formatDateCasablanca(iso: string): string {
+  const parts = casablancaParts(DATE_FORMATS, iso);
+  return `${parts.day}/${parts.month}/${parts.year}`;
+}
 
 /** JJ/MM/AAAA HH:mm a l'heure de Casablanca. */
 export function formatDateTimeCasablanca(iso: string): string {
-  const parts = Object.fromEntries(
-    DATE_TIME_FORMAT.formatToParts(new Date(iso)).map((part) => [part.type, part.value]),
-  );
+  const parts = casablancaParts(DATE_TIME_FORMATS, iso);
   return `${parts.day}/${parts.month}/${parts.year} ${parts.hour}:${parts.minute}`;
 }
 
