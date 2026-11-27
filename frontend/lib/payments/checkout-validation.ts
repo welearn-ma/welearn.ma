@@ -36,7 +36,6 @@ export const CHECKOUT_MESSAGES = {
   emailDocument:
     "Votre adresse e-mail contient un terme non accepté par la plateforme de paiement. Merci d'utiliser une autre adresse e-mail.",
   phoneInvalid: "Veuillez saisir un numéro de téléphone valide.",
-  accessRequired: "Veuillez choisir une option d'accès à la formation.",
   cgvRequired:
     "Veuillez accepter les Conditions Générales de Vente, la Politique de remboursement et la Politique de confidentialité.",
 } as const;

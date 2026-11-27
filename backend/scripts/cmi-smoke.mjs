@@ -248,7 +248,6 @@ const CHECKOUT = {
   customer_email: "client@example.test",
   customer_phone: "+212 600 000 000",
   cgv_accepted: "on",
-  access_choice: "immediate",
 };
 
 async function init(overrides = {}) {
@@ -317,7 +316,8 @@ try {
     aCustomer.subject === "[TEST] Confirmation de votre paiement — Welearn" && aCustomer.replyTo === CONTACT &&
       aCustomer.text.includes(`Référence de commande : ${aOid}`) &&
       aCustomer.text.includes("Montant payé : 10,00 MAD TTC") &&
-      aCustomer.text.includes("Votre accès à la formation sera ouvert sous 24 heures ouvrées.") &&
+      aCustomer.text.includes("Votre accès à la formation est immédiat : il sera ouvert sous 24 heures ouvrées.") &&
+      !aCustomer.text.includes("rétractation") &&
       !aCustomer.text.includes("Prix catalogue"), aCustomer.subject);
   check("customer e-mail: no card / CMI transaction data",
     ![aCustomer.text, aCustomer.html].some((s) => s.includes("SMOKE-TRANS-1") || s.includes("SMOKE1")));

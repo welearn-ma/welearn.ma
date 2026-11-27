@@ -32,7 +32,6 @@ const CHECKOUT: Record<string, string> = {
   customer_email: EMAIL,
   customer_phone: PHONE,
   cgv_accepted: "on",
-  access_choice: "immediate",
 };
 
 const APPROVED = { ProcReturnCode: "00", Response: "Approved", TransId: "T-0001", AuthCode: "A1" };
@@ -243,21 +242,21 @@ describe("PENDING → PAID", () => {
     expect(team.text).toContain("Réduction : −425,00 MAD");
   });
 
-  it("student code, after_withdrawal: no discount block, Code row, opening date", async () => {
+  it("student code: no discount block, Code row, immediate access", async () => {
     const { posted } = await initOrder({
       formation_slug: "bim-foundations-etudiant",
       code: "WL-STUD-BBBB",
-      access_choice: "after_withdrawal",
     });
     await callback(cmiBody(posted, APPROVED));
     await vi.waitFor(() => expect(mailer.sent).toHaveLength(2));
 
     const [customer, team] = mailer.sent;
     expect(customer.text).not.toContain("Prix catalogue");
-    expect(customer.text).toContain("à partir du 01/12/2026");
+    expect(customer.text).toContain("Votre accès à la formation est immédiat : il sera ouvert sous 24 heures ouvrées.");
+    expect(customer.text).not.toContain("rétractation");
     expect(team.text).toContain("Code : WL-STUD-BBBB");
     expect(team.text).toContain("Réduction : aucune");
-    expect(team.text).toContain("Ouvrir l'accès : à partir du 01/12/2026");
+    expect(team.text).toContain("Ouvrir l'accès : sous 24 h ouvrées");
   });
 });
 

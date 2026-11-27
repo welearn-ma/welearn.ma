@@ -18,7 +18,6 @@ import {
 } from "../payments/cmi";
 import {
   PaymentStoreError,
-  type AccessChoice,
   type OrderRecord,
   type PaymentEventSource,
   type PaymentStore,
@@ -65,7 +64,6 @@ const PHONE_REGEX = /^\+?[0-9\s().-]{8,20}$/;
 const MAX_SLUG_LENGTH = 100;
 const MAX_NAME_LENGTH = 255; // BillToName : Alphabetic (255)
 const ORDER_REF_REGEX = /^[A-Za-z0-9]{1,64}$/; // oid : Alphanumeric (64)
-const WITHDRAWAL_PERIOD_MS = 7 * 24 * 60 * 60 * 1000; // CGV art. 8 : 7 jours
 
 // ---------------------------------------------------------------------------
 // Reponses
@@ -141,7 +139,6 @@ interface CheckoutInput {
   billToName: string;
   email: string;
   phone: string | null;
-  accessChoice: AccessChoice;
   /** Code saisi, forme canonique "WL-XXXX-XXXX" ; null si aucun. */
   code: string | null;
 }
@@ -165,15 +162,16 @@ export function parseCheckoutForm(
   const email = read("customer_email");
   const rawPhone = read("customer_phone");
   const cgvAccepted = read("cgv_accepted");
-  const accessChoice = read("access_choice");
+  // access_choice n'est plus demande (CGV art. 8 : acces immediat pour
+  // tous) ; s'il est encore poste par un ancien formulaire en cache, il est
+  // ignore.
 
   if (
     formationSlug === null ||
     customerName === null ||
     email === null ||
     rawPhone === null ||
-    cgvAccepted === null ||
-    accessChoice === null
+    cgvAccepted === null
   ) {
     return "invalid";
   }
@@ -195,9 +193,6 @@ export function parseCheckoutForm(
     return "invalid";
   }
   if (cgvAccepted !== "on" && cgvAccepted !== "true") {
-    return "invalid";
-  }
-  if (accessChoice !== "immediate" && accessChoice !== "after_withdrawal") {
     return "invalid";
   }
 
@@ -230,7 +225,6 @@ export function parseCheckoutForm(
     billToName,
     email,
     phone: phone || null,
-    accessChoice,
     code,
   };
 }
@@ -290,7 +284,9 @@ export function createPaymentHandlers({
         customer_phone: input.phone,
         cgv_accepted_at: createdAt.toISOString(),
         cgv_version: CGV_VERSION,
-        access_choice: input.accessChoice,
+        // CGV art. 8 : le clic sur « Payer » vaut demande d'acces immediat
+        // et renonciation au droit de retractation.
+        access_choice: "immediate",
       });
       if (outcome === "inserted") {
         return oid;
@@ -512,15 +508,14 @@ export function createPaymentHandlers({
       return "FAILURE";
     }
 
-    const paidAt = now();
-    const accessAvailableAt =
-      order.access_choice === "after_withdrawal"
-        ? new Date(paidAt.getTime() + WITHDRAWAL_PERIOD_MS)
-        : paidAt;
+    // Acces immediat pour toute commande (CGV art. 8). Les anciennes
+    // commandes after_withdrawal encore PENDING expirent en 45 min (expiry.ts)
+    // et ne peuvent plus passer PAID.
+    const paidAt = now().toISOString();
 
     const updated = await store.markOrderPaid(oid, {
-      paid_at: paidAt.toISOString(),
-      access_available_at: accessAvailableAt.toISOString(),
+      paid_at: paidAt,
+      access_available_at: paidAt,
       cmi_trans_id: transId,
       cmi_auth_code: cmiField(body, "AuthCode"),
       cmi_proc_return_code: PROC_RETURN_CODE_APPROVED,

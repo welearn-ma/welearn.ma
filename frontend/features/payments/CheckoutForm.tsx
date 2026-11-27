@@ -32,8 +32,6 @@ export type CheckoutProduct = PaymentProduct & {
   proofPath?: string;
 };
 
-type AccessChoice = "immediate" | "after_withdrawal";
-
 const CODE_MESSAGES = {
   required: "Saisissez votre code personnel.",
   // Texte de /paiement/echec/?reason=code_invalid.
@@ -51,25 +49,12 @@ type CodeCheck =
   | { state: "checking" }
   | { state: "valid"; key: string; amount: number; list: number; discount: number };
 
-/** Libellés de l'article 8 des CGV : texte exact, ne pas reformuler. */
-const ACCESS_OPTIONS: ReadonlyArray<{ value: AccessChoice; text: string }> = [
-  {
-    value: "immediate",
-    text: "Accès immédiat (sous 24 heures ouvrées après confirmation du paiement). Je reconnais renoncer à mon droit de rétractation dès l'ouverture effective de l'accès.",
-  },
-  {
-    value: "after_withdrawal",
-    text: "Accès à l'expiration du délai légal de rétractation de 7 jours. Mon droit de rétractation est intégralement préservé.",
-  },
-];
-
 /** Noms des champs postés au backend (backend/src/controllers/paymentController.ts). */
 type Field =
   | "customer_name"
   | "customer_email"
   | "customer_phone"
   | "code"
-  | "access_choice"
   | "cgv_accepted";
 type FormErrors = Partial<Record<Field, string>>;
 
@@ -79,7 +64,6 @@ const FIELD_FOCUS_ID: ReadonlyArray<[Field, string]> = [
   ["customer_email", "customer_email"],
   ["customer_phone", "customer_phone"],
   ["code", "payment_code"],
-  ["access_choice", "access_choice_immediate"],
   ["cgv_accepted", "cgv_accepted"],
 ];
 
@@ -150,7 +134,6 @@ export function CheckoutForm({
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState(linkCode ?? "");
   const [codeCheck, setCodeCheck] = useState<CodeCheck>({ state: "idle" });
-  const [accessChoice, setAccessChoice] = useState<AccessChoice | null>(null);
   const [cgvAccepted, setCgvAccepted] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -204,7 +187,6 @@ export function CheckoutForm({
         next.code = CODE_MESSAGES.invalid;
       }
     }
-    if (!accessChoice) next.access_choice = CHECKOUT_MESSAGES.accessRequired;
     if (!cgvAccepted) next.cgv_accepted = CHECKOUT_MESSAGES.cgvRequired;
     return next;
   };
@@ -514,41 +496,6 @@ export function CheckoutForm({
             <FieldError id="payment_code-error" message={errors.code} />
           </div>
         ) : null}
-
-        <fieldset aria-describedby={errors.access_choice ? "access_choice-error" : undefined}>
-          <legend className="text-sm font-medium text-wl-text">
-            Accès à la formation (article 8 des CGV)
-          </legend>
-          <div className="mt-2 space-y-2">
-            {ACCESS_OPTIONS.map((option) => {
-              const checked = accessChoice === option.value;
-              return (
-                <label
-                  key={option.value}
-                  className={choiceCardClass(checked, Boolean(errors.access_choice))}
-                >
-                  <input
-                    type="radio"
-                    id={`access_choice_${option.value}`}
-                    name="access_choice"
-                    value={option.value}
-                    checked={checked}
-                    onChange={() => {
-                      setAccessChoice(option.value);
-                      clearError("access_choice");
-                    }}
-                    required
-                    className="mt-0.5 h-4 w-4 shrink-0 accent-wl-blue"
-                  />
-                  <span className="text-sm leading-relaxed text-wl-text">
-                    {option.text}
-                  </span>
-                </label>
-              );
-            })}
-          </div>
-          <FieldError id="access_choice-error" message={errors.access_choice} />
-        </fieldset>
 
         <div>
           <label className={choiceCardClass(cgvAccepted, Boolean(errors.cgv_accepted))}>

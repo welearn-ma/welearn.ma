@@ -25,7 +25,6 @@ const CHECKOUT: Record<string, string> = {
   customer_email: EMAIL,
   customer_phone: "",
   cgv_accepted: "on",
-  access_choice: "after_withdrawal",
 };
 
 const APPROVED = { ProcReturnCode: "00", Response: "Approved", TransId: "T-1", AuthCode: "A1" };

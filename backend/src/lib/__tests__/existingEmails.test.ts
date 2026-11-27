@@ -98,7 +98,7 @@ describe("existing e-mails are unchanged", () => {
     ).toMatchSnapshot();
   });
 
-  it("order e-mails (customer + team; discount + immediate, after_withdrawal, test product)", () => {
+  it("order e-mails (customer + team; discount, student code, test product)", () => {
     const discountImmediate: PaidOrder = {
       oid: "WL20261125143000K7M2Q9TX",
       formation_slug: "bim-foundations-pro",
@@ -117,7 +117,7 @@ describe("existing e-mails are unchanged", () => {
       cmi_trans_id: "26329ABCD1234",
       cmi_auth_code: "P12345",
     };
-    const afterWithdrawal: PaidOrder = {
+    const studentCode: PaidOrder = {
       ...discountImmediate,
       formation_slug: "bim-foundations-etudiant",
       label: "BIM Foundations Professional — Pack Étudiants",
@@ -126,8 +126,6 @@ describe("existing e-mails are unchanged", () => {
       discount_mad: 0,
       code: "WL-STUD-9P4R",
       customer_phone: null,
-      access_choice: "after_withdrawal",
-      access_available_at: "2026-12-02T13:30:00.000Z",
       cmi_trans_id: null,
       cmi_auth_code: null,
     };
@@ -143,7 +141,7 @@ describe("existing e-mails are unchanged", () => {
     };
     const settings = { siteUrl: "https://site.example.test", contactRecipient: REPLY_TO };
 
-    for (const order of [discountImmediate, afterWithdrawal, testProduct]) {
+    for (const order of [discountImmediate, studentCode, testProduct]) {
       expect(orderConfirmationEmail(order, settings)).toMatchSnapshot();
       expect(orderTeamNotificationEmail(order, settings)).toMatchSnapshot();
     }

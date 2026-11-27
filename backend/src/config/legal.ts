@@ -7,7 +7,7 @@
  * nouvelle version des CGV ; src/config/__tests__/legal.test.ts echoue si
  * les deux valeurs different.
  */
-export const CGV_VERSION = "24/11/2026";
+export const CGV_VERSION = "27/11/2026";
 
 /**
  * Telephone de contact cite dans les e-mails clients (confirmation de

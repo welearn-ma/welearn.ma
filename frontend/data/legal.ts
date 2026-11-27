@@ -7,7 +7,7 @@
  */
 
 export const LEGAL_LAST_UPDATED = "19/11/2026";
-export const CGV_LAST_UPDATED = "24/11/2026";
+export const CGV_LAST_UPDATED = "27/11/2026";
 export const REFUND_LAST_UPDATED = "24/11/2026";
 export const PRIVACY_LAST_UPDATED = "19/11/2026";
 

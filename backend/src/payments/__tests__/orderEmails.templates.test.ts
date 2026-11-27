@@ -9,11 +9,10 @@ import {
 
 const NBSP = " ";
 const SETTINGS = { siteUrl: "https://site.example.test", contactRecipient: "contact@example.test" };
-const FORM_URL = "https://site.example.test/documents/formulaire-retractation-welearn.pdf";
 const PAID_AT = "2026-11-20T10:05:00.000Z"; // 11:05 a Casablanca (UTC+1)
-const SEVEN_DAYS_LATER = "2026-11-27T10:05:00.000Z";
+const ACCESS_TEXT = "Votre accès à la formation est immédiat : il sera ouvert sous 24 heures ouvrées.";
 
-/** Remise + acces immediat (Pack Professionnels, code de reduction). */
+/** Remise (Pack Professionnels, code de reduction). */
 const DISCOUNT_IMMEDIATE: PaidOrder = {
   oid: "WL20261120100500AB12CD",
   formation_slug: "bim-foundations-pro",
@@ -33,8 +32,8 @@ const DISCOUNT_IMMEDIATE: PaidOrder = {
   cmi_auth_code: "AUTH01",
 };
 
-/** Sans remise, acces apres retractation (Pack Etudiants, code etudiant). */
-const STUDENT_AFTER_WITHDRAWAL: PaidOrder = {
+/** Sans remise (Pack Etudiants, code etudiant). */
+const STUDENT: PaidOrder = {
   ...DISCOUNT_IMMEDIATE,
   oid: "WL20261120100500EF34GH",
   formation_slug: "bim-foundations-etudiant",
@@ -45,8 +44,6 @@ const STUDENT_AFTER_WITHDRAWAL: PaidOrder = {
   code_id: "22222222-2222-4222-8222-222222222222",
   code: "WL-STUD-BBBB",
   customer_phone: null,
-  access_choice: "after_withdrawal",
-  access_available_at: SEVEN_DAYS_LATER,
 };
 
 const TEST_PRODUCT: PaidOrder = {
@@ -102,7 +99,7 @@ describe("customer confirmation e-mail", () => {
         `Prix catalogue : 8${NBSP}500,00 MAD TTC — Réduction : −425,00 MAD`,
         "Référence de commande : WL20261120100500AB12CD",
         "Date du paiement : 20/11/2026 11:05",
-        "Votre accès à la formation sera ouvert sous 24 heures ouvrées. Conformément à votre choix lors de la commande, vous avez renoncé à votre droit de rétractation dès l'ouverture effective de l'accès.",
+        ACCESS_TEXT,
         "Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.",
         "Conditions générales de vente (https://site.example.test/cgv/) · Politique de remboursement (https://site.example.test/remboursement/)",
         "L'équipe Welearn",
@@ -112,8 +109,8 @@ describe("customer confirmation e-mail", () => {
     );
   });
 
-  it("after_withdrawal without discount: exact plain text, no discount block", () => {
-    const mail = orderConfirmationEmail(STUDENT_AFTER_WITHDRAWAL, SETTINGS);
+  it("student code without discount: exact plain text, no discount block", () => {
+    const mail = orderConfirmationEmail(STUDENT, SETTINGS);
 
     expect(mail.text).toBe(
       [
@@ -123,7 +120,7 @@ describe("customer confirmation e-mail", () => {
         `Montant payé : 5${NBSP}000,00 MAD TTC`,
         "Référence de commande : WL20261120100500EF34GH",
         "Date du paiement : 20/11/2026 11:05",
-        `Conformément à votre choix lors de la commande, votre accès à la formation sera ouvert à l'expiration du délai légal de rétractation de 7 jours, à partir du 27/11/2026. Vous pouvez exercer votre droit de rétractation pendant ce délai, par écrit à contact@example.test ou avec le formulaire de rétractation : ${FORM_URL}.`,
+        ACCESS_TEXT,
         "Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.",
         "Conditions générales de vente (https://site.example.test/cgv/) · Politique de remboursement (https://site.example.test/remboursement/)",
         "L'équipe Welearn",
@@ -137,16 +134,12 @@ describe("customer confirmation e-mail", () => {
     expect(mail.html).not.toContain("Prix catalogue");
   });
 
-  it("HTML: withdrawal sentence keeps the parenthesised link; info rows before the access text", () => {
-    const html = orderConfirmationEmail(STUDENT_AFTER_WITHDRAWAL, SETTINGS).html;
+  it("HTML: info rows before the access text; CGV and refund links", () => {
+    const html = orderConfirmationEmail(STUDENT, SETTINGS).html;
 
-    expect(html).toContain(
-      `par écrit à contact@example.test (<a href="${FORM_URL}" style="color:#1B5FAA;">formulaire de rétractation</a>).`,
-    );
-    expect(html).not.toContain("ou avec le formulaire");
     expect(html).toContain('<a href="https://site.example.test/cgv/" style="color:#1B5FAA;">Conditions générales de vente</a> · ');
     expect(html).toContain('<a href="https://site.example.test/remboursement/" style="color:#1B5FAA;">Politique de remboursement</a>');
-    expect(html.indexOf("Date du paiement")).toBeLessThan(html.indexOf("à partir du 27/11/2026"));
+    expect(html.indexOf("Date du paiement")).toBeLessThan(html.indexOf("Votre accès à la formation est immédiat"));
     expect(html.indexOf("Nous confirmons")).toBeLessThan(html.indexOf("Formation"));
     expect(html).toContain("Confirmation de paiement");
   });
@@ -155,6 +148,19 @@ describe("customer confirmation e-mail", () => {
     expect(orderConfirmationEmail(DISCOUNT_IMMEDIATE, SETTINGS).html).toContain("Prix catalogue");
     expect(orderConfirmationEmail({ ...DISCOUNT_IMMEDIATE, discount_mad: 0, amount_mad: 8500 }, SETTINGS).text)
       .not.toContain("Prix catalogue");
+  });
+
+  it("same access text for every order, whatever access_choice the row holds; no withdrawal / choice wording", () => {
+    // access_choice "after_withdrawal" : anciennes lignes en base uniquement.
+    for (const order of [DISCOUNT_IMMEDIATE, STUDENT, { ...STUDENT, access_choice: "after_withdrawal" as const }]) {
+      const { html, text } = orderConfirmationEmail(order, SETTINGS);
+      expect(text).toContain(ACCESS_TEXT);
+      for (const content of [html, text]) {
+        expect(content).not.toContain("rétractation");
+        expect(content).not.toContain("votre choix");
+        expect(content).not.toContain("renoncé");
+      }
+    }
   });
 
   it("contains no card / CMI transaction data", () => {
@@ -187,7 +193,6 @@ describe("team notification e-mail", () => {
         "Réduction : −425,00 MAD",
         "Code : WL-DSCT-AAAA",
         `Montant payé : 8${NBSP}075,00 MAD TTC`,
-        "Accès : Immédiat — renonciation au droit de rétractation",
         "Ouvrir l'accès : sous 24 h ouvrées",
         "Payé le : 20/11/2026 11:05",
         "TransId CMI : 26324TEST0001",
@@ -200,14 +205,15 @@ describe("team notification e-mail", () => {
     expect(mail.html).toContain("Commande payée");
   });
 
-  it("after_withdrawal, student code (no discount), no phone", () => {
-    const { text } = orderTeamNotificationEmail(STUDENT_AFTER_WITHDRAWAL, SETTINGS);
+  it("student code (no discount), no phone", () => {
+    const { text } = orderTeamNotificationEmail(STUDENT, SETTINGS);
 
     expect(text).not.toContain("Téléphone");
     expect(text).toContain("Réduction : aucune");
     expect(text).toContain("Code : WL-STUD-BBBB");
-    expect(text).toContain("Accès : Après le délai de rétractation de 7 jours");
-    expect(text).toContain("Ouvrir l'accès : à partir du 27/11/2026");
+    expect(text).toContain("Ouvrir l'accès : sous 24 h ouvrées");
+    expect(text).not.toContain("Accès : ");
+    expect(text).not.toContain("rétractation");
   });
 
   it("no Code row when no code was used", () => {

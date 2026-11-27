@@ -1,4 +1,4 @@
-import { formatDateCasablanca, formatDateTimeCasablanca } from "../commerce/emails";
+import { formatDateTimeCasablanca } from "../commerce/emails";
 import { TEST_PRODUCT_SLUG } from "../config/commerce";
 import { CONTACT_PHONE } from "../config/legal";
 import { renderEmail, type Paragraph } from "../lib/emailTemplate";
@@ -95,8 +95,6 @@ export function orderConfirmationEmail(
   order: PaidOrder,
   { siteUrl, contactRecipient }: OrderEmailSettings,
 ): MailMessage {
-  const withdrawalFormUrl = `${siteUrl}/documents/formulaire-retractation-welearn.pdf`;
-
   const rows: Array<[string, string]> = [
     ["Formation", order.label],
     ["Montant payé", `${formatMad(order.amount_mad)} MAD TTC`],
@@ -112,19 +110,10 @@ export function orderConfirmationEmail(
     ["Date du paiement", formatDateTimeCasablanca(order.paid_at)],
   );
 
-  const access: Paragraph =
-    order.access_choice === "immediate"
-      ? [
-          "Votre accès à la formation sera ouvert sous 24 heures ouvrées. Conformément à votre choix lors de la commande, vous avez renoncé à votre droit de rétractation dès l'ouverture effective de l'accès.",
-        ]
-      : [
-          `Conformément à votre choix lors de la commande, votre accès à la formation sera ouvert à l'expiration du délai légal de rétractation de 7 jours, à partir du ${formatDateCasablanca(order.access_available_at)}. Vous pouvez exercer votre droit de rétractation pendant ce délai, par écrit à ${contactRecipient}`,
-          // HTML : « … à X (formulaire de rétractation). » avec lien ;
-          // texte seul : « … à X ou avec le formulaire de rétractation : URL. »
-          { text: " (", plain: " ou avec le formulaire de rétractation : " },
-          { text: "formulaire de rétractation", href: withdrawalFormUrl, plain: withdrawalFormUrl },
-          { text: ").", plain: "." },
-        ];
+  // CGV art. 8 : acces immediat pour toute commande, aucun choix a rappeler.
+  const access: Paragraph = [
+    "Votre accès à la formation est immédiat : il sera ouvert sous 24 heures ouvrées.",
+  ];
 
   return message(
     order.customer_email,
@@ -158,7 +147,6 @@ export function orderTeamNotificationEmail(
   order: PaidOrder,
   { contactRecipient }: OrderEmailSettings,
 ): MailMessage {
-  const immediate = order.access_choice === "immediate";
   const amount = formatMad(order.amount_mad);
 
   const rows: Array<[string, string]> = [
@@ -178,18 +166,7 @@ export function orderTeamNotificationEmail(
   }
   rows.push(
     ["Montant payé", `${amount} MAD TTC`],
-    [
-      "Accès",
-      immediate
-        ? "Immédiat — renonciation au droit de rétractation"
-        : "Après le délai de rétractation de 7 jours",
-    ],
-    [
-      "Ouvrir l'accès",
-      immediate
-        ? "sous 24 h ouvrées"
-        : `à partir du ${formatDateCasablanca(order.access_available_at)}`,
-    ],
+    ["Ouvrir l'accès", "sous 24 h ouvrées"],
     ["Payé le", formatDateTimeCasablanca(order.paid_at)],
     ["TransId CMI", order.cmi_trans_id ?? "—"],
     ["Code d'autorisation", order.cmi_auth_code ?? "—"],

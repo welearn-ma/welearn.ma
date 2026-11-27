@@ -193,15 +193,12 @@ export default function ConditionsGeneralesPage() {
               formations en présentiel.
             </p>
             <p>
-              Pour les formations à distance, le Client choisit expressément,
-              lors de la commande, entre : (a) l’ouverture immédiate de l’accès,
-              sous 24 heures ouvrées à compter de la confirmation du paiement,
-              en contrepartie de laquelle il reconnaît renoncer à son droit de
-              rétractation dès l’ouverture effective de l’accès ; ou (b)
-              l’ouverture de l’accès à l’expiration du délai légal de
-              rétractation de sept (7) jours, son droit de rétractation étant
-              alors intégralement préservé. Ce choix est recueilli par une case
-              à cocher distincte et non pré-cochée.
+              Pour les formations à distance, l’accès est immédiat : il est
+              ouvert sous 24 heures ouvrées à compter de la confirmation du
+              paiement. En cliquant sur le bouton « Payer » de la page de
+              paiement, le Client demande expressément l’exécution immédiate
+              de la prestation et reconnaît renoncer à son droit de
+              rétractation de sept (7) jours prévu par la loi n° 31-08.
             </p>
             <p>
               Pour les formations organisées par sessions, la formation débute à

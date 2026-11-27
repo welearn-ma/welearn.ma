@@ -27,7 +27,6 @@ const CONFIG: CmiConfig = {
 };
 const CREATED_AT = new Date(Date.UTC(2026, 10, 20, 10, 0, 0));
 const PAID_AT = new Date(Date.UTC(2026, 10, 20, 10, 5, 0));
-const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 
 const CHECKOUT: Record<string, string> = {
   formation_slug: "test-paiement-cmi",
@@ -35,7 +34,6 @@ const CHECKOUT: Record<string, string> = {
   customer_email: "eric@example.test",
   customer_phone: "+212 600 000 000",
   cgv_accepted: "on",
-  access_choice: "immediate",
 };
 
 // ---------------------------------------------------------------------------
@@ -250,7 +248,7 @@ describe("POST /api/payments/cmi/init", () => {
       customer_email: "eric@example.test",
       customer_phone: "+212 600 000 000",
       cgv_accepted_at: CREATED_AT.toISOString(),
-      cgv_version: "24/11/2026",
+      cgv_version: "27/11/2026",
       access_choice: "immediate",
       access_available_at: null,
       paid_at: null,
@@ -271,8 +269,6 @@ describe("POST /api/payments/cmi/init", () => {
     ["empty name", { customer_name: "   " }],
     ["name over 255 chars", { customer_name: "A".repeat(256) }],
     ["bad phone", { customer_phone: "call me" }],
-    ["bad access_choice", { access_choice: "later" }],
-    ["missing access_choice", { access_choice: "" }],
     ["unknown slug", { formation_slug: "does-not-exist" }],
     ["inactive slug", { formation_slug: "inactive-formation" }],
   ])("%s → 302 echec?reason=invalid, no order", async (_label, overrides) => {
@@ -381,13 +377,12 @@ describe("POST /api/payments/cmi/callback", () => {
     });
   });
 
-  it("after_withdrawal → access_available_at = paid_at + 7 days", async () => {
+  it("stale form still posting access_choice=after_withdrawal → immediate order, access at paid_at", async () => {
     const { body: posted, oid } = await initOrder({ access_choice: "after_withdrawal" });
+    expect(store.orders.get(oid)?.access_choice).toBe("immediate");
     clock = PAID_AT;
     await callback(cmiBody(posted, APPROVED_FIELDS));
-    expect(store.orders.get(oid)?.access_available_at).toBe(
-      new Date(PAID_AT.getTime() + SEVEN_DAYS_MS).toISOString(),
-    );
+    expect(store.orders.get(oid)?.access_available_at).toBe(PAID_AT.toISOString());
   });
 
   it("00 again with the SAME TransId (retry) → ACTION=POSTAUTH, nothing changes, no warning", async () => {
