@@ -130,7 +130,6 @@ function createMemoryStore() {
             formation_slug: o.formation_slug,
             amount_mad: o.amount_mad,
             status: o.status,
-            access_choice: o.access_choice,
             paid_at: o.paid_at,
             cmi_trans_id: o.cmi_trans_id,
             code_id: o.code_id,
@@ -147,10 +146,10 @@ function createMemoryStore() {
       const o = orders.get(oid);
       if (!o) return null;
       const { oid: ref, formation_slug, status, amount_mad, list_amount_mad, discount_mad, code_id,
-        customer_name, customer_email, customer_phone, access_choice, access_available_at, paid_at,
+        customer_name, customer_email, customer_phone, access_available_at, paid_at,
         cmi_trans_id, cmi_auth_code } = o;
       return { oid: ref, formation_slug, status, amount_mad, list_amount_mad, discount_mad, code_id,
-        customer_name, customer_email, customer_phone, access_choice, access_available_at, paid_at,
+        customer_name, customer_email, customer_phone, access_available_at, paid_at,
         cmi_trans_id, cmi_auth_code };
     },
     async findCodeById(id) {

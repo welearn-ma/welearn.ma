@@ -7,7 +7,6 @@
 import type { CodeRecord, ProductRecord } from "../commerce/types";
 
 export type OrderStatus = "PENDING" | "PAID" | "FAILED" | "CANCELLED";
-export type AccessChoice = "immediate" | "after_withdrawal";
 export type PaymentEventSource = "callback" | "return";
 
 export interface NewOrder {
@@ -25,7 +24,6 @@ export interface NewOrder {
   customer_phone: string | null;
   cgv_accepted_at: string;
   cgv_version: string;
-  access_choice: AccessChoice;
 }
 
 /** Colonnes lues par les endpoints : aucune donnee client. */
@@ -34,7 +32,6 @@ export interface OrderRecord {
   formation_slug: string;
   amount_mad: number;
   status: OrderStatus;
-  access_choice: AccessChoice;
   paid_at: string | null;
   /** TransId CMI du paiement capture (detection des doubles approbations). */
   cmi_trans_id: string | null;
@@ -58,7 +55,6 @@ export interface OrderDetails {
   customer_name: string;
   customer_email: string;
   customer_phone: string | null;
-  access_choice: AccessChoice;
   access_available_at: string | null;
   paid_at: string | null;
   cmi_trans_id: string | null;

@@ -249,7 +249,6 @@ describe("POST /api/payments/cmi/init", () => {
       customer_phone: "+212 600 000 000",
       cgv_accepted_at: CREATED_AT.toISOString(),
       cgv_version: "27/11/2026",
-      access_choice: "immediate",
       access_available_at: null,
       paid_at: null,
     });
@@ -377,9 +376,9 @@ describe("POST /api/payments/cmi/callback", () => {
     });
   });
 
-  it("stale form still posting access_choice=after_withdrawal → immediate order, access at paid_at", async () => {
+  it("stale form still posting access_choice → field ignored (not stored), access at paid_at", async () => {
     const { body: posted, oid } = await initOrder({ access_choice: "after_withdrawal" });
-    expect(store.orders.get(oid)?.access_choice).toBe("immediate");
+    expect(store.orders.get(oid)).not.toHaveProperty("access_choice");
     clock = PAID_AT;
     await callback(cmiBody(posted, APPROVED_FIELDS));
     expect(store.orders.get(oid)?.access_available_at).toBe(PAID_AT.toISOString());

@@ -111,7 +111,6 @@ describe("existing e-mails are unchanged", () => {
       customer_name: "Salma <Alaoui> & 'co'",
       customer_email: "salma@example.test",
       customer_phone: "+212 600 123 456",
-      access_choice: "immediate",
       paid_at: "2026-11-25T13:30:00.000Z",
       access_available_at: "2026-11-25T13:30:00.000Z",
       cmi_trans_id: "26329ABCD1234",

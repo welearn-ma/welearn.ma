@@ -10,12 +10,12 @@ import {
 type DbError = { code?: string; message?: string };
 
 const ORDER_COLUMNS =
-  "oid, formation_slug, amount_mad, status, access_choice, paid_at, cmi_trans_id, code_id";
+  "oid, formation_slug, amount_mad, status, paid_at, cmi_trans_id, code_id";
 
 /** E-mails de commande payee uniquement (donnees client comprises). */
 const ORDER_DETAILS_COLUMNS =
   "oid, formation_slug, status, amount_mad, list_amount_mad, discount_mad, code_id, " +
-  "customer_name, customer_email, customer_phone, access_choice, access_available_at, " +
+  "customer_name, customer_email, customer_phone, access_available_at, " +
   "paid_at, cmi_trans_id, cmi_auth_code";
 
 /** Essais de la mise a jour optimiste de used_count (concurrence). */

@@ -25,7 +25,6 @@ const DISCOUNT_IMMEDIATE: PaidOrder = {
   customer_name: "Éric Benjelloun",
   customer_email: "eric@example.test",
   customer_phone: "+212 600 000 000",
-  access_choice: "immediate",
   access_available_at: PAID_AT,
   paid_at: PAID_AT,
   cmi_trans_id: "26324TEST0001",
@@ -150,9 +149,8 @@ describe("customer confirmation e-mail", () => {
       .not.toContain("Prix catalogue");
   });
 
-  it("same access text for every order, whatever access_choice the row holds; no withdrawal / choice wording", () => {
-    // access_choice "after_withdrawal" : anciennes lignes en base uniquement.
-    for (const order of [DISCOUNT_IMMEDIATE, STUDENT, { ...STUDENT, access_choice: "after_withdrawal" as const }]) {
+  it("same access text for every order; no withdrawal / choice wording", () => {
+    for (const order of [DISCOUNT_IMMEDIATE, STUDENT]) {
       const { html, text } = orderConfirmationEmail(order, SETTINGS);
       expect(text).toContain(ACCESS_TEXT);
       for (const content of [html, text]) {

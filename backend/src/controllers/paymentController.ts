@@ -284,9 +284,6 @@ export function createPaymentHandlers({
         customer_phone: input.phone,
         cgv_accepted_at: createdAt.toISOString(),
         cgv_version: CGV_VERSION,
-        // CGV art. 8 : le clic sur « Payer » vaut demande d'acces immediat
-        // et renonciation au droit de retractation.
-        access_choice: "immediate",
       });
       if (outcome === "inserted") {
         return oid;
@@ -508,9 +505,8 @@ export function createPaymentHandlers({
       return "FAILURE";
     }
 
-    // Acces immediat pour toute commande (CGV art. 8). Les anciennes
-    // commandes after_withdrawal encore PENDING expirent en 45 min (expiry.ts)
-    // et ne peuvent plus passer PAID.
+    // Acces immediat pour toute commande (CGV art. 8 : le clic sur « Payer »
+    // vaut demande d'acces immediat et renonciation au droit de retractation).
     const paidAt = now().toISOString();
 
     const updated = await store.markOrderPaid(oid, {
