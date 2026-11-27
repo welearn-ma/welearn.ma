@@ -198,12 +198,12 @@ describe("PENDING → PAID", () => {
     expect(customer).toMatchObject({
       to: EMAIL,
       replyTo: CONTACT,
-      subject: "Confirmation de votre paiement — Welearn",
+      subject: "[TEST] Confirmation de votre paiement — Welearn",
     });
     expect(team).toMatchObject({
       to: CONTACT,
       replyTo: EMAIL,
-      subject: `[Commande payée] Test paiement CMI — 10,00 MAD — ${oid}`,
+      subject: `[TEST] [Commande payée] Test paiement CMI — 10,00 MAD — ${oid}`,
     });
     expect(customer.text).toContain(`Référence de commande : ${oid}`);
     expect(customer.text).toContain("Date du paiement : 24/11/2026 10:00");
@@ -252,11 +252,11 @@ describe("PENDING → PAID", () => {
 
     const [customer, team] = mailer.sent;
     expect(customer.text).not.toContain("Prix catalogue");
-    expect(customer.text).not.toContain("accès");
+    expect(customer.text).toContain("Votre accès à la formation est immédiat : il sera ouvert sous 24 heures ouvrées.");
     expect(customer.text).not.toContain("rétractation");
     expect(team.text).toContain("Code : WL-STUD-BBBB");
     expect(team.text).toContain("Réduction : aucune");
-    expect(team.text).not.toContain("accès");
+    expect(team.text).toContain("Ouvrir l'accès : sous 24 h ouvrées");
   });
 });
 

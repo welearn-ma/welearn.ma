@@ -10,8 +10,7 @@ import {
 const NBSP = " ";
 const SETTINGS = { siteUrl: "https://site.example.test", contactRecipient: "contact@example.test" };
 const PAID_AT = "2026-11-20T10:05:00.000Z"; // 10:05 a Casablanca (UTC+0 depuis le 20/09/2026)
-/** Plus aucune mention d'acces (ni choix, ni delai) dans les e-mails de commande. */
-const ACCESS_WORDING = ["accès", "Accès", "immédiat", "24 heures", "24 h", "rétractation", "votre choix", "renoncé"];
+const ACCESS_TEXT = "Votre accès à la formation est immédiat : il sera ouvert sous 24 heures ouvrées.";
 
 /** Remise (Pack Professionnels, code de reduction). */
 const DISCOUNT_IMMEDIATE: PaidOrder = {
@@ -115,6 +114,7 @@ describe("customer confirmation e-mail", () => {
         `Prix catalogue : 8${NBSP}500,00 MAD TTC — Réduction : −425,00 MAD`,
         "Référence de commande : WL20261120100500AB12CD",
         "Date du paiement : 20/11/2026 10:05",
+        ACCESS_TEXT,
         "Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.",
         "Conditions générales de vente (https://site.example.test/cgv/) · Politique de remboursement (https://site.example.test/remboursement/)",
         "L'équipe Welearn",
@@ -135,6 +135,7 @@ describe("customer confirmation e-mail", () => {
         `Montant payé : 5${NBSP}000,00 MAD TTC`,
         "Référence de commande : WL20261120100500EF34GH",
         "Date du paiement : 20/11/2026 10:05",
+        ACCESS_TEXT,
         "Conservez cet e-mail et votre référence de commande. Pour toute question : contact@example.test · +212 661 499 479.",
         "Conditions générales de vente (https://site.example.test/cgv/) · Politique de remboursement (https://site.example.test/remboursement/)",
         "L'équipe Welearn",
@@ -148,12 +149,12 @@ describe("customer confirmation e-mail", () => {
     expect(mail.html).not.toContain("Prix catalogue");
   });
 
-  it("HTML: info rows before the closing text; CGV and refund links", () => {
+  it("HTML: info rows before the access text; CGV and refund links", () => {
     const html = orderConfirmationEmail(STUDENT, SETTINGS).html;
 
     expect(html).toContain('<a href="https://site.example.test/cgv/" style="color:#1B5FAA;">Conditions générales de vente</a> · ');
     expect(html).toContain('<a href="https://site.example.test/remboursement/" style="color:#1B5FAA;">Politique de remboursement</a>');
-    expect(html.indexOf("Date du paiement")).toBeLessThan(html.indexOf("Conservez cet e-mail"));
+    expect(html.indexOf("Date du paiement")).toBeLessThan(html.indexOf("Votre accès à la formation est immédiat"));
     expect(html.indexOf("Nous confirmons")).toBeLessThan(html.indexOf("Formation"));
     expect(html).toContain("Confirmation de paiement");
   });
@@ -164,13 +165,14 @@ describe("customer confirmation e-mail", () => {
       .not.toContain("Prix catalogue");
   });
 
-  it("no access, delay, withdrawal or choice wording, whatever the order", () => {
-    for (const order of [DISCOUNT_IMMEDIATE, STUDENT, TEST_PRODUCT]) {
-      const { html, text, subject } = orderConfirmationEmail(order, SETTINGS);
-      for (const content of [html, text, subject]) {
-        for (const wording of ACCESS_WORDING) {
-          expect(content).not.toContain(wording);
-        }
+  it("same access text for every order; no withdrawal / choice wording", () => {
+    for (const order of [DISCOUNT_IMMEDIATE, STUDENT]) {
+      const { html, text } = orderConfirmationEmail(order, SETTINGS);
+      expect(text).toContain(ACCESS_TEXT);
+      for (const content of [html, text]) {
+        expect(content).not.toContain("rétractation");
+        expect(content).not.toContain("votre choix");
+        expect(content).not.toContain("renoncé");
       }
     }
   });
@@ -205,6 +207,7 @@ describe("team notification e-mail", () => {
         "Réduction : −425,00 MAD",
         "Code : WL-DSCT-AAAA",
         `Montant payé : 8${NBSP}075,00 MAD TTC`,
+        "Ouvrir l'accès : sous 24 h ouvrées",
         "Payé le : 20/11/2026 10:05",
         "TransId CMI : 26324TEST0001",
         "Code d'autorisation : AUTH01",
@@ -222,17 +225,9 @@ describe("team notification e-mail", () => {
     expect(text).not.toContain("Téléphone");
     expect(text).toContain("Réduction : aucune");
     expect(text).toContain("Code : WL-STUD-BBBB");
-  });
-
-  it("no access, delay, withdrawal or choice wording, whatever the order", () => {
-    for (const order of [DISCOUNT_IMMEDIATE, STUDENT, TEST_PRODUCT]) {
-      const { html, text, subject } = orderTeamNotificationEmail(order, SETTINGS);
-      for (const content of [html, text, subject]) {
-        for (const wording of ACCESS_WORDING) {
-          expect(content).not.toContain(wording);
-        }
-      }
-    }
+    expect(text).toContain("Ouvrir l'accès : sous 24 h ouvrées");
+    expect(text).not.toContain("Accès : ");
+    expect(text).not.toContain("rétractation");
   });
 
   it("no Code row when no code was used", () => {
@@ -241,19 +236,15 @@ describe("team notification e-mail", () => {
 });
 
 describe("test product and escaping", () => {
-  it("test product: same subjects as any order, no [TEST] prefix", () => {
+  it("[TEST] prefix on both subjects for test-paiement-cmi only", () => {
     expect(orderConfirmationEmail(TEST_PRODUCT, SETTINGS).subject).toBe(
-      "Confirmation de votre paiement — Welearn",
+      "[TEST] Confirmation de votre paiement — Welearn",
     );
     expect(orderTeamNotificationEmail(TEST_PRODUCT, SETTINGS).subject).toBe(
-      "[Commande payée] Test paiement CMI — 10,00 MAD — WL20261120100500AB12CD",
+      "[TEST] [Commande payée] Test paiement CMI — 10,00 MAD — WL20261120100500AB12CD",
     );
-    for (const order of [TEST_PRODUCT, DISCOUNT_IMMEDIATE, STUDENT]) {
-      for (const mail of [orderConfirmationEmail(order, SETTINGS), orderTeamNotificationEmail(order, SETTINGS)]) {
-        expect(mail.subject).not.toContain("[TEST]");
-        expect(mail.text).not.toContain("[TEST]");
-      }
-    }
+    expect(orderConfirmationEmail(DISCOUNT_IMMEDIATE, SETTINGS).subject).not.toContain("[TEST]");
+    expect(orderTeamNotificationEmail(DISCOUNT_IMMEDIATE, SETTINGS).subject).not.toContain("[TEST]");
   });
 
   it("every customer-controlled or DB value is HTML-escaped", () => {
