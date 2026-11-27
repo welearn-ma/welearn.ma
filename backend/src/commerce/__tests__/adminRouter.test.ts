@@ -431,8 +431,9 @@ describe("codes", () => {
 });
 
 describe("promotions (early stop)", () => {
-  const STARTS_AT = "2026-11-26T23:00:00.000Z"; // 27/11 00:00 Casablanca
-  const ENDS_AT = "2026-11-30T23:00:00.000Z"; //   01/12 00:00 Casablanca (exclu)
+  // Heure de Casablanca = UTC depuis le 20/09/2026.
+  const STARTS_AT = "2026-11-27T00:00:00.000Z"; // 27/11 00:00 Casablanca
+  const ENDS_AT = "2026-12-01T00:00:00.000Z"; //   01/12 00:00 Casablanca (exclu)
 
   function addBlackFriday() {
     return store.addPromotion(

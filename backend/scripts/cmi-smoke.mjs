@@ -82,7 +82,8 @@ function createMemoryStore() {
       product_slug: "bim-foundations-etudiant",
     }),
   ]);
-  // Black Friday : 27/11/2026 00:00 -> 01/12/2026 00:00 (exclu), Casablanca (UTC+1).
+  // Black Friday : 27/11/2026 00:00 -> 01/12/2026 00:00 (exclu), heure de
+  // Casablanca = UTC depuis le 20/09/2026.
   const promotions = new Map([
     [
       BLACK_FRIDAY_ID,
@@ -90,8 +91,8 @@ function createMemoryStore() {
         id: BLACK_FRIDAY_ID,
         label: "Black Friday",
         percent_off: 25,
-        starts_at: "2026-11-26T23:00:00.000Z",
-        ends_at: "2026-11-30T23:00:00.000Z",
+        starts_at: "2026-11-27T00:00:00.000Z",
+        ends_at: "2026-12-01T00:00:00.000Z",
         active: true,
       },
     ],
@@ -463,9 +464,9 @@ try {
   const productBody = async (slug) =>
     JSON.parse((await request("GET", `/api/payments/products/${slug}`, { headers: { origin: SITE } })).text);
   const pick = (o, keys) => JSON.stringify(Object.fromEntries(keys.map((k) => [k, o[k]])));
-  const BF = { label: "Black Friday", percent_off: 25, ends_at: "2026-11-30T23:00:00.000Z" };
+  const BF = { label: "Black Friday", percent_off: 25, ends_at: "2026-12-01T00:00:00.000Z" };
 
-  clock = new Date("2026-11-26T22:59:59.000Z"); // 26/11 23:59:59 Casablanca
+  clock = new Date("2026-11-26T23:59:59.000Z"); // 26/11 23:59:59 Casablanca
   const pBefore = await productBody("bim-foundations-pro");
   check("BF products/pro on 26/11 23:59:59 Casablanca -> 8500, promotion null",
     pBefore.amount_mad === 8500 && pBefore.promotion === null, JSON.stringify(pBefore));
@@ -509,9 +510,9 @@ try {
   check("BF student init with code -> amount 3750.00", bfStu.posted.amount === "3750.00", bfStu.posted.amount);
 
   // Commande creee le 30/11 a 23:59:59, callback le 01/12 a 00:10 (apres la fin).
-  clock = new Date("2026-11-30T22:59:59.000Z");
+  clock = new Date("2026-11-30T23:59:59.000Z");
   const late = await init(PRO);
-  clock = new Date("2026-11-30T23:10:00.000Z");
+  clock = new Date("2026-12-01T00:10:00.000Z");
   const lateWrong = await callback(cmiSigned({ ...late.posted, amount: "8500.00" }, { ...APPROVED, TransId: "SMOKE-TRANS-L0" }));
   check("BF late callback claiming today's price 8500.00 -> FAILURE, still PENDING",
     lateWrong.text === "FAILURE" && store.orders.get(late.posted.oid).status === "PENDING", lateWrong.text);

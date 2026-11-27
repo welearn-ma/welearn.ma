@@ -15,8 +15,13 @@
 --   'promotion_activated' / 'promotion_deactivated'.
 -- * Black Friday : du vendredi 27/11/2026 00:00 au lundi 30/11/2026
 --   23:59:59 (heure de Casablanca), soit ends_at = 01/12/2026 00:00 exclu.
---   Bornes calculees par Postgres (tzdata) : '... ' at time zone
---   'Africa/Casablanca'.
+--
+-- HEURE DU MAROC : UTC+0 depuis le 20/09/2026 (fin de l'heure UTC+1
+-- permanente ; donnees de fuseaux de Windows et de Chrome 158). Les bornes
+-- sont donc ecrites en UTC EXPLICITE (+00) : on ne depend pas des donnees
+-- de fuseaux du serveur Postgres, qui peuvent dater d'avant ce changement
+-- (avec at time zone Africa/Casablanca, un Postgres non a jour donnerait
+-- encore UTC+1 et la promotion finirait a 23:00, heure locale).
 --
 -- Note archi : comme les autres tables du paiement, RLS activee SANS policy ;
 -- seul le backend (service role) lit / ecrit. Le site lit la promotion en
@@ -132,8 +137,9 @@ with created as (
   values (
     'Black Friday',
     25.00,
-    timestamp '2026-11-27 00:00:00' at time zone 'Africa/Casablanca',
-    timestamp '2026-12-01 00:00:00' at time zone 'Africa/Casablanca',
+    -- 27/11/2026 00:00 et 01/12/2026 00:00 heure de Casablanca (UTC+0).
+    timestamptz '2026-11-27 00:00:00+00',
+    timestamptz '2026-12-01 00:00:00+00',
     true
   )
   on conflict on constraint promotions_label_start_unique do nothing
@@ -149,7 +155,7 @@ select p.id, s.slug
 from public.promotions p
 cross join (values ('bim-foundations-pro'), ('bim-foundations-etudiant')) as s (slug)
 where p.label = 'Black Friday'
-  and p.starts_at = timestamp '2026-11-27 00:00:00' at time zone 'Africa/Casablanca'
+  and p.starts_at = timestamptz '2026-11-27 00:00:00+00'
 on conflict on constraint promotion_products_pk do nothing;
 
 commit;
@@ -158,13 +164,19 @@ notify pgrst, 'reload schema';
 
 -- 7. VERIFICATIONS (lecture seule, a lancer apres la migration).
 --
--- a) La promotion et ses bornes en heure de Casablanca :
+-- a) La promotion et ses bornes (UTC = heure de Casablanca depuis le
+--    20/09/2026) :
 --      select id, label, percent_off, active,
---             starts_at at time zone 'Africa/Casablanca' as debut_casablanca,
---             ends_at   at time zone 'Africa/Casablanca' as fin_exclue_casablanca
+--             starts_at at time zone 'UTC' as debut,
+--             ends_at   at time zone 'UTC' as fin_exclue
 --      from public.promotions;
 --    Attendu : Black Friday, 25.00, true, 2026-11-27 00:00:00,
 --    2026-12-01 00:00:00.
+--
+-- a bis) Donnees de fuseaux de Postgres (information seulement) :
+--      select timestamptz '2026-11-27 00:00:00+00' at time zone 'Africa/Casablanca';
+--    2026-11-27 00:00:00 = a jour ; 2026-11-27 01:00:00 = anterieures au
+--    20/09/2026 (sans effet sur la promotion : bornes en UTC explicite).
 --
 -- b) Produits et prix promo :
 --      select pp.product_slug, f.amount_mad,
@@ -192,8 +204,9 @@ notify pgrst, 'reload schema';
 --    de la commande). Reactivation : meme requete avec active = true,
 --    "and not active" et 'promotion_activated'.
 --
---    PROLONGER / AVANCER LA FIN (ex. fin le mardi 01/12 a 23:59:59) :
+--    PROLONGER / AVANCER LA FIN (ex. fin le mardi 01/12 a 23:59:59, heure
+--    de Casablanca = UTC+0) :
 --      update public.promotions
---      set ends_at = timestamp '2026-12-02 00:00:00' at time zone 'Africa/Casablanca',
+--      set ends_at = timestamptz '2026-12-02 00:00:00+00',
 --          updated_at = now()
 --      where label = 'Black Friday';

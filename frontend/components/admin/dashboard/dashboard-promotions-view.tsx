@@ -5,6 +5,7 @@ import { Loader2, Power, PowerOff, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { activatePromotion, deactivatePromotion, listPromotions } from "@/lib/api/admin-commerce";
+import { formatCasablancaDateTime } from "@/lib/payments/format";
 import type { AdminPromotion, PromotionStatus } from "@/types/admin-commerce";
 import {
   DashboardNotice,
@@ -22,24 +23,14 @@ const STATUS_BADGES: Record<PromotionStatus, { label: string; className: string 
   disabled: { label: "Désactivée", className: "border-red-200 bg-red-50 text-red-700" },
 };
 
-/** JJ/MM/AAAA HH:mm à l'heure de Casablanca. */
-function formatDateTime(value: number): string {
-  return new Intl.DateTimeFormat("fr-FR", {
-    timeZone: "Africa/Casablanca",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hourCycle: "h23",
-  }).format(new Date(value));
-}
-
-/** « 27/11/2026 00:00 → 30/11/2026 23:59 » (fin exclue : dernière minute incluse). */
+/**
+ * « 27/11/2026 00:00 → 30/11/2026 23:59 », heure de Casablanca (fin exclue :
+ * dernière minute incluse). Même calcul que le site public.
+ */
 function formatWindow(promotion: AdminPromotion): string {
   const start = new Date(promotion.startsAt).getTime();
   const end = new Date(promotion.endsAt).getTime();
-  return `${formatDateTime(start)} → ${formatDateTime(end - 1)}`;
+  return `${formatCasablancaDateTime(start)} → ${formatCasablancaDateTime(end - 1)}`;
 }
 
 function percentLabel(promotion: AdminPromotion): string {

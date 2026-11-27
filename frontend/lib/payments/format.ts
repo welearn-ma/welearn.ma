@@ -27,34 +27,56 @@ export function formatPromotionBadge(promotion: { label: string; percent_off: nu
 }
 
 /**
+ * Heure de Casablanca pour l'affichage des promotions : UTC+0 depuis le
+ * 20/09/2026 (le Maroc a quitté l'heure UTC+1). Décalage explicite, et non
+ * timeZone "Africa/Casablanca" : beaucoup d'appareils n'ont pas encore cette
+ * mise à jour des fuseaux horaires et afficheraient une heure de trop
+ * (« 00h59 » au lieu de « 23h59 »). À modifier si l'heure légale du Maroc
+ * change de nouveau.
+ */
+const CASABLANCA_UTC_OFFSET_MINUTES = 0;
+
+/** Date et heure d'un instant, à l'heure de Casablanca (voir ci-dessus). */
+function casablancaParts(instantMs: number): Record<string, string> {
+  return new Intl.DateTimeFormat("fr-FR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+    timeZone: "UTC",
+  })
+    .formatToParts(new Date(instantMs + CASABLANCA_UTC_OFFSET_MINUTES * 60_000))
+    .reduce<Record<string, string>>((parts, part) => ({ ...parts, [part.type]: part.value }), {});
+}
+
+/**
  * Fin d'une offre, à l'heure de Casablanca : « lundi 30 novembre 2026 à
  * 23h59 ». `endsAt` est EXCLU (01/12/2026 00:00) : on affiche la dernière
- * minute incluse. null si la date est illisible ou si le navigateur n'a pas
- * les fuseaux horaires (mieux vaut ne rien afficher qu'une heure fausse).
+ * minute incluse. null si la date est illisible.
  */
 export function formatOfferEnd(endsAt: string): string | null {
   const end = new Date(endsAt).getTime();
   if (Number.isNaN(end)) return null;
-  const lastIncluded = new Date(end - 1);
-  try {
-    const p = new Intl.DateTimeFormat("fr-FR", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hourCycle: "h23",
-      timeZone: "Africa/Casablanca",
-    })
-      .formatToParts(lastIncluded)
-      .reduce<Record<string, string>>((parts, part) => ({ ...parts, [part.type]: part.value }), {});
-    // « 1er décembre », « 30 novembre ».
-    const day = p.day === "1" ? "1er" : p.day;
-    return `${p.weekday} ${day} ${p.month} ${p.year} à ${p.hour}h${p.minute}`;
-  } catch {
-    return null;
-  }
+  const p = casablancaParts(end - 1);
+  // « 1er décembre », « 30 novembre ».
+  const day = p.day === "1" ? "1er" : p.day;
+  return `${p.weekday} ${day} ${p.month} ${p.year} à ${p.hour}h${p.minute}`;
+}
+
+/** « 27/11/2026 00:00 », à l'heure de Casablanca (écran admin des promotions). */
+export function formatCasablancaDateTime(instantMs: number): string {
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+    timeZone: "UTC",
+  }).format(new Date(instantMs + CASABLANCA_UTC_OFFSET_MINUTES * 60_000));
 }
 
 /**

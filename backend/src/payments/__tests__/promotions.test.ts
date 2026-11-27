@@ -29,28 +29,31 @@ import { MemoryPaymentStore } from "./memoryStore";
  * reduction, Pack Etudiants toujours verrouille, montant fige dans la
  * commande (callback tardif), e-mails.
  *
- * Fin novembre 2026, Casablanca = UTC+1 (pas de Ramadan) :
- *   27/11/2026 00:00 Casablanca = 26/11/2026 23:00Z (debut, inclus)
- *   01/12/2026 00:00 Casablanca = 30/11/2026 23:00Z (fin, EXCLUE)
+ * Heure du Maroc : UTC+0 depuis le 20/09/2026 (fin de l'heure UTC+1
+ * permanente). Pour cette promotion, heure de Casablanca = UTC :
+ *   27/11/2026 00:00 Casablanca = 2026-11-27T00:00Z (debut, inclus)
+ *   01/12/2026 00:00 Casablanca = 2026-12-01T00:00Z (fin, EXCLUE)
+ * Aucun test n'utilise Intl + 'Africa/Casablanca' : les donnees de fuseaux
+ * de Node (tzdata 2025a ici) datent d'avant ce changement.
  */
 
-const STARTS_AT = "2026-11-26T23:00:00.000Z";
-const ENDS_AT = "2026-11-30T23:00:00.000Z";
+const STARTS_AT = "2026-11-27T00:00:00.000Z";
+const ENDS_AT = "2026-12-01T00:00:00.000Z";
 
-const BEFORE = new Date("2026-11-26T22:59:59.999Z"); // 26/11 23:59:59.999 Casa
-const FIRST_INSTANT = new Date(STARTS_AT); //            27/11 00:00:00 Casa
-const UTC_DAY_BEFORE = new Date("2026-11-26T23:30:00.000Z"); // 27/11 00:30 Casa, 26/11 en UTC
+const BEFORE = new Date("2026-11-26T23:59:59.999Z"); // 26/11 23:59:59.999
+const FIRST_INSTANT = new Date(STARTS_AT); //            27/11 00:00:00
+const START_PLUS_30 = new Date("2026-11-27T00:30:00.000Z"); // 27/11 00:30
 const DURING = new Date("2026-11-28T10:00:00.000Z");
-const LAST_SECOND = new Date("2026-11-30T22:59:59.000Z"); // 30/11 23:59:59 Casa
-const END = new Date(ENDS_AT); //                       01/12 00:00:00 Casa
-const UTC_SAME_DAY_AFTER = new Date("2026-11-30T23:30:00.000Z"); // 01/12 00:30 Casa, 30/11 en UTC
+const LAST_SECOND = new Date("2026-11-30T23:59:59.000Z"); // 30/11 23:59:59
+const END = new Date(ENDS_AT); //                       01/12 00:00:00
+const END_PLUS_30 = new Date("2026-12-01T00:30:00.000Z"); // 01/12 00:30
 
 const PRO = "bim-foundations-pro";
 const STUDENT = "bim-foundations-etudiant";
 const TEST_PRODUCT = "test-paiement-cmi";
 const EMAIL = "client@example.test";
 const CONTACT = "contact@example.test";
-const NBSP = " ";
+const NBSP = "\u00a0";
 
 const CHECKOUT: Record<string, string> = {
   formation_slug: PRO,
@@ -61,19 +64,6 @@ const CHECKOUT: Record<string, string> = {
 };
 
 const APPROVED = { ProcReturnCode: "00", Response: "Approved", TransId: "T-BF-1", AuthCode: "A1" };
-
-function casablanca(date: Date): string {
-  return new Intl.DateTimeFormat("fr-FR", {
-    timeZone: "Africa/Casablanca",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hourCycle: "h23",
-  }).format(date);
-}
 
 function promo(overrides: Partial<PromotionRecord> = {}): PromotionRecord {
   return {
@@ -91,23 +81,19 @@ function promo(overrides: Partial<PromotionRecord> = {}): PromotionRecord {
 // Fenetre (logique pure)
 // ---------------------------------------------------------------------------
 
-describe("promotion window (Africa/Casablanca)", () => {
-  it("test instants are the intended Casablanca local times", () => {
-    expect(casablanca(BEFORE)).toBe("26/11/2026 23:59:59");
-    expect(casablanca(FIRST_INSTANT)).toBe("27/11/2026 00:00:00");
-    expect(casablanca(UTC_DAY_BEFORE)).toBe("27/11/2026 00:30:00");
-    expect(casablanca(LAST_SECOND)).toBe("30/11/2026 23:59:59");
-    expect(casablanca(END)).toBe("01/12/2026 00:00:00");
-    expect(casablanca(UTC_SAME_DAY_AFTER)).toBe("01/12/2026 00:30:00");
-  });
-
-  it("migration seeds exactly this window, computed by Postgres in Africa/Casablanca", () => {
+describe("promotion window (Casablanca time = UTC since 20/09/2026)", () => {
+  it("migration seeds exactly this window, in explicit UTC (never the DB's tzdata)", () => {
     const sql = readFileSync(
       path.join(__dirname, "../../../migrations/20261127005000_promotions.sql"),
       "utf8",
     );
-    expect(sql).toContain("timestamp '2026-11-27 00:00:00' at time zone 'Africa/Casablanca'");
-    expect(sql).toContain("timestamp '2026-12-01 00:00:00' at time zone 'Africa/Casablanca'");
+    expect(sql).toContain("timestamptz '2026-11-27 00:00:00+00',");
+    expect(sql).toContain("timestamptz '2026-12-01 00:00:00+00',");
+    expect(new Date("2026-11-27T00:00:00+00:00").getTime()).toBe(FIRST_INSTANT.getTime());
+    expect(new Date("2026-12-01T00:00:00+00:00").getTime()).toBe(END.getTime());
+    // Aucune borne calculee avec les fuseaux de Postgres dans l'insertion.
+    const insert = sql.slice(sql.indexOf("-- 6. Black Friday"), sql.indexOf("commit;"));
+    expect(insert).not.toContain("at time zone");
     expect(sql).toMatch(/'Black Friday',\s+25\.00,/);
     expect(sql).toContain("values ('bim-foundations-pro'), ('bim-foundations-etudiant')");
   });
@@ -115,14 +101,22 @@ describe("promotion window (Africa/Casablanca)", () => {
   it.each([
     ["26/11 23:59:59.999 (before)", BEFORE, "scheduled"],
     ["27/11 00:00:00 (first instant)", FIRST_INSTANT, "running"],
-    ["27/11 00:30 Casablanca, still 26/11 in UTC", UTC_DAY_BEFORE, "running"],
+    ["27/11 00:30", START_PLUS_30, "running"],
     ["28/11 (during)", DURING, "running"],
     ["30/11 23:59:59 (last second)", LAST_SECOND, "running"],
     ["01/12 00:00:00 (end, excluded)", END, "ended"],
-    ["01/12 00:30 Casablanca, still 30/11 in UTC", UTC_SAME_DAY_AFTER, "ended"],
+    ["01/12 00:30", END_PLUS_30, "ended"],
   ])("%s → %s", (_label, at, status) => {
     expect(promotionStatus(promo(), at)).toBe(status);
     expect(runningPromotion([promo()], at)).toEqual(status === "running" ? promo() : null);
+  });
+
+  it("bounds carrying an offset are compared as instants (a window written in +01:00)", () => {
+    const summer = promo({ starts_at: "2026-07-10T00:00:00+01:00", ends_at: "2026-07-13T00:00:00+01:00" });
+    expect(promotionStatus(summer, new Date("2026-07-09T22:59:59.999Z"))).toBe("scheduled");
+    expect(promotionStatus(summer, new Date("2026-07-09T23:00:00.000Z"))).toBe("running");
+    expect(promotionStatus(summer, new Date("2026-07-12T22:59:59.999Z"))).toBe("running");
+    expect(promotionStatus(summer, new Date("2026-07-12T23:00:00.000Z"))).toBe("ended");
   });
 
   it("deactivated → never running, even inside the window", () => {
@@ -290,7 +284,7 @@ describe("GET /products/:slug (runtime promotion for the static site)", () => {
   it.each([
     ["before the window", BEFORE],
     ["at the end instant", END],
-    ["after the window", UTC_SAME_DAY_AFTER],
+    ["after the window", END_PLUS_30],
   ])("%s → catalogue price, promotion null (no deploy needed)", async (_label, at) => {
     clock = at;
     expect((await product(PRO)).body).toMatchObject({
@@ -386,10 +380,10 @@ describe("POST /cmi/init: server-side promo price", () => {
   it.each([
     ["26/11 23:59:59.999 (before)", BEFORE, "8500.00"],
     ["27/11 00:00:00 (first instant)", FIRST_INSTANT, "6375.00"],
-    ["27/11 00:30 Casablanca (26/11 in UTC)", UTC_DAY_BEFORE, "6375.00"],
+    ["27/11 00:30", START_PLUS_30, "6375.00"],
     ["30/11 23:59:59 (last second)", LAST_SECOND, "6375.00"],
     ["01/12 00:00:00 (end, excluded)", END, "8500.00"],
-    ["01/12 00:30 Casablanca (30/11 in UTC)", UTC_SAME_DAY_AFTER, "8500.00"],
+    ["01/12 00:30", END_PLUS_30, "8500.00"],
   ])("%s → amount %s", async (_label, at, amount) => {
     clock = at;
     const { posted, order } = await initOk();
@@ -450,7 +444,7 @@ describe("callback: the amount is the order's, never the current promotion's", (
   it("order created on 30/11 23:59:59, callback after the end → promo amount accepted, PAID", async () => {
     clock = LAST_SECOND;
     const { posted, oid } = await initOk();
-    clock = new Date(END.getTime() + 10 * 60 * 1000); // 01/12 00:10 Casablanca
+    clock = new Date(END.getTime() + 10 * 60 * 1000); // 01/12 00:10
 
     expect(await callback(cmiBody(posted, APPROVED))).toBe("ACTION=POSTAUTH");
     expect(store.orders.get(oid)).toMatchObject({ status: "PAID", amount_mad: 6375 });
