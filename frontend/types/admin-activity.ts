@@ -1,4 +1,4 @@
-export type AdminActivityEntityType = "student" | "sponsor" | "student_proof" | "code";
+export type AdminActivityEntityType = "student" | "sponsor" | "student_proof" | "code" | "promotion";
 export type AdminActivityEventType =
   | "new_request"
   /** Demande de brochure (registration_requests.source = 'brochure'). */
@@ -11,7 +11,14 @@ export type AdminActivityEventType =
   | "proof_email_resent"
   | "code_created"
   | "code_revoked"
-  | "code_email_resent";
+  | "code_email_resent"
+  | "promotion_activated"
+  | "promotion_deactivated";
+
+export type AdminActivityPromotionInfo = {
+  label: string;
+  percentOff: number;
+};
 
 export type AdminActivityStudentProofInfo = {
   fullName: string;
@@ -50,6 +57,8 @@ export type AdminActivityRecord = {
   /** Absents des reponses d'un backend anterieur aux justificatifs / codes. */
   studentProof?: AdminActivityStudentProofInfo | null;
   code?: AdminActivityCodeInfo | null;
+  /** Absent des réponses d'un backend antérieur aux promotions. */
+  promotion?: AdminActivityPromotionInfo | null;
 };
 
 export type AdminActivityListResponse = {

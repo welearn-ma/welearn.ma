@@ -1,5 +1,6 @@
 import type {
   AdminCode,
+  AdminPromotion,
   AdminStudentProof,
   ApproveProofResult,
   CodeKind,
@@ -131,6 +132,24 @@ export function revokeCode(accessToken: string, id: string): Promise<AdminCode> 
 
 export function resendCode(accessToken: string, id: string): Promise<{ emailSent: boolean }> {
   return adminRequest(accessToken, `/codes/${id}/resend`, "L'e-mail n'a pas pu être envoyé.", {
+    method: "POST",
+  });
+}
+
+// --- Promotions ----------------------------------------------------------------
+
+export function listPromotions(accessToken: string): Promise<AdminPromotion[]> {
+  return adminRequest(accessToken, "/promotions", "Impossible de charger les promotions.");
+}
+
+export function deactivatePromotion(accessToken: string, id: string): Promise<AdminPromotion> {
+  return adminRequest(accessToken, `/promotions/${id}/deactivate`, "La désactivation a échoué.", {
+    method: "POST",
+  });
+}
+
+export function activatePromotion(accessToken: string, id: string): Promise<AdminPromotion> {
+  return adminRequest(accessToken, `/promotions/${id}/activate`, "La réactivation a échoué.", {
     method: "POST",
   });
 }

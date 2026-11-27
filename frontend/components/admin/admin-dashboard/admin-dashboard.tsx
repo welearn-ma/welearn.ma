@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { DashboardActivityView } from "../dashboard/dashboard-activity-view";
 import { DashboardCodesView } from "../dashboard/dashboard-codes-view";
+import { DashboardPromotionsView } from "../dashboard/dashboard-promotions-view";
 import { DashboardStudentProofsView } from "../dashboard/dashboard-student-proofs-view";
 import { DashboardFormationCandidatesModal } from "../dashboard/dashboard-formation-candidates-modal";
 import { DashboardInscriptionsView } from "../dashboard/dashboard-inscriptions-view";
@@ -23,11 +24,13 @@ export function AdminDashboard({
   accessToken: string;
 }) {
   const controller = useAdminDashboardController(accessToken);
-  // Les vues Justificatifs / Codes chargent leurs propres donnees : elles
-  // remontent leurs compteurs pour la barre laterale.
+  // Les vues Justificatifs / Codes / Promotions chargent leurs propres
+  // donnees : elles remontent leurs compteurs pour la barre laterale.
   const [commerceCounts, setCommerceCounts] = useState({ total: 0, last24h: 0 });
   const isCommerceView =
-    controller.view === "justificatifs" || controller.view === "codes";
+    controller.view === "justificatifs" ||
+    controller.view === "codes" ||
+    controller.view === "promotions";
 
   return (
     <div className="min-h-screen bg-wl-gray-light pt-10 pb-4">
@@ -128,6 +131,14 @@ export function AdminDashboard({
 
           {controller.view === "codes" ? (
             <DashboardCodesView
+              accessToken={accessToken}
+              onUnauthorized={controller.handleUnauthorized}
+              onCounts={setCommerceCounts}
+            />
+          ) : null}
+
+          {controller.view === "promotions" ? (
+            <DashboardPromotionsView
               accessToken={accessToken}
               onUnauthorized={controller.handleUnauthorized}
               onCounts={setCommerceCounts}

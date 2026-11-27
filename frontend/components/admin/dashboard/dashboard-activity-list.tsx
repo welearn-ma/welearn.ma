@@ -1,4 +1,5 @@
 import {
+  BadgePercent,
   Ban,
   CheckCircle2,
   FileDown,
@@ -66,6 +67,14 @@ const EVENT_BADGES: Record<
     label: "E-mail du code renvoyé",
     className: "border-wl-blue/20 bg-wl-blue-tint text-wl-blue",
   },
+  promotion_activated: {
+    label: "Promotion activée",
+    className: "border-wl-success/30 bg-wl-success-tint text-wl-success",
+  },
+  promotion_deactivated: {
+    label: "Promotion désactivée",
+    className: "border-red-200 bg-red-50 text-red-700",
+  },
 };
 
 // Garde-fou : un event_type inconnu (base en avance sur le frontend) ne doit
@@ -82,6 +91,7 @@ function eventIcon(eventType: AdminActivityRecord["eventType"]) {
   if (eventType === "code_created") return TicketPercent;
   if (eventType === "code_revoked") return Ban;
   if (eventType === "proof_email_resent" || eventType === "code_email_resent") return Send;
+  if (eventType === "promotion_activated" || eventType === "promotion_deactivated") return BadgePercent;
   if (eventType === "treated") return CheckCircle2;
   if (eventType === "untreated") return Undo2;
   if (eventType === "brochure_request") return FileDown;
@@ -97,6 +107,12 @@ function describeEntity(item: AdminActivityRecord) {
 
   if (item.entityType === "code") {
     return item.code ? `${item.code.code} — ${item.code.email}` : "Code supprime";
+  }
+
+  if (item.entityType === "promotion") {
+    return item.promotion
+      ? `Promotion ${item.promotion.label} (−${item.promotion.percentOff}\u00a0%)`
+      : "Promotion";
   }
 
   if (item.entityType === "student") {
@@ -127,6 +143,10 @@ function describeCommerceAction(item: AdminActivityRecord): string | null {
     case "proof_email_resent":
     case "code_email_resent":
       return `e-mail du code renvoyé${by}.`;
+    case "promotion_activated":
+      return `activée${item.actorEmail ? by : " (migration ou SQL)"}.`;
+    case "promotion_deactivated":
+      return `désactivée${item.actorEmail ? by : " (SQL)"}.`;
     default:
       return null;
   }

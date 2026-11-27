@@ -46,5 +46,20 @@ export type AdminCode = {
   status: CodeStatus;
 };
 
+export type PromotionStatus = "running" | "scheduled" | "ended" | "disabled";
+
+/** GET /api/admin/promotions (statut calculé à l'heure du serveur). */
+export type AdminPromotion = {
+  id: string;
+  label: string;
+  percentOff: number;
+  startsAt: string;
+  /** Fin EXCLUE. */
+  endsAt: string;
+  active: boolean;
+  status: PromotionStatus;
+  products: Array<{ slug: string; label: string }>;
+};
+
 export type ApproveProofResult = { code: string; expiresAt: string; emailSent: boolean };
 export type CreatedCode = AdminCode & { emailSent: boolean };
