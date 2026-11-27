@@ -108,6 +108,7 @@ describe("existing e-mails are unchanged", () => {
       discount_mad: 425,
       code_id: "11111111-1111-4111-8111-111111111111",
       code: "WL-DSCT-7K2M",
+      promotion: null,
       customer_name: "Salma <Alaoui> & 'co'",
       customer_email: "salma@example.test",
       customer_phone: "+212 600 123 456",

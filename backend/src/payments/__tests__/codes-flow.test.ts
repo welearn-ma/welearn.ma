@@ -348,6 +348,7 @@ describe("POST /codes/check", () => {
       amount_mad: 8075,
       list_amount_mad: 8500,
       discount_mad: 425,
+      promotion: null,
     });
     expect(res.headers["access-control-allow-origin"]).toBe(SITE);
     expect(store.codes.get(discount.id)!.used_count).toBe(0);
@@ -360,6 +361,7 @@ describe("POST /codes/check", () => {
       amount_mad: 5000,
       list_amount_mad: 5000,
       discount_mad: 0,
+      promotion: null,
     });
   });
 
@@ -431,7 +433,7 @@ describe("POST /codes/check", () => {
 // ---------------------------------------------------------------------------
 
 describe("GET /products/:slug", () => {
-  it("active product → label, amount, requires_student_code", async () => {
+  it("active product, no promotion → label, amount = list price, requires_student_code", async () => {
     const res = await request(server.base, "GET", `/api/payments/products/${STUDENT}`, {
       headers: { origin: SITE },
     });
@@ -440,7 +442,10 @@ describe("GET /products/:slug", () => {
       slug: STUDENT,
       label: "BIM Foundations Professional — Pack Étudiants",
       amount_mad: 5000,
+      list_amount_mad: 5000,
+      discount_mad: 0,
       requires_student_code: true,
+      promotion: null,
     });
     expect(res.headers["access-control-allow-origin"]).toBe(SITE);
   });

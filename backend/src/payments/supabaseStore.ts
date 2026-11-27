@@ -1,4 +1,11 @@
-import { CODE_COLUMNS, PRODUCT_COLUMNS, toCode, toProduct } from "../commerce/rows";
+import {
+  CODE_COLUMNS,
+  PRODUCT_COLUMNS,
+  PROMOTION_COLUMNS,
+  toCode,
+  toProduct,
+  toPromotion,
+} from "../commerce/rows";
 import { supabase } from "../lib/supabaseClient";
 import {
   PaymentStoreError,
@@ -14,7 +21,7 @@ const ORDER_COLUMNS =
 
 /** E-mails de commande payee uniquement (donnees client comprises). */
 const ORDER_DETAILS_COLUMNS =
-  "oid, formation_slug, status, amount_mad, list_amount_mad, discount_mad, code_id, " +
+  "oid, formation_slug, status, amount_mad, list_amount_mad, discount_mad, code_id, promotion_id, " +
   "customer_name, customer_email, customer_phone, access_available_at, " +
   "paid_at, cmi_trans_id, cmi_auth_code";
 
@@ -189,6 +196,46 @@ export const supabasePaymentStore: PaymentStore = {
       fail("codes.select", error);
     }
     return data ? toCode(data) : null;
+  },
+
+  // Deux requetes simples (pas d'embarquement PostgREST) : quelques lignes.
+  async findPromotionsForProduct(productSlug) {
+    const { data: links, error: linkError } = await supabase
+      .from("promotion_products")
+      .select("promotion_id")
+      .eq("product_slug", productSlug);
+
+    if (linkError) {
+      fail("promotion_products.select", linkError);
+    }
+    const ids = (links ?? []).map((link) => String(link.promotion_id));
+    if (ids.length === 0) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from("promotions")
+      .select(PROMOTION_COLUMNS)
+      .in("id", ids)
+      .eq("active", true);
+
+    if (error) {
+      fail("promotions.select", error);
+    }
+    return (data ?? []).map(toPromotion);
+  },
+
+  async findPromotionById(id) {
+    const { data, error } = await supabase
+      .from("promotions")
+      .select(PROMOTION_COLUMNS)
+      .eq("id", id)
+      .maybeSingle();
+
+    if (error) {
+      fail("promotions.select", error);
+    }
+    return data ? toPromotion(data) : null;
   },
 
   async markOrderEmailSent(oid, column, at) {

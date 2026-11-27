@@ -4,6 +4,7 @@
  * pour que les endpoints puissent etre testes sans toucher a la base.
  */
 
+import type { PromotionRecord } from "../commerce/promotions";
 import type { CodeRecord, ProductRecord } from "../commerce/types";
 
 export type OrderStatus = "PENDING" | "PAID" | "FAILED" | "CANCELLED";
@@ -18,6 +19,12 @@ export interface NewOrder {
   discount_mad: number;
   /** Code utilise (consomme seulement au passage en PAID). */
   code_id: string | null;
+  /**
+   * Promotion appliquee (remise = discount_mad, prix d'origine =
+   * list_amount_mad) ; null sans promotion. Jamais cumulee avec un code de
+   * reduction.
+   */
+  promotion_id: string | null;
   currency: string;
   customer_name: string;
   customer_email: string;
@@ -52,6 +59,8 @@ export interface OrderDetails {
   list_amount_mad: number | null;
   discount_mad: number;
   code_id: string | null;
+  /** null sans promotion (et sur les commandes anterieures a 20261127005000). */
+  promotion_id: string | null;
   customer_name: string;
   customer_email: string;
   customer_phone: string | null;
@@ -113,6 +122,13 @@ export interface PaymentStore {
   findOrderDetails(oid: string): Promise<OrderDetails | null>;
   /** Code par son id, ou null. */
   findCodeById(id: string): Promise<CodeRecord | null>;
+  /**
+   * Promotions ACTIVES (active = true) liees au produit, quelle que soit
+   * leur fenetre : l'appelant choisit avec runningPromotion(now).
+   */
+  findPromotionsForProduct(productSlug: string): Promise<PromotionRecord[]>;
+  /** Promotion par son id (active ou non), ou null. */
+  findPromotionById(id: string): Promise<PromotionRecord | null>;
   /** `column` = `at`, seulement s'il est encore NULL. */
   markOrderEmailSent(oid: string, column: OrderEmailColumn, at: string): Promise<void>;
   /** Ne leve jamais : retourne null si l'insertion echoue. */

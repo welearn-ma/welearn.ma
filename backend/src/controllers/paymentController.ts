@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { codeRejection, normalizeCode, priceOrder, type OrderPricing } from "../commerce/codes";
+import { runningPromotion, type PromotionRecord } from "../commerce/promotions";
 import type { CodeRecord, ProductRecord } from "../commerce/types";
 import type { CmiConfig } from "../config/cmi";
 import { CGV_VERSION } from "../config/legal";
@@ -31,6 +32,11 @@ import { isValidEmail } from "../lib/emailAddress";
  *                       poste le formulaire signe vers la passerelle CMI.
  *                       Champ facultatif `code` (etudiant ou reduction) : verifie
  *                       ici, consomme seulement au passage en PAID.
+ *                       Promotion en cours (table promotions, horloge du
+ *                       serveur) : prix promo ; un code de reduction est alors
+ *                       refuse (non cumulables). Le montant est fige dans la
+ *                       commande : le callback compare a la commande, jamais a
+ *                       la promotion du moment.
  *   POST /cmi/callback  serveur-a-serveur CMI -> 200 text/plain
  *                       ACTION=POSTAUTH | APPROVED | FAILURE.
  *                       Si CETTE requete a fait passer la commande
@@ -49,6 +55,7 @@ export type PaymentFailureReason =
   | "name_latin"
   | "code_required"
   | "code_invalid"
+  | "code_not_cumulative"
   | "error"
   | "unavailable";
 
@@ -267,6 +274,7 @@ export function createPaymentHandlers({
     input: CheckoutInput,
     pricing: OrderPricing,
     codeId: string | null,
+    promotion: PromotionRecord | null,
     createdAt: Date,
   ): Promise<string | null> {
     for (let attempt = 0; attempt < 2; attempt += 1) {
@@ -278,6 +286,7 @@ export function createPaymentHandlers({
         list_amount_mad: pricing.list_amount_mad,
         discount_mad: pricing.discount_mad,
         code_id: codeId,
+        promotion_id: promotion?.id ?? null,
         currency: CURRENCY_MAD,
         customer_name: input.customerName,
         customer_email: input.email,
@@ -346,10 +355,19 @@ export function createPaymentHandlers({
         return;
       }
 
+      // Promotion lue en base, evaluee a l'heure du serveur. Non cumulable
+      // avec un code de reduction (CGV art. 5) : refus explicite plutot qu'un
+      // code ignore en silence. Le code etudiant reste exige et compatible.
+      const promotion = runningPromotion(await store.findPromotionsForProduct(product.slug), at);
+      if (promotion && code?.kind === "discount") {
+        redirectToFailure(res, config.siteUrl, "code_not_cumulative");
+        return;
+      }
+
       // Remise calculee cote serveur, en centimes ; un code etudiant n'en
       // donne pas. Le code n'est PAS consomme ici.
-      const pricing = priceOrder(product.amount_mad, code);
-      const oid = await createPendingOrder(input, pricing, code?.id ?? null, at);
+      const pricing = priceOrder(product.amount_mad, code, promotion);
+      const oid = await createPendingOrder(input, pricing, code?.id ?? null, promotion, at);
       if (!oid) {
         redirectToFailure(res, config.siteUrl, "error");
         return;
@@ -463,6 +481,11 @@ export function createPaymentHandlers({
     }
   }
 
+  /**
+   * Montant recu = montant FIGE dans la commande a sa creation. Jamais
+   * recalcule ici : une commande creee pendant une promotion garde son prix
+   * promo meme si le callback arrive apres la fin (ou la desactivation).
+   */
   function amountMatches(received: string | null, order: OrderRecord): boolean {
     if (received === null) {
       return false;

@@ -22,6 +22,7 @@ const DISCOUNT_IMMEDIATE: PaidOrder = {
   discount_mad: 425,
   code_id: "11111111-1111-4111-8111-111111111111",
   code: "WL-DSCT-AAAA",
+  promotion: null,
   customer_name: "Éric Benjelloun",
   customer_email: "eric@example.test",
   customer_phone: "+212 600 000 000",

@@ -1,3 +1,4 @@
+import type { PromotionRecord } from "./promotions";
 import type { CodeRecord, ProductRecord, StudentProofRecord } from "./types";
 
 /** Colonnes PostgREST et conversion (numeric -> number). */
@@ -12,6 +13,8 @@ export const CODE_COLUMNS =
 export const PROOF_COLUMNS =
   "id, full_name, email, phone, page_slug, file_path, file_mime, file_size, status, " +
   "rejection_reason, reviewed_by, reviewed_at, code_id, created_at";
+
+export const PROMOTION_COLUMNS = "id, label, percent_off, starts_at, ends_at, active";
 
 type Row = Record<string, unknown>;
 
@@ -39,6 +42,18 @@ export function toCode(value: unknown): CodeRecord {
     percent_off: row.percent_off === null ? null : Number(row.percent_off),
     max_uses: Number(row.max_uses),
     used_count: Number(row.used_count),
+  };
+}
+
+export function toPromotion(value: unknown): PromotionRecord {
+  const row = value as Row;
+  return {
+    id: String(row.id),
+    label: String(row.label),
+    percent_off: Number(row.percent_off),
+    starts_at: String(row.starts_at),
+    ends_at: String(row.ends_at),
+    active: row.active === true,
   };
 }
 

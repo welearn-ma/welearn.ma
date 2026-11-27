@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto";
+import type { PromotionRecord } from "../../commerce/promotions";
 import type { AdminCommerceStore, ProofReview, StudentProofStore } from "../../commerce/store";
 import type {
   CodeKind,
@@ -58,7 +59,11 @@ export class MemoryPaymentStore implements PaymentStore, StudentProofStore, Admi
   readonly codes = new Map<string, CodeRecord>();
   readonly proofs = new Map<string, StudentProofRecord>();
   readonly activity: NewActivityEntry[] = [];
+  readonly promotions = new Map<string, PromotionRecord>();
+  /** promotion_products : id de promotion -> slugs. */
+  readonly promotionProducts = new Map<string, Set<string>>();
   readonly fail = {
+    findPromotions: false,
     getProduct: false,
     insertOrder: false,
     findOrderByOid: false,
@@ -125,6 +130,22 @@ export class MemoryPaymentStore implements PaymentStore, StudentProofStore, Admi
       ...proof,
     };
     this.proofs.set(id, record);
+    return record;
+  }
+
+  addPromotion(
+    promotion: Partial<PromotionRecord> & Pick<PromotionRecord, "starts_at" | "ends_at">,
+    productSlugs: string[],
+  ): PromotionRecord {
+    const record: PromotionRecord = {
+      id: randomUUID(),
+      label: "Black Friday",
+      percent_off: 25,
+      active: true,
+      ...promotion,
+    };
+    this.promotions.set(record.id, record);
+    this.promotionProducts.set(record.id, new Set(productSlugs));
     return record;
   }
 
@@ -202,6 +223,7 @@ export class MemoryPaymentStore implements PaymentStore, StudentProofStore, Admi
       list_amount_mad: order.list_amount_mad,
       discount_mad: order.discount_mad,
       code_id: order.code_id,
+      promotion_id: order.promotion_id,
       customer_name: order.customer_name,
       customer_email: order.customer_email,
       customer_phone: order.customer_phone,
@@ -236,6 +258,18 @@ export class MemoryPaymentStore implements PaymentStore, StudentProofStore, Admi
     if (event) {
       Object.assign(event, outcome);
     }
+  }
+
+  async findPromotionsForProduct(productSlug: string): Promise<PromotionRecord[]> {
+    if (this.fail.findPromotions) simulated();
+    return [...this.promotions.values()]
+      .filter((promotion) => promotion.active && this.promotionProducts.get(promotion.id)?.has(productSlug))
+      .map((promotion) => ({ ...promotion }));
+  }
+
+  async findPromotionById(id: string): Promise<PromotionRecord | null> {
+    const promotion = this.promotions.get(id);
+    return promotion ? { ...promotion } : null;
   }
 
   async findCodeByCode(code: string): Promise<CodeRecord | null> {

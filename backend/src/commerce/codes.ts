@@ -1,6 +1,7 @@
 import { randomInt } from "crypto";
 import { TEST_PRODUCT_SLUG } from "../config/commerce";
 import { amountToCents } from "../payments/cmi/amount";
+import type { PromotionRecord } from "./promotions";
 import type { CodeRecord, ProductRecord } from "./types";
 
 /**
@@ -104,14 +105,29 @@ function divideRoundHalfUp(numerator: number, denominator: number): number {
  * Montant a debiter, calcule en centimes entiers :
  *   montant = arrondi_demi_haut(prix x (1 - pourcentage / 100), 2 decimales)
  * ex. 8 500,00 a -5 % -> 8 075,00. Un code etudiant ne donne pas de remise.
+ *
+ * Promotion en cours : son pourcentage s'applique et un code de reduction
+ * ne s'y ajoute JAMAIS (non cumulables, CGV art. 5). Les appelants refusent
+ * d'ailleurs un code de reduction pendant une promotion ; s'il passait
+ * quand meme, seule la promotion compterait.
+ * ex. 8 500,00 a -25 % -> 6 375,00 ; 5 000,00 -> 3 750,00.
  */
-export function priceOrder(listAmountMad: number, code: CodeRecord | null): OrderPricing {
+export function priceOrder(
+  listAmountMad: number,
+  code: CodeRecord | null,
+  promotion: PromotionRecord | null = null,
+): OrderPricing {
   const listCents = amountToCents(listAmountMad);
   let amountCents = listCents;
 
-  if (code?.kind === "discount" && code.percent_off !== null) {
+  const percent = promotion
+    ? promotion.percent_off
+    : code?.kind === "discount"
+      ? code.percent_off
+      : null;
+  if (percent !== null) {
     // Pourcentage a 2 decimales (numeric(5,2)) -> points de base entiers.
-    const basisPoints = Math.round(code.percent_off * 100);
+    const basisPoints = Math.round(percent * 100);
     amountCents = divideRoundHalfUp(listCents * (10000 - basisPoints), 10000);
   }
 

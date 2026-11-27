@@ -33,6 +33,7 @@ const CONFIG = {
 
 // --- Store en memoire (meme contrat que src/payments/store.ts) -------------
 const CLIENT_EMAIL = "client@example.test";
+const BLACK_FRIDAY_ID = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
 const CONTACT = "contact@example.test";
 const NBSP = " ";
 
@@ -75,6 +76,28 @@ function createMemoryStore() {
     code("22222222-2222-4222-8222-222222222222", "WL-STUD-BBBB", "student", {
       product_slug: "bim-foundations-etudiant",
     }),
+    // Section 12 (Black Friday) : codes encore inutilises.
+    code("33333333-3333-4333-8333-333333333333", "WL-DSCT-CCCC", "discount"),
+    code("44444444-4444-4444-8444-444444444444", "WL-STUD-DDDD", "student", {
+      product_slug: "bim-foundations-etudiant",
+    }),
+  ]);
+  // Black Friday : 27/11/2026 00:00 -> 01/12/2026 00:00 (exclu), Casablanca (UTC+1).
+  const promotions = new Map([
+    [
+      BLACK_FRIDAY_ID,
+      {
+        id: BLACK_FRIDAY_ID,
+        label: "Black Friday",
+        percent_off: 25,
+        starts_at: "2026-11-26T23:00:00.000Z",
+        ends_at: "2026-11-30T23:00:00.000Z",
+        active: true,
+      },
+    ],
+  ]);
+  const promotionProducts = new Map([
+    [BLACK_FRIDAY_ID, new Set(["bim-foundations-pro", "bim-foundations-etudiant"])],
   ]);
   const orders = new Map();
   const events = [];
@@ -82,6 +105,7 @@ function createMemoryStore() {
     orders,
     events,
     codes,
+    promotions,
     async getProduct(slug) {
       const found = products.get(slug);
       return found ? { ...found } : null;
@@ -146,11 +170,20 @@ function createMemoryStore() {
       const o = orders.get(oid);
       if (!o) return null;
       const { oid: ref, formation_slug, status, amount_mad, list_amount_mad, discount_mad, code_id,
-        customer_name, customer_email, customer_phone, access_available_at, paid_at,
+        promotion_id, customer_name, customer_email, customer_phone, access_available_at, paid_at,
         cmi_trans_id, cmi_auth_code } = o;
       return { oid: ref, formation_slug, status, amount_mad, list_amount_mad, discount_mad, code_id,
-        customer_name, customer_email, customer_phone, access_available_at, paid_at,
+        promotion_id, customer_name, customer_email, customer_phone, access_available_at, paid_at,
         cmi_trans_id, cmi_auth_code };
+    },
+    async findPromotionsForProduct(slug) {
+      return [...promotions.values()]
+        .filter((p) => p.active && promotionProducts.get(p.id)?.has(slug))
+        .map((p) => ({ ...p }));
+    },
+    async findPromotionById(id) {
+      const p = promotions.get(id);
+      return p ? { ...p } : null;
     },
     async findCodeById(id) {
       const c = codes.get(id);
@@ -179,6 +212,9 @@ const mailer = {
 };
 
 // --- Serveur -----------------------------------------------------------------
+// Horloge du serveur pilotee : sections 1-11 avant le Black Friday (prix
+// catalogue), section 12 pendant puis apres.
+let clock = new Date("2026-11-24T10:00:00.000Z");
 const store = createMemoryStore();
 const app = express();
 app.use(
@@ -186,6 +222,7 @@ app.use(
   createPaymentsRouter({
     cmi: { enabled: true, config: CONFIG },
     store,
+    now: () => clock,
     orderEmails: { mailer, contactRecipient: CONTACT },
   }),
 );
@@ -383,7 +420,7 @@ try {
     headers: { origin: SITE },
   });
   check("codes/check -> 8075 / 8500 / 425",
-    check1.text === '{"valid":true,"amount_mad":8075,"list_amount_mad":8500,"discount_mad":425}', check1.text);
+    check1.text === '{"valid":true,"amount_mad":8075,"list_amount_mad":8500,"discount_mad":425,"promotion":null}', check1.text);
   const d = await init({ ...PRO, code: "WL-DSCT-AAAA" });
   check("discount init -> amount 8075.00 sent to CMI", d.posted.amount === "8075.00", d.posted.amount);
   check("discount order stores list 8500, discount 425, code_id",

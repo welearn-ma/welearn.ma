@@ -1,16 +1,25 @@
 import type { Request, Response } from "express";
 import { codeRejection, normalizeCode, priceOrder } from "../commerce/codes";
+import { runningPromotion, toPublicPromotion } from "../commerce/promotions";
 import type { PaymentStore } from "./store";
 import { isValidEmail } from "../lib/emailAddress";
 
 /*
- * Lecture publique du catalogue et verification de code (page de paiement) :
- *   GET  /products/:slug   -> { slug, label, amount_mad, requires_student_code }
+ * Lecture publique du catalogue et verification de code (page de paiement,
+ * bloc Tarifs) :
+ *   GET  /products/:slug   -> { slug, label, amount_mad, list_amount_mad,
+ *                               discount_mad, requires_student_code, promotion }
  *   POST /codes/check      { product, code, email }
- *                          -> { valid: true, amount_mad, list_amount_mad, discount_mad }
- *                           | { valid: false }  (jamais de motif)
- * Le montant affiche vient d'ici ; le montant DEBITE est recalcule par
- * /cmi/init.
+ *                          -> { valid: true, amount_mad, list_amount_mad,
+ *                               discount_mad, promotion }
+ *                           | { valid: false, reason: "not_cumulative" }
+ *                             (code de reduction valide pendant une promotion)
+ *                           | { valid: false }  (aucun autre motif, jamais)
+ * amount_mad = montant a payer (promotion en cours comprise) ;
+ * list_amount_mad = prix catalogue ; promotion = { label, percent_off,
+ * ends_at } ou null. Promotion evaluee a l'heure du SERVEUR a chaque appel :
+ * rien n'est fige dans le site statique. Le montant affiche vient d'ici ; le
+ * montant DEBITE est recalcule par /cmi/init.
  */
 
 const PRODUCT_SLUG_REGEX = /^[a-z0-9-]{1,100}$/;
@@ -40,11 +49,16 @@ export function createCatalogHandlers({
         res.status(404).json({ error: "not_found" });
         return;
       }
+      const promotion = runningPromotion(await store.findPromotionsForProduct(found.slug), now());
+      const pricing = priceOrder(found.amount_mad, null, promotion);
       res.status(200).json({
         slug: found.slug,
         label: found.label,
-        amount_mad: found.amount_mad,
+        amount_mad: pricing.amount_mad,
+        list_amount_mad: pricing.list_amount_mad,
+        discount_mad: pricing.discount_mad,
         requires_student_code: found.requires_student_code,
+        promotion: toPublicPromotion(promotion),
       });
     } catch (error) {
       console.error(
@@ -82,17 +96,25 @@ export function createCatalogHandlers({
         invalid();
         return;
       }
+      const at = now();
       const code = await store.findCodeByCode(canonical);
-      if (!code || codeRejection(code, { product: found, email, now: now() })) {
+      if (!code || codeRejection(code, { product: found, email, now: at })) {
         invalid();
         return;
       }
-      const pricing = priceOrder(found.amount_mad, code);
+      const promotion = runningPromotion(await store.findPromotionsForProduct(found.slug), at);
+      if (promotion && code.kind === "discount") {
+        // Meme regle que /cmi/init : le code n'est ni applique ni consomme.
+        res.status(200).json({ valid: false, reason: "not_cumulative" });
+        return;
+      }
+      const pricing = priceOrder(found.amount_mad, code, promotion);
       res.status(200).json({
         valid: true,
         amount_mad: pricing.amount_mad,
         list_amount_mad: pricing.list_amount_mad,
         discount_mad: pricing.discount_mad,
+        promotion: toPublicPromotion(promotion),
       });
     } catch (error) {
       console.error(

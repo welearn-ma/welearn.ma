@@ -23,9 +23,18 @@ import {
  * de carte (ni PAN masque, ni TransId).
  */
 
+/** Promotion appliquee a la commande, telle que l'affichent les e-mails. */
+export interface OrderPromotion {
+  label: string;
+  percent_off: number;
+}
+
 /** Commande payee, prete pour les gabarits. */
 export interface PaidOrder
-  extends Omit<OrderDetails, "status" | "paid_at" | "access_available_at" | "list_amount_mad"> {
+  extends Omit<
+    OrderDetails,
+    "status" | "paid_at" | "access_available_at" | "list_amount_mad" | "promotion_id"
+  > {
   paid_at: string;
   access_available_at: string;
   list_amount_mad: number;
@@ -33,6 +42,11 @@ export interface PaidOrder
   label: string;
   /** Code utilise (etudiant ou reduction), ou null. */
   code: string | null;
+  /**
+   * Promotion appliquee (orders.promotion_id), ou null. La remise affichee
+   * reste celle de la commande (discount_mad), jamais recalculee.
+   */
+  promotion: OrderPromotion | null;
 }
 
 export interface OrderEmailSettings {
@@ -43,7 +57,10 @@ export interface OrderEmailSettings {
 }
 
 export interface OrderEmailDeps extends OrderEmailSettings {
-  store: Pick<PaymentStore, "findOrderDetails" | "getProduct" | "findCodeById" | "markOrderEmailSent">;
+  store: Pick<
+    PaymentStore,
+    "findOrderDetails" | "getProduct" | "findCodeById" | "findPromotionById" | "markOrderEmailSent"
+  >;
   mailer: Mailer;
   /** Horloge injectable (tests). */
   now?: () => Date;
@@ -65,6 +82,18 @@ const AMOUNT_FORMAT = new Intl.NumberFormat("fr-FR", {
  */
 export function formatMad(amount: number): string {
   return AMOUNT_FORMAT.format(amount).replace(/ /g, " ");
+}
+
+const PERCENT_FORMAT = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 });
+
+/** « Black Friday (−25 %) » : espace insecable U+00A0 avant « % ». */
+function promotionName(promotion: OrderPromotion): string {
+  return `${promotion.label} (−${PERCENT_FORMAT.format(promotion.percent_off)}\u00a0%)`;
+}
+
+/** « Réduction » (code de reduction), « Réduction Black Friday (−25 %) » (promotion). */
+function discountLabel(order: PaidOrder): string {
+  return order.promotion ? `Réduction ${promotionName(order.promotion)}` : "Réduction";
 }
 
 function subjectPrefix(order: PaidOrder): string {
@@ -102,7 +131,7 @@ export function orderConfirmationEmail(
   if (order.discount_mad > 0) {
     rows.push([
       "Prix catalogue",
-      `${formatMad(order.list_amount_mad)} MAD TTC — Réduction : −${formatMad(order.discount_mad)} MAD`,
+      `${formatMad(order.list_amount_mad)} MAD TTC — ${discountLabel(order)} : −${formatMad(order.discount_mad)} MAD`,
     ]);
   }
   rows.push(
@@ -159,7 +188,14 @@ export function orderTeamNotificationEmail(
   rows.push(
     ["Produit", `${order.label} (${order.formation_slug})`],
     ["Prix catalogue", `${formatMad(order.list_amount_mad)} MAD TTC`],
-    ["Réduction", order.discount_mad > 0 ? `−${formatMad(order.discount_mad)} MAD` : "aucune"],
+    [
+      "Réduction",
+      order.discount_mad <= 0
+        ? "aucune"
+        : order.promotion
+          ? `−${formatMad(order.discount_mad)} MAD — ${promotionName(order.promotion)}`
+          : `−${formatMad(order.discount_mad)} MAD`,
+    ],
   );
   if (order.code) {
     rows.push(["Code", order.code]);
@@ -227,8 +263,11 @@ async function loadPaidOrder(
   }
   const product = await store.getProduct(details.formation_slug);
   const code = details.code_id ? await store.findCodeById(details.code_id) : null;
+  const promotion = details.promotion_id
+    ? await store.findPromotionById(details.promotion_id)
+    : null;
 
-  const { status: _status, ...fields } = details;
+  const { status: _status, promotion_id: _promotionId, ...fields } = details;
   return {
     ...fields,
     paid_at: details.paid_at,
@@ -236,6 +275,7 @@ async function loadPaidOrder(
     list_amount_mad: details.list_amount_mad ?? details.amount_mad + details.discount_mad,
     label: product?.label ?? details.formation_slug,
     code: code?.code ?? null,
+    promotion: promotion ? { label: promotion.label, percent_off: promotion.percent_off } : null,
   };
 }
 
