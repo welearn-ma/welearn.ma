@@ -9,6 +9,7 @@ import {
 import { trySend, type Mailer } from "../lib/mailer";
 import { expireStalePendingOrders } from "../payments/expiry";
 import { generateCode } from "./codes";
+import { promotionStatus, type PromotionWithProducts } from "./promotions";
 import {
   checkoutUrl,
   discountCodeEmail,
@@ -40,6 +41,10 @@ import { isValidEmail } from "../lib/emailAddress";
  *   POST /codes                          { email, expiresAt?, sendEmail? } -> code 5 %
  *   POST /codes/:id/revoke
  *   POST /codes/:id/resend               code de reduction actif : renvoie l'e-mail
+ *   GET  /promotions                     promotions + statut a l'heure du serveur
+ *   POST /promotions/:id/deactivate      arret anticipe (journalise)
+ *   POST /promotions/:id/activate        reactivation (journalise ; sans effet
+ *                                        hors de la fenetre starts_at / ends_at)
  * Reponses : { success: true, data } | { success: false, message }.
  */
 
@@ -121,6 +126,19 @@ function toCodeView(code: CodeRecord, now: Date, labels: Map<string, string>) {
   };
 }
 
+function toPromotionView(promotion: PromotionWithProducts, now: Date, labels: Map<string, string>) {
+  return {
+    id: promotion.id,
+    label: promotion.label,
+    percentOff: promotion.percent_off,
+    startsAt: promotion.starts_at,
+    endsAt: promotion.ends_at,
+    active: promotion.active,
+    status: promotionStatus(promotion, now),
+    products: promotion.product_slugs.map((slug) => ({ slug, label: labels.get(slug) ?? slug })),
+  };
+}
+
 function toProofView(proof: StudentProofRecord, code: CodeRecord | undefined) {
   return {
     id: proof.id,
@@ -149,7 +167,7 @@ export function createAdminCommerceRouters({
   replyTo,
   verifyAdmin,
   now = () => new Date(),
-}: AdminCommerceDeps): { studentProofs: Router; codes: Router } {
+}: AdminCommerceDeps): { studentProofs: Router; codes: Router; promotions: Router } {
   /** Meme reponses que les routes admin existantes. */
   async function requireAdmin(req: Request, res: Response, next: NextFunction) {
     let access: AdminAccess;
@@ -616,5 +634,65 @@ export function createAdminCommerceRouters({
     }
   });
 
-  return { studentProofs, codes };
+  // -------------------------------------------------------------------------
+  // Promotions
+  // -------------------------------------------------------------------------
+
+  const promotions = Router();
+  promotions.use(requireAdmin);
+
+  promotions.get("/", async (_req, res) => {
+    try {
+      const [list, labels] = await Promise.all([store.listPromotions(), productLabels()]);
+      const at = now();
+      res.json({ success: true, data: list.map((promotion) => toPromotionView(promotion, at, labels)) });
+    } catch (error) {
+      console.error(`[admin] promotions list failed: ${describe(error)}`);
+      sendError(res, 500, "Impossible de charger les promotions.");
+    }
+  });
+
+  function setActive(active: boolean) {
+    return async (req: Request, res: Response) => {
+      const id = validId(req, res);
+      if (!id) return;
+      const actor = adminEmail(res);
+      const at = now();
+
+      try {
+        const promotion = await store.findPromotion(id);
+        if (!promotion) {
+          return sendError(res, 404, "Promotion introuvable.");
+        }
+        const changed =
+          promotion.active !== active && (await store.setPromotionActive(id, active, at.toISOString()));
+        if (!changed) {
+          return sendError(
+            res,
+            409,
+            active ? "Cette promotion est déjà active." : "Cette promotion est déjà désactivée.",
+          );
+        }
+
+        await store.logActivity({
+          entity_type: "promotion",
+          entity_id: id,
+          event_type: active ? "promotion_activated" : "promotion_deactivated",
+          actor_email: actor,
+          note: null,
+        });
+
+        const updated = (await store.findPromotion(id)) ?? { ...promotion, active };
+        res.json({ success: true, data: toPromotionView(updated, at, await productLabels()) });
+      } catch (error) {
+        console.error(`[admin] promotion ${active ? "activation" : "deactivation"} failed id=${id}: ${describe(error)}`);
+        sendError(res, 500, "La modification a échoué. Merci de réessayer.");
+      }
+    };
+  }
+
+  promotions.post("/:id/deactivate", setActive(false));
+  promotions.post("/:id/activate", setActive(true));
+
+  return { studentProofs, codes, promotions };
 }

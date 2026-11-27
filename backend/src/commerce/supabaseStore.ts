@@ -1,12 +1,15 @@
 import { supabase } from "../lib/supabaseClient";
 import { PaymentStoreError } from "../payments/store";
 import { supabasePaymentStore } from "../payments/supabaseStore";
+import type { PromotionWithProducts } from "./promotions";
 import {
   CODE_COLUMNS,
   PRODUCT_COLUMNS,
+  PROMOTION_COLUMNS,
   PROOF_COLUMNS,
   toCode,
   toProduct,
+  toPromotion,
   toProof,
 } from "./rows";
 import type { AdminCommerceStore, StudentProofStore } from "./store";
@@ -18,6 +21,31 @@ const LIST_LIMIT = 500;
 
 function fail(operation: string, error: DbError): never {
   throw new PaymentStoreError(operation, error.code, error.message);
+}
+
+/** Promotions (deja lues) + leurs produits, en une requete. */
+async function withProducts(rows: unknown[]): Promise<PromotionWithProducts[]> {
+  const promotions = rows.map(toPromotion);
+  if (promotions.length === 0) {
+    return [];
+  }
+  const { data, error } = await supabase
+    .from("promotion_products")
+    .select("promotion_id, product_slug")
+    .in(
+      "promotion_id",
+      promotions.map((promotion) => promotion.id),
+    );
+  if (error) {
+    fail("promotion_products.select", error);
+  }
+  return promotions.map((promotion) => ({
+    ...promotion,
+    product_slugs: (data ?? [])
+      .filter((link) => String(link.promotion_id) === promotion.id)
+      .map((link) => String(link.product_slug))
+      .sort(),
+  }));
 }
 
 export const supabaseCommerceStore: StudentProofStore & AdminCommerceStore = {
@@ -192,6 +220,43 @@ export const supabaseCommerceStore: StudentProofStore & AdminCommerceStore = {
       .select("id");
     if (error) {
       fail("codes.revoke", error);
+    }
+    return (data?.length ?? 0) > 0;
+  },
+
+  async listPromotions() {
+    const { data, error } = await supabase
+      .from("promotions")
+      .select(PROMOTION_COLUMNS)
+      .order("starts_at", { ascending: false })
+      .limit(LIST_LIMIT);
+    if (error) {
+      fail("promotions.select", error);
+    }
+    return withProducts(data ?? []);
+  },
+
+  async findPromotion(id) {
+    const { data, error } = await supabase
+      .from("promotions")
+      .select(PROMOTION_COLUMNS)
+      .eq("id", id)
+      .maybeSingle();
+    if (error) {
+      fail("promotions.select", error);
+    }
+    return data ? (await withProducts([data]))[0] : null;
+  },
+
+  async setPromotionActive(id, active, at) {
+    const { data, error } = await supabase
+      .from("promotions")
+      .update({ active, updated_at: at })
+      .eq("id", id)
+      .eq("active", !active)
+      .select("id");
+    if (error) {
+      fail("promotions.update", error);
     }
     return (data?.length ?? 0) > 0;
   },

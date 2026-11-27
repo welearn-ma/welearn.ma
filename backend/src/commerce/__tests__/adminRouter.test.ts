@@ -5,6 +5,7 @@ import { MemoryPaymentStore } from "../../payments/__tests__/memoryStore";
 import { request, SITE, startServer, type TestServer } from "../../payments/__tests__/harness";
 import { createAdminCommerceRouters } from "../adminRouter";
 import { CODE_PATTERN } from "../codes";
+import { runningPromotion } from "../promotions";
 import { FakeMailer, MemoryProofFiles, PDF_BYTES } from "./fakes";
 
 const NOW = new Date("2026-11-24T10:00:00.000Z");
@@ -53,6 +54,7 @@ beforeEach(async () => {
   const admin = Router();
   admin.use("/student-proofs", routers.studentProofs);
   admin.use("/codes", routers.codes);
+  admin.use("/promotions", routers.promotions);
   server = await startServer({ afterCors: [["/api/admin", admin]] });
 });
 
@@ -90,6 +92,9 @@ describe("admin auth", () => {
       ["POST", `/student-proofs/${proofId}/reject`],
       ["GET", "/codes"],
       ["POST", "/codes"],
+      ["GET", "/promotions"],
+      ["POST", "/promotions/00000000-0000-4000-8000-000000000000/deactivate"],
+      ["POST", "/promotions/00000000-0000-4000-8000-000000000000/activate"],
     ]) {
       const res = await call(method, path, {}, headers as Record<string, string>);
       expect(res.status, `${method} ${path}`).toBe(status);
@@ -422,5 +427,83 @@ describe("codes", () => {
     expect(store.activity.map((a) => a.event_type)).toEqual(["code_created", "code_revoked"]);
     expect((await call("POST", `/codes/${created.data.data.id}/revoke`)).status).toBe(409);
     expect((await call("POST", "/codes/00000000-0000-4000-8000-000000000000/revoke")).status).toBe(404);
+  });
+});
+
+describe("promotions (early stop)", () => {
+  const STARTS_AT = "2026-11-26T23:00:00.000Z"; // 27/11 00:00 Casablanca
+  const ENDS_AT = "2026-11-30T23:00:00.000Z"; //   01/12 00:00 Casablanca (exclu)
+
+  function addBlackFriday() {
+    return store.addPromotion(
+      { starts_at: STARTS_AT, ends_at: ENDS_AT },
+      ["bim-foundations-pro", "bim-foundations-etudiant"],
+    );
+  }
+
+  it("lists promotions with products, window and status at server time", async () => {
+    const promo = addBlackFriday();
+    const res = await call("GET", "/promotions");
+    expect(res.status).toBe(200);
+    expect(res.data.data).toEqual([
+      {
+        id: promo.id,
+        label: "Black Friday",
+        percentOff: 25,
+        startsAt: STARTS_AT,
+        endsAt: ENDS_AT,
+        active: true,
+        // NOW = 24/11 : pas encore commencee.
+        status: "scheduled",
+        products: [
+          { slug: "bim-foundations-etudiant", label: "BIM Foundations Professional — Pack Étudiants" },
+          { slug: "bim-foundations-pro", label: "BIM Foundations Professional — Pack Professionnels" },
+        ],
+      },
+    ]);
+  });
+
+  it("deactivate → inactive at once (pricing ignores it), logged with the admin; twice → 409", async () => {
+    const promo = addBlackFriday();
+    const res = await call("POST", `/promotions/${promo.id}/deactivate`);
+    expect(res.status).toBe(200);
+    expect(res.data.data).toMatchObject({ id: promo.id, active: false, status: "disabled" });
+    expect(store.promotions.get(promo.id)!.active).toBe(false);
+    expect(
+      runningPromotion(await store.findPromotionsForProduct("bim-foundations-pro"), new Date("2026-11-28T10:00:00.000Z")),
+    ).toBeNull();
+    expect(store.activity).toEqual([
+      {
+        entity_type: "promotion",
+        entity_id: promo.id,
+        event_type: "promotion_deactivated",
+        actor_email: ADMIN,
+        note: null,
+      },
+    ]);
+
+    const again = await call("POST", `/promotions/${promo.id}/deactivate`);
+    expect(again.status).toBe(409);
+    expect(again.data).toEqual({ success: false, message: "Cette promotion est déjà désactivée." });
+    expect(store.activity).toHaveLength(1);
+  });
+
+  it("activate after a deactivation → logged; activating an active one → 409", async () => {
+    const promo = addBlackFriday();
+    expect((await call("POST", `/promotions/${promo.id}/activate`)).status).toBe(409);
+    await call("POST", `/promotions/${promo.id}/deactivate`);
+    const res = await call("POST", `/promotions/${promo.id}/activate`);
+    expect(res.status).toBe(200);
+    expect(res.data.data).toMatchObject({ active: true, status: "scheduled" });
+    expect(store.activity.map((entry) => entry.event_type)).toEqual([
+      "promotion_deactivated",
+      "promotion_activated",
+    ]);
+  });
+
+  it("unknown or malformed id → 404, nothing logged", async () => {
+    expect((await call("POST", "/promotions/00000000-0000-4000-8000-000000000000/deactivate")).status).toBe(404);
+    expect((await call("POST", "/promotions/not-a-uuid/deactivate")).status).toBe(404);
+    expect(store.activity).toHaveLength(0);
   });
 });

@@ -4,6 +4,7 @@
  * implementation Supabase (supabaseStore.ts) pour les tests.
  */
 
+import type { PromotionWithProducts } from "./promotions";
 import type {
   CodeKind,
   CodeRecord,
@@ -53,6 +54,15 @@ export interface AdminCommerceStore {
   findActiveDiscountCode(email: string, now: string): Promise<CodeRecord | null>;
   /** revoked_at = `revokedAt` si encore NULL. false si deja revoque. */
   revokeCode(id: string, revokedAt: string): Promise<boolean>;
+
+  /** Toutes les promotions et leurs produits, plus recentes d'abord. */
+  listPromotions(): Promise<PromotionWithProducts[]>;
+  findPromotion(id: string): Promise<PromotionWithProducts | null>;
+  /**
+   * active = `active` seulement si la ligne est dans l'etat inverse
+   * (mise a jour conditionnelle). false si deja dans cet etat ou introuvable.
+   */
+  setPromotionActive(id: string, active: boolean, at: string): Promise<boolean>;
 
   expirePendingOrders(cutoff: string, now: string): Promise<number>;
   /** Flux d'activite admin. Ne leve jamais. */

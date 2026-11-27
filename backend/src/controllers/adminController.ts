@@ -77,6 +77,12 @@ type CodeInfoRow = {
   customer_email: string;
 };
 
+type PromotionInfoRow = {
+  id: string;
+  label: string;
+  percent_off: number | string;
+};
+
 export async function getAdminActivity(
   req: Request,
   res: Response<AdminActivityListResponse>,
@@ -153,8 +159,11 @@ export async function getAdminActivity(
   const codeIds = rows
     .filter((row) => row.entity_type === "code")
     .map((row) => row.entity_id);
+  const promotionIds = rows
+    .filter((row) => row.entity_type === "promotion")
+    .map((row) => row.entity_id);
 
-  const [proofsResult, codesResult] = await Promise.all([
+  const [proofsResult, codesResult, promotionsResult] = await Promise.all([
     proofIds.length
       ? supabase
           .from("student_proofs")
@@ -167,12 +176,18 @@ export async function getAdminActivity(
           .select("id, code, kind, customer_email")
           .in("id", codeIds)
       : Promise.resolve({ data: [] as CodeInfoRow[], error: null }),
+    promotionIds.length
+      ? supabase
+          .from("promotions")
+          .select("id, label, percent_off")
+          .in("id", [...new Set(promotionIds)])
+      : Promise.resolve({ data: [] as PromotionInfoRow[], error: null }),
   ]);
 
-  if (proofsResult.error || codesResult.error) {
+  if (proofsResult.error || codesResult.error || promotionsResult.error) {
     console.error(
-      "Supabase select error (activity proof/code join):",
-      proofsResult.error ?? codesResult.error,
+      "Supabase select error (activity proof/code/promotion join):",
+      proofsResult.error ?? codesResult.error ?? promotionsResult.error,
     );
   }
 
@@ -181,6 +196,9 @@ export async function getAdminActivity(
   );
   const codeById = new Map(
     ((codesResult.data ?? []) as CodeInfoRow[]).map((item) => [item.id, item]),
+  );
+  const promotionById = new Map(
+    ((promotionsResult.data ?? []) as PromotionInfoRow[]).map((item) => [item.id, item]),
   );
 
   const [studentsResult, sponsorsResult] = await Promise.all([
@@ -233,6 +251,8 @@ export async function getAdminActivity(
         : undefined;
     const code =
       row.entity_type === "code" ? codeById.get(row.entity_id) : undefined;
+    const promotion =
+      row.entity_type === "promotion" ? promotionById.get(row.entity_id) : undefined;
 
     return {
       id: row.id,
@@ -261,6 +281,9 @@ export async function getAdminActivity(
         : null,
       code: code
         ? { code: code.code, kind: code.kind, email: code.customer_email }
+        : null,
+      promotion: promotion
+        ? { label: promotion.label, percentOff: Number(promotion.percent_off) }
         : null,
     };
   });

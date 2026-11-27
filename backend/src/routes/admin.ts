@@ -24,5 +24,6 @@ router.use("/sponsors", adminSponsorsRouter);
 router.use("/activity", adminActivityRouter);
 router.use("/student-proofs", commerce.studentProofs);
 router.use("/codes", commerce.codes);
+router.use("/promotions", commerce.promotions);
 
 export default router;

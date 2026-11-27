@@ -1,4 +1,4 @@
-export type AdminActivityEntityType = "student" | "sponsor" | "student_proof" | "code";
+export type AdminActivityEntityType = "student" | "sponsor" | "student_proof" | "code" | "promotion";
 export type AdminActivityEventType =
   | "new_request"
   /** Demande de brochure (registration_requests.source = 'brochure'). */
@@ -14,7 +14,16 @@ export type AdminActivityEventType =
   | "code_created"
   | "code_revoked"
   /** « Renvoyer l'e-mail » d'un code de reduction. */
-  | "code_email_resent";
+  | "code_email_resent"
+  /** Promotion activee (admin, migration ou SQL documente). */
+  | "promotion_activated"
+  /** Promotion desactivee (arret anticipe). */
+  | "promotion_deactivated";
+
+export type AdminActivityPromotionInfo = {
+  label: string;
+  percentOff: number;
+};
 
 export type AdminActivityStudentProofInfo = {
   fullName: string;
@@ -56,6 +65,8 @@ export type AdminActivityRecord = {
   studentProof: AdminActivityStudentProofInfo | null;
   /** Populated when entityType is "code"; null otherwise. */
   code: AdminActivityCodeInfo | null;
+  /** Populated when entityType is "promotion"; null otherwise. */
+  promotion: AdminActivityPromotionInfo | null;
 };
 
 export type AdminActivityListResponse = {

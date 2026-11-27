@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import type { PromotionRecord } from "../../commerce/promotions";
+import type { PromotionRecord, PromotionWithProducts } from "../../commerce/promotions";
 import type { AdminCommerceStore, ProofReview, StudentProofStore } from "../../commerce/store";
 import type {
   CodeKind,
@@ -403,6 +403,33 @@ export class MemoryPaymentStore implements PaymentStore, StudentProofStore, Admi
       return false;
     }
     code.revoked_at = revokedAt;
+    return true;
+  }
+
+  private withProducts(promotion: PromotionRecord): PromotionWithProducts {
+    return {
+      ...promotion,
+      product_slugs: [...(this.promotionProducts.get(promotion.id) ?? [])].sort(),
+    };
+  }
+
+  async listPromotions(): Promise<PromotionWithProducts[]> {
+    return [...this.promotions.values()]
+      .sort((a, b) => b.starts_at.localeCompare(a.starts_at))
+      .map((promotion) => this.withProducts(promotion));
+  }
+
+  async findPromotion(id: string): Promise<PromotionWithProducts | null> {
+    const promotion = this.promotions.get(id);
+    return promotion ? this.withProducts(promotion) : null;
+  }
+
+  async setPromotionActive(id: string, active: boolean, _at: string): Promise<boolean> {
+    const promotion = this.promotions.get(id);
+    if (!promotion || promotion.active === active) {
+      return false;
+    }
+    promotion.active = active;
     return true;
   }
 

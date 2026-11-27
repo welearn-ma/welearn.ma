@@ -76,14 +76,16 @@ export type NewStudentProof = Pick<
   "id" | "full_name" | "email" | "phone" | "page_slug" | "file_path" | "file_mime" | "file_size"
 >;
 
-export type ActivityEntityType = "student_proof" | "code";
+export type ActivityEntityType = "student_proof" | "code" | "promotion";
 export type ActivityEventType =
   | "proof_approved"
   | "proof_rejected"
   | "proof_email_resent"
   | "code_created"
   | "code_revoked"
-  | "code_email_resent";
+  | "code_email_resent"
+  | "promotion_activated"
+  | "promotion_deactivated";
 
 export interface NewActivityEntry {
   entity_type: ActivityEntityType;
