@@ -8,7 +8,12 @@ import { Label } from "@/components/ui/label";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { PaymentSecurityLogos } from "@/components/payment-security-logos";
 import { LAST_CHECKOUT_KEY, type PaymentProduct } from "@/data/payment";
-import { checkPaymentCode, cmiInitUrl, getPaymentsApiBaseUrl } from "@/lib/api/payments";
+import {
+  checkPaymentCode,
+  cmiInitUrl,
+  getPaymentsApiBaseUrl,
+  type PublicPromotion,
+} from "@/lib/api/payments";
 import { normalizeCode } from "@/lib/payments/code";
 import {
   CHECKOUT_MESSAGES,
@@ -19,7 +24,7 @@ import {
   validateCustomerName,
   validateCustomerPhone,
 } from "@/lib/payments/checkout-validation";
-import { formatAmountMad } from "@/lib/payments/format";
+import { formatAmountMad, formatOfferEnd, formatPromotionBadge } from "@/lib/payments/format";
 import { PHONE_COUNTRIES } from "@/lib/phone-countries";
 
 /**
@@ -30,6 +35,17 @@ export type CheckoutProduct = PaymentProduct & {
   codeMode?: "none" | "optional" | "required";
   /** Page de dépôt du justificatif (lien affiché si le code est obligatoire). */
   proofPath?: string;
+  /**
+   * Montants du backend (GET /products/:slug), sans code : `amount` à payer,
+   * `list` prix catalogue, `discount` remise de la promotion en cours.
+   * Absent sur /paiement/test/ (montant fixe, `displayAmount`).
+   */
+  pricing?: {
+    amount: number;
+    list: number;
+    discount: number;
+    promotion: PublicPromotion | null;
+  };
 };
 
 const CODE_MESSAGES = {
@@ -44,10 +60,27 @@ const CODE_MESSAGES = {
     "Le Pack Étudiants nécessite un code personnel, envoyé après validation de votre justificatif étudiant.",
 } as const;
 
+/** Code de réduction valide pendant une promotion (CGV art. 5 : non cumulables). */
+function notCumulativeMessage(promotion: PublicPromotion | null): string {
+  const offer = promotion ? `l'offre ${promotion.label}` : "l'offre en cours";
+  return `Les codes de réduction ne sont pas cumulables avec ${offer}, déjà appliquée au prix affiché. Effacez le code pour continuer : il ne sera pas utilisé.`;
+}
+
+/** Hors délai : l'offre affichée est terminée, le montant va être relu. */
+const OFFER_ENDED_MESSAGE =
+  "Cette offre est terminée : le montant a été mis à jour. Vérifiez-le avant de payer.";
+
 type CodeCheck =
   | { state: "idle" }
   | { state: "checking" }
-  | { state: "valid"; key: string; amount: number; list: number; discount: number };
+  | {
+      state: "valid";
+      key: string;
+      amount: number;
+      list: number;
+      discount: number;
+      promotion: PublicPromotion | null;
+    };
 
 /** Noms des champs postés au backend (backend/src/controllers/paymentController.ts). */
 type Field =
@@ -116,6 +149,7 @@ function NewTabLink({ href, children }: { href: string; children: string }) {
 export function CheckoutForm({
   product,
   initialCode = null,
+  onPricingExpired,
 }: {
   product: CheckoutProduct;
   /**
@@ -123,6 +157,8 @@ export function CheckoutForm({
    * code, puis est vérifié automatiquement une fois l'e-mail saisi.
    */
   initialCode?: string | null;
+  /** Promotion affichée terminée au moment de payer : relire le produit. */
+  onPricingExpired?: () => void;
 }) {
   const apiBaseUrl = getPaymentsApiBaseUrl();
   const actionUrl = apiBaseUrl ? cmiInitUrl(apiBaseUrl) : null;
@@ -136,6 +172,7 @@ export function CheckoutForm({
   const [codeCheck, setCodeCheck] = useState<CodeCheck>({ state: "idle" });
   const [cgvAccepted, setCgvAccepted] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [offerNotice, setOfferNotice] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submittingRef = useRef(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -151,8 +188,30 @@ export function CheckoutForm({
   const canonicalCode = normalizeCode(code);
   const codeKey = `${canonicalCode}|${email.trim().toLowerCase()}`;
   const verified = codeCheck.state === "valid" && codeCheck.key === codeKey ? codeCheck : null;
-  // Montant affiché : celui calculé par le backend pour le code vérifié.
+  // Montant affiché : celui calculé par le backend pour le code vérifié,
+  // sinon celui du produit (promotion en cours comprise).
   const payAmount = verified ? formatAmountMad(verified.amount) : product.displayAmount;
+
+  // Récapitulatif : prix catalogue, remise (code ou promotion), total TTC.
+  const promotion = verified ? verified.promotion : (product.pricing?.promotion ?? null);
+  const listAmount = verified ? verified.list : (product.pricing?.list ?? null);
+  const discountAmount = verified ? verified.discount : (product.pricing?.discount ?? 0);
+  const totalAmount = verified ? verified.amount : (product.pricing?.amount ?? null);
+  const promotionBadge = promotion ? formatPromotionBadge(promotion) : null;
+  const offerEnd = promotion ? formatOfferEnd(promotion.ends_at) : null;
+
+  // Nouveaux montants (fin de promotion) : un code vérifié avec les anciens
+  // doit être revérifié.
+  const pricingKey = product.pricing
+    ? `${product.pricing.amount}|${product.pricing.promotion?.ends_at ?? ""}`
+    : "";
+  const lastPricingKeyRef = useRef(pricingKey);
+  useEffect(() => {
+    if (lastPricingKeyRef.current === pricingKey) return;
+    lastPricingKeyRef.current = pricingKey;
+    setCodeCheck({ state: "idle" });
+    autoCheckedKeyRef.current = null;
+  }, [pricingKey]);
 
   // Retour arrière depuis la passerelle (cache navigateur) : le bouton doit
   // redevenir utilisable.
@@ -219,6 +278,7 @@ export function CheckoutForm({
         amount: result.amount_mad,
         list: result.list_amount_mad,
         discount: result.discount_mad,
+        promotion: result.promotion,
       });
       clearError("code");
       return true;
@@ -229,9 +289,11 @@ export function CheckoutForm({
       code:
         result.status === "invalid"
           ? CODE_MESSAGES.invalid
-          : result.status === "rate_limited"
-            ? CODE_MESSAGES.rateLimited
-            : CODE_MESSAGES.error,
+          : result.status === "not_cumulative"
+            ? notCumulativeMessage(product.pricing?.promotion ?? null)
+            : result.status === "rate_limited"
+              ? CODE_MESSAGES.rateLimited
+              : CODE_MESSAGES.error,
     }));
     return false;
   };
@@ -275,6 +337,16 @@ export function CheckoutForm({
       event.preventDefault();
       return;
     }
+
+    // Promotion affichée déjà terminée (onglet resté ouvert) : ne pas
+    // envoyer un montant qui ne serait plus celui débité.
+    if (promotion && Date.now() >= new Date(promotion.ends_at).getTime()) {
+      event.preventDefault();
+      setOfferNotice(OFFER_ENDED_MESSAGE);
+      onPricingExpired?.();
+      return;
+    }
+    setOfferNotice(null);
 
     const nextErrors = validate();
     setErrors(nextErrors);
@@ -326,23 +398,41 @@ export function CheckoutForm({
           <dt className="text-wl-text-secondary">Formation</dt>
           <dd className="font-medium text-wl-text">{product.label}</dd>
           <dt className="text-wl-text-secondary">Montant</dt>
-          <dd className={verified?.discount ? "text-wl-text-secondary line-through" : "font-semibold text-wl-text"}>
-            {product.displayAmount} TTC
+          <dd className={discountAmount ? "text-wl-text-secondary line-through" : "font-semibold text-wl-text"}>
+            {listAmount !== null ? formatAmountMad(listAmount) : product.displayAmount} TTC
           </dd>
-          {verified?.discount ? (
+          {discountAmount && totalAmount !== null ? (
             <>
               <dt className="text-wl-text-secondary">Réduction</dt>
               <dd className="font-medium text-wl-success">
-                −{formatAmountMad(verified.discount)} ({canonicalCode})
+                −{formatAmountMad(discountAmount)} ({promotionBadge ?? canonicalCode})
               </dd>
               <dt className="text-wl-text-secondary">Total</dt>
-              <dd className="font-semibold text-wl-text">{formatAmountMad(verified.amount)} TTC</dd>
+              <dd className="font-semibold text-wl-text">{formatAmountMad(totalAmount)} TTC</dd>
             </>
           ) : null}
         </dl>
+        {promotionBadge && offerEnd ? (
+          <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-wl-text-secondary">
+            <span className="rounded-full bg-wl-orange px-2 py-0.5 font-semibold text-white">
+              {promotionBadge}
+            </span>
+            Offre valable jusqu&apos;au {offerEnd}
+          </p>
+        ) : null}
       </div>
 
       <div className="space-y-5 px-5 py-5 sm:px-6 sm:py-6">
+        {offerNotice ? (
+          <div
+            role="alert"
+            className="flex items-start gap-2 rounded-xl border border-wl-orange/40 bg-wl-orange-tint px-3 py-2 text-sm text-wl-text"
+          >
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-wl-orange" aria-hidden="true" />
+            <p>{offerNotice}</p>
+          </div>
+        ) : null}
+
         {!actionUrl && (
           <div
             role="alert"
@@ -436,6 +526,12 @@ export function CheckoutForm({
             <Label htmlFor="payment_code" className="text-sm font-medium text-wl-text">
               {codeMode === "required" ? "Code personnel" : "Code de réduction (facultatif)"}
             </Label>
+            {codeMode === "optional" && product.pricing?.promotion ? (
+              <p id="payment_code-hint" className="mt-1 text-xs text-wl-text-tertiary">
+                Les codes de réduction ne sont pas cumulables avec l&apos;offre{" "}
+                {product.pricing.promotion.label}.
+              </p>
+            ) : null}
             {codeMode === "required" ? (
               <p id="payment_code-hint" className="mt-1 text-xs text-wl-text-tertiary">
                 {CODE_MESSAGES.studentHelp}
@@ -466,7 +562,12 @@ export function CheckoutForm({
                 required={codeMode === "required"}
                 aria-invalid={Boolean(errors.code)}
                 aria-describedby={
-                  [codeMode === "required" ? "payment_code-hint" : "", errors.code ? "payment_code-error" : ""]
+                  [
+                    codeMode === "required" || (codeMode === "optional" && product.pricing?.promotion)
+                      ? "payment_code-hint"
+                      : "",
+                    errors.code ? "payment_code-error" : "",
+                  ]
                     .filter(Boolean)
                     .join(" ") || undefined
                 }
@@ -488,7 +589,7 @@ export function CheckoutForm({
             {verified ? (
               <p role="status" className="mt-1 flex items-center gap-1.5 text-xs text-wl-success">
                 <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
-                {verified.discount
+                {verified.discount && !verified.promotion
                   ? `Code appliqué : −${formatAmountMad(verified.discount)}.`
                   : "Code valide."}
               </p>

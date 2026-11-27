@@ -26,16 +26,53 @@ export function parseProductSlug(value: string | null): string | null {
   return PRODUCT_SLUG_REGEX.test(slug) ? slug : null;
 }
 
+/**
+ * Promotion en cours, évaluée par le backend à chaque appel (heure du
+ * serveur) : rien n'est figé dans le site statique.
+ */
+export type PublicPromotion = {
+  label: string;
+  percent_off: number;
+  /** Instant ISO de fin, EXCLU (ex. 01/12/2026 00:00 Casablanca). */
+  ends_at: string;
+};
+
 export type ProductInfo = {
   slug: string;
   label: string;
+  /** Montant à payer sans code (promotion en cours comprise). */
   amount_mad: number;
+  /** Prix catalogue. */
+  list_amount_mad: number;
+  discount_mad: number;
   requires_student_code: boolean;
+  promotion: PublicPromotion | null;
 };
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+function parsePromotion(value: unknown): PublicPromotion | null {
+  if (!value || typeof value !== "object") return null;
+  const o = value as Record<string, unknown>;
+  if (
+    typeof o.label !== "string" ||
+    !o.label.trim() ||
+    !isFiniteNumber(o.percent_off) ||
+    typeof o.ends_at !== "string" ||
+    Number.isNaN(new Date(o.ends_at).getTime())
+  ) {
+    return null;
+  }
+  return { label: o.label, percent_off: o.percent_off, ends_at: o.ends_at };
+}
 
 /**
  * GET /api/payments/products/:slug — null si le produit est inconnu ou
- * inactif (404). Lève une erreur sur toute autre réponse.
+ * inactif (404). Lève une erreur sur toute autre réponse. Un backend sans
+ * promotions (ancien déploiement) est lu comme « prix catalogue, aucune
+ * promotion ».
  */
 export async function fetchProduct(
   baseUrl: string,
@@ -48,27 +85,47 @@ export async function fetchProduct(
   );
   if (response.status === 404) return null;
   if (!response.ok) throw new Error(`products ${response.status}`);
-  const body = (await response.json()) as Partial<ProductInfo>;
+  const body = (await response.json()) as Record<string, unknown>;
   if (
     body.slug !== slug ||
     typeof body.label !== "string" ||
-    typeof body.amount_mad !== "number" ||
+    !isFiniteNumber(body.amount_mad) ||
     typeof body.requires_student_code !== "boolean"
   ) {
     throw new Error("products: invalid body");
   }
-  return body as ProductInfo;
+  const amount = body.amount_mad;
+  const list = isFiniteNumber(body.list_amount_mad) ? body.list_amount_mad : amount;
+  const discount = isFiniteNumber(body.discount_mad) ? body.discount_mad : 0;
+  return {
+    slug,
+    label: body.label,
+    amount_mad: amount,
+    list_amount_mad: list,
+    discount_mad: discount,
+    requires_student_code: body.requires_student_code,
+    promotion: discount > 0 ? parsePromotion(body.promotion) : null,
+  };
 }
 
 export type CodeCheckResult =
-  | { status: "valid"; amount_mad: number; list_amount_mad: number; discount_mad: number }
+  | {
+      status: "valid";
+      amount_mad: number;
+      list_amount_mad: number;
+      discount_mad: number;
+      promotion: PublicPromotion | null;
+    }
+  /** Code de réduction valide, mais une promotion est en cours (non cumulables). */
+  | { status: "not_cumulative" }
   | { status: "invalid" }
   | { status: "rate_limited" }
   | { status: "error" };
 
 /**
- * POST /api/payments/codes/check — montants calculés par le backend, ou
- * « invalide » sans motif. Ne lève jamais.
+ * POST /api/payments/codes/check — montants calculés par le backend, « non
+ * cumulable » (promotion en cours), ou « invalide » sans motif. Ne lève
+ * jamais.
  */
 export async function checkPaymentCode(
   baseUrl: string,
@@ -95,7 +152,11 @@ export async function checkPaymentCode(
         amount_mad: body.amount_mad,
         list_amount_mad: body.list_amount_mad,
         discount_mad: body.discount_mad,
+        promotion: parsePromotion(body.promotion),
       };
+    }
+    if (body.valid === false && body.reason === "not_cumulative") {
+      return { status: "not_cumulative" };
     }
     return { status: "invalid" };
   } catch {

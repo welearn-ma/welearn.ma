@@ -24,6 +24,8 @@ const REASON_MESSAGES = {
     "Le Pack Étudiants nécessite un code personnel, envoyé après validation de votre justificatif étudiant.",
   code_invalid:
     "Ce code n'est pas valide pour cette commande. Vérifiez le code et l'adresse e-mail utilisée, ou contactez-nous.",
+  code_not_cumulative:
+    "Les codes de réduction ne sont pas cumulables avec l'offre promotionnelle en cours. Aucun montant n'a été débité. Réessayez sans code : le prix promotionnel s'applique automatiquement.",
   document:
     "Votre nom ou votre adresse e-mail contient un terme non accepté par la plateforme de paiement. Merci d'utiliser une autre adresse e-mail ou de nous contacter.",
   error:

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AlertCircle, FlaskConical } from "lucide-react";
 import {
@@ -31,6 +31,9 @@ type State =
   | { kind: "unavailable" }
   | { kind: "ready"; product: ProductInfo };
 
+/** Au-delà, setTimeout se déclencherait immédiatement (2^31 − 1 ms). */
+const MAX_TIMER_MS = 2_147_483_647;
+
 /** Page de dépôt du justificatif associée à un produit « étudiant ». */
 function proofPathFor(slug: string): string | undefined {
   return slug === BIM_FOUNDATIONS_PACKS.student.slug
@@ -43,22 +46,33 @@ function toCheckoutProduct(product: ProductInfo): CheckoutProduct {
   return {
     slug: product.slug,
     label: product.label,
-    // Montant renvoyé par le backend (jamais une valeur codée en dur).
+    // Montants renvoyés par le backend (jamais une valeur codée en dur) :
+    // montant à payer, promotion en cours comprise.
     displayAmount: formatAmountMad(product.amount_mad),
+    pricing: {
+      amount: product.amount_mad,
+      list: product.list_amount_mad,
+      discount: product.discount_mad,
+      promotion: product.promotion,
+    },
     codeMode: isTest ? "none" : product.requires_student_code ? "required" : "optional",
     proofPath: product.requires_student_code ? proofPathFor(product.slug) : undefined,
   };
 }
 
 /**
- * /paiement/?produit=<slug>[&code=<WL-XXXX-XXXX>] : libellé et prix lus via
- * GET /api/payments/products/<slug>. Seuls `produit` et `code` (lien de
- * l'e-mail de validation, pré-remplit le champ si son format est valide)
- * sont lus dans l'URL ; jamais l'e-mail.
+ * /paiement/?produit=<slug>[&code=<WL-XXXX-XXXX>] : libellé, prix et
+ * promotion en cours lus via GET /api/payments/products/<slug> (heure du
+ * serveur). Seuls `produit` et `code` (lien de l'e-mail de validation,
+ * pré-remplit le champ si son format est valide) sont lus dans l'URL ;
+ * jamais l'e-mail.
  *
  * `code` est lu une seule fois puis retiré de la barre d'adresse
  * (history.replaceState, `produit` conservé) : il ne reste ni dans l'URL
  * affichée ni dans l'historique.
+ *
+ * Fin d'une promotion affichée : le produit est relu à `ends_at` sans
+ * démonter le formulaire (les champs saisis sont conservés).
  */
 export function ProductCheckout() {
   const searchParams = useSearchParams();
@@ -95,6 +109,23 @@ export function ProductCheckout() {
     return () => controller.abort();
   }, [slug, baseUrl]);
 
+  /** Relit le produit sans repasser par l'écran de chargement. */
+  const refreshProduct = useCallback(() => {
+    if (!slug || !baseUrl) return;
+    fetchProduct(baseUrl, slug)
+      .then((product) => setState(product ? { kind: "ready", product } : { kind: "missing" }))
+      .catch(() => setState({ kind: "unavailable" }));
+  }, [slug, baseUrl]);
+
+  const promotionEnd = state.kind === "ready" ? state.product.promotion?.ends_at : undefined;
+  useEffect(() => {
+    if (!promotionEnd) return;
+    const delay = new Date(promotionEnd).getTime() - Date.now() + 1000;
+    if (!(delay <= MAX_TIMER_MS)) return;
+    const timer = window.setTimeout(refreshProduct, Math.max(delay, 0));
+    return () => window.clearTimeout(timer);
+  }, [promotionEnd, refreshProduct]);
+
   if (state.kind === "loading") {
     return <PaymentResultFallback />;
   }
@@ -130,7 +161,11 @@ export function ProductCheckout() {
             <p>Page de test — paiement CMI (environnement de test)</p>
           </div>
         ) : null}
-        <CheckoutForm product={toCheckoutProduct(state.product)} initialCode={linkCode} />
+        <CheckoutForm
+          product={toCheckoutProduct(state.product)}
+          initialCode={linkCode}
+          onPricingExpired={refreshProduct}
+        />
       </div>
     </section>
   );
