@@ -1,5 +1,4 @@
 import { formatDateTimeCasablanca } from "../commerce/emails";
-import { TEST_PRODUCT_SLUG } from "../config/commerce";
 import { CONTACT_PHONE } from "../config/legal";
 import { renderEmail, type Paragraph } from "../lib/emailTemplate";
 import { describeMailError, type MailMessage, type Mailer } from "../lib/mailer";
@@ -13,8 +12,8 @@ import {
 /*
  * E-mails d'une commande payee :
  *   - confirmation au client (orders.customer_email), Reply-To CONTACT_RECIPIENT ;
- *   - notification a l'equipe (CONTACT_RECIPIENT), Reply-To le client, pour
- *     ouvrir l'acces dans les delais des CGV.
+ *   - notification a l'equipe (CONTACT_RECIPIENT), Reply-To le client.
+ * Aucune mention d'acces ni de « test » (meme pour le produit de test).
  *
  * Declenches UNIQUEMENT pour la commande que le callback CMI vient de faire
  * passer PENDING -> PAID, APRES la reponse au CMI (paymentController). Best
@@ -96,10 +95,6 @@ function discountLabel(order: PaidOrder): string {
   return order.promotion ? `Réduction ${promotionName(order.promotion)}` : "Réduction";
 }
 
-function subjectPrefix(order: PaidOrder): string {
-  return order.formation_slug === TEST_PRODUCT_SLUG ? "[TEST] " : "";
-}
-
 function message(
   to: string,
   subject: string,
@@ -139,14 +134,9 @@ export function orderConfirmationEmail(
     ["Date du paiement", formatDateTimeCasablanca(order.paid_at)],
   );
 
-  // CGV art. 8 : acces immediat pour toute commande, aucun choix a rappeler.
-  const access: Paragraph = [
-    "Votre accès à la formation est immédiat : il sera ouvert sous 24 heures ouvrées.",
-  ];
-
   return message(
     order.customer_email,
-    `${subjectPrefix(order)}Confirmation de votre paiement — Welearn`,
+    "Confirmation de votre paiement — Welearn",
     "Confirmation de paiement",
     contactRecipient,
     {
@@ -156,7 +146,6 @@ export function orderConfirmationEmail(
       ],
       rows,
       paragraphsAfterRows: [
-        access,
         [
           `Conservez cet e-mail et votre référence de commande. Pour toute question : ${contactRecipient} · ${CONTACT_PHONE}.`,
         ],
@@ -171,7 +160,7 @@ export function orderConfirmationEmail(
   );
 }
 
-/** Notification interne : commande payee, acces a ouvrir. */
+/** Notification interne : commande payee. */
 export function orderTeamNotificationEmail(
   order: PaidOrder,
   { contactRecipient }: OrderEmailSettings,
@@ -202,7 +191,6 @@ export function orderTeamNotificationEmail(
   }
   rows.push(
     ["Montant payé", `${amount} MAD TTC`],
-    ["Ouvrir l'accès", "sous 24 h ouvrées"],
     ["Payé le", formatDateTimeCasablanca(order.paid_at)],
     ["TransId CMI", order.cmi_trans_id ?? "—"],
     ["Code d'autorisation", order.cmi_auth_code ?? "—"],
@@ -211,7 +199,7 @@ export function orderTeamNotificationEmail(
 
   return message(
     contactRecipient,
-    `${subjectPrefix(order)}[Commande payée] ${order.label} — ${amount} MAD — ${order.oid}`,
+    `[Commande payée] ${order.label} — ${amount} MAD — ${order.oid}`,
     "Commande payée",
     order.customer_email,
     { paragraphs: [], rows },

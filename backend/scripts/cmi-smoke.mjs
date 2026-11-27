@@ -349,19 +349,19 @@ try {
   const [aCustomer, aTeam] = mails;
   check("paid order -> exactly 2 e-mails: customer then team",
     mails.length === 2 && aCustomer.to === CLIENT_EMAIL && aTeam.to === CONTACT, mails.map((m) => m.to).join(","));
-  check("customer e-mail: [TEST] subject, Reply-To CONTACT_RECIPIENT, ref, amount, access text",
-    aCustomer.subject === "[TEST] Confirmation de votre paiement — Welearn" && aCustomer.replyTo === CONTACT &&
+  check("customer e-mail: subject (no [TEST]), Reply-To CONTACT_RECIPIENT, ref, amount, no access text",
+    aCustomer.subject === "Confirmation de votre paiement — Welearn" && aCustomer.replyTo === CONTACT &&
       aCustomer.text.includes(`Référence de commande : ${aOid}`) &&
       aCustomer.text.includes("Montant payé : 10,00 MAD TTC") &&
-      aCustomer.text.includes("Votre accès à la formation est immédiat : il sera ouvert sous 24 heures ouvrées.") &&
+      !aCustomer.text.includes("accès") && !aCustomer.text.includes("[TEST]") &&
       !aCustomer.text.includes("rétractation") &&
       !aCustomer.text.includes("Prix catalogue"), aCustomer.subject);
   check("customer e-mail: no card / CMI transaction data",
     ![aCustomer.text, aCustomer.html].some((s) => s.includes("SMOKE-TRANS-1") || s.includes("SMOKE1")));
-  check("team e-mail: [TEST] subject, Reply-To customer, TransId, AuthCode, opening delay",
-    aTeam.subject === `[TEST] [Commande payée] Test paiement CMI — 10,00 MAD — ${aOid}` &&
+  check("team e-mail: subject (no [TEST]), Reply-To customer, TransId, AuthCode, no access row",
+    aTeam.subject === `[Commande payée] Test paiement CMI — 10,00 MAD — ${aOid}` &&
       aTeam.replyTo === CLIENT_EMAIL && aTeam.text.includes("TransId CMI : SMOKE-TRANS-1") &&
-      aTeam.text.includes("Code d'autorisation : SMOKE1") && aTeam.text.includes("Ouvrir l'accès : sous 24 h ouvrées"),
+      aTeam.text.includes("Code d'autorisation : SMOKE1") && !aTeam.text.includes("accès"),
     aTeam.subject);
 
   // 3. rejeu meme TransId -> POSTAUTH ; TransId different -> APPROVED + alerte
@@ -434,7 +434,7 @@ try {
       store.codes.get("11111111-1111-4111-8111-111111111111").used_count === 1, dPaid.text);
   const dMailed = await emailsDone(d.posted.oid);
   const [dCustomer, dTeam] = mails.slice(2);
-  check("discount order e-mails: no [TEST], discount block, Code row",
+  check("discount order e-mails: discount block, Code row",
     dMailed && mails.length === 4 && dCustomer.subject === "Confirmation de votre paiement — Welearn" &&
       dCustomer.text.includes(`Prix catalogue : 8${NBSP}500,00 MAD TTC — Réduction : −425,00 MAD`) &&
       dCustomer.text.includes(`Montant payé : 8${NBSP}075,00 MAD TTC`) &&
