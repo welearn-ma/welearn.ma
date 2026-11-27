@@ -808,19 +808,15 @@ export const formations: Record<string, FormationPageData> = {
     slug: "bim-foundations-professional",
     title: "Certification BIM Foundations – Professional",
     subtitle:
-      "Obtenez la certification internationale de référence en BIM, délivrée par buildingSMART International. Formation accessible en e-learning ou en présentiel, en seulement 1 mois.",
+      "Obtenez la certification internationale de référence en BIM, délivrée par buildingSMART International. Formation accessible en e-learning.",
     partnerLine:
-      "Organisme certificateur : buildingSMART International · Organisme accrédité : WeLearn",
-    badges: [
-      "Certification internationale",
-      "buildingSMART",
-      "E-learning + Présentiel",
-    ],
+      "Organisme certificateur : buildingSMART International · Organisme accrédité : Welearn",
+    badges: ["Certification internationale", "buildingSMART", "E-learning"],
     infoBanner: [
-      { icon: Clock, value: "1 mois", label: "Durée" },
+      { icon: Clock, value: "Flexible", label: "Durée" },
       { icon: BookOpen, value: "21 heures", label: "Volume" },
-      { icon: Monitor, value: "E-learning + coaching", label: "Format" },
-      { icon: MapPin, value: "En ligne ou présentiel", label: "Lieu" },
+      { icon: Monitor, value: "E-learning", label: "Format" },
+      { icon: MapPin, value: "En ligne 24h/24", label: "Lieu" },
     ],
     heroImage:
       "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1600&q=80",
