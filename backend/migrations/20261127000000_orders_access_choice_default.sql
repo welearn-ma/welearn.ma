@@ -18,12 +18,29 @@
 -- nouveau backend ne peut plus creer de commande (violation du NOT NULL ->
 -- page /paiement/echec/?reason=error).
 --
--- Idempotente : set default peut etre rejoue.
+-- Idempotente : set default peut etre rejoue. Si la colonne n'existe plus
+-- (etape 2 deja appliquee, ou suppression manuelle), ne fait rien : c'est le
+-- cas en production depuis le 27/11/2026 (l'ancienne version de ce fichier
+-- y echouait avec « 42703: column "access_choice" of relation "orders" does
+-- not exist », sans consequence).
 
 begin;
 
-alter table public.orders
-  alter column access_choice set default 'immediate';
+do $$
+begin
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'orders'
+      and column_name = 'access_choice'
+  ) then
+    alter table public.orders
+      alter column access_choice set default 'immediate';
+  else
+    raise notice 'orders.access_choice n''existe plus : rien a faire.';
+  end if;
+end $$;
 
 commit;
 
@@ -34,4 +51,5 @@ notify pgrst, 'reload schema';
 --   from information_schema.columns
 --   where table_schema = 'public' and table_name = 'orders'
 --     and column_name = 'access_choice';
--- Attendu : 1 ligne, is_nullable = NO, column_default = 'immediate'::text.
+-- Attendu : 1 ligne, is_nullable = NO, column_default = 'immediate'::text ;
+-- ou 0 ligne si la colonne a deja ete supprimee (etape 2).
