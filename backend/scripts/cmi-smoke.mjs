@@ -76,7 +76,7 @@ function createMemoryStore() {
     code("22222222-2222-4222-8222-222222222222", "WL-STUD-BBBB", "student", {
       product_slug: "bim-foundations-etudiant",
     }),
-    // Section 12 (Black Friday) : codes encore inutilises.
+    // Section 11 (Black Friday) : codes encore inutilises.
     code("33333333-3333-4333-8333-333333333333", "WL-DSCT-CCCC", "discount"),
     code("44444444-4444-4444-8444-444444444444", "WL-STUD-DDDD", "student", {
       product_slug: "bim-foundations-etudiant",
@@ -212,8 +212,8 @@ const mailer = {
 };
 
 // --- Serveur -----------------------------------------------------------------
-// Horloge du serveur pilotee : sections 1-11 avant le Black Friday (prix
-// catalogue), section 12 pendant puis apres.
+// Horloge du serveur pilotee : sections 1-10 avant le Black Friday (prix
+// catalogue), section 11 pendant puis apres.
 let clock = new Date("2026-11-24T10:00:00.000Z");
 const store = createMemoryStore();
 const app = express();
@@ -459,7 +459,81 @@ try {
     sMailed && mails.length === 6 && !sCustomer.text.includes("Prix catalogue") &&
       sTeam.text.includes("Code : WL-STUD-BBBB") && sTeam.text.includes("Réduction : aucune"), String(mails.length));
 
-  // 11. Isolation
+  // 11. Black Friday -25 % (prix serveur, non cumulable, montant fige)
+  const productBody = async (slug) =>
+    JSON.parse((await request("GET", `/api/payments/products/${slug}`, { headers: { origin: SITE } })).text);
+  const pick = (o, keys) => JSON.stringify(Object.fromEntries(keys.map((k) => [k, o[k]])));
+  const BF = { label: "Black Friday", percent_off: 25, ends_at: "2026-11-30T23:00:00.000Z" };
+
+  clock = new Date("2026-11-26T22:59:59.000Z"); // 26/11 23:59:59 Casablanca
+  const pBefore = await productBody("bim-foundations-pro");
+  check("BF products/pro on 26/11 23:59:59 Casablanca -> 8500, promotion null",
+    pBefore.amount_mad === 8500 && pBefore.promotion === null, JSON.stringify(pBefore));
+
+  clock = new Date("2026-11-28T10:00:00.000Z");
+  const pPro = await productBody("bim-foundations-pro");
+  const pStu = await productBody("bim-foundations-etudiant");
+  check("BF products/pro -> 6375 / 8500 / 2125 + promotion",
+    pick(pPro, ["amount_mad", "list_amount_mad", "discount_mad"]) === '{"amount_mad":6375,"list_amount_mad":8500,"discount_mad":2125}' &&
+      JSON.stringify(pPro.promotion) === JSON.stringify(BF), JSON.stringify(pPro));
+  check("BF products/etudiant -> 3750 / 5000 / 1250, still requires_student_code",
+    pick(pStu, ["amount_mad", "list_amount_mad", "discount_mad", "requires_student_code"]) ===
+      '{"amount_mad":3750,"list_amount_mad":5000,"discount_mad":1250,"requires_student_code":true}', JSON.stringify(pStu));
+
+  const bfCheck = await request("POST", "/api/payments/codes/check", {
+    json: { product: "bim-foundations-pro", code: "WL-DSCT-CCCC", email: CLIENT_EMAIL },
+    headers: { origin: SITE },
+  });
+  check("BF codes/check 5 % -> not_cumulative", bfCheck.text === '{"valid":false,"reason":"not_cumulative"}', bfCheck.text);
+
+  const bf = await init(PRO);
+  const bfOrder = store.orders.get(bf.posted.oid);
+  check("BF init pro -> amount 6375.00 sent to CMI", bf.posted.amount === "6375.00", bf.posted.amount);
+  check("BF init HASH verifies with the dummy key", verifyCallbackHash(bf.posted, KEY));
+  check("BF order stores list 8500, discount 2125, promotion_id, no code",
+    pick(bfOrder, ["amount_mad", "list_amount_mad", "discount_mad", "promotion_id", "code_id"]) ===
+      JSON.stringify({ amount_mad: 6375, list_amount_mad: 8500, discount_mad: 2125, promotion_id: BLACK_FRIDAY_ID, code_id: null }));
+
+  const bfForged = await init({ ...PRO, amount: "1.00", promotion_id: "x", promo: "1" });
+  check("BF init ignores posted amount / promo fields", bfForged.posted.amount === "6375.00", bfForged.posted.amount);
+
+  const bfStacked = await request("POST", "/api/payments/cmi/init", { form: { ...CHECKOUT, ...PRO, code: "WL-DSCT-CCCC" } });
+  check("BF init + 5 % code -> echec/?reason=code_not_cumulative, code untouched",
+    bfStacked.headers.location === `${SITE}/paiement/echec/?reason=code_not_cumulative` &&
+      store.codes.get("33333333-3333-4333-8333-333333333333").used_count === 0, bfStacked.headers.location);
+
+  const bfNoCode = await request("POST", "/api/payments/cmi/init", { form: { ...CHECKOUT, ...STU } });
+  check("BF student pack without code -> still code_required",
+    bfNoCode.headers.location === `${SITE}/paiement/echec/?reason=code_required`, bfNoCode.headers.location);
+  const bfStu = await init({ ...STU, code: "WL-STUD-DDDD" });
+  check("BF student init with code -> amount 3750.00", bfStu.posted.amount === "3750.00", bfStu.posted.amount);
+
+  // Commande creee le 30/11 a 23:59:59, callback le 01/12 a 00:10 (apres la fin).
+  clock = new Date("2026-11-30T22:59:59.000Z");
+  const late = await init(PRO);
+  clock = new Date("2026-11-30T23:10:00.000Z");
+  const lateWrong = await callback(cmiSigned({ ...late.posted, amount: "8500.00" }, { ...APPROVED, TransId: "SMOKE-TRANS-L0" }));
+  check("BF late callback claiming today's price 8500.00 -> FAILURE, still PENDING",
+    lateWrong.text === "FAILURE" && store.orders.get(late.posted.oid).status === "PENDING", lateWrong.text);
+  const lateOk = await callback(cmiSigned(late.posted, { ...APPROVED, TransId: "SMOKE-TRANS-L" }));
+  check("BF late callback with the order's 6375.00 -> POSTAUTH, PAID",
+    late.posted.amount === "6375.00" && lateOk.text === "ACTION=POSTAUTH" && store.orders.get(late.posted.oid).status === "PAID",
+    `${late.posted.amount} ${lateOk.text}`);
+  const lateMailed = await emailsDone(late.posted.oid);
+  const [lCustomer, lTeam] = mails.slice(-2);
+  check("BF e-mails: discount line names the promotion",
+    lateMailed &&
+      lCustomer.text.includes(`Prix catalogue : 8${NBSP}500,00 MAD TTC — Réduction Black Friday (−25${NBSP}%) : −2${NBSP}125,00 MAD`) &&
+      lCustomer.text.includes(`Montant payé : 6${NBSP}375,00 MAD TTC`) &&
+      lTeam.text.includes(`Réduction : −2${NBSP}125,00 MAD — Black Friday (−25${NBSP}%)`), String(mails.length));
+
+  const pAfter = await productBody("bim-foundations-pro");
+  const after = await init(PRO);
+  check("BF after the end -> products 8500 / promotion null, init 8500.00",
+    pAfter.amount_mad === 8500 && pAfter.promotion === null && after.posted.amount === "8500.00",
+    `${pAfter.amount_mad} ${after.posted.amount}`);
+
+  // 12. Isolation
   check("Supabase client never loaded", !Object.keys(require.cache).some((k) => k.includes("supabaseClient")));
 } finally {
   console.warn = originalWarn;
