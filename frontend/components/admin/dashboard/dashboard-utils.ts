@@ -10,6 +10,7 @@ import type {
   SourceFilter,
 } from "./dashboard-types";
 import type { SegmentedToggleOption } from "./dashboard-segmented-toggle";
+import { formatCasablanca } from "@/lib/casablanca-time";
 
 export const neutralActionButtonClass =
   "border-wl-border text-wl-text-secondary transition-colors hover:border-wl-blue/30 hover:bg-wl-blue-tint hover:text-wl-blue";
@@ -53,12 +54,9 @@ export function sponsorProgramLabel(program: SponsorProgram | null): string {
   return program ? (SPONSOR_PROGRAM_LABELS[program] ?? program) : "—";
 }
 
+/** Date et heure a l'heure de Casablanca (lib/casablanca-time). */
 export function formatDate(value: string) {
-  return new Intl.DateTimeFormat("fr-MA", {
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZone: "Africa/Casablanca",
-  }).format(new Date(value));
+  return formatCasablanca(new Date(value), { dateStyle: "medium", timeStyle: "short" }, "fr-MA");
 }
 
 function toCsv(rows: AdminRegistrationRecord[]) {

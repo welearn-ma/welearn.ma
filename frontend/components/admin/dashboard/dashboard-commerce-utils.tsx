@@ -1,13 +1,9 @@
 import { AlertCircle, CheckCircle2, X } from "lucide-react";
+import { formatCasablanca } from "@/lib/casablanca-time";
 
 /** JJ/MM/AAAA a l'heure de Casablanca (comme les e-mails envoyes). */
 export function formatDay(value: string): string {
-  return new Intl.DateTimeFormat("fr-FR", {
-    timeZone: "Africa/Casablanca",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(new Date(value));
+  return formatCasablanca(new Date(value), { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
 /** Date locale -> "AAAA-MM-JJ" (valeur d'un <input type="date">). */
